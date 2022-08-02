@@ -24,7 +24,7 @@
     "experimentalDecorators": true,
     "sourceMap": true,
     "jsx": "preserve",
-    "incremental": true
+    "incremental": true,
   },
   "include": [
     "**/*.ts",

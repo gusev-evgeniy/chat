@@ -6,36 +6,38 @@ import { Auth } from './types';
 import add_photo from '../../images/add_photo.svg';
 import { StyledAdvises, StyledAva, StyledButton, StyledWrapper } from './styles';
 
-export const Name: FC<Auth> = ({ nextPage }) => {
-  const [selectedFile, setSelectedFile] = useState<File | undefined>();
+export const Name: FC<Auth> = ({ nextPage, changeData, data }) => {
   const [preview, setPreview] = useState<string | undefined>();
-  const [name, setName] = useState('');
+  const { name, photo } = data;
 
   useEffect(() => {
-    if (!selectedFile) {
+    if (!photo) {
       setPreview(undefined);
       return;
     }
-    const objectUrl = URL.createObjectURL(selectedFile);
+    const objectUrl = URL.createObjectURL(photo);
     setPreview(objectUrl);
 
-    // free memory when ever this component is unmounted
     return () => URL.revokeObjectURL(objectUrl);
-  }, [selectedFile]);
+  }, [photo]);
 
   const onSelectFile = ({ target }: React.ChangeEvent<HTMLInputElement>) => {
     if (!target.files || target.files.length === 0) {
-      setSelectedFile(undefined);
+      changeData({ photo: undefined });
       return;
     }
 
-    // I've kept this example simple by using the first image instead of multiple
-    setSelectedFile(target.files[0]);
+    changeData({ photo: target.files[0] });
   };
 
   const onKeyChange = ({ target }: React.ChangeEvent<HTMLInputElement>) => {
-    setName(target.value.trim());
+    changeData({ name: target.value.trim() })
   };
+
+  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    nextPage()
+  }
 
   return (
     <>
@@ -44,6 +46,7 @@ export const Name: FC<Auth> = ({ nextPage }) => {
         <span>People use real names on TalkClub Thnx!</span>
       </StyledAdvises>
       <StyledWrapper padding={55}>
+        <form onSubmit={onSubmit}>
         <div className='user_data'>
           <StyledAva title='Add photo' backgroundImage={preview}>
             <label className='upload' htmlFor='inputTag'>
@@ -54,10 +57,11 @@ export const Name: FC<Auth> = ({ nextPage }) => {
           </StyledAva>
         </div>
         <input type='text' className='text-input' placeholder='Your name' onChange={e => onKeyChange(e)} />
-        <StyledButton width='160px' height='48px' onClick={nextPage} disabled={!name.length}>
+        <StyledButton width='160px' height='48px' disabled={!name.length}>
           Next
           <span className='arrow'>&rarr;</span>
         </StyledButton>
+        </form>
       </StyledWrapper>
     </>
   );

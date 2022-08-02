@@ -1,8 +1,11 @@
 import { FC } from 'react';
 import { StyledButton, StyledWrapper } from './styles';
-import { Auth } from './types';
 
-export const Welcome:FC<Auth> = ({ nextPage }) => {
+type Props = {
+  nextPage: () => void;
+}
+
+export const Welcome:FC<Props> = ({ nextPage }) => {
   return (
     <StyledWrapper padding={55}>
       <h3>Welcome to TalkClub!</h3>
