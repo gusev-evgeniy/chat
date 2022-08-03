@@ -4,15 +4,18 @@ import bcrypt from 'bcrypt';
 import Base from "."
 
 @Entity()
-export class User extends Base {
-    @Column()
+export default class User extends Base {
+    @Column({ unique: true }) //temp
     name: string
+
+    @Column({ nullable: true }) //temp. unique
+    email: string
 
     @Column()
     password: string
 
-    @Column()
-    photo?: string
+    @Column({ nullable: true })
+    photo: string
 
     @BeforeInsert()
     async hashPassword() {

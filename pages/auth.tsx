@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { instance } from '../api';
 
 import { Name } from '../components/auth/name';
 import { Password } from '../components/auth/password';
@@ -21,9 +22,11 @@ export const Auth = () => {
     setNum(prev => ++prev);
   };
 
-  const onSubmit = () => {
-    console.log('data', data)
-  }
+  const onSubmit = async () => {
+    await instance.post('/user', {
+      ...data,
+    });
+  };
 
   const pages = {
     1: <Welcome nextPage={nextPage} />,

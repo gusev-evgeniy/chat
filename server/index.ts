@@ -3,12 +3,14 @@ import 'dotenv/config';
 
 import express from 'express';
 import cors from 'cors';
+import cookieParser from 'cookie-parser';
 
 import db from './db';
+import routes from './routes';
 
 const PORT = process.env.PORT || 5051;
 
-const start = () => {
+const start = async () => {
   try {
     db.initialize()
       .then(() => {
@@ -20,8 +22,14 @@ const start = () => {
 
     const app = express();
 
-    app.use(cors());
+    app.use(cors({
+      credentials: true,
+      origin: "http://localhost:3000"
+    }));
+    
     app.use(express.json());
+    app.use(cookieParser());
+    app.use('/api', routes);
 
     app.listen(PORT, () => console.log(`Server started on ${PORT} port`));
   } catch (error) {
