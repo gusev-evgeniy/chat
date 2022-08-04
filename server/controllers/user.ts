@@ -8,8 +8,9 @@ class User {
   async create(req: Request, res: Response) {
     try {
       const { password, name } = req.body || {};
+      console.log('password, name', password, name);
       const url = req.protocol + '://' + req.get('host');
-
+      console.log('url', url)
       const user = UserEntity.create({ name, password, photo: url + '/public/' + req.file?.filename});
       await user.save();
 

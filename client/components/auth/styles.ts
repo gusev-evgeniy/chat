@@ -110,9 +110,9 @@ export const StyledAdvises = styled.div`
   }
 `;
 
-export const StyledAva = styled.div<{ backgroundImage?: string }>`
-  width: 100px;
-  height: 100px;
+export const StyledAva = styled.div<{ backgroundImage?: string, size: number }>`
+  width: ${({ size }) => `${size}px`};
+  height: ${({ size }) => `${size}px`};
   background-color: #e0e0e0;
   border-radius: 30%;
   display: flex;

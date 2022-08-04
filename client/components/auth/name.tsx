@@ -48,7 +48,7 @@ export const Name: FC<Auth> = ({ nextPage, changeData, data }) => {
       <StyledWrapper padding={55}>
         <form onSubmit={onSubmit}>
         <div className='user_data'>
-          <StyledAva title='Add photo' backgroundImage={preview}>
+          <StyledAva title='Add photo' backgroundImage={preview} size={100}>
             <label className='upload' htmlFor='inputTag'>
               <Image width='30px' height='30px' src={add_photo} alt='add_photo' />
               <input id='inputTag' type='file' onChange={onSelectFile} hidden />

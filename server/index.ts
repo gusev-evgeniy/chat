@@ -8,7 +8,7 @@ import cookieParser from 'cookie-parser';
 import db from './db';
 import routes from './routes';
 
-const PORT = process.env.PORT || 5051;
+const PORT = process.env.PORT || 5050;
 
 const start = async () => {
   try {
@@ -18,14 +18,14 @@ const start = async () => {
 
     const app = express();
 
-    app.use('/public', express.static('public'));
-
     app.use(
       cors({
         credentials: true,
         origin: 'http://localhost:3000',
       })
     );
+
+    app.use('/public', express.static('public'));
 
     app.use(express.json());
     app.use(cookieParser());
