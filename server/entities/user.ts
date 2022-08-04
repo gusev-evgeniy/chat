@@ -8,9 +8,6 @@ export default class User extends Base {
     @Column({ unique: true }) //temp
     name: string
 
-    @Column({ nullable: true }) //temp. unique
-    email: string
-
     @Column()
     password: string
 
