@@ -1,28 +1,25 @@
 import React from 'react';
-import { StyledChat } from './styled';
+import { ChatItem } from './item';
+import { StyledChat, StyledMessageForm, StyledSubmitIcon, StyledTextareaAutosize } from './styled';
+
+import send from '../../images/send.svg';
+import Image from 'next/image';
 
 export const Chat = () => {
   return (
     <StyledChat>
-      <div className='item my'>
-        <p className='message'>Привет</p>
-        <span className='time'>18:57</span>
+      <div>
+        <ChatItem isReaded={true} message={'Привет'} time={'18:57'} />
+        <ChatItem isReaded={false} message={'Привет. как дела?'} time={'18:58'} />
+        <ChatItem isReaded={true} message={'норм'} time={'19:20'} />
+        <ChatItem isReaded={true} message={'а твои?'} time={'19:21'} />
       </div>
-      <div className='item'>
-        <p className='message'>Привет. как дела?</p>
-        <span className='time'>18:58</span>
-      </div>
-      <div className='item'>
-        <p className='message'>норм</p>
-        <span className='time'>19:20</span>
-      </div>
-      <div className='item'>
-        <p className='message'>а твои?</p>
-        <span className='time'>19:21</span>
-      </div>
-      <form>
-        <input type='text' />
-      </form>
+      <StyledMessageForm>
+        <StyledTextareaAutosize placeholder='To write a message...' />
+        <StyledSubmitIcon>
+          <Image width='30px' height='30px' src={send} alt='send' />
+        </StyledSubmitIcon>
+      </StyledMessageForm>
     </StyledChat>
   );
 };
