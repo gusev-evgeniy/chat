@@ -10,8 +10,8 @@ class User {
       const { password, name } = req.body || {};
       console.log('password, name', password, name);
       const url = req.protocol + '://' + req.get('host');
-      console.log('url', url)
-      const user = UserEntity.create({ name, password, photo: url + '/public/' + req.file?.filename});
+      console.log('url', url);
+      const user = UserEntity.create({ name, password, photo: url + '/public/' + req.file?.filename });
       await user.save();
 
       const token = createJWT(user);
@@ -35,6 +35,36 @@ class User {
     const me = res.locals.user;
 
     return res.json(me);
+  }
+
+  async checkName(req: Request, res: Response) {
+    try {
+      const user = await UserEntity.find({
+        where: { name: req.body.name },
+      });
+      console.log('user', user);
+      if (user.length) {
+        return res.status(401).json({ message: 'A user with the same name already exists' });
+      }
+
+      return res.json({ message: 'Success' });
+    } catch (error) {
+      console.log('error', error);
+    }
+  }
+
+  async find(req: Request, res: Response) {
+    const name = req.query.name;
+    console.log('name', name)
+    try {
+      const [users, count] = await UserEntity.createQueryBuilder('user')
+        .where('user.name like :name', { name:`%${name}%` })
+        .andWhere('user.id != :id', { id: res.locals.user.id })
+        .take(50)
+        .getManyAndCount();
+
+      res.json({ data: { users, count } });
+    } catch (error) {}
   }
 }
 

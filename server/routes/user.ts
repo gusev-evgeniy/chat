@@ -8,6 +8,8 @@ import Upload from '../middleware/multer';
 const router = express.Router();
 
 router.post('/', Upload.single('photo'), User.create);
+router.get('/find', Auth, User.find);
+router.post('/check_name', User.checkName);
 router.get('/me', Auth, User.me);
 
 export default router;

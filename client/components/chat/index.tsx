@@ -8,7 +8,7 @@ import Image from 'next/image';
 export const Chat = () => {
   return (
     <StyledChat>
-      <div>
+      <div className='messages'>
         <ChatItem isReaded={true} message={'Привет'} time={'18:57'} />
         <ChatItem isReaded={false} message={'Привет. как дела?'} time={'18:58'} />
         <ChatItem isReaded={true} message={'норм'} time={'19:20'} />

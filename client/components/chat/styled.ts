@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import TextareaAutosize from 'react-textarea-autosize';
-import { StyledInputIcon } from '../../styles';
+import { StyledInputIcon, StyledTextInput } from '../../styles';
+import { StyledSearchInput } from '../contacts/styled';
 
 export const StyledChat = styled.div`
   height: 100vh;
@@ -8,12 +9,20 @@ export const StyledChat = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+
+  .messages {
+    height: 100%;
+    width: 100%;
+    padding: 10px;
+  }
 `;
 
 export const StyledChatItem = styled.div<{ my: boolean }>`
   width: 100%;
   display: flex;
   position: relative;
+  justify-content: ${({ my }) => (my ? 'flex-end' : 'flex-start')};
+  margin-bottom: 3px;
 
   .item {
     width: fit-content;
@@ -23,12 +32,18 @@ export const StyledChatItem = styled.div<{ my: boolean }>`
     padding: 5px;
     border-radius: 5px;
     background-color: ${({ my }) => (my ? '#ededee' : '#58d188')};
-    justify-content: flex-start;
+    align-items: flex-end;
   }
 
   .time {
     font-size: 11px;
     opacity: 0.5;
+    margin: 0 3px;
+  }
+
+  .readed_icon {
+    display: flex;
+    align-items: flex-end;
   }
 `;
 
@@ -39,7 +54,7 @@ export const StyledMessageForm = styled.form`
   padding: 0;
   background-color: red;
   font-size: 0;
-  border-top: 1px solid #E3E3E3; 
+  border-top: 1px solid #e3e3e3;
 `;
 
 export const StyledTextareaAutosize = styled(TextareaAutosize)`

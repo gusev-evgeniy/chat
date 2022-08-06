@@ -8,10 +8,10 @@ export const ChatItem = ({ message, time, isReaded }) => {
   return (
     <StyledChatItem my={!isReaded}>
       <div className='item'>
-        <p className='message'>{message}</p>
+        <p className='message '>{message}</p>
         <span className='time'>{time}</span>
         {isReaded && (
-          <div className='readed'>
+          <div className='readed_icon'>
             <Image width='18px' height='18px' src={readed} alt='search' />
           </div>
         )}

@@ -5,10 +5,10 @@ import { StyledContactItem } from './styled';
 export const ContactItem = () => {
   return (
     <StyledContactItem>
-        <StyledAva size={50}/>
+      <StyledAva size={50} />
       <div className='data'>
         <div className='info'>
-          <p className='name'>Telegram</p>
+          <p className='name bold'>Telegram</p>
           <div className='time'>
             <div className='icon' />
             21:03

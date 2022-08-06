@@ -1,13 +1,6 @@
-$base-color: #F3EFE3;
-$base-radius: 20px;
+import { createGlobalStyle } from 'styled-components';
 
-$button-regist-radius: 30px;
-$button-regist-color: #5677AD;
-
-$button-color: #5677AD;
-$button-radius: 45px;
-
-
+const GlobalStyle = createGlobalStyle`
 * {
   box-sizing: border-box;
   font-family: 'Nunito', sans-serif;
@@ -21,10 +14,8 @@ a {
   text-decoration: none;
 }
 
-
 body { 
-  background-color: $base-color;
-  border-radius: $base-radius;
+  background-color: #F3EFE3;
   font-size: 18px;
 }
 
@@ -39,6 +30,13 @@ body {
   flex-direction: column;
 }
 
-p {
+.bold {
   font-weight: 700;
 }
+
+::-webkit-scrollbar {
+  display: none;
+}
+`;
+
+export default GlobalStyle;

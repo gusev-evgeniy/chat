@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { StyledInputIcon } from '../../styles';
+import { StyledInputIcon, StyledTextInput } from '../../styles';
 
 export const StyledContacts = styled.div`
   height: 100vh;
@@ -29,29 +29,22 @@ export const StyledContacts = styled.div`
 
     form {
       position: relative;
-      
-      .search {
-        width: 100%;
-        padding: 6px 45px 6px 15px;
-        text-overflow: ellipsis;
-        text-align: center;
-        font-weight: 400;
-        font-size: 20px;
-        border: 1px solid #e3e3e3;
-        border-radius: 20px;
-
-        :focus {
-          outline: 1px solid #dad6ca;
-        }
-      }
+      width: 100%;
+      margin-right: 15px;
     }
+
+  }
+  
+  .contacts_wrapper {
+    height: calc(100% - 70px);
+    overflow: auto;
   }
 `;
 
 export const StyledContactItem = styled.div`
   display: flex;
   align-items: center;
-  padding: 8px 10px;
+  padding: 13px 15px;
   cursor: pointer;
 
   .data {
@@ -84,4 +77,11 @@ export const StyledContactItem = styled.div`
 
 export const StyledSearchIcon = styled(StyledInputIcon)`
   top: 50%;
+`;
+
+export const StyledSearchInput = styled(StyledTextInput)`
+  width: 100%;
+  padding: 6px 45px 6px 15px;
+  text-overflow: ellipsis;
+  font-size: 20px;
 `;

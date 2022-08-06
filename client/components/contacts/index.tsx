@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import React, { FC } from 'react';
 import { ContactItem } from './item';
-import { StyledContacts, StyledSearchIcon } from './styled';
+import { StyledContacts, StyledSearchIcon, StyledSearchInput } from './styled';
 
 import search from '../../images/search.svg';
 import add_chat from '../../images/add_chat.svg';
@@ -17,7 +17,7 @@ export const Contacts: FC<Props> = ({ toggleNewRoom, newRoomIsOpen }) => {
     <StyledContacts>
       <div className='header'>
         <form>
-          <input type='text' className='search' placeholder='Search' />
+          <StyledSearchInput type='text' className='search' placeholder='Search' />
           <StyledSearchIcon>
             <Image width='30px' height='30px' src={search} alt='search' />
           </StyledSearchIcon>
@@ -27,10 +27,51 @@ export const Contacts: FC<Props> = ({ toggleNewRoom, newRoomIsOpen }) => {
           <Image width='32px' height='32px' src={newRoomIsOpen ? add_chat_fill : add_chat} alt='add_dialog' />
         </div>
       </div>
-      <ContactItem />
-      <ContactItem />
-      <ContactItem />
-      <ContactItem />
+      <div className='contacts_wrapper'>
+        <ContactItem />
+        <ContactItem />
+        <ContactItem />
+        <ContactItem />
+        <ContactItem />
+        <ContactItem />
+        <ContactItem />
+        <ContactItem />
+        <ContactItem />
+        <ContactItem />
+        <ContactItem />
+        <ContactItem />
+        <ContactItem />
+        <ContactItem />
+        <ContactItem />
+        <ContactItem />
+        <ContactItem />
+        <ContactItem />
+        <ContactItem />
+        <ContactItem />
+        <ContactItem />
+        <ContactItem />
+        <ContactItem />
+        <ContactItem />
+        <ContactItem />
+        <ContactItem />
+        <ContactItem />
+        <ContactItem />
+        <ContactItem />
+        <ContactItem />
+        <ContactItem />
+        <ContactItem />
+        <ContactItem />
+        <ContactItem />
+        <ContactItem />
+        <ContactItem />
+        <ContactItem />
+        <ContactItem />
+        <ContactItem />
+        <ContactItem />
+        <ContactItem />
+        <ContactItem />
+        <ContactItem />
+      </div>
     </StyledContacts>
   );
 };

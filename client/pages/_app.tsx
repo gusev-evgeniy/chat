@@ -1,10 +1,9 @@
 import axios from 'axios';
 import { AppProps } from 'next/app';
 import Head from 'next/head';
-import { instance } from '../api';
-// import App from 'next/app';
+import GlobalStyle from '../globalStyles';
 
-import '../globals.scss';
+// import '../globals.scss';
 import { wrapper } from '../store';
 import { setUserData } from '../store/slices/user';
 
@@ -14,6 +13,7 @@ function MyApp({ Component, pageProps }: AppProps) {
       <Head>
         <title>TalkClub</title>
       </Head>
+      <GlobalStyle/>
       <Component {...pageProps} />
     </>
   );
