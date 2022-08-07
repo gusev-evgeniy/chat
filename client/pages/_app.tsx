@@ -27,7 +27,7 @@ MyApp.getInitialProps = wrapper.getInitialAppProps(store => async ({ ctx, Compon
   }
   console.log('ctx.req.headers.cookie', ctx.req.headers.cookie);
   try {
-    axios.defaults.headers.get.Cookie = ctx.req.headers.cookie;
+    axios.defaults.headers.get.Cookie = ctx.req.headers.cookie as string;
 
     const { data } = await axios.get('http://localhost:5050/api/user/me');
     store.dispatch(setUserData(data));

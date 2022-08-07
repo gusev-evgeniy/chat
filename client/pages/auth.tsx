@@ -53,12 +53,11 @@ const Auth = () => {
       formData.append('password', password);
     }
 
-    const res = await instance.post('/user', formData, {
+    const res = await instance.post('/user/auth', formData, {
       headers: { 'content-type': 'multipart/form-data' },
     });
 
     dispatch(setUserData(res.data));
-
   };
 
   const pages = {

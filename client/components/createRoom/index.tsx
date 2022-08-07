@@ -46,21 +46,31 @@ export const NewRoom = () => {
       const { data } = await instance.get(`user/find?name=${filter}`);
 
       setLoaded(true);
-      setUsers(data.data.users);
+      setUsers(data.users);
     } catch (error) {}
   };
 
   const onCheck = (id: string, checked: boolean) => {
-    console.log('id', id)
-    console.log('checked', checked)
+    console.log('id', id);
+    console.log('checked', checked);
     if (checked) {
-      return setCheckedUsers(prev => ([...prev, id]));
+      return setCheckedUsers(prev => [...prev, id]);
     }
 
     setCheckedUsers(prev => prev.filter(user => user !== id));
   };
 
-  console.log('checkedUsers', checkedUsers)
+  //test
+  const createChat = async (id: string, checked: boolean) => {
+    try {
+      console.log(id, checked);
+
+      const response = await instance.post('/room/create', { userId: id });
+      console.log('response', response);
+    } catch (error) {}
+  };
+
+  console.log('checkedUsers', checkedUsers);
 
   return (
     <StyledCreateRoom>
@@ -99,8 +109,11 @@ export const NewRoom = () => {
             </StyledSearchIcon>
           </div>
         </form>
-        <UsersList loaded={loaded} users={users} onCheck={onCheck} checkedUsers={checkedUsers} />
+        <UsersList loaded={loaded} users={users} onCheck={createChat} checkedUsers={checkedUsers} />
       </StyledSearchUserWrapper>
+      {/* <div className='buttons'>
+
+      </div> */}
     </StyledCreateRoom>
   );
 };

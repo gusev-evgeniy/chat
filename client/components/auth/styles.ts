@@ -24,6 +24,7 @@ export const StyledWrapper = styled.div<{ padding: number }>`
     font-weight: 700;
     margin-top: ${padding};
     color: #4f6fa5;
+    cursor: pointer;
   }
 
   & .choose_photo{

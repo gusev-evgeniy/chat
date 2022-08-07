@@ -1,33 +1,32 @@
 import { Request, Response } from 'express';
-import cookie from 'cookie';
+import bcrypt from 'bcrypt';
+import socket from 'socket.io';
 
 import UserEntity from '../entities/user';
-import { createJWT } from '../utils/auth';
+import { createTokenAndAddCookie, createJWT } from '../utils/auth';
 
 class User {
+  io: socket.Server;
+
+  constructor(io: socket.Server) {
+    this.io = io;
+  }
+
   async create(req: Request, res: Response) {
     try {
       const { password, name } = req.body || {};
-      console.log('password, name', password, name);
+
       const url = req.protocol + '://' + req.get('host');
-      console.log('url', url);
+
       const user = UserEntity.create({ name, password, photo: url + '/public/' + req.file?.filename });
       await user.save();
 
-      const token = createJWT(user);
-      res.set(
-        'Set-Cookie',
-        cookie.serialize('chatToken', token, {
-          httpOnly: true,
-          path: '/',
-          maxAge: 60 * 60 * 24 * 7, // 1 week
-        })
-      );
+      createTokenAndAddCookie(res, user);
 
       res.json(user);
     } catch (error: any) {
       console.log('error', error);
-      res.status(500).json({ error: error.detail });
+      res.json({ error: error.detail });
     }
   }
 
@@ -50,22 +49,47 @@ class User {
       return res.json({ message: 'Success' });
     } catch (error) {
       console.log('error', error);
+      res.json({ error });
     }
   }
 
-  async find(req: Request, res: Response) {
+  async get(req: Request, res: Response) {
     const name = req.query.name;
-    console.log('name', name)
+
     try {
       const [users, count] = await UserEntity.createQueryBuilder('user')
-        .where('user.name like :name', { name:`%${name}%` })
+        .where('user.name like :name', { name: `%${name}%` })
         .andWhere('user.id != :id', { id: res.locals.user.id })
         .take(50)
         .getManyAndCount();
 
-      res.json({ data: { users, count } });
-    } catch (error) {}
+      res.json({ users, count });
+    } catch (error) {
+      res.json({ error });
+    }
+  }
+
+  async getOne(req: Request, res: Response) {
+    const { name, password } = req.query;
+    try {
+      const user = await UserEntity.findOne({
+        where: { name: name as string },
+      });
+
+      if (!user) res.status(401).json({ message: 'Wrong password or name' });
+      const isCorrectPassword = bcrypt.compareSync(password as string, user.password);
+
+      if (!isCorrectPassword) res.status(401).json({ message: 'Wrong password or name' });
+
+      createTokenAndAddCookie(res, user);
+      
+      const { password: _, ...rest } = user; 
+
+      res.json({ user: rest });
+    } catch (error) {
+      res.status(401).json({ error });
+    }
   }
 }
 
-export default new User();
+export default User;

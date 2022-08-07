@@ -94,6 +94,7 @@ export const StyledSearchUserItem = styled.div`
   width: 100%;
   padding: 18px;
   align-items: center;
+  cursor: pointer;
 
   .data_wrapper {
     display: flex;

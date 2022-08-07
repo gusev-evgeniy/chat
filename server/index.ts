@@ -2,11 +2,11 @@ import 'reflect-metadata';
 import 'dotenv/config';
 
 import express from 'express';
-import cors from 'cors';
-import cookieParser from 'cookie-parser';
+import { createServer } from 'http';
 
+import createSocket from './socket';
 import db from './db';
-import routes from './routes';
+import createRoutes from './routes';
 
 const PORT = process.env.PORT || 5050;
 
@@ -17,19 +17,10 @@ const start = async () => {
       .catch(err => console.error('Error during Data Source initialization:', err));
 
     const app = express();
+    const http = createServer(app);
+    const io = createSocket(http);
 
-    app.use(
-      cors({
-        credentials: true,
-        origin: 'http://localhost:3000',
-      })
-    );
-
-    app.use('/public', express.static('public'));
-
-    app.use(express.json());
-    app.use(cookieParser());
-    app.use('/api', routes);
+    createRoutes(app, io);
 
     app.listen(PORT, () => console.log(`Server started on ${PORT} port`));
   } catch (error) {

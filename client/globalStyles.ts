@@ -34,6 +34,16 @@ body {
   font-weight: 700;
 }
 
+.signup_link {
+  color: #4f6fa5;
+  cursor: pointer;
+  font-weight: 700;
+
+  :hover {
+    text-decoration: underline;
+  }
+}
+
 ::-webkit-scrollbar {
   display: none;
 }
