@@ -1,10 +1,10 @@
 import React from 'react';
 import { StyledAva } from '../auth/styles';
-import { StyledContactItem } from './styled';
+import { StyledDialogItem } from './styled';
 
-export const ContactItem = () => {
+export const DialogsItem = () => {
   return (
-    <StyledContactItem>
+    <StyledDialogItem>
       <StyledAva size={50} />
       <div className='data'>
         <div className='info'>
@@ -18,6 +18,6 @@ export const ContactItem = () => {
           Lorem ipsum dolor sit, amet consectetur adipisicing elit. Aperiam, repudiandae!
         </p>
       </div>
-    </StyledContactItem>
+    </StyledDialogItem>
   );
 };

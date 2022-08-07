@@ -31,6 +31,7 @@ const createRoutes = (app: express.Express, io: socket.Server) => {
   app.get('/user/me', Auth, User.me);
 
   app.post('/room/create', Auth, Room.create)
+  app.get('/room', Auth, Room.getMany)
 };
 
 export default createRoutes;

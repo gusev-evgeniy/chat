@@ -26,7 +26,6 @@ class Room {
       await ParticipantEntity.create({ room, userId }).save();
       await ParticipantEntity.create({ room, userId: res.locals.user }).save();
 
-
       return res.json({ message: 'success' });
       // this.io.emit('SERVER:DIALOG_CREATED', {
       //   ...postData,
@@ -45,6 +44,21 @@ class Room {
 
       const room = RoomEntity.create({});
       await room.save();
+    } catch (error) {}
+  }
+
+  async getMany(req: Request, res: Response) {
+    try {
+      console.log('res.locals.user11111', res.locals.user.id);
+
+      const [rooms, count] = await RoomEntity.createQueryBuilder('room')
+        .leftJoinAndSelect('room.participants', 'participants')
+        .leftJoinAndSelect('room.participants.userId', 'user')
+        .where('user.id = :id', { id: res.locals.user.id })
+        .getManyAndCount();
+
+      console.log('roomssss', rooms);
+      return res.json({ rooms, count });
     } catch (error) {}
   }
 }

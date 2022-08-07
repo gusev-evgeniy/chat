@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { StyledInputIcon, StyledTextInput } from '../../styles';
 
-export const StyledContacts = styled.div`
+export const StyledDialogs = styled.div`
   height: 100vh;
   width: 30%;
   border-right: 1px solid #e3e3e3;
@@ -35,13 +35,13 @@ export const StyledContacts = styled.div`
 
   }
   
-  .contacts_wrapper {
+  .dialogs_wrapper {
     height: calc(100% - 70px);
     overflow: auto;
   }
 `;
 
-export const StyledContactItem = styled.div`
+export const StyledDialogItem = styled.div`
   display: flex;
   align-items: center;
   padding: 13px 15px;

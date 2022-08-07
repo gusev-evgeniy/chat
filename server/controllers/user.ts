@@ -32,6 +32,7 @@ class User {
 
   async me(_: Request, res: Response) {
     const me = res.locals.user;
+    console.log('me', me)
 
     return res.json(me);
   }

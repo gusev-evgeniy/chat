@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import TextareaAutosize from 'react-textarea-autosize';
 import { StyledInputIcon, StyledTextInput } from '../../styles';
-import { StyledSearchInput } from '../contacts/styled';
+import { StyledSearchInput } from '../dialogs/styled';
 
 export const StyledChat = styled.div`
   height: 100vh;

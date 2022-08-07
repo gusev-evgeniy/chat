@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { StyledSearchIcon, StyledSearchInput } from '../contacts/styled';
+import { StyledSearchIcon, StyledSearchInput } from '../dialogs/styled';
 import {
   StyledCreateRoom,
   StyledFindUserIntput,

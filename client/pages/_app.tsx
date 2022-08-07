@@ -13,7 +13,7 @@ function MyApp({ Component, pageProps }: AppProps) {
       <Head>
         <title>TalkClub</title>
       </Head>
-      <GlobalStyle/>
+      <GlobalStyle />
       <Component {...pageProps} />
     </>
   );
@@ -25,11 +25,11 @@ MyApp.getInitialProps = wrapper.getInitialAppProps(store => async ({ ctx, Compon
       pageProps: Component.getInitialProps,
     };
   }
-  console.log('ctx.req.headers.cookie', ctx.req.headers.cookie);
+  
   try {
     axios.defaults.headers.get.Cookie = ctx.req.headers.cookie as string;
-
-    const { data } = await axios.get('http://localhost:5050/api/user/me');
+    const { data } = await axios.get('http://localhost:5050/user/me');
+    console.log('data', data)
     store.dispatch(setUserData(data));
   } catch (err) {}
 
