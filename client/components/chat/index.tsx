@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import Image from 'next/image';
 
 import { ChatItem } from './item';
@@ -9,14 +9,25 @@ import arrow_back from '../../images/arrow_back.svg';
 import { RoomsState } from '../../store/slices/rooms';
 
 import { Empty } from '../../styles';
-
-
+import { useSocket } from '../../hooks/useSocket';
+import { useAppSelector } from '../../store/hooks';
+import { selectMyData } from '../../store/slices/user';
 
 type Props = {
   selected: RoomsState['selected'];
 };
 
 export const Chat: FC<Props> = ({ selected }) => {
+  const socket = useSocket();
+
+  const [typing, setTyping] = useState(false);
+  const me = useAppSelector(selectMyData);
+
+
+  useEffect(() => {
+    socket.on('ROOMS:TYPING', () => console.log('typing'));
+  }, []);
+
   if (!selected) {
     return (
       <StyledChat>
@@ -25,33 +36,31 @@ export const Chat: FC<Props> = ({ selected }) => {
     );
   }
 
-  if (selected) {
-    <StyledChat>
-      <Empty>Сhoose who you would like to write to</Empty>
-    </StyledChat>;
-  }
+  const onSubmitMessage = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    socket.emit('ROOMS:SUBMIT', { dialogId: selected, user: me });
+  };
 
-  console.log('selected', selected);
+  const onTypeMessage = () => {
+    console.log('11')
+    socket.emit('ROOMS:TYPING', { dialogId: selected, user: me });
+  };
+
   return (
     <StyledChat>
       <div className='header'>
-        <span className='arrow'>
+        {/* <span className='arrow'>
           <Image width='30px' height='30px' src={arrow_back} alt='arrow_back' />
-        </span>
+        </span> */}
         <div>
           <p className='title'>Title</p>
           <p className='time'>was 50 minutes ago</p>
           {/* <p>was recently</p> */}
         </div>
       </div>
-      <div className='messages'>
-        <ChatItem isReaded={true} message={'Привет'} time={'18:57'} />
-        <ChatItem isReaded={false} message={'Привет. как дела?'} time={'18:58'} />
-        <ChatItem isReaded={true} message={'норм'} time={'19:20'} />
-        <ChatItem isReaded={true} message={'а твои?'} time={'19:21'} />
-      </div>
-      <StyledMessageForm>
-        <StyledTextareaAutosize placeholder='To write a message...' />
+      <div className='messages'></div>
+      <StyledMessageForm onSubmit={onSubmitMessage}>
+        <StyledTextareaAutosize placeholder='To write a message...' onKeyDown={onTypeMessage} />
         <StyledSubmitIcon>
           <Image width='30px' height='30px' src={send} alt='send' />
         </StyledSubmitIcon>

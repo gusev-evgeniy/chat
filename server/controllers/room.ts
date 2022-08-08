@@ -23,8 +23,8 @@ class Room {
       //TODO add transaction
       const room = await RoomEntity.create({ author: res.locals.user }).save();
 
-      await ParticipantEntity.create({ room, userId }).save();
-      await ParticipantEntity.create({ room, userId: res.locals.user }).save();
+      await ParticipantEntity.create({ room, user: userId }).save();
+      await ParticipantEntity.create({ room, user: res.locals.user }).save();
 
       return res.json({ message: 'success' });
       // this.io.emit('SERVER:DIALOG_CREATED', {

@@ -4,7 +4,7 @@ import { useDispatch } from 'react-redux';
 import { instance } from '../api';
 import { AlertMessage, StyledAdvises, StyledButton, StyledWrapper } from '../components/auth/styles';
 import { useAppSelector } from '../store/hooks';
-import { selectUserData, setUserData } from '../store/slices/user';
+import { selectMyData, setUserData } from '../store/slices/user';
 
 const Login = () => {
   const [errorText, setErrorText] = useState('');
@@ -14,7 +14,7 @@ const Login = () => {
   const router = useRouter();
   const dispatch = useDispatch()
 
-  const me = useAppSelector(selectUserData);
+  const me = useAppSelector(selectMyData);
 
   useEffect(() => {
     if (me) router.push('/main');

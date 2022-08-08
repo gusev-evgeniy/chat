@@ -2,7 +2,7 @@ import { useRouter } from 'next/router';
 import { useState, useEffect } from 'react';
 
 import { useAppDispatch, useAppSelector } from '../store/hooks';
-import { selectUserData, setUserData } from '../store/slices/user';
+import { selectMyData, setUserData } from '../store/slices/user';
 
 import { instance } from '../api';
 
@@ -23,7 +23,7 @@ const Auth = () => {
   const router = useRouter();
   const dispatch = useAppDispatch();
 
-  const me = useAppSelector(selectUserData);
+  const me = useAppSelector(selectMyData);
   useEffect(() => {
     if (me) {
       console.log('4444444444444444')

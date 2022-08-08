@@ -8,14 +8,17 @@ type Props = RoomType & {
   myId: string;
   isSelected: boolean;
   selectRoom: (id: string) => void;
+  toggleNewRoom: (isOpen: boolean) => void;
 };
 
-export const Room: FC<Props> = memo(({ participants, title, myId, type, isSelected, selectRoom, id }) => {
+export const Room: FC<Props> = memo(({ participants, title, myId, type, isSelected, selectRoom, id, toggleNewRoom }) => {
   //TODO only private type
   const { photo, name } =
     useMemo<UserBD | undefined>(() => participants.find(({ id }) => id !== myId), []) || {};
 
   const onSelecteHandler = () => {
+    toggleNewRoom(false);
+
     if (isSelected) {
       return;
     }

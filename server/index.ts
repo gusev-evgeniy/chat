@@ -22,7 +22,7 @@ const start = async () => {
 
     createRoutes(app, io);
 
-    app.listen(PORT, () => console.log(`Server started on ${PORT} port`));
+    http.listen(PORT, () => console.log(`Server started on ${PORT} port`));
   } catch (error) {
     console.log('Something goes wrong');
   }

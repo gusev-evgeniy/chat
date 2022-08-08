@@ -11,17 +11,20 @@ import add_chat_fill from '../../images/add_chat_fill.svg';
 
 import { StyledRooms, StyledSearchIcon, StyledSearchInput } from './styled';
 import { useAppDispatch } from '../../store/hooks';
+import { useSocket } from '../../hooks/useSocket';
 
 type Props = RoomsState & {
-  toggleNewRoom: () => void;
-  newRoomIsOpen: boolean;
+  toggleNewRoom: (isOpen: boolean) => void;
+  isOpen: boolean;
   myId: string;
 };
 
-export const Rooms: FC<Props> = ({ toggleNewRoom, newRoomIsOpen, myId, data, selected }) => {
+export const Rooms: FC<Props> = ({ toggleNewRoom, isOpen, myId, data, selected }) => {
   const dispatch = useAppDispatch();
+  const socket = useSocket();
 
   const selectRoom = (id: string) => {
+    socket.emit('ROOMS:JOIN', id);
     dispatch(setSelectedRoom(id));
   }
 
@@ -35,8 +38,8 @@ export const Rooms: FC<Props> = ({ toggleNewRoom, newRoomIsOpen, myId, data, sel
           </StyledSearchIcon>
         </form>
 
-        <div className='add_chat' onClick={toggleNewRoom}>
-          <Image width='32px' height='32px' src={newRoomIsOpen ? add_chat_fill : add_chat} alt='add_dialog' />
+        <div className='add_chat' onClick={() => toggleNewRoom(!isOpen)}>
+          <Image width='32px' height='32px' src={isOpen ? add_chat_fill : add_chat} alt='add_dialog' />
         </div>
       </div>
       <div className='rooms_wrapper'>
@@ -44,7 +47,7 @@ export const Rooms: FC<Props> = ({ toggleNewRoom, newRoomIsOpen, myId, data, sel
           const isSelected = selected === room.id;
 
           return (
-            <Room key={room.id} {...room} myId={myId} isSelected={isSelected} selectRoom={selectRoom}/>
+            <Room key={room.id} {...room} myId={myId} isSelected={isSelected} selectRoom={selectRoom} toggleNewRoom={toggleNewRoom}/>
           )
         })}
       </div>

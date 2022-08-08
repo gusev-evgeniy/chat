@@ -4,7 +4,7 @@ import { Chat } from '../components/chat';
 import { Rooms } from '../components/rooms';
 import { NewRoom } from '../components/createRoom';
 import { useAppSelector } from '../store/hooks';
-import { selectUserData } from '../store/slices/user';
+import { selectMyData } from '../store/slices/user';
 import { MainWrapper } from '../styles';
 import { instance } from '../api';
 import { wrapper } from '../store';
@@ -14,11 +14,12 @@ const Main = () => {
   const [newRoomIsOpen, setNewRoomIsOpen] = useState(false);
 
   const router = useRouter();
-  const me = useAppSelector(selectUserData);
+  const me = useAppSelector(selectMyData);
   const rooms = useAppSelector(selectRooms);
+  console.log('me', me?.id)
 
-  const toggleNewRoom = () => {
-    setNewRoomIsOpen(prev => !prev);
+  const toggleNewRoom = (isOpen: boolean) => {
+    setNewRoomIsOpen(isOpen);
   };
 
   useEffect(() => {
@@ -27,8 +28,8 @@ const Main = () => {
 
   return (
     <MainWrapper padding={0}>
-      <Rooms toggleNewRoom={toggleNewRoom} newRoomIsOpen={newRoomIsOpen} myId={me?.id as string} {...rooms}/>
-      {newRoomIsOpen ? <NewRoom /> : <Chat selected={rooms.selected}/>}
+      <Rooms toggleNewRoom={toggleNewRoom} isOpen={newRoomIsOpen} myId={me?.id as string} {...rooms}/>
+      {newRoomIsOpen ? <NewRoom /> : <Chat selected={rooms.selected} />}
     </MainWrapper>
   );
 };
