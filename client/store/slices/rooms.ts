@@ -23,6 +23,9 @@ export const roomsSlice = createSlice({
       state.data = action.payload.rooms;
       state.count = action.payload.count;
     },
+    setSelectedRoom: (state, action: PayloadAction<string>) => {
+      state.selected = action.payload;
+    },
   },
   extraReducers: {
     [HYDRATE]: (state, action) => {
@@ -34,7 +37,7 @@ export const roomsSlice = createSlice({
   },
 });
 
-export const { setRoomsData } = roomsSlice.actions;
+export const { setRoomsData, setSelectedRoom } = roomsSlice.actions;
 
 export const selectRooms = (state: RootState) => state.rooms;
 

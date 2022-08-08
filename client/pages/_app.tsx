@@ -7,6 +7,8 @@ import GlobalStyle from '../globalStyles';
 import { wrapper } from '../store';
 import { setUserData } from '../store/slices/user';
 
+
+//TODO many request to server in getInitialProps, because slice or selector
 function MyApp({ Component, pageProps }: AppProps) {
   return (
     <>

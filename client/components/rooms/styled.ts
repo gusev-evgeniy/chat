@@ -1,13 +1,13 @@
 import styled from 'styled-components';
 import { StyledInputIcon, StyledTextInput } from '../../styles';
 
-export const StyledDialogs = styled.div`
+export const StyledRooms = styled.div`
   height: 100vh;
   width: 30%;
   border-right: 1px solid #e3e3e3;
 
   .header {
-    padding: 12px;
+    padding: 10px 12px;
     border-bottom: 1px solid #e3e3e3;
     display: flex;
     align-items: center;
@@ -32,20 +32,20 @@ export const StyledDialogs = styled.div`
       width: 100%;
       margin-right: 15px;
     }
-
   }
-  
-  .dialogs_wrapper {
+
+  .rooms_wrapper {
     height: calc(100% - 70px);
     overflow: auto;
   }
 `;
 
-export const StyledDialogItem = styled.div`
+export const StyledRoom = styled.div<{ selected: boolean }>`
   display: flex;
   align-items: center;
   padding: 13px 15px;
   cursor: pointer;
+  background-color: ${({ selected }) => selected && 'rgba(227, 227, 227, 0.7)'};
 
   .data {
     margin-left: 10px;
@@ -71,7 +71,7 @@ export const StyledDialogItem = styled.div`
   }
 
   &:hover {
-    background-color: rgba(227, 227, 227, 0.7);
+    background-color: ${({ selected }) => !selected && 'rgba(227, 227, 227, 0.3)'};
   }
 `;
 

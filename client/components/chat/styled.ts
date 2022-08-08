@@ -1,10 +1,9 @@
 import styled from 'styled-components';
 import TextareaAutosize from 'react-textarea-autosize';
-import { StyledInputIcon, StyledTextInput } from '../../styles';
-import { StyledSearchInput } from '../dialogs/styled';
+import { StyledInputIcon } from '../../styles';
 
 export const StyledChat = styled.div`
-  height: 100vh;
+  height: 100%;
   width: 80%;
   display: flex;
   flex-direction: column;
@@ -14,6 +13,40 @@ export const StyledChat = styled.div`
     height: 100%;
     width: 100%;
     padding: 10px;
+  }
+
+  .header {
+    height: 66px;
+    border-bottom: 1px solid #e3e3e3;
+    padding: 12px;
+    display: flex;
+    align-items: center;
+
+    .arrow {
+      width: 40px;
+      height: 40px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-right: 10px;
+      border-radius: 100%;
+      cursor: pointer;
+
+      :hover {
+        background-color: rgba(227, 227, 227, 0.7);
+      }
+    }
+
+    .title {
+      font-size: 1.5rem;
+      font-weight: 700;
+    }
+
+    .time {
+      font-size: 1rem;
+      opacity: 0.5;
+      margin: 0 3px;
+    }
   }
 `;
 

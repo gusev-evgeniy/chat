@@ -1,17 +1,15 @@
-import React, { useEffect, useState } from 'react';
-import { StyledSearchIcon, StyledSearchInput } from '../dialogs/styled';
+import React, { useState } from 'react';
+import { StyledSearchIcon } from '../rooms/styled';
 import {
   StyledCreateRoom,
   StyledFindUserIntput,
   StyledGroupNameIntput,
   StyledLabel,
   StyledSearchUserWrapper,
-  StyledUsers,
 } from './styled';
 
 import search from '../../images/search.svg';
 import Image from 'next/image';
-import { FindingUser } from './item';
 import { instance } from '../../api';
 import { UsersList } from './usersList';
 import { UserBD } from '../../type/user';

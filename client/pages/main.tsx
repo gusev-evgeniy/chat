@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import { Chat } from '../components/chat';
-import { Dialogs } from '../components/dialogs';
+import { Rooms } from '../components/rooms';
 import { NewRoom } from '../components/createRoom';
 import { useAppSelector } from '../store/hooks';
 import { selectUserData } from '../store/slices/user';
@@ -27,7 +27,7 @@ const Main = () => {
 
   return (
     <MainWrapper padding={0}>
-      <Dialogs toggleNewRoom={toggleNewRoom} newRoomIsOpen={newRoomIsOpen} myId={me?.id as string} {...rooms}/>
+      <Rooms toggleNewRoom={toggleNewRoom} newRoomIsOpen={newRoomIsOpen} myId={me?.id as string} {...rooms}/>
       {newRoomIsOpen ? <NewRoom /> : <Chat selected={rooms.selected}/>}
     </MainWrapper>
   );

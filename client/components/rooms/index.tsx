@@ -1,15 +1,16 @@
 import Image from 'next/image';
 import React, { FC } from 'react';
 
-import { DialogsItem } from './item';
+import { Room } from './item';
 
-import { RoomsState } from '../../store/slices/rooms';
+import { RoomsState, setSelectedRoom } from '../../store/slices/rooms';
 
 import search from '../../images/search.svg';
 import add_chat from '../../images/add_chat.svg';
 import add_chat_fill from '../../images/add_chat_fill.svg';
 
-import { StyledDialogs, StyledSearchIcon, StyledSearchInput } from './styled';
+import { StyledRooms, StyledSearchIcon, StyledSearchInput } from './styled';
+import { useAppDispatch } from '../../store/hooks';
 
 type Props = RoomsState & {
   toggleNewRoom: () => void;
@@ -17,9 +18,15 @@ type Props = RoomsState & {
   myId: string;
 };
 
-export const Dialogs: FC<Props> = ({ toggleNewRoom, newRoomIsOpen, myId, data, selected }) => {
+export const Rooms: FC<Props> = ({ toggleNewRoom, newRoomIsOpen, myId, data, selected }) => {
+  const dispatch = useAppDispatch();
+
+  const selectRoom = (id: string) => {
+    dispatch(setSelectedRoom(id));
+  }
+
   return (
-    <StyledDialogs>
+    <StyledRooms>
       <div className='header'>
         <form>
           <StyledSearchInput type='text' className='search' placeholder='Search' />
@@ -32,11 +39,15 @@ export const Dialogs: FC<Props> = ({ toggleNewRoom, newRoomIsOpen, myId, data, s
           <Image width='32px' height='32px' src={newRoomIsOpen ? add_chat_fill : add_chat} alt='add_dialog' />
         </div>
       </div>
-      <div className='dialogs_wrapper'>
-        {data.map(room => (
-          <DialogsItem key={room.id} {...room} myId={myId} selected={selected} />
-        ))}
+      <div className='rooms_wrapper'>
+        {data.map(room => {
+          const isSelected = selected === room.id;
+
+          return (
+            <Room key={room.id} {...room} myId={myId} isSelected={isSelected} selectRoom={selectRoom}/>
+          )
+        })}
       </div>
-    </StyledDialogs>
+    </StyledRooms>
   );
 };

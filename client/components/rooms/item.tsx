@@ -1,23 +1,30 @@
 import React, { FC, memo, useMemo } from 'react';
-import { RoomsState } from '../../store/slices/rooms';
-import { Room } from '../../type/room';
+import { Room as RoomType } from '../../type/room';
 import { UserBD } from '../../type/user';
 import { StyledAva } from '../auth/styles';
-import { StyledDialogItem } from './styled';
+import { StyledRoom } from './styled';
 
-type Props = Room & {
+type Props = RoomType & {
   myId: string;
-  selected: RoomsState['selected'];
+  isSelected: boolean;
+  selectRoom: (id: string) => void;
 };
 
-export const DialogsItem: FC<Props> = memo(({ participants, title, myId, type, selected }) => {
-
+export const Room: FC<Props> = memo(({ participants, title, myId, type, isSelected, selectRoom, id }) => {
   //TODO only private type
   const { photo, name } =
     useMemo<UserBD | undefined>(() => participants.find(({ id }) => id !== myId), []) || {};
 
+  const onSelecteHandler = () => {
+    if (isSelected) {
+      return;
+    }
+
+    selectRoom(id)
+  }
+
   return (
-    <StyledDialogItem>
+    <StyledRoom selected={isSelected} onClick={onSelecteHandler}>
       <StyledAva size={50} backgroundImage={photo} />
       <div className='data'>
         <div className='info'>
@@ -31,8 +38,8 @@ export const DialogsItem: FC<Props> = memo(({ participants, title, myId, type, s
           Lorem ipsum dolor sit, amet consectetur adipisicing elit. Aperiam, repudiandae!
         </p>
       </div>
-    </StyledDialogItem>
+    </StyledRoom>
   );
 });
 
-DialogsItem.displayName = 'DialogsItem';
+Room.displayName = 'Room';
