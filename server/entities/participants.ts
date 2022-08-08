@@ -10,7 +10,7 @@ export default class Participant extends Base {
 
   @JoinColumn()
   @ManyToOne(() => User, user => user.chat)
-  userId: User;
+  user: User;
 
   @JoinColumn()
   @ManyToOne(() => Room, room => room.participants)

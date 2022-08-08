@@ -49,15 +49,23 @@ class Room {
 
   async getMany(req: Request, res: Response) {
     try {
-      console.log('res.locals.user11111', res.locals.user.id);
 
-      const [rooms, count] = await RoomEntity.createQueryBuilder('room')
+      const [participants, count] = await ParticipantEntity.createQueryBuilder('participant')
+        .where('participant.user = :id', { id: res.locals.user.id })
+        .leftJoinAndSelect('participant.room', 'room')
         .leftJoinAndSelect('room.participants', 'participants')
-        .leftJoinAndSelect('room.participants.userId', 'user')
-        .where('user.id = :id', { id: res.locals.user.id })
+        .leftJoinAndSelect('participants.user', 'user')
         .getManyAndCount();
+      console.log('participants', participants);
 
-      console.log('roomssss', rooms);
+      const rooms = participants.map(({ room }) => ({
+        ...room,
+        participants: room.participants.map(({ user }) => {
+          console.log('user')
+          return user;
+        }),
+      }));
+
       return res.json({ rooms, count });
     } catch (error) {}
   }

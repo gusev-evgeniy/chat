@@ -45,13 +45,6 @@ export const StyledCreateRoom = styled.div`
       }
     }
   }
-
-  .empty {
-    margin: 70px auto;
-    font-size: 1.5rem;
-    color: #7c7c7c;
-    text-align: center;
-  }
 `;
 
 export const StyledGroupNameIntput = styled(StyledTextInput)`

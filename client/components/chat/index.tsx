@@ -1,11 +1,27 @@
-import React from 'react';
+import React, { FC } from 'react';
 import { ChatItem } from './item';
 import { StyledChat, StyledMessageForm, StyledSubmitIcon, StyledTextareaAutosize } from './styled';
 
 import send from '../../images/send.svg';
 import Image from 'next/image';
+import { RoomsState } from '../../store/slices/rooms';
+import { Empty } from '../../styles';
 
-export const Chat = () => {
+type Props = {
+  selected: RoomsState['selected'];
+};
+
+export const Chat: FC<Props> = ({ selected }) => {
+
+  if (!selected) {
+    return (
+    <StyledChat>
+      <Empty>Сhoose who you would like to write to</Empty>
+    </StyledChat>
+    )
+  }
+
+  console.log('selected', selected);
   return (
     <StyledChat>
       <div className='messages'>

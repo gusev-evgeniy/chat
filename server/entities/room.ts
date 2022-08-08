@@ -8,7 +8,7 @@ import User from './user';
 @Entity()
 export default class Room extends Base {
   @Column({ nullable: true })
-  titlie: string;
+  title: string;
 
   @Column({ default: 'private', enum: ['private', 'group'] })
   type: string;

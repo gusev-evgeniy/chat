@@ -115,7 +115,7 @@ export const StyledAdvises = styled.div`
   }
 `;
 
-export const StyledAva = styled.div<{ backgroundImage?: string, size: number }>`
+export const StyledAva = styled.div<{ backgroundImage?: string | undefined, size: number }>`
   width: ${({ size }) => `${size}px`};
   height: ${({ size }) => `${size}px`};
   background-color: #e0e0e0;

@@ -1,4 +1,5 @@
 import React, { FC } from 'react';
+import { Empty } from '../../styles';
 import { UserBD } from '../../type/user';
 import { FindingUser } from './item';
 import { StyledUsers } from './styled';
@@ -12,11 +13,11 @@ type Props = {
 
 export const UsersList: FC<Props> = ({ loaded, users, onCheck, checkedUsers }) => {
   if (!loaded) {
-    return <div className='empty'>Please enter the username you want to chat with.</div>;
+    return <Empty margin='70px'>Please enter the username you want to chat with.</Empty>;
   }
 
   if (loaded && !users.length) {
-    return <div className='empty'>Users not found</div>;
+    return <Empty margin='70px'>Users not found</Empty>;
   }
 
   return (

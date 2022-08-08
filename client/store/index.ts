@@ -2,13 +2,13 @@ import { configureStore, ThunkAction, Action } from '@reduxjs/toolkit';
 import { createWrapper } from 'next-redux-wrapper';
 
 import { userReducer } from './slices/user';
-// import { dialogsReducer } from './slices/dialogs';
+import { roomsReducer } from './slices/rooms';
 
 export function makeStore() {
   return configureStore({
     reducer: {
       user: userReducer,
-      // dialogs: dialogsReducer,
+      rooms: roomsReducer,
     },
   });
 }

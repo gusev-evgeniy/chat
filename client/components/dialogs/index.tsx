@@ -1,18 +1,23 @@
 import Image from 'next/image';
 import React, { FC } from 'react';
+
 import { DialogsItem } from './item';
-import { StyledDialogs, StyledSearchIcon, StyledSearchInput } from './styled';
+
+import { RoomsState } from '../../store/slices/rooms';
 
 import search from '../../images/search.svg';
 import add_chat from '../../images/add_chat.svg';
 import add_chat_fill from '../../images/add_chat_fill.svg';
 
-type Props = {
+import { StyledDialogs, StyledSearchIcon, StyledSearchInput } from './styled';
+
+type Props = RoomsState & {
   toggleNewRoom: () => void;
   newRoomIsOpen: boolean;
+  myId: string;
 };
 
-export const Dialogs: FC<Props> = ({ toggleNewRoom, newRoomIsOpen }) => {
+export const Dialogs: FC<Props> = ({ toggleNewRoom, newRoomIsOpen, myId, data, selected }) => {
   return (
     <StyledDialogs>
       <div className='header'>
@@ -28,9 +33,9 @@ export const Dialogs: FC<Props> = ({ toggleNewRoom, newRoomIsOpen }) => {
         </div>
       </div>
       <div className='dialogs_wrapper'>
-        <DialogsItem />
-        <DialogsItem />
-        <DialogsItem />
+        {data.map(room => (
+          <DialogsItem key={room.id} {...room} myId={myId} selected={selected} />
+        ))}
       </div>
     </StyledDialogs>
   );

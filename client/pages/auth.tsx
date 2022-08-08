@@ -23,14 +23,13 @@ const Auth = () => {
   const router = useRouter();
   const dispatch = useAppDispatch();
 
-  const { id } = useAppSelector(selectUserData);
-  console.log('22222222222', id)
+  const me = useAppSelector(selectUserData);
   useEffect(() => {
-    if (id) {
+    if (me) {
       console.log('4444444444444444')
       router.push('/main');
     }
-  }, [id, router]);
+  }, [me, router]);
 
   const changeData = (changed: Partial<UserData>) => {
     setData(prev => ({ ...prev, ...changed }));

@@ -1,14 +1,27 @@
-import React from 'react';
+import React, { FC, memo, useMemo } from 'react';
+import { RoomsState } from '../../store/slices/rooms';
+import { Room } from '../../type/room';
+import { UserBD } from '../../type/user';
 import { StyledAva } from '../auth/styles';
 import { StyledDialogItem } from './styled';
 
-export const DialogsItem = () => {
+type Props = Room & {
+  myId: string;
+  selected: RoomsState['selected'];
+};
+
+export const DialogsItem: FC<Props> = memo(({ participants, title, myId, type, selected }) => {
+
+  //TODO only private type
+  const { photo, name } =
+    useMemo<UserBD | undefined>(() => participants.find(({ id }) => id !== myId), []) || {};
+
   return (
     <StyledDialogItem>
-      <StyledAva size={50} />
+      <StyledAva size={50} backgroundImage={photo} />
       <div className='data'>
         <div className='info'>
-          <p className='name bold'>Telegram</p>
+          <p className='name bold'>{name}</p>
           <div className='time'>
             <div className='icon' />
             21:03
@@ -20,4 +33,6 @@ export const DialogsItem = () => {
       </div>
     </StyledDialogItem>
   );
-};
+});
+
+DialogsItem.displayName = 'DialogsItem';

@@ -29,8 +29,8 @@ export const StyledChatItem = styled.div<{ my: boolean }>`
     position: relative;
     display: flex;
     font-weight: 400;
-    padding: 5px;
-    border-radius: 5px;
+    padding: 5px 15px;
+    border-radius: 20px;
     background-color: ${({ my }) => (my ? '#ededee' : '#58d188')};
     align-items: flex-end;
   }
