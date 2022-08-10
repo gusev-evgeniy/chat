@@ -12,6 +12,7 @@ import { Empty } from '../../styles';
 import { useAppSelector } from '../../store/hooks';
 import { selectMyData } from '../../store/slices/user';
 import { socket } from '../../api/socket';
+import { selectMessages } from '../../store/slices/messages';
 
 type Props = {
   selected: RoomsState['selected'];
@@ -20,12 +21,9 @@ type Props = {
 export const Chat: FC<Props> = ({ selected }) => {
   const [typing, setTyping] = useState(false);
   const [message, setMessage] = useState('');
-  const me = useAppSelector(selectMyData);
 
-  useEffect(() => {
-    socket.on('ROOMS:TYPING', () => console.log('typing'));
-  }, []);
-  console.log('selected', selected);
+  const me = useAppSelector(selectMyData);
+  const { data } = useAppSelector(selectMessages);
 
   if (!selected) {
     return (
@@ -36,24 +34,29 @@ export const Chat: FC<Props> = ({ selected }) => {
   }
 
   const isNewRoom = selected.roomId === null;
-  console.log('message', message);
 
   const onSubmitMessage = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
+    const submitObject = {
+      roomId: selected.roomId,
+      author: me?.id,
+      message,
+      partner: selected.userId,
+    };
+
     if (isNewRoom) {
       socket.emit('ROOMS:CREATE', { author: me?.id, userId: selected.userId });
       socket.on('ROOMS:CREATE', () => {
-        socket.emit('ROOMS:SUBMIT', { dialogId: selected.roomId, user: me, message });
+        socket.emit('ROOMS:SUBMIT', submitObject);
       });
     } else {
-      socket.emit('ROOMS:SUBMIT', { dialogId: selected.roomId, user: me, message });
+      socket.emit('ROOMS:SUBMIT', submitObject);
     }
   };
 
   const onChangeHandler = ({ target }: React.KeyboardEvent<HTMLTextAreaElement>) => {
-    socket.emit('ROOMS:TYPING', { dialogId: selected, user: me });
-    console.log('target.value', target.value)
+    socket.emit('ROOMS:TYPING', { partner: selected.userId, user: me?.name, roomId: selected.roomId });
     setMessage(target.value);
   };
 
@@ -71,12 +74,15 @@ export const Chat: FC<Props> = ({ selected }) => {
           {/* <p>was recently</p> */}
         </div>
       </div>
-      <div className='messages'></div>
+      <div className='messages'>
+        {data.map(message => {
+          const isMy = message.authorId === me?.id;
+
+          return <ChatItem key={message.id} {...message} isMy={isMy} />;
+        })}
+      </div>
       <StyledMessageForm onSubmit={onSubmitMessage}>
-        <StyledTextareaAutosize
-          placeholder='To write a message...'
-          onChange={onChangeHandler}
-        />
+        <StyledTextareaAutosize placeholder='To write a message...' onChange={onChangeHandler} />
         <StyledSubmitIcon>
           <Image width='30px' height='30px' src={send} alt='send' />
         </StyledSubmitIcon>

@@ -30,11 +30,10 @@ MyApp.getInitialProps = wrapper.getInitialAppProps(store => async ({ ctx, Compon
   }
   
   try {
-    console.log('ctx.req.headers', ctx.req.headers)
+    console.log('MyApp.getInitialProps', ctx.req.headers)
 
     axios.defaults.headers.get.Cookie = ctx.req.headers.cookie as string;
     const { data } = await axios.get('http://localhost:5050/user/me');
-    console.log('data', data)
     store.dispatch(setUserData(data));
   } catch (err) {}
 

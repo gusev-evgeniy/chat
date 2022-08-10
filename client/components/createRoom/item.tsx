@@ -12,7 +12,6 @@ type Props = UserBD & {
 export const FindingUser: FC<Props> = memo(({ photo, name, onCheck, id, checked }) => {
   const onCheckHandler = (e: React.MouseEvent<HTMLDivElement>) => {
     const item = e.currentTarget.querySelector('#user_checkbox');
-    console.log('item', item)
     if (item) onCheck(name, id);
   };
 

@@ -1,55 +1,37 @@
+import cookieParser from 'cookie-parser';
 import http from 'http';
 import { Server } from 'socket.io';
 import Message from '../entities/message';
 import Participant from '../entities/participants';
 import Room from '../entities/room';
+import Auth from '../middleware/auth';
+import jwt from 'jsonwebtoken';
 
 export default (http: http.Server) => {
-  const io = new Server(http, { cors: { origin: '*' }, cookie: true });
+  const io = new Server(http, { cors: { origin: 'http://localhost:3000', credentials: true }, cookie: true });
 
-  
+  const wrap = middleware => (socket, next) => middleware(socket.request, {}, next);
+  io.use(wrap(cookieParser()));
+
   // io.use((socket, next) => {
-
-  //   console.log(' socket.handshake',  socket.handshake)
-  //   // const sessionID = socket.handshake.auth.sessionID;
-  //   // if (sessionID) {
-  //   //   // find existing session
-  //   //   const session = sessionStore.findSession(sessionID);
-  //   //   if (session) {
-  //   //     socket.sessionID = sessionID;
-  //   //     socket.userID = session.userID;
-  //   //     socket.username = session.username;
-  //   //     return next();
-  //   //   }
-  //   // }
-  //   // const username = socket.handshake.auth.username;
-  //   // if (!username) {
-  //   //   return next(new Error("invalid username"));
-  //   // }
-  //   // // create new session
-  //   // socket.sessionID = randomId();
-  //   // socket.userID = randomId();
-  //   // socket.username = username;
+  //   console.log('0', socket.request.headers['cookie']);
   //   next();
   // });
+  let me = {};
 
   const users = {};
 
   io.on('connection', function (socket: any) {
-    console.log('connected', socket.socketId);
+    const token = socket.request.cookies?.chatToken;
+    if (token) {
+      me = jwt.verify(token, process.env.JWT_SECRET || 'secret');
+    }
+
     console.log('connected1', socket.id);
 
-    // users[user.id] = socket
-
-    socket.on('ROOMS:JOIN', (dialogId: string) => {
-      socket.dialogId = dialogId;
-      console.log('socket.dialogId', dialogId);
-      socket.join(dialogId);
-    });
-
-    socket.on('ROOMS:TYPING', ({ user, dialogId }: any) => {
-      console.log('typing222', obj);
-      socket.broadcast.emit('ROOMS:TYPING', obj);
+    socket.on('ROOMS:TYPING', (obj: any) => {
+      const { partner, ...rest } = obj;
+      socket.to(users[partner]).emit('ROOMS:TYPING', rest);
     });
 
     socket.on('ROOMS:CREATE', async (obj: any) => {
@@ -60,14 +42,26 @@ export default (http: http.Server) => {
 
       await Participant.create({ room, user: userId }).save();
       await Participant.create({ room, user: author }).save();
-      socket.emit('ROOMS:CREATE', { ...obj, roomId: room.id }); //TODO temp
+      socket.emit('ROOMS:CREATE', { ...obj, roomId: room.id });
     });
 
-    socket.on('ROOMS:SUBMIT', async (obj: any) => {
-      console.log('SUBMIT', obj);
+    socket.on('ROOMS:SUBMIT', async ({ roomId, author, message, partner }: any) => {
+      const { id } = await Message.create({ author, roomId, text: message }).save();
+      const newMessage = await Message.findOne({
+        where: { id },
+        relations: ['author'],
+      });
 
-      // Message.create({  })
-      socket.emit('ROOMS:SUBMIT', { message: 'test' }); //TODO temp
+      console.log('users', users);
+      console.log('me', me);
+      console.log('author', author);
+      console.log('socket.id', socket.id);
+      console.log('newMessage', newMessage);
+      socket.emit('ROOMS:SUBMIT', newMessage);
+    });
+
+    socket.on('disconnect', () => {
+      console.log('Got disconnect!', users);
     });
   });
 

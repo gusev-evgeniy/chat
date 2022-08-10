@@ -3,12 +3,14 @@ import { createWrapper } from 'next-redux-wrapper';
 
 import { userReducer } from './slices/user';
 import { roomsReducer } from './slices/rooms';
+import { messagesReducer } from './slices/messages';
 
 export function makeStore() {
   return configureStore({
     reducer: {
       user: userReducer,
       rooms: roomsReducer,
+      messages: messagesReducer,
     },
   });
 }

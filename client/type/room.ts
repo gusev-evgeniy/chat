@@ -19,3 +19,8 @@ export type SelectedRoom = {
   name: string;
   userId: string;
 }
+
+export type Typing = {
+  roomId: string;
+  user: string;
+};

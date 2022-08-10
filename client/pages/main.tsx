@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router';
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { Chat } from '../components/chat';
 import { Rooms } from '../components/rooms';
 import { NewRoom } from '../components/createRoom';
@@ -11,9 +11,11 @@ import { wrapper } from '../store';
 import { selectRooms, setRoomsData } from '../store/slices/rooms';
 import { socket } from '../api/socket';
 import { StyledAva } from '../components/auth/styles';
+import { Typing } from '../type/room';
 
 const Main = () => {
   const [newRoomIsOpen, setNewRoomIsOpen] = useState(false);
+  const [typing, setTyping] = useState<Typing[]>([]);
 
   const router = useRouter();
   const me = useAppSelector(selectMyData);
@@ -21,12 +23,25 @@ const Main = () => {
 
   useEffect(() => {
     socket.connect();
+
+    //TODO. fix
+    socket.on('ROOMS:TYPING', obj => {
+      let typingTimeoutId;
+      setTyping(prev => [...prev, obj]);
+
+      clearInterval(typingTimeoutId);
+
+      typingTimeoutId = setTimeout(() => {
+        setTyping(prev => prev.filter(prev => prev.user !== obj.user));
+      }, 3000);
+    });
     socket.on('ROOMS:CREATE', (obj: any) => {
-      console.log('CREATE', obj);
       // socket.emit('ROOMS:SUBMIT', { dialogId: selected.roomId, user: me, message });
     });
 
-    socket.on('ROOMS:SUBMIT', obj => console.log('SUBMIT', obj)); //TODO temp
+    socket.on('ROOMS:SUBMIT', obj => {
+      console.log('SUBMIT', obj);
+    }); //TODO temp
 
     return () => {
       console.log('disconnect!!!');
@@ -44,13 +59,20 @@ const Main = () => {
 
   return (
     <MainWrapper padding={0}>
-      <Rooms toggleNewRoom={toggleNewRoom} isOpen={newRoomIsOpen} myId={me?.id as string} {...rooms} />
+      <Rooms
+        toggleNewRoom={toggleNewRoom}
+        isOpen={newRoomIsOpen}
+        myId={me?.id as string}
+        {...rooms}
+        typing={typing}
+      />
       {newRoomIsOpen ? <NewRoom setNewRoomIsOpen={setNewRoomIsOpen} /> : <Chat selected={rooms.selected} />}
 
       {me && (
         <div>
           <StyledAva size={50} backgroundImage={me.photo} />
           <div>{me.name}</div>
+          <div>{me.id}</div>
         </div>
       )}
     </MainWrapper>
@@ -59,63 +81,16 @@ const Main = () => {
 
 export const getServerSideProps = wrapper.getServerSideProps(store => async ({ req, res, ...etc }) => {
   try {
-    console.log('111111111111111111111');
     const { data } = await instance.get('room/');
     store.dispatch(setRoomsData(data));
-    console.log('2222222', data);
-  } catch (err) {
-    console.log(err);
+    console.log('getServerSideProps');
+  } catch (err: any) {
+    console.log('getServerSideProps err', err);
+    console.log('getServerSideProps err', err.data);
   }
   return {
     props: null,
   };
 });
 
-// export const getServerSideProps = async () => {
-//   try {
-//     const { data } = await instance.get('room/');
-//     console.log('2222222', data);
-//     return {
-//       props: {
-//         dialogs: data,
-//       },
-//     };
-//   } catch (err) {
-//     console.log(err);
-//   }
-//   return {
-//     props: {
-//       dialogs: null,
-//     },
-//   };
-// };
-
-// Main.getInitialProps =  async ({ req }) => {
-//   try {
-//     // axios.defaults.headers.get.Cookie = ctx.req.headers.cookie as string;
-
-//     // const { data } = await axios.get('http://localhost:5050/api/user/me');
-//     // store.dispatch(setUserData(data));
-
-//     const { data } = await instance.get('room/');
-//     console.log('444444444444', data)
-//     // store.dispatch(setUserData(data));
-
-//     return {
-//       props: {
-//         dialogs: data,
-//       },
-//     };
-//   } catch (err) {
-//     console.log('err', err)
-//   }
-
-//   return {
-//     props: {
-//       dialogs: null,
-//     },
-//   };
-// };
-
-// export default wrapper.withRedux(Main);
 export default Main;

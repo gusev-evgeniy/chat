@@ -4,9 +4,7 @@ import UserEntity from '../entities/user';
 
 const Auth = async (req: Request, res: Response, next: () => void) => {
   try {
-    console.log('_________________________________________')
     const token = req.cookies.chatToken;
-    console.log('token', token)
     if (!token) return res.status(401).json({ message: 'Unauthenticated' });
 
     const { id }: any = jwt.verify(token, process.env.JWT_SECRET || 'secret');

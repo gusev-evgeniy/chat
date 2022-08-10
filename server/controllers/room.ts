@@ -56,12 +56,10 @@ class Room {
         .leftJoinAndSelect('room.participants', 'participants')
         .leftJoinAndSelect('participants.user', 'user')
         .getManyAndCount();
-      console.log('participants', participants);
 
       const rooms = participants.map(({ room }) => ({
         ...room,
         participants: room.participants.map(({ user }) => {
-          console.log('user')
           return user;
         }),
       }));

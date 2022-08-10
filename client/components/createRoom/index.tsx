@@ -57,8 +57,6 @@ export const NewRoom: FC<Props> = ({ setNewRoomIsOpen }) => {
   };
 
   const onCheck = (id: string, checked: boolean) => {
-    console.log('id', id);
-    console.log('checked', checked);
     if (checked) {
       return setCheckedUsers(prev => [...prev, id]);
     }
@@ -71,8 +69,6 @@ export const NewRoom: FC<Props> = ({ setNewRoomIsOpen }) => {
     dispatch(setSelectedRoom({ roomId: null, name, userId }));
     setNewRoomIsOpen(false);
   };
-
-  console.log('checkedUsers', checkedUsers);
 
   return (
     <StyledCreateRoom>

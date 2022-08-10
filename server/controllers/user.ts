@@ -32,7 +32,6 @@ class User {
 
   async me(_: Request, res: Response) {
     const me = res.locals.user;
-    console.log('me', me)
 
     return res.json(me);
   }
@@ -42,14 +41,12 @@ class User {
       const user = await UserEntity.find({
         where: { name: req.body.name },
       });
-      console.log('user', user);
       if (user.length) {
         return res.status(401).json({ message: 'A user with the same name already exists' });
       }
 
       return res.json({ message: 'Success' });
     } catch (error) {
-      console.log('error', error);
       res.json({ error });
     }
   }

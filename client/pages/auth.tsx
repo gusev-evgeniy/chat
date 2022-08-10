@@ -26,7 +26,6 @@ const Auth = () => {
   const me = useAppSelector(selectMyData);
   useEffect(() => {
     if (me) {
-      console.log('4444444444444444')
       router.push('/main');
     }
   }, [me, router]);

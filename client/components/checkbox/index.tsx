@@ -6,8 +6,6 @@ type Props = {
 };
 
 export const MyCheckbox: FC<Props> = ({ checked }) => {
-  console.log('checked', checked);
-
   return (
     <StyledCheckbox>
       <label className='container'>

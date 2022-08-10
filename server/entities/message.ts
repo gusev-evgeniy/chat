@@ -10,13 +10,16 @@ export default class Message extends Base {
   text: string;
 
   @Column({ default: false })
-  readed: boolean
+  readed: boolean;
 
   @JoinColumn()
   @ManyToOne(() => User, user => user.messages)
   author: User;
 
+  @Column({ nullable: false })
+  roomId: string;
+
   @JoinColumn()
   @ManyToOne(() => Room, room => room.messages)
-  roomId: Room;
+  room: Room;
 }
