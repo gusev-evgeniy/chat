@@ -13,3 +13,9 @@ export type RoomsResponse = {
   count: number;
   rooms: Room[];
 };
+
+export type SelectedRoom = {
+  roomId: string | null;
+  name: string;
+  userId: string;
+}

@@ -5,7 +5,7 @@ import { MyCheckbox } from '../checkbox';
 import { StyledSearchUserItem } from './styled';
 
 type Props = UserBD & {
-  onCheck: (id: string, checked: boolean) => void;
+  onCheck: (name: string, userId: string) => void;
   checked: boolean;
 };
 
@@ -13,7 +13,7 @@ export const FindingUser: FC<Props> = memo(({ photo, name, onCheck, id, checked 
   const onCheckHandler = (e: React.MouseEvent<HTMLDivElement>) => {
     const item = e.currentTarget.querySelector('#user_checkbox');
     console.log('item', item)
-    if (item) onCheck(id, !(item as HTMLInputElement).checked);
+    if (item) onCheck(name, id);
   };
 
   return (

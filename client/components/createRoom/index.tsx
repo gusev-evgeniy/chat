@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, FC } from 'react';
 import { StyledSearchIcon } from '../rooms/styled';
 import {
   StyledCreateRoom,
@@ -13,15 +13,23 @@ import Image from 'next/image';
 import { instance } from '../../api';
 import { UsersList } from './usersList';
 import { UserBD } from '../../type/user';
+import { useDispatch } from 'react-redux';
+import { setSelectedRoom } from '../../store/slices/rooms';
 
 const MAX_LENGTH = 30;
 
-export const NewRoom = () => {
+type Props = {
+  setNewRoomIsOpen: (isOpen: boolean) => void;
+};
+
+export const NewRoom: FC<Props> = ({ setNewRoomIsOpen }) => {
   const [groupName, setGroupName] = useState('');
   const [filter, setFilter] = useState('');
   const [users, setUsers] = useState<UserBD[]>([]);
   const [checkedUsers, setCheckedUsers] = useState<string[]>([]);
   const [loaded, setLoaded] = useState(false);
+
+  const dispatch = useDispatch();
 
   const groupNameLength = groupName.length;
 
@@ -59,13 +67,9 @@ export const NewRoom = () => {
   };
 
   //test
-  const createChat = async (id: string, checked: boolean) => {
-    try {
-      console.log(id, checked);
-
-      const response = await instance.post('/room/create', { userId: id });
-      console.log('response', response);
-    } catch (error) {}
+  const createChat = async (name: string, userId: string) => {
+    dispatch(setSelectedRoom({ roomId: null, name, userId }));
+    setNewRoomIsOpen(false);
   };
 
   console.log('checkedUsers', checkedUsers);

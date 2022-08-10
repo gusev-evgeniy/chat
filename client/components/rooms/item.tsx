@@ -1,5 +1,5 @@
 import React, { FC, memo, useMemo } from 'react';
-import { Room as RoomType } from '../../type/room';
+import { Room as RoomType, SelectedRoom } from '../../type/room';
 import { UserBD } from '../../type/user';
 import { StyledAva } from '../auth/styles';
 import { StyledRoom } from './styled';
@@ -7,7 +7,7 @@ import { StyledRoom } from './styled';
 type Props = RoomType & {
   myId: string;
   isSelected: boolean;
-  selectRoom: (id: string) => void;
+  selectRoom: (selectedRoom: SelectedRoom) => void;
   toggleNewRoom: (isOpen: boolean) => void;
 };
 
@@ -23,7 +23,7 @@ export const Room: FC<Props> = memo(({ participants, title, myId, type, isSelect
       return;
     }
 
-    selectRoom(id)
+    selectRoom({ roomId: id, name: name as string })
   }
 
   return (

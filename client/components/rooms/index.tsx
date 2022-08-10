@@ -11,7 +11,8 @@ import add_chat_fill from '../../images/add_chat_fill.svg';
 
 import { StyledRooms, StyledSearchIcon, StyledSearchInput } from './styled';
 import { useAppDispatch } from '../../store/hooks';
-import { useSocket } from '../../hooks/useSocket';
+import { socket } from '../../api/socket';
+import { SelectedRoom } from '../../type/room';
 
 type Props = RoomsState & {
   toggleNewRoom: (isOpen: boolean) => void;
@@ -21,11 +22,10 @@ type Props = RoomsState & {
 
 export const Rooms: FC<Props> = ({ toggleNewRoom, isOpen, myId, data, selected }) => {
   const dispatch = useAppDispatch();
-  const socket = useSocket();
 
-  const selectRoom = (id: string) => {
-    socket.emit('ROOMS:JOIN', id);
-    dispatch(setSelectedRoom(id));
+  const selectRoom = (selectedRoom: SelectedRoom) => {
+    socket.emit('ROOMS:JOIN', selectedRoom.roomId);
+    dispatch(setSelectedRoom(selectedRoom))
   }
 
   return (
@@ -44,7 +44,7 @@ export const Rooms: FC<Props> = ({ toggleNewRoom, isOpen, myId, data, selected }
       </div>
       <div className='rooms_wrapper'>
         {data.map(room => {
-          const isSelected = selected === room.id;
+          const isSelected = selected?.roomId === room.id;
 
           return (
             <Room key={room.id} {...room} myId={myId} isSelected={isSelected} selectRoom={selectRoom} toggleNewRoom={toggleNewRoom}/>

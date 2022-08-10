@@ -77,7 +77,13 @@ export const Name: FC<Auth> = ({ nextPage, changeData, data }) => {
               <span>{!preview && name.substring(0, 2).toUpperCase()}</span>
             </StyledAva>
           </div>
-          <input type='text' className='text-input' placeholder='Your name' onChange={e => onKeyChange(e)} />
+          <input
+            type='text'
+            className='text-input'
+            placeholder='Your name'
+            onChange={e => onKeyChange(e)}
+            autoFocus
+          />
           <StyledButton width='160px' height='48px' disabled={!name.length}>
             Next
             <span className='arrow'>&rarr;</span>

@@ -9,6 +9,8 @@ import { MainWrapper } from '../styles';
 import { instance } from '../api';
 import { wrapper } from '../store';
 import { selectRooms, setRoomsData } from '../store/slices/rooms';
+import { socket } from '../api/socket';
+import { StyledAva } from '../components/auth/styles';
 
 const Main = () => {
   const [newRoomIsOpen, setNewRoomIsOpen] = useState(false);
@@ -16,7 +18,21 @@ const Main = () => {
   const router = useRouter();
   const me = useAppSelector(selectMyData);
   const rooms = useAppSelector(selectRooms);
-  console.log('me', me?.id)
+
+  useEffect(() => {
+    socket.connect();
+    socket.on('ROOMS:CREATE', (obj: any) => {
+      console.log('CREATE', obj);
+      // socket.emit('ROOMS:SUBMIT', { dialogId: selected.roomId, user: me, message });
+    });
+
+    socket.on('ROOMS:SUBMIT', obj => console.log('SUBMIT', obj)); //TODO temp
+
+    return () => {
+      console.log('disconnect!!!');
+      socket.disconnect();
+    };
+  }, []);
 
   const toggleNewRoom = (isOpen: boolean) => {
     setNewRoomIsOpen(isOpen);
@@ -28,14 +44,22 @@ const Main = () => {
 
   return (
     <MainWrapper padding={0}>
-      <Rooms toggleNewRoom={toggleNewRoom} isOpen={newRoomIsOpen} myId={me?.id as string} {...rooms}/>
-      {newRoomIsOpen ? <NewRoom /> : <Chat selected={rooms.selected} />}
+      <Rooms toggleNewRoom={toggleNewRoom} isOpen={newRoomIsOpen} myId={me?.id as string} {...rooms} />
+      {newRoomIsOpen ? <NewRoom setNewRoomIsOpen={setNewRoomIsOpen} /> : <Chat selected={rooms.selected} />}
+
+      {me && (
+        <div>
+          <StyledAva size={50} backgroundImage={me.photo} />
+          <div>{me.name}</div>
+        </div>
+      )}
     </MainWrapper>
   );
 };
 
 export const getServerSideProps = wrapper.getServerSideProps(store => async ({ req, res, ...etc }) => {
   try {
+    console.log('111111111111111111111');
     const { data } = await instance.get('room/');
     store.dispatch(setRoomsData(data));
     console.log('2222222', data);

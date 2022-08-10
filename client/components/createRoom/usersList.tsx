@@ -7,7 +7,7 @@ import { StyledUsers } from './styled';
 type Props = {
   loaded: boolean;
   users: UserBD[];
-  onCheck: (id: string, checked: boolean) => void;
+  onCheck: (name: string, createChat: string) => void;
   checkedUsers: string[];
 };
 

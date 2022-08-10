@@ -16,7 +16,13 @@ export const Password: FC<Auth> = ({ nextPage, changeData, data }) => {
         <span>Length must be between {MIN_LENGTH} and 255 characters</span>
       </StyledAdvises>
       <StyledWrapper padding={55}>
-        <input type='password' className='text-input' placeholder='Password' onChange={e => onKeyChange(e)} />
+        <input
+          type='password'
+          className='text-input'
+          placeholder='Password'
+          onChange={e => onKeyChange(e)}
+          autoFocus
+        />
         <StyledButton
           width='160px'
           height='48px'

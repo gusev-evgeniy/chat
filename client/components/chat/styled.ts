@@ -110,6 +110,9 @@ export const StyledTextareaAutosize = styled(TextareaAutosize)`
   }
 `;
 
-export const StyledSubmitIcon = styled(StyledInputIcon)`
+export const StyledSubmitIcon = styled.button`
   bottom: 0;
+  position: absolute;
+  right: 12px;
+  transform: translateY(-50%);
 `;
