@@ -10,7 +10,7 @@ import dayjs from 'dayjs';
 type Props = Message & { isMy: boolean };
 
 export const ChatItem: FC<Props> = memo(({ isMy, text, createdAt, readed }) => {
-  const time = dayjs(createdAt).format('hh:mm');
+  const time = dayjs(createdAt).format('HH:mm');
 
   return (
     <StyledChatItem my={isMy}>

@@ -25,6 +25,7 @@ export default class Room extends Base {
   @OneToMany(() => Message, message => message.roomId)
   messages: Message[];
 
+  @JoinColumn()
   @OneToOne(() => Message)
   lastMessage: Message;
 }

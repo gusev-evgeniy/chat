@@ -30,6 +30,7 @@ export const roomsSlice = createSlice({
   },
   extraReducers: {
     [HYDRATE]: (state, action) => {
+      console.log('action', action)
       return {
         ...state,
         ...action.payload.rooms,

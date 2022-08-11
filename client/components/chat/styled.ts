@@ -13,6 +13,7 @@ export const StyledChat = styled.div`
     height: 100%;
     width: 100%;
     padding: 10px;
+    overflow-y: auto;
   }
 
   .header {
@@ -85,7 +86,6 @@ export const StyledMessageForm = styled.form`
   width: 100%;
   margin: 0;
   padding: 0;
-  background-color: red;
   font-size: 0;
   border-top: 1px solid #e3e3e3;
 `;
@@ -111,8 +111,16 @@ export const StyledTextareaAutosize = styled(TextareaAutosize)`
 `;
 
 export const StyledSubmitIcon = styled.button`
-  bottom: 0;
+  bottom: 11px;
   position: absolute;
   right: 12px;
-  transform: translateY(-50%);
+  background-color: inherit;
+  border-radius: 100%;
+  display: flex;
+  padding: 2px;
+  border: 0px;
+
+  :hover {
+    background-color: rgba(227, 227, 227, 0.7);
+  }
 `;

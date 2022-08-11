@@ -19,6 +19,9 @@ class Message {
           roomId: roomId as string,
         },
         relations: ['author'],
+        order: {
+          createdAt: 'ASC',
+        },
       });
       return res.json({ messages, count });
     } catch (error) {}

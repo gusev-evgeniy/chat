@@ -27,10 +27,10 @@ export const StyledWrapper = styled.div<{ padding: number }>`
     cursor: pointer;
   }
 
-  & .choose_photo{
+  & .choose_photo {
     font-size: 16px;
     font-weight: 400;
-    color: #5677AD;
+    color: #5677ad;
   }
 
   & .hello_letter {
@@ -49,9 +49,9 @@ export const StyledWrapper = styled.div<{ padding: number }>`
     border: 1px solid #e3e3e3;
     border-radius: 20px;
     margin-bottom: 32px;
-    
+
     :focus {
-      outline: 1px solid #DAD6CA;
+      outline: 1px solid #dad6ca;
     }
   }
 
@@ -72,7 +72,7 @@ export const StyledWrapper = styled.div<{ padding: number }>`
     font-weight: 400;
     font-size: 14px;
     line-height: 19px;
-    color: #817F7A;
+    color: #817f7a;
   }
 `;
 
@@ -92,7 +92,7 @@ export const StyledButton = styled.button<{ width: string; height: string }>`
   }
 
   :disabled {
-    background-color: #DAD6CA;
+    background-color: #dad6ca;
   }
 
   & .arrow {
@@ -115,7 +115,7 @@ export const StyledAdvises = styled.div`
   }
 `;
 
-export const StyledAva = styled.div<{ backgroundImage?: string | undefined, size: number }>`
+export const StyledAva = styled.div<{ backgroundImage?: string | undefined; size: number }>`
   width: ${({ size }) => `${size}px`};
   height: ${({ size }) => `${size}px`};
   background-color: #e0e0e0;
@@ -131,7 +131,7 @@ export const StyledAva = styled.div<{ backgroundImage?: string | undefined, size
   overflow: hidden;
   background-image: ${({ backgroundImage }) => `url(${backgroundImage})` || ''};
   background-size: cover;
-  
+
   .upload {
     position: absolute;
     top: 0;
@@ -157,10 +157,6 @@ export const StyledAva = styled.div<{ backgroundImage?: string | undefined, size
     span {
       display: none;
     }
-
-    svg {
-    color : "red";
-}
   }
 `;
 
@@ -172,11 +168,11 @@ export const StyledSubButton = styled.button`
   border: none;
   margin-top: 18px;
   cursor: pointer;
-`
+`;
 export const AlertMessage = styled.p`
   font-weight: 600;
   color: #ea0027;
   transition: all 0.2s ease-in-out;
   margin-top: 30px;
-  font-size:1.4rem;
+  font-size: 1.4rem;
 `;
