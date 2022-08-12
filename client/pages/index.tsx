@@ -8,23 +8,8 @@ import { useEffect } from 'react';
 import { socket } from '../api/socket';
 
 const Home = () => {
+
   useEffect(() => {
-    
-    //TODO. fix
-    socket.on('ROOMS:TYPINGGGG', obj => {
-      let typingTimeoutId;
-      // setTyping(prev => [...prev, obj]);
-      console.log('33333 F')
-      clearInterval(typingTimeoutId);
-
-      typingTimeoutId = setTimeout(() => {
-        // setTyping(prev => prev.filter(prev => prev.user !== obj.user));
-      }, 3000);
-    });
-
-    socket.on('ROOMS:NEW_MESSAGE_CREATED', obj => {
-      console.log('NEW_MESSAGE_CREATED', obj);
-    });
 
     return () => {
       console.log('disconnect!!!');

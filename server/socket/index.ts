@@ -26,18 +26,30 @@ export default (http: http.Server) => {
     const token = socket.request.cookies?.chatToken;
     if (token) {
       me = jwt.verify(token, process.env.JWT_SECRET || 'secret');
+      users[me.id] = socket.id;
     }
+    console.log('users', users);
     console.log('me', me);
-    users[me.id] = socket.id;
-    console.log('connected1', socket.id);
-
     socket.on('ROOMS:TYPING', (obj: any) => {
       const { partner, ...rest } = obj;
       io.to(users[partner]).emit('ROOMS:TYPINGGGG', rest);
     });
 
     socket.on('ROOMS:CREATE', async (obj: any, callback) => {
+      console.log('222');
       const { author, userId } = obj;
+      const testRoom = await Room.createQueryBuilder('room')
+        .leftJoinAndSelect('room.participants', 'participants')
+        .where('room.type = :type', { type: 'private' })
+        .andWhere('participants.userId = :id', { id: userId })
+        .andWhere('participants.userId = :id', { id: me.id })
+        .execute();
+
+      console.log('testRoom', testRoom);
+
+      if (testRoom) {
+        // callback({ message: 'Room exist'})
+      }
 
       const room = await Room.create({ author }).save();
 
@@ -46,17 +58,20 @@ export default (http: http.Server) => {
 
       const newRoom = await Room.findOne({
         where: { id: room.id },
-        relations: ['participants', 'participants.user'],
+        relations: ['participants', 'participants.user', 'lastMessage'],
       });
-      console.log('newRoom', newRoom);
-      callback({ ...obj, roomId: room.id });
+      callback({ roomId: room.id });
 
-      socket.to(users[userId]).emit('ROOMS:NEW_ROOM_CREATED', { ...obj, roomId: room.id });
+      const participants = newRoom.participants.map(({ user }) => {
+        return user;
+      });
+
+      io.to([users[userId], users[author]]).emit('ROOMS:NEW_ROOM_CREATED', { ...newRoom, participants });
     });
 
-    socket.on('ROOMS:SUBMIT', async ({ roomId, author, message, partner }: any, callback) => {
+    socket.on('ROOMS:SUBMIT', async ({ roomId, author, message, partner }: any) => {
       console.log('message', message);
-      const { id } = await Message.create({ author: me, roomId, text: message }).save();
+      const { id } = await Message.create({ author, roomId, text: message }).save();
 
       const newMessage = await Message.findOne({
         where: { id },
@@ -67,14 +82,15 @@ export default (http: http.Server) => {
         .update({ lastMessage: newMessage })
         .where({ id: roomId })
         .execute();
-      console.log('users[partner])', users[partner]);
+      console.log('users', users);
+      console.log('author', author);
+      console.log('socket.id', socket.id);
 
-      io.to(users[partner]).emit('ROOMS:NEW_MESSAGE_CREATED', newMessage);
-      callback(newMessage);
+      io.to([users[partner], users[author]]).emit('ROOMS:NEW_MESSAGE_CREATED', newMessage);
     });
 
     socket.on('disconnect', () => {
-      delete users[me.id];
+      // delete users[me.id];
       console.log('Got disconnect!', users);
     });
   });

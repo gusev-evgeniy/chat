@@ -6,14 +6,15 @@ import readedIcon from '../../images/readed.svg';
 import { Message } from '../../type/messages';
 
 import dayjs from 'dayjs';
+import { StyledAva } from '../auth/styles';
 
-type Props = Message & { isMy: boolean };
+type Props = Message & { isMy: boolean; isLast: boolean };
 
-export const ChatItem: FC<Props> = memo(({ isMy, text, createdAt, readed }) => {
+export const ChatItem: FC<Props> = memo(({ isMy, text, createdAt, readed, isLast, author }) => {
   const time = dayjs(createdAt).format('HH:mm');
 
   return (
-    <StyledChatItem my={isMy}>
+    <StyledChatItem my={isMy} isLast={isLast}>
       <div className='item'>
         <p className='message '>{text}</p>
         <span className='time'>{time}</span>
@@ -23,6 +24,7 @@ export const ChatItem: FC<Props> = memo(({ isMy, text, createdAt, readed }) => {
           </div>
         )}
       </div>
+      {isLast && <StyledAva size={35} backgroundImage={author.photo} />}
     </StyledChatItem>
   );
 });

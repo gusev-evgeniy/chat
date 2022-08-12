@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, Fragment, useEffect, useState } from 'react';
 import Image from 'next/image';
 
 import { ChatItem } from './item';
@@ -12,26 +12,19 @@ import { Empty } from '../../styles';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { selectMyData } from '../../store/slices/user';
 import { socket } from '../../api/socket';
-import { addMessagesData, selectMessages } from '../../store/slices/messages';
+import { selectMessages } from '../../store/slices/messages';
+import dayjs from 'dayjs';
 
 type Props = {
   selected: RoomsState['selected'];
+  typing: object[];
 };
 
-export const Chat: FC<Props> = ({ selected }) => {
-  const [typing, setTyping] = useState(false);
+export const Chat: FC<Props> = ({ selected, typing }) => {
   const [message, setMessage] = useState('');
-
-  const dispatch = useAppDispatch();
-
+  console.log('typing', typing);
   const me = useAppSelector(selectMyData);
   const { data } = useAppSelector(selectMessages);
-
-  // useEffect(() => {
-  //   socket.on('ROOMS:NEW_MESSAGE_CREATED', obj => {
-  //     console.log('NEW_MESSAGE_CREATED1111111111111111', obj);
-  //   });
-  // }, []);
 
   if (!selected) {
     return (
@@ -54,17 +47,15 @@ export const Chat: FC<Props> = ({ selected }) => {
     };
 
     if (isNewRoom) {
+      console.log('here');
+      // socket.connect();
       socket.emit('ROOMS:CREATE', { author: me?.id, userId: selected.userId }, ({ roomId }) => {
-        socket.emit('ROOMS:SUBMIT', { ...submitObject, roomId }, obj => {
-          console.log('SUBMIT', obj);
-        });
+        console.log('roomId', roomId);
+        socket.emit('ROOMS:SUBMIT', { ...submitObject, roomId });
       });
     } else {
       console.log('33333');
-      socket.emit('ROOMS:SUBMIT', submitObject, obj => {
-        console.log('SUBMIT', obj);
-        dispatch(addMessagesData(obj));
-      });
+      socket.emit('ROOMS:SUBMIT', submitObject);
     }
 
     setMessage('');
@@ -89,12 +80,24 @@ export const Chat: FC<Props> = ({ selected }) => {
           {/* <p>was recently</p> */}
         </div>
       </div>
-      <div className='messages'>
-        {data.map(message => {
-          const isMy = message.author.id === me?.id;
+      <div className='messages_wrapper'>
+        <div className='messages'>
+          {data.map((message, index) => {
+            const getDay = (createdAt: string) => dayjs(createdAt).format('YYYY-MM-DD');
 
-          return <ChatItem key={message.id} {...message} isMy={isMy} />;
-        })}
+            const isMy = message.author.id === me?.id;
+            const isLast = data[index + 1]?.author.id !== message.author.id;
+            const isNewDay = getDay(data[index - 1]?.createdAt) !== getDay(message.createdAt);
+
+            return (
+              <Fragment key={message.id}>
+                {isNewDay && <Empty margin='15px'>{dayjs(message.createdAt).format('DD MMMM')}</Empty>}
+                <ChatItem {...message} isMy={isMy} isLast={isLast} />
+              </Fragment>
+            );
+          })}
+          <div className='typing'>{!!typing.length ? `${me?.name} печатает...` : ''}</div>
+        </div>
       </div>
       <StyledMessageForm onSubmit={onSubmitMessage}>
         <StyledTextareaAutosize

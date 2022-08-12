@@ -5,6 +5,7 @@ export const StyledRooms = styled.div`
   height: 100vh;
   width: 30%;
   border-right: 1px solid #e3e3e3;
+  position: relative;
 
   .header {
     padding: 10px 12px;
@@ -35,8 +36,29 @@ export const StyledRooms = styled.div`
   }
 
   .rooms_wrapper {
-    height: calc(100% - 70px);
+    height: calc(100% - 140px);
     overflow: auto;
+    flex: 1;
+  }
+
+  .footer {
+    position: absolute;
+    display: flex;
+    bottom: 0;
+    bottom: 5px;
+    left: 50%;
+    transform: translateX(-50%);
+    align-items: center;
+    padding: 10px 15px;
+    background-color: #ededed;
+    border-radius: 30px;
+    width: 60%;
+
+    p {
+      margin-left: 20%;
+      font-weight: 700;
+      font-size: 1.2rem;
+    }
   }
 `;
 

@@ -117,7 +117,9 @@ export const StyledAdvises = styled.div`
 
 export const StyledAva = styled.div<{ backgroundImage?: string | undefined; size: number }>`
   width: ${({ size }) => `${size}px`};
+  min-width: ${({ size }) => `${size}px`};
   height: ${({ size }) => `${size}px`};
+  min-height: ${({ size }) => `${size}px`};
   background-color: #e0e0e0;
   border-radius: 100%;
   display: flex;

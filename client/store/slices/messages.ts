@@ -20,13 +20,16 @@ export const messagesSlice = createSlice({
       state.data = action.payload.messages;
       state.count = action.payload.count;
     },
-    addMessagesData: (state, action: PayloadAction<Message>) => {
-      state.data.push(action.payload);
+    addMessage: (state, action: PayloadAction<Message>) => {
+      if (!state.data.some(({ id }) => id === action.payload.id)) {
+        state.data.push(action.payload);
+        state.count = state.count + 1;
+      }
     },
   },
 });
 
-export const { setMessagesData, addMessagesData } = messagesSlice.actions;
+export const { setMessagesData, addMessage } = messagesSlice.actions;
 
 export const selectMessages = (state: RootState) => state.messages;
 

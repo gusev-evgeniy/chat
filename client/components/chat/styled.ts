@@ -9,11 +9,36 @@ export const StyledChat = styled.div`
   flex-direction: column;
   justify-content: space-between;
 
-  .messages {
-    height: 100%;
-    width: 100%;
-    padding: 10px;
+  .messages_wrapper {
+    display: flex;
+    flex-direction: column-reverse;
     overflow-y: auto;
+  }
+
+  .messages {
+    height: inherit;
+    width: inherit;
+    /* overflow-y: auto; */
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+
+    .day {
+      display: flex;
+      justify-content: center;
+      margin: 20px 0;
+    }
+
+    .typing {
+      min-height: 25px;
+      width: fit-content;
+      min-width: 80px;
+      margin: 0 auto;
+      text-align: center;
+      font-weight: 600;
+      color: #ccc;
+    }
   }
 
   .header {
@@ -51,12 +76,14 @@ export const StyledChat = styled.div`
   }
 `;
 
-export const StyledChatItem = styled.div<{ my: boolean }>`
+export const StyledChatItem = styled.div<{ my: boolean; isLast?: boolean }>`
   width: 100%;
   display: flex;
   position: relative;
-  justify-content: ${({ my }) => (my ? 'flex-end' : 'flex-start')};
+  justify-content: flex-end;
   margin-bottom: 3px;
+  flex-direction: ${({ my }) => (my ? 'row' : 'row-reverse')};
+  align-items: flex-end;
 
   .item {
     width: fit-content;
@@ -67,12 +94,21 @@ export const StyledChatItem = styled.div<{ my: boolean }>`
     border-radius: 20px;
     background-color: ${({ my }) => (my ? '#ededee' : '#58d188')};
     align-items: flex-end;
+    margin-left: ${({ isLast }) => (!isLast ? '44px' : '8px')};
+    margin-right: ${({ isLast }) => (!isLast ? '44px' : '8px')};
+    max-width: 70%;
+
+    .message {
+      word-break: break-all;
+      white-space: pre-line;
+      font-size: 1.1rem;
+    }
   }
 
   .time {
     font-size: 11px;
     opacity: 0.5;
-    margin: 0 3px;
+    margin-left: 8px;
   }
 
   .readed_icon {
@@ -99,7 +135,7 @@ export const StyledTextareaAutosize = styled(TextareaAutosize)`
   border: none;
   outline: none;
   min-height: 57px;
-  padding: 15px 15px 15px 40px;
+  padding: 15px 50px 15px 15px;
 
   ::-webkit-scrollbar {
     display: none;

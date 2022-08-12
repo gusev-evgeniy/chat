@@ -10,10 +10,12 @@ import add_chat from '../../images/add_chat.svg';
 import add_chat_fill from '../../images/add_chat_fill.svg';
 
 import { StyledRooms, StyledSearchIcon, StyledSearchInput } from './styled';
-import { useAppDispatch } from '../../store/hooks';
+import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { SelectedRoom, Typing } from '../../type/room';
 import { instance } from '../../api';
 import { setMessagesData } from '../../store/slices/messages';
+import { StyledAva } from '../auth/styles';
+import { selectMyData } from '../../store/slices/user';
 
 type Props = RoomsState & {
   toggleNewRoom: (isOpen: boolean) => void;
@@ -25,6 +27,8 @@ type Props = RoomsState & {
 export const Rooms: FC<Props> = ({ toggleNewRoom, isOpen, myId, data, selected, typing }) => {
   const dispatch = useAppDispatch();
 
+  const me = useAppSelector(selectMyData);
+
   const selectRoom = (selectedRoom: SelectedRoom) => {
     dispatch(setSelectedRoom(selectedRoom));
   };
@@ -35,7 +39,7 @@ export const Rooms: FC<Props> = ({ toggleNewRoom, isOpen, myId, data, selected, 
       dispatch(setMessagesData(data));
     } catch (error) {}
   };
-
+  console.log('rooms_data', data);
   return (
     <StyledRooms>
       <div className='header'>
@@ -51,8 +55,7 @@ export const Rooms: FC<Props> = ({ toggleNewRoom, isOpen, myId, data, selected, 
         </div>
       </div>
       <div className='rooms_wrapper'>
-        
-        {data.map(room => {
+        {data.map((room, index) => {
           const isSelected = selected?.roomId === room.id;
           const isTyping = typing.find(({ roomId }) => roomId === room.id);
 
@@ -69,6 +72,10 @@ export const Rooms: FC<Props> = ({ toggleNewRoom, isOpen, myId, data, selected, 
             />
           );
         })}
+      </div>
+      <div className='footer'>
+        <StyledAva size={45} backgroundImage={me?.photo} />
+        <p>{me?.name}</p>
       </div>
     </StyledRooms>
   );
