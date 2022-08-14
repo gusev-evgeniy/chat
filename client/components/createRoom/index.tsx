@@ -14,7 +14,8 @@ import { instance } from '../../api';
 import { UsersList } from './usersList';
 import { UserBD } from '../../type/user';
 import { useDispatch } from 'react-redux';
-import { setSelectedRoom } from '../../store/slices/rooms';
+import { selectRoom } from '../../store/slices/rooms';
+import { StyledButton } from '../auth/styles';
 
 const MAX_LENGTH = 30;
 
@@ -32,9 +33,14 @@ export const NewRoom: FC<Props> = ({ setNewRoomIsOpen }) => {
   const dispatch = useDispatch();
 
   const groupNameLength = groupName.length;
+  const isGroupChat = checkedUsers.length > 1;
 
-  const onChangeName = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const onChangeName = (e: React.KeyboardEvent<HTMLInputElement>) => {
     const value = e.target.value;
+    console.log('e.target', e);
+    if (!groupNameLength && e.key === ' ') {
+      return;
+    }
 
     if (value.length < groupNameLength || groupNameLength < MAX_LENGTH) {
       setGroupName(value);
@@ -65,15 +71,21 @@ export const NewRoom: FC<Props> = ({ setNewRoomIsOpen }) => {
   };
 
   //test
-  const createChat = async (name: string, userId: string) => {
-    dispatch(setSelectedRoom({ roomId: null, name, userId }));
-    setNewRoomIsOpen(false);
+  const createRoomHandler = async (name: string) => {
+    if (!isGroupChat) {
+      dispatch(selectRoom({ roomId: null, name, userId: checkedUsers[0] }));
+      setNewRoomIsOpen(false);
+    }
+
+
   };
+
+  const disabled = !checkedUsers.length || (isGroupChat && !groupName.trim());
 
   return (
     <StyledCreateRoom>
       <div className='group_name'>
-        {checkedUsers.length > 1 && (
+        {isGroupChat && (
           <form>
             <StyledLabel htmlFor=''>group name</StyledLabel>
             <div className='input_wrapper'>
@@ -82,7 +94,7 @@ export const NewRoom: FC<Props> = ({ setNewRoomIsOpen }) => {
                 className='search'
                 placeholder='Type here'
                 value={groupName}
-                onChange={onChangeName}
+                onKeyDown={onChangeName}
               />
               <div className='count'>
                 {groupNameLength}/{MAX_LENGTH}
@@ -91,6 +103,7 @@ export const NewRoom: FC<Props> = ({ setNewRoomIsOpen }) => {
           </form>
         )}
       </div>
+
       <StyledSearchUserWrapper padding={50}>
         <form onSubmit={onFindUsersHandler}>
           <StyledLabel htmlFor=''>Search</StyledLabel>
@@ -107,11 +120,17 @@ export const NewRoom: FC<Props> = ({ setNewRoomIsOpen }) => {
             </StyledSearchIcon>
           </div>
         </form>
-        <UsersList loaded={loaded} users={users} onCheck={createChat} checkedUsers={checkedUsers} />
-      </StyledSearchUserWrapper>
-      {/* <div className='buttons'>
 
-      </div> */}
+        <UsersList loaded={loaded} users={users} onCheck={onCheck} checkedUsers={checkedUsers} />
+
+        {loaded && users.length > 0 && (
+          <div className='buttons'>
+            <StyledButton width='160px' height='48px' disabled={disabled}>
+              Create Room
+            </StyledButton>
+          </div>
+        )}
+      </StyledSearchUserWrapper>
     </StyledCreateRoom>
   );
 };

@@ -5,8 +5,9 @@ import add_photo from '../../images/add_photo.svg';
 
 import { Auth } from './types';
 
-import { AlertMessage, StyledAdvises, StyledAva, StyledButton, StyledWrapper } from './styles';
+import { AlertMessage, StyledAdvises, StyledButton, StyledWrapper } from './styles';
 import { instance } from '../../api';
+import { StyledAva } from '../avatar/styles';
 
 const VALID_TYPES = ['image/png', 'image/jpg', 'image/jpeg'];
 

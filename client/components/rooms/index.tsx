@@ -3,7 +3,7 @@ import React, { FC } from 'react';
 
 import { Room } from './item';
 
-import { RoomsState, setSelectedRoom } from '../../store/slices/rooms';
+import { RoomsState, selectRoom } from '../../store/slices/rooms';
 
 import search from '../../images/search.svg';
 import add_chat from '../../images/add_chat.svg';
@@ -14,8 +14,8 @@ import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { SelectedRoom, Typing } from '../../type/room';
 import { instance } from '../../api';
 import { setMessagesData } from '../../store/slices/messages';
-import { StyledAva } from '../auth/styles';
 import { selectMyData } from '../../store/slices/user';
+import { StyledAva } from '../avatar/styles';
 
 type Props = RoomsState & {
   toggleNewRoom: (isOpen: boolean) => void;
@@ -29,8 +29,8 @@ export const Rooms: FC<Props> = ({ toggleNewRoom, isOpen, myId, data, selected, 
 
   const me = useAppSelector(selectMyData);
 
-  const selectRoom = (selectedRoom: SelectedRoom) => {
-    dispatch(setSelectedRoom(selectedRoom));
+  const selectRoomHandler = (selectedRoom: SelectedRoom) => {
+    dispatch(selectRoom(selectedRoom));
   };
 
   const getMessages = async (roomId: string) => {
@@ -39,6 +39,11 @@ export const Rooms: FC<Props> = ({ toggleNewRoom, isOpen, myId, data, selected, 
       dispatch(setMessagesData(data));
     } catch (error) {}
   };
+
+  const resizeHandler = (e: React.MouseEvent<HTMLDivElement>) => {
+    console.log(e)
+  }
+
   console.log('rooms_data', data);
   return (
     <StyledRooms>
@@ -62,10 +67,10 @@ export const Rooms: FC<Props> = ({ toggleNewRoom, isOpen, myId, data, selected, 
           return (
             <Room
               key={room.id}
-              {...room}
+              room={room}
               myId={myId}
               isSelected={isSelected}
-              selectRoom={selectRoom}
+              selectRoom={selectRoomHandler}
               toggleNewRoom={toggleNewRoom}
               typing={isTyping}
               getMessages={getMessages}

@@ -1,10 +1,11 @@
 import React, { FC, memo, useMemo } from 'react';
 import { Room as RoomType, SelectedRoom, Typing } from '../../type/room';
 import { UserBD } from '../../type/user';
-import { StyledAva } from '../auth/styles';
+import { StyledAva } from '../avatar/styles';
 import { StyledRoom } from './styled';
 
-type Props = RoomType & {
+type Props = {
+  room: RoomType;
   myId: string;
   isSelected: boolean;
   selectRoom: (selectedRoom: SelectedRoom) => void;
@@ -14,7 +15,8 @@ type Props = RoomType & {
 };
 
 export const Room: FC<Props> = memo(
-  ({ participants, typing, title, myId, type, isSelected, selectRoom, id, toggleNewRoom, getMessages }) => {
+  ({  typing, myId, isSelected, selectRoom, toggleNewRoom, getMessages, room }) => {
+    const { participants, id, type, title } = room || {};
     //TODO only private type
     const {
       photo,
@@ -29,7 +31,7 @@ export const Room: FC<Props> = memo(
         return;
       }
       getMessages(id);
-      selectRoom({ roomId: id, name: name as string, userId: partner as string });
+      selectRoom(room);
     };
 
     return (

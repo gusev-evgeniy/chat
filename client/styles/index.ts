@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { StyledWrapper } from './components/auth/styles';
+import { StyledWrapper } from '../components/auth/styles';
 
 export const DISABLED_GRAY = '#dad6ca';
 

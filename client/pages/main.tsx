@@ -1,16 +1,21 @@
 import React, { useEffect, useRef, useState } from 'react';
+import axios from 'axios';
+import { Resizable } from 'react-resizable';
+
 import { Chat } from '../components/chat';
 import { Rooms } from '../components/rooms';
 import { NewRoom } from '../components/createRoom';
+
 import { useAppDispatch, useAppSelector } from '../store/hooks';
 import { selectMyData, setUserData } from '../store/slices/user';
-import { MainWrapper } from '../styles';
-import { instance } from '../api';
-import { wrapper } from '../store';
 import { addRoom, selectRooms, setRoomsData } from '../store/slices/rooms';
-import axios from 'axios';
-import { socket } from '../api/socket';
 import { addMessage } from '../store/slices/messages';
+import { wrapper } from '../store';
+
+import { instance } from '../api';
+
+import { socket } from '../api/socket';
+import { MainWrapper } from '../styles';
 
 const Main = () => {
   const [newRoomIsOpen, setNewRoomIsOpen] = useState(false);
@@ -56,8 +61,21 @@ const Main = () => {
         {...rooms}
         typing={typing}
       />
-
-      {newRoomIsOpen ? <NewRoom setNewRoomIsOpen={setNewRoomIsOpen} /> : <Chat selected={rooms.selected} typing={typing}/>}
+      {/* <Split
+        sizes={[25, 75]}
+        cursor='col-resize'
+        expandToMin={false}
+        gutterSize={10}
+        direction='vertical'
+      >
+        <div>hello</div>
+        <div>there</div>
+      </Split> */}
+      {newRoomIsOpen ? (
+          <NewRoom setNewRoomIsOpen={setNewRoomIsOpen} />
+        ) : (
+          <Chat selected={rooms.selected} typing={typing} />
+        )}
     </MainWrapper>
   );
 };

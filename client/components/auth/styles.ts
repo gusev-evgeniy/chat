@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { COLORS } from '../../styles/variables';
 export const baseRadius = `20px`;
 export const padding = `18px`;
 
@@ -115,57 +116,10 @@ export const StyledAdvises = styled.div`
   }
 `;
 
-export const StyledAva = styled.div<{ backgroundImage?: string | undefined; size: number }>`
-  width: ${({ size }) => `${size}px`};
-  min-width: ${({ size }) => `${size}px`};
-  height: ${({ size }) => `${size}px`};
-  min-height: ${({ size }) => `${size}px`};
-  background-color: #e0e0e0;
-  border-radius: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: 700;
-  font-size: 32px;
-  color: #494949;
-  cursor: pointer;
-  position: relative;
-  overflow: hidden;
-  background-image: ${({ backgroundImage }) => `url(${backgroundImage})` || ''};
-  background-size: cover;
-
-  .upload {
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    background-color: rgba(0, 0, 0, 0.3);
-    cursor: pointer;
-    justify-content: center;
-    align-items: center;
-    display: none;
-
-    input {
-      display: none;
-    }
-  }
-
-  :hover {
-    .upload {
-      display: flex;
-    }
-
-    span {
-      display: none;
-    }
-  }
-`;
-
 export const StyledSubButton = styled.button`
   font-size: 15px;
   font-weight: 700;
-  color: #4f6fa5;
+  color: ${COLORS.BLUE};
   background-color: inherit;
   border: none;
   margin-top: 18px;

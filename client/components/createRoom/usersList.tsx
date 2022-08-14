@@ -7,7 +7,7 @@ import { StyledUsers } from './styled';
 type Props = {
   loaded: boolean;
   users: UserBD[];
-  onCheck: (name: string, createChat: string) => void;
+  onCheck: (id: string, checked: boolean) => void;
   checkedUsers: string[];
 };
 
@@ -19,13 +19,13 @@ export const UsersList: FC<Props> = ({ loaded, users, onCheck, checkedUsers }) =
   if (loaded && !users.length) {
     return <Empty margin='70px'>Users not found</Empty>;
   }
-
+  console.log('checkedUsers', checkedUsers);
   return (
     <StyledUsers padding={0}>
       {users.map(user => {
         const checked = checkedUsers.includes(user.id);
 
-        return <FindingUser key={user.id} {...user} onCheck={onCheck} checked={checked}/>
+        return <FindingUser key={user.id} {...user} onCheck={onCheck} checked={checked} />;
       })}
     </StyledUsers>
   );

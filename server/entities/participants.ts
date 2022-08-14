@@ -15,8 +15,4 @@ export default class Participant extends Base {
   @JoinColumn()
   @ManyToOne(() => Room, room => room.participants)
   room: Room;
-
-  // @JoinColumn()
-  // @OneToOne(() => Message)
-  // lastMessage: Message;
 }

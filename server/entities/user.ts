@@ -1,4 +1,4 @@
-import { Entity, Column, BeforeInsert, JoinColumn, OneToMany } from 'typeorm';
+import { Entity, Column, BeforeInsert, JoinColumn, OneToMany, CreateDateColumn } from 'typeorm';
 import { Exclude } from 'class-transformer';
 import bcrypt from 'bcrypt';
 
@@ -18,12 +18,18 @@ export default class User extends Base {
   @Column({ nullable: true })
   photo: string;
 
+  @Column({ default: false })
+  online: boolean;
+
+  @Column({ type: "timestamptz", default: () => "CURRENT_TIMESTAMP" })
+  wasOnline: Date;
+
   @JoinColumn()
   @OneToMany(() => Message, message => message.author)
   messages: Message[];
 
   @JoinColumn()
-  @OneToMany(() => Participant, participant => participant.userId)
+  @OneToMany(() => Participant, participant => participant.user)
   chat: Participant[];
 
   @BeforeInsert()

@@ -25,6 +25,7 @@ export const StyledCreateRoom = styled.div`
     width: 100%;
     max-width: 700px;
     margin: 100px auto 100px auto;
+    min-height: 81px;
   }
 
   form {
@@ -44,6 +45,13 @@ export const StyledCreateRoom = styled.div`
         font-weight: 600;
       }
     }
+  }
+
+  .buttons {
+    margin-top: 50px;
+    width: inherit;
+    display: flex;
+    justify-content: flex-end;
   }
 `;
 
