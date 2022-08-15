@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import { StyledTextInput } from '../../styles';
+import { COLORS } from '../../styles/variables';
 import { StyledWrapper } from '../auth/styles';
 
 export const StyledLabel = styled.label`
@@ -75,13 +76,18 @@ export const StyledSearchUserWrapper = styled(StyledWrapper)`
   form {
     width: inherit;
   }
+
+  .checked_list {
+    margin: 20px 0;
+    min-height: 46px;
+    display: flex;
+  }
 `;
 
 export const StyledUsers = styled(StyledWrapper)`
   width: inherit;
   max-height: 440px;
   overflow: auto;
-  margin-top: 25px;
   max-width: 100%;
 
   .user_wrapper:not(:first-child) {
@@ -107,3 +113,24 @@ export const StyledSearchUserItem = styled.div`
     }
   }
 `;
+
+export const StyledCheckedItem = styled.div`
+  padding: 10px 20px;
+  border-radius: 100px;
+  background-color: ${COLORS.GREY};
+  align-items: center;
+  display: flex;
+  cursor: pointer;
+  font-size: 1.2rem;
+  margin: 0 3px;
+
+  .close {
+    margin-left: 7px;
+    font-size: 1rem;
+    font-weight: 100;
+  }
+
+  :hover {
+    background-color: #e5e5e5;
+  }
+`

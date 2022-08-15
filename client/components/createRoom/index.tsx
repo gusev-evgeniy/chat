@@ -1,21 +1,18 @@
-import React, { useState, FC } from 'react';
-import { StyledSearchIcon } from '../rooms/styled';
+import React, { FC } from 'react';
 import {
+  StyledCheckedItem,
   StyledCreateRoom,
-  StyledFindUserIntput,
   StyledGroupNameIntput,
   StyledLabel,
   StyledSearchUserWrapper,
 } from './styled';
 
-import search from '../../images/search.svg';
-import Image from 'next/image';
-import { instance } from '../../api';
 import { UsersList } from './usersList';
-import { UserBD } from '../../type/user';
 import { useDispatch } from 'react-redux';
-import { selectRoom } from '../../store/slices/rooms';
 import { StyledButton } from '../auth/styles';
+import { useAppSelector } from '../../store/hooks';
+import { checkUser, selectCreatingRoom, updateTitle } from '../../store/slices/createRoom';
+import { Search } from './search';
 
 const MAX_LENGTH = 30;
 
@@ -24,64 +21,39 @@ type Props = {
 };
 
 export const NewRoom: FC<Props> = ({ setNewRoomIsOpen }) => {
-  const [groupName, setGroupName] = useState('');
-  const [filter, setFilter] = useState('');
-  const [users, setUsers] = useState<UserBD[]>([]);
-  const [checkedUsers, setCheckedUsers] = useState<string[]>([]);
-  const [loaded, setLoaded] = useState(false);
 
   const dispatch = useDispatch();
+  const { checked, title, type, users, loaded } = useAppSelector(selectCreatingRoom);
 
-  const groupNameLength = groupName.length;
-  const isGroupChat = checkedUsers.length > 1;
+  const groupNameLength = title.length;
+  const isGroupChat = type === 'group';
 
-  const onChangeName = (e: React.KeyboardEvent<HTMLInputElement>) => {
+  const onChangeName = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
-    console.log('e.target', e);
-    if (!groupNameLength && e.key === ' ') {
-      return;
-    }
 
     if (value.length < groupNameLength || groupNameLength < MAX_LENGTH) {
-      setGroupName(value);
+      dispatch(updateTitle({ title: value }));
     }
-  };
-
-  const onFindUsersHandler = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-
-    if (!filter) {
-      return;
-    }
-
-    try {
-      const { data } = await instance.get(`user/find?name=${filter}`);
-
-      setLoaded(true);
-      setUsers(data.users);
-    } catch (error) {}
   };
 
   const onCheck = (id: string, checked: boolean) => {
-    if (checked) {
-      return setCheckedUsers(prev => [...prev, id]);
-    }
+    dispatch(checkUser({ checked, id }));
+  };
 
-    setCheckedUsers(prev => prev.filter(user => user !== id));
+  const onRemoveUser = (id: string) => {
+    dispatch(checkUser({ checked: false, id }));
   };
 
   //test
   const createRoomHandler = async (name: string) => {
     if (!isGroupChat) {
-      dispatch(selectRoom({ roomId: null, name, userId: checkedUsers[0] }));
+      // dispatch(selectRoom({ roomId: null, name, userId: checked[0] }));
       setNewRoomIsOpen(false);
     }
-
-
   };
 
-  const disabled = !checkedUsers.length || (isGroupChat && !groupName.trim());
-
+  const disabled = !checked.length || (isGroupChat && !title.trim());
+  console.log('out')
   return (
     <StyledCreateRoom>
       <div className='group_name'>
@@ -93,8 +65,8 @@ export const NewRoom: FC<Props> = ({ setNewRoomIsOpen }) => {
                 type='text'
                 className='search'
                 placeholder='Type here'
-                value={groupName}
-                onKeyDown={onChangeName}
+                value={title}
+                onChange={onChangeName}
               />
               <div className='count'>
                 {groupNameLength}/{MAX_LENGTH}
@@ -105,25 +77,20 @@ export const NewRoom: FC<Props> = ({ setNewRoomIsOpen }) => {
       </div>
 
       <StyledSearchUserWrapper padding={50}>
-        <form onSubmit={onFindUsersHandler}>
-          <StyledLabel htmlFor=''>Search</StyledLabel>
-          <div className='input_wrapper'>
-            <StyledFindUserIntput
-              type='text'
-              className='search'
-              placeholder='Type usernames'
-              value={filter}
-              onChange={e => setFilter(e.target.value)}
-            />
-            <StyledSearchIcon>
-              <Image width='30px' height='30px' src={search} alt='search' />
-            </StyledSearchIcon>
-          </div>
-        </form>
+        <Search />
 
-        <UsersList loaded={loaded} users={users} onCheck={onCheck} checkedUsers={checkedUsers} />
+        <div className='checked_list'>
+          {checked.map(checkedUser => (
+            <StyledCheckedItem key={checkedUser.id} onClick={() => onRemoveUser(checkedUser.id)}>
+              {checkedUser.name}
+              <span className='close'>&#10006;</span>
+            </StyledCheckedItem>
+          ))}
+        </div>
 
-        {loaded && users.length > 0 && (
+        <UsersList loaded={loaded} users={users.data} onCheck={onCheck} checked={checked} />
+
+        {loaded && users.data.length > 0 && (
           <div className='buttons'>
             <StyledButton width='160px' height='48px' disabled={disabled}>
               Create Room
