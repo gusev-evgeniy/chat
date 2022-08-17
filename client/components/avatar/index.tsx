@@ -9,6 +9,8 @@ type Props = {
 };
 
 export const Avatar: FC<Props> = ({ photo, name, size, online }) => {
+  console.log('name', name)
+
   return (
     <AvaWrapper size={size}>
       <StyledAva title='Add photo' backgroundImage={photo} size={size}>

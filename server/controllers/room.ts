@@ -51,6 +51,7 @@ class Room {
         .where('participant.user = :id', { id: res.locals.user.id })
         .leftJoinAndSelect('participant.room', 'room')
         .leftJoinAndSelect('room.participants', 'participants')
+        // .leftJoinAndSelect('room.lastMessage', 'lastMessage')
         .leftJoinAndSelect('participants.user', 'user')
         .getManyAndCount();
       console.log('participants', participants);

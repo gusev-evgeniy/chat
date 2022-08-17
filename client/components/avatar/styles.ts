@@ -15,7 +15,7 @@ export const StyledAva = styled.div<{ backgroundImage?: string | null; size: num
   align-items: center;
   justify-content: center;
   font-weight: 700;
-  font-size: 32px;
+  font-size: ${({ size }) => `${Math.floor(size/2)}px`};
   color: #494949;
   cursor: pointer;
   position: relative;

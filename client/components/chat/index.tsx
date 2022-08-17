@@ -1,19 +1,18 @@
-import React, { FC, Fragment, useState } from 'react';
+import React, { FC, Fragment } from 'react';
 import Image from 'next/image';
 
 import { ChatItem } from './item';
-import { StyledChat, StyledMessageForm, StyledSubmitIcon, StyledTextareaAutosize } from './styled';
+import { StyledChat } from './styled';
 
-import send from '../../images/send.svg';
 import arrow_back from '../../images/arrow_back.svg';
 import { RoomsState } from '../../store/slices/rooms';
 
 import { Empty } from '../../styles';
 import { useAppSelector } from '../../store/hooks';
 import { selectMyData } from '../../store/slices/user';
-import { socket } from '../../api/socket';
 import { selectMessages } from '../../store/slices/messages';
 import dayjs from 'dayjs';
+import { MessageForm } from './messageForm';
 
 type Props = {
   selected: RoomsState['selected'];
@@ -21,8 +20,6 @@ type Props = {
 };
 
 export const Chat: FC<Props> = ({ selected, typing }) => {
-  const [message, setMessage] = useState('');
-  console.log('typing', typing);
   const me = useAppSelector(selectMyData);
   const { data } = useAppSelector(selectMessages);
 
@@ -35,36 +32,6 @@ export const Chat: FC<Props> = ({ selected, typing }) => {
   }
 
   const isNewRoom = selected.roomId === null;
-
-  const onSubmitMessage = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-
-    const submitObject = {
-      roomId: selected.roomId,
-      author: me?.id,
-      message,
-      partner: selected.userId,
-    };
-
-    if (isNewRoom) {
-      console.log('here');
-      // socket.connect();
-      socket.emit('ROOMS:CREATE', { author: me?.id, userId: selected.userId }, ({ roomId }: { roomId: string }) => {
-        console.log('roomId', roomId);
-        socket.emit('ROOMS:SUBMIT', { ...submitObject, roomId });
-      });
-    } else {
-      console.log('33333');
-      socket.emit('ROOMS:SUBMIT', submitObject);
-    }
-
-    setMessage('');
-  };
-
-  const onChangeHandler = ({ target }: React.KeyboardEvent<HTMLTextAreaElement>) => {
-    socket.emit('ROOMS:TYPING', { partner: selected.userId, user: me?.name, roomId: selected.roomId });
-    setMessage(target.value);
-  };
 
   return (
     <StyledChat>
@@ -100,16 +67,7 @@ export const Chat: FC<Props> = ({ selected, typing }) => {
         </div>
       </div>
 
-      <StyledMessageForm onSubmit={onSubmitMessage}>
-        <StyledTextareaAutosize
-          placeholder='To write a message...'
-          onChange={onChangeHandler}
-          value={message}
-        />
-        <StyledSubmitIcon disabled={!message.length}>
-          <Image width='30px' height='30px' src={send} alt='send' />
-        </StyledSubmitIcon>
-      </StyledMessageForm>
+      <MessageForm selected={selected} />
     </StyledChat>
   );
 };

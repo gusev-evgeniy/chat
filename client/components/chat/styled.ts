@@ -13,6 +13,7 @@ export const StyledChat = styled.div`
     display: flex;
     flex-direction: column-reverse;
     overflow-y: auto;
+    height: inherit;
   }
 
   .messages {

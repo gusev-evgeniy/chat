@@ -22,6 +22,7 @@ export default (http: http.Server) => {
   let me: any = {};
 
   const users = {};
+  let rooms = {};
 
   io.on('connection', async (socket: any) => {
     const token = socket.request.cookies?.chatToken;
@@ -32,6 +33,18 @@ export default (http: http.Server) => {
 
       await User.createQueryBuilder('user').update({ online: true }).where({ id: me.id }).execute();
     }
+
+    socket.on('ROOMS:JOIN', async (obj, callback) => {
+      console.log('me.id', me.id)
+      const participants = await Participant.createQueryBuilder('participant')
+        .where('participant.user = :id', { id: me.id })
+        .leftJoinAndSelect('participant.room', 'room')
+        .getMany();
+
+      // console.log('participants2222222', participants);
+
+      // callback({ message: 'hello there' });
+    });
 
     socket.on('ROOMS:TYPING', (obj: any) => {
       const { partner, ...rest } = obj;
@@ -53,27 +66,82 @@ export default (http: http.Server) => {
       if (testRoom) {
         // callback({ message: 'Room exist'})
       }
-
+      console.log('111111111111111111111111111')
       const room = await Room.create({ author }).save();
+      console.log('22222222222222222222222222222222')
 
       await Participant.create({ room, user: userId }).save();
       await Participant.create({ room, user: author }).save();
+      console.log('3333333333333333333333333333333333333')
 
       const newRoom = await Room.findOne({
         where: { id: room.id },
         relations: ['participants', 'participants.user'],
       });
+      console.log('4444444444444444444444444444444444444444444444444')
 
       callback({ roomId: room.id });
 
       const participants = newRoom.participants.map(({ user }) => {
         return user;
       });
+      console.log('55555555555555555555555555555555555555555555555555555555555555')
 
       io.to([users[userId], users[author]]).emit('ROOMS:NEW_ROOM_CREATED', { ...newRoom, participants });
     });
 
-    socket.on('ROOMS:SUBMIT', async ({ roomId, author, message, partner }: any) => {
+
+
+
+
+
+    socket.on('ROOMS:CREATE_GROUP_CHAT', async (obj: any) => {
+      const { author, usersId, title, type } = obj;
+
+      const room = await Room.create({ author, title, type }).save();
+
+      await Participant.create({ room, user: author }).save();
+      
+      for (let userId of usersId) {
+        await Participant.create({ room, user: userId }).save();
+      }
+
+      const newRoom = await Room.findOne({
+        where: { id: room.id },
+        relations: ['participants', 'participants.user'],
+      });
+
+      socket.join(room.id);
+
+      const participants = newRoom.participants.map(({ user }) => {
+        return user;
+      });
+
+      const newParticipants = Object.keys(users).map((id) => users[id] );
+      console.log('newParticipants', newParticipants)
+      io.to([...newParticipants, users[author]]).emit('ROOMS:NEW_ROOM_CREATED', { ...newRoom, participants });
+    });
+
+
+
+    socket.on('ROOMS:JOIN_NEW_ROOM', async ({ roomId }) => {
+      socket.join(roomId)
+    })
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    socket.on('MESSAGE:CREATE', async ({ roomId, author, message, partner, type }: any) => {
       console.log('message', message);
       const { id } = await Message.create({ author, roomId, text: message }).save();
 
@@ -81,11 +149,18 @@ export default (http: http.Server) => {
         where: { id },
         relations: ['author'],
       });
+      console.log('2222')
+      await Room.createQueryBuilder('room').update({ lastMessage: newMessage }).where({ id: roomId }).execute();
+      console.log('3333')
 
-      await Room.createQueryBuilder('room').update({ lastMessage: message }).where({ id: roomId }).execute();
-
-      io.to([users[partner], users[author]]).emit('ROOMS:NEW_MESSAGE_CREATED', newMessage);
+      const submitTo = type === 'group' ? roomId : [users[partner], users[author]];
+      console.log('4444submitTo', submitTo)
+      console.log('socket', socket)
+      io.to(submitTo).emit('MESSAGE:NEW_MESSAGE_CREATED', newMessage);
     });
+
+
+
 
     socket.on('disconnect', async () => {
       // delete users[me.id];

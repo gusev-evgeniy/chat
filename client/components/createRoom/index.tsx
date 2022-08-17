@@ -13,6 +13,10 @@ import { StyledButton } from '../auth/styles';
 import { useAppSelector } from '../../store/hooks';
 import { checkUser, selectCreatingRoom, updateTitle } from '../../store/slices/createRoom';
 import { Search } from './search';
+import { socket } from '../../api/socket';
+import { selectMyData } from '../../store/slices/user';
+import { UserBD } from '../../type/user';
+import { selectRoom } from '../../store/slices/rooms';
 
 const MAX_LENGTH = 30;
 
@@ -24,6 +28,8 @@ export const NewRoom: FC<Props> = ({ setNewRoomIsOpen }) => {
 
   const dispatch = useDispatch();
   const { checked, title, type, users, loaded } = useAppSelector(selectCreatingRoom);
+  const me = useAppSelector(selectMyData) as UserBD;
+  console.log('me', me)
 
   const groupNameLength = title.length;
   const isGroupChat = type === 'group';
@@ -45,11 +51,18 @@ export const NewRoom: FC<Props> = ({ setNewRoomIsOpen }) => {
   };
 
   //test
-  const createRoomHandler = async (name: string) => {
-    if (!isGroupChat) {
+  const createRoomHandler = async () => {
+    if (isGroupChat) {
+      const usersId = checked.map(({ id }) => id);
+      socket.emit('ROOMS:CREATE_GROUP_CHAT', { author: me.id, usersId, title, type })
+
       // dispatch(selectRoom({ roomId: null, name, userId: checked[0] }));
       setNewRoomIsOpen(false);
     }
+    const user = checked[0];
+
+      dispatch(selectRoom({ roomId: null, name: user.name, userId: user.id, type: 'private' }));
+      setNewRoomIsOpen(false);
   };
 
   const disabled = !checked.length || (isGroupChat && !title.trim());
@@ -92,7 +105,7 @@ export const NewRoom: FC<Props> = ({ setNewRoomIsOpen }) => {
 
         {loaded && users.data.length > 0 && (
           <div className='buttons'>
-            <StyledButton width='160px' height='48px' disabled={disabled}>
+            <StyledButton width='160px' height='48px' disabled={disabled} onClick={createRoomHandler}>
               Create Room
             </StyledButton>
           </div>

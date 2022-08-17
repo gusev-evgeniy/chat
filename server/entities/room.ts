@@ -1,4 +1,4 @@
-import { Entity, Column, OneToOne, JoinColumn, OneToMany } from 'typeorm';
+import { Entity, Column, OneToOne, JoinColumn, OneToMany, ManyToOne } from 'typeorm';
 
 import Base from '.';
 import Message from './message';
@@ -18,13 +18,14 @@ export default class Room extends Base {
   participants: Participant[];
 
   @JoinColumn()
-  @OneToOne(() => User)
+  @ManyToOne(() => User, user => user.rooms)
   author: User;
 
   @JoinColumn()
   @OneToMany(() => Message, message => message.roomId)
   messages: Message[];
 
-  @Column({ nullable: true })
-  lastMessage: string;
+  @JoinColumn()
+  @OneToOne(() => Message)
+  lastMessage: Message;
 }

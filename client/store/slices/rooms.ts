@@ -10,9 +10,9 @@ export interface RoomsState {
 }
 
 const initialState: RoomsState = {
-  data: [] ,
+  data: [],
   selected: null,
-  count: 0
+  count: 0,
 };
 
 export const roomsSlice = createSlice({
@@ -27,7 +27,7 @@ export const roomsSlice = createSlice({
       state.selected = action.payload;
     },
     addRoom: (state, action: PayloadAction<Room>) => {
-      if (!state.data.includes(action.payload)) {
+      if (!state.data.some(({ id }) => id === action.payload.id)) {
         state.data.unshift(action.payload);
         state.count = state.count + 1;
       }
@@ -35,7 +35,7 @@ export const roomsSlice = createSlice({
   },
   extraReducers: {
     [HYDRATE]: (state, action) => {
-      console.log('action', action)
+      console.log('action', action);
       return {
         ...state,
         ...action.payload.rooms,

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useInsertionEffect, useRef, useState } from 'react';
 import axios from 'axios';
 import { Resizable } from 'react-resizable';
 
@@ -31,7 +31,7 @@ const Main = () => {
     setNewRoomIsOpen(isOpen);
   };
 
-  useEffect(() => {
+  useInsertionEffect(() => {
     //TODO. fix
     socket.on('ROOMS:TYPINGGGG', obj => {
       setTyping(prev => [...prev, obj]);
@@ -42,7 +42,12 @@ const Main = () => {
       }, 3000);
     });
 
-    socket.on('ROOMS:NEW_MESSAGE_CREATED', obj => {
+    socket.emit('ROOMS:JOIN', (obj) => {
+      console.log('objjjj', obj)
+    })
+
+    socket.on('MESSAGE:NEW_MESSAGE_CREATED', obj => {
+      console.log('neeeewMEssage', obj)
       dispatch(addMessage(obj));
     });
 

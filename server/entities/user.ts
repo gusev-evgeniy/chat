@@ -5,6 +5,7 @@ import bcrypt from 'bcrypt';
 import Base from '.';
 import Message from './message';
 import Participant from './participants';
+import Room from './room';
 
 @Entity()
 export default class User extends Base {
@@ -27,6 +28,10 @@ export default class User extends Base {
   @JoinColumn()
   @OneToMany(() => Message, message => message.author)
   messages: Message[];
+
+  @JoinColumn()
+  @OneToMany(() => Room, room => room.author)
+  rooms: Room[];
 
   @JoinColumn()
   @OneToMany(() => Participant, participant => participant.user)
