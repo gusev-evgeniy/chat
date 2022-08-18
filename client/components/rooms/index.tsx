@@ -11,17 +11,18 @@ import add_chat_fill from '../../images/add_chat_fill.svg';
 
 import { StyledRooms, StyledSearchIcon, StyledSearchInput } from './styled';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
-import { SelectedRoom, Typing } from '../../type/room';
+import { SelectedRoom } from '../../type/room';
 import { instance } from '../../api';
 import { setMessagesData } from '../../store/slices/messages';
 import { selectMyData } from '../../store/slices/user';
 import { StyledAva } from '../avatar/styles';
+import { Typing } from '../../type/messages';
 
 type Props = RoomsState & {
   toggleNewRoom: (isOpen: boolean) => void;
   isOpen: boolean;
   myId: string;
-  typing: Typing[];
+  typing: Typing
 };
 
 export const Rooms: FC<Props> = ({ toggleNewRoom, isOpen, myId, data, selected, typing }) => {
@@ -39,10 +40,6 @@ export const Rooms: FC<Props> = ({ toggleNewRoom, isOpen, myId, data, selected, 
       dispatch(setMessagesData(data));
     } catch (error) {}
   };
-
-  const resizeHandler = (e: React.MouseEvent<HTMLDivElement>) => {
-    console.log(e)
-  }
 
   console.log('rooms_data', data);
   return (
@@ -62,7 +59,7 @@ export const Rooms: FC<Props> = ({ toggleNewRoom, isOpen, myId, data, selected, 
       <div className='rooms_wrapper'>
         {data.map((room, index) => {
           const isSelected = selected?.roomId === room.id;
-          const isTyping = typing.find(({ roomId }) => roomId === room.id);
+          const isTyping = typing.filter(({ roomId }) => roomId === room.id);
 
           return (
             <Room

@@ -2,6 +2,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from '../index';
 import { HYDRATE } from 'next-redux-wrapper';
 import { Room, RoomsResponse, SelectedRoom } from '../../type/room';
+import { Message } from '../../type/messages';
 
 export interface RoomsState {
   data: Room[];
@@ -32,6 +33,13 @@ export const roomsSlice = createSlice({
         state.count = state.count + 1;
       }
     },
+    updateLastMessage: (state, action: PayloadAction<Message>) => {
+      const { author, ...lastMessage } = action.payload;
+
+      state.data = state.data.map(room =>
+        action.payload.roomId === room.id ? { ...room, lastMessage } : room
+      );
+    },
   },
   extraReducers: {
     [HYDRATE]: (state, action) => {
@@ -44,7 +52,7 @@ export const roomsSlice = createSlice({
   },
 });
 
-export const { setRoomsData, selectRoom, addRoom } = roomsSlice.actions;
+export const { setRoomsData, selectRoom, addRoom, updateLastMessage } = roomsSlice.actions;
 
 export const selectRooms = (state: RootState) => state.rooms;
 

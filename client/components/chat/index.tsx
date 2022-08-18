@@ -1,4 +1,4 @@
-import React, { FC, Fragment } from 'react';
+import React, { FC, Fragment, useMemo } from 'react';
 import Image from 'next/image';
 
 import { ChatItem } from './item';
@@ -10,18 +10,22 @@ import { RoomsState } from '../../store/slices/rooms';
 import { Empty } from '../../styles';
 import { useAppSelector } from '../../store/hooks';
 import { selectMyData } from '../../store/slices/user';
-import { selectMessages } from '../../store/slices/messages';
+import { selectMessagesData } from '../../store/slices/messages';
 import dayjs from 'dayjs';
 import { MessageForm } from './messageForm';
+import { Typing } from '../../type/messages';
+import { returnTypingText } from '../../utils/message';
 
 type Props = {
   selected: RoomsState['selected'];
-  typing: object[];
+  typing: Typing;
 };
 
 export const Chat: FC<Props> = ({ selected, typing }) => {
   const me = useAppSelector(selectMyData);
-  const { data } = useAppSelector(selectMessages);
+  const messages = useAppSelector(selectMessagesData);
+
+  const typingText = useMemo(() => returnTypingText(typing, selected?.type), [typing, selected?.type])
 
   if (!selected) {
     return (
@@ -49,12 +53,12 @@ export const Chat: FC<Props> = ({ selected, typing }) => {
 
       <div className='messages_wrapper'>
         <div className='messages'>
-          {data.map((message, index) => {
+          {messages.map((message, index) => {
             const getDay = (createdAt: string) => dayjs(createdAt).format('YYYY-MM-DD');
 
             const isMy = message.author.id === me?.id;
-            const isLast = data[index + 1]?.author.id !== message.author.id;
-            const isNewDay = getDay(data[index - 1]?.createdAt) !== getDay(message.createdAt);
+            const isLast = messages[index + 1]?.author.id !== message.author.id;
+            const isNewDay = getDay(messages[index - 1]?.createdAt) !== getDay(message.createdAt);
 
             return (
               <Fragment key={message.id}>
@@ -63,7 +67,7 @@ export const Chat: FC<Props> = ({ selected, typing }) => {
               </Fragment>
             );
           })}
-          <div className='typing'>{!!typing.length ? `${me?.name} печатает...` : ''}</div>
+          <div className='typing'>{typingText}</div>
         </div>
       </div>
 

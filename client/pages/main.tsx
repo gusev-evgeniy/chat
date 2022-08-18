@@ -8,21 +8,23 @@ import { NewRoom } from '../components/createRoom';
 
 import { useAppDispatch, useAppSelector } from '../store/hooks';
 import { selectMyData, setUserData } from '../store/slices/user';
-import { addRoom, selectRooms, setRoomsData } from '../store/slices/rooms';
-import { addMessage } from '../store/slices/messages';
+import { addRoom, selectRooms, setRoomsData, updateLastMessage } from '../store/slices/rooms';
+import { addMessage, selectTyping, startTyping, stopTyping } from '../store/slices/messages';
 import { wrapper } from '../store';
 
 import { instance } from '../api';
 
 import { socket } from '../api/socket';
 import { MainWrapper } from '../styles';
+import { Message, Typing } from '../type/messages';
 
 const Main = () => {
   const [newRoomIsOpen, setNewRoomIsOpen] = useState(false);
-  const [typing, setTyping] = useState([]);
 
   const me = useAppSelector(selectMyData);
   const rooms = useAppSelector(selectRooms);
+  const typing = useAppSelector(selectTyping);
+
   const dispatch = useAppDispatch();
 
   const typingTimeoutId = useRef();
@@ -33,12 +35,13 @@ const Main = () => {
 
   useInsertionEffect(() => {
     //TODO. fix
-    socket.on('ROOMS:TYPINGGGG', obj => {
-      setTyping(prev => [...prev, obj]);
+    socket.on('ROOMS:TYPINGGGG', (obj: Typing[0]) => {
+      dispatch(startTyping(obj));
       clearInterval(typingTimeoutId.current);
 
       typingTimeoutId.current = setTimeout(() => {
-        setTyping(prev => prev.filter(prev => prev.user !== obj.user));
+        console.log('here')
+        dispatch(stopTyping(obj));
       }, 3000);
     });
 
@@ -46,9 +49,10 @@ const Main = () => {
       console.log('objjjj', obj)
     })
 
-    socket.on('MESSAGE:NEW_MESSAGE_CREATED', obj => {
-      console.log('neeeewMEssage', obj)
+    socket.on('MESSAGE:NEW_MESSAGE_CREATED', (obj: Message) => {
       dispatch(addMessage(obj));
+      dispatch(updateLastMessage(obj));
+      dispatch(stopTyping({ roomId: obj.roomId, user: obj.author.name }));
     });
 
     socket.on('ROOMS:NEW_ROOM_CREATED', obj => {
@@ -56,6 +60,8 @@ const Main = () => {
       dispatch(addRoom(obj));
     });
   }, []);
+
+  const selectedRoomTyping = typing.filter(({roomId}) => roomId === rooms.selected?.roomId )
 
   return (
     <MainWrapper padding={0}>
@@ -79,7 +85,7 @@ const Main = () => {
       {newRoomIsOpen ? (
           <NewRoom setNewRoomIsOpen={setNewRoomIsOpen} />
         ) : (
-          <Chat selected={rooms.selected} typing={typing} />
+          <Chat selected={rooms.selected} typing={selectedRoomTyping} />
         )}
     </MainWrapper>
   );
@@ -87,15 +93,11 @@ const Main = () => {
 
 export const getServerSideProps = wrapper.getServerSideProps(store => async ({ req, res, ...etc }) => {
   try {
-    console.log('1111rooms');
-
     axios.defaults.headers.get.Cookie = req.headers.cookie as string;
     const { data } = await axios.get('http://localhost:5050/user/me');
-    console.log('1111rooms', data);
-
     store.dispatch(setUserData(data));
 
-    const rooms = await instance.get('room/');
+    const rooms = await axios.get('http://localhost:5050/room/');
     store.dispatch(setRoomsData(rooms.data));
   } catch ({ response }: any) {
     // if (response.data.message === 'Unauthenticated') {

@@ -1,4 +1,5 @@
-import { UserBD } from "./user";
+import { UserBD } from './user';
+import { Message } from './messages';
 
 export type RoomType = 'private' | 'group';
 
@@ -9,6 +10,7 @@ export type Room = {
   title: null | string;
   type: RoomType;
   updatedAt: string;
+  lastMessage: Omit<Message, 'author'> | null;
 };
 
 export type RoomsResponse = {
@@ -21,9 +23,4 @@ export type SelectedRoom = {
   name: string;
   userId: string;
   type: RoomType;
-}
-
-export type Typing = {
-  roomId: string;
-  user: string;
 };

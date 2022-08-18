@@ -3,9 +3,10 @@ import React, { FC, memo, useState } from 'react'
 import { StyledMessageForm, StyledSubmitIcon, StyledTextareaAutosize } from './styled'
 import send from '../../images/send.svg';
 import { socket } from '../../api/socket';
-import { useAppSelector } from '../../store/hooks';
+import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { selectMyData } from '../../store/slices/user';
 import { RoomsState } from '../../store/slices/rooms';
+import { stopTyping } from '../../store/slices/messages';
 
 type Props = {
   selected: RoomsState['selected'];
@@ -13,9 +14,11 @@ type Props = {
 
 export const MessageForm: FC<Props>  = memo(({ selected }) => {
   const [message, setMessage] = useState('');
-  const me = useAppSelector(selectMyData);
 
-  if (!selected) {
+  const me = useAppSelector(selectMyData);
+  const disaptch = useAppDispatch();
+
+  if (!selected || !me) {
     return null;
   }
 
@@ -35,17 +38,13 @@ export const MessageForm: FC<Props>  = memo(({ selected }) => {
       type: selected.type
     };
 
-    console.log('submitObject', submitObject)
     const isNewRoom = selected.roomId === null;
 
     if (isNewRoom) {
-      console.log('here');
       socket.emit('ROOMS:CREATE', { author: me?.id, userId: selected.userId }, ({ roomId }: { roomId: string }) => {
-        console.log('roomId', roomId);
         socket.emit('MESSAGE:CREATE', { ...submitObject, roomId });
       });
     } else {
-      console.log('33333');
       socket.emit('MESSAGE:CREATE', submitObject);
     }
 

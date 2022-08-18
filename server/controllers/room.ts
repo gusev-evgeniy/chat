@@ -45,23 +45,20 @@ class Room {
 
   async getMany(req: Request, res: Response) {
     try {
-      console.log('getManyRooms');
-
       const [participants, count] = await ParticipantEntity.createQueryBuilder('participant')
         .where('participant.user = :id', { id: res.locals.user.id })
         .leftJoinAndSelect('participant.room', 'room')
         .leftJoinAndSelect('room.participants', 'participants')
-        // .leftJoinAndSelect('room.lastMessage', 'lastMessage')
+        .leftJoinAndSelect('room.lastMessage', 'lastMessage')
         .leftJoinAndSelect('participants.user', 'user')
         .getManyAndCount();
-      console.log('participants', participants);
+
       const rooms = participants.map(({ room }) => ({
         ...room,
         participants: room.participants.map(({ user }) => {
           return user;
         }),
       }));
-      console.log('rooms', rooms);
 
       return res.json({ rooms, count });
     } catch (error) {}

@@ -12,7 +12,7 @@ const PORT = process.env.PORT || 5050;
 
 const start = async () => {
   try {
-    db.initialize()
+    await db.initialize()
       .then(() => console.log('Data Source has been initialized!'))
       .catch(err => console.error('Error during Data Source initialization:', err));
 
