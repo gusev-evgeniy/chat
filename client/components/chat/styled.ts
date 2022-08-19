@@ -1,6 +1,5 @@
 import styled from 'styled-components';
 import TextareaAutosize from 'react-textarea-autosize';
-import { StyledInputIcon } from '../../styles';
 import { COLORS } from '../../styles/variables';
 
 export const StyledChat = styled.div`

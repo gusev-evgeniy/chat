@@ -1,4 +1,4 @@
-import React, { FC, Fragment, useMemo } from 'react';
+import React, { FC, Fragment, useEffect, useMemo } from 'react';
 import Image from 'next/image';
 
 import { ChatItem } from './item';
@@ -25,7 +25,16 @@ export const Chat: FC<Props> = ({ selected, typing }) => {
   const me = useAppSelector(selectMyData);
   const messages = useAppSelector(selectMessagesData);
 
-  const typingText = useMemo(() => returnTypingText(typing, selected?.type), [typing, selected?.type])
+  const typingText = useMemo(() => returnTypingText(typing, selected?.type), [typing, selected?.type]);
+
+  useEffect(() => {
+    const messages = document.querySelector('.messages');
+
+    if (messages) {
+      window.scrollTo(0, messages.scrollHeight);
+    }
+
+  }, [messages.length]);
 
   if (!selected) {
     return (

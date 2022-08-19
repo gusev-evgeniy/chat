@@ -30,8 +30,10 @@ export const Room: FC<Props> = memo(
 
     const { participants, id: roomId, type, title: roomTitle, lastMessage } = room || {};
     const { createdAt, text } = lastMessage || {};
+
     const time = dayjs(createdAt).format('HH:mm');
     console.log('Room render')
+    
     const { image, title, id, online } = useMemo<RoomInfo>(() => {
         if (type === 'group') {
           return { image: null, title: roomTitle as string, id: roomId, online: false };
