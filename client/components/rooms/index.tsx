@@ -41,7 +41,6 @@ export const Rooms: FC<Props> = ({ toggleNewRoom, isOpen, myId, data, selected, 
     } catch (error) {}
   };
 
-  console.log('rooms_data', data);
   return (
     <StyledRooms>
       <div className='header'>

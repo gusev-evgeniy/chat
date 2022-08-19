@@ -28,7 +28,13 @@ export const messagesSlice = createSlice({
         state.count = state.count + 1;
       }
     },
+
+    //TODO remake to {roomId: users[]}
     startTyping: (state, action: PayloadAction<Typing[0]>) => {
+      if (state.typing.some(({ roomId, user }) => roomId === action.payload.roomId && user === action.payload.user )) {
+        return state;
+      }
+
       state.typing.push(action.payload);
     },
     stopTyping: (state, action: PayloadAction<Typing[0]>) => {

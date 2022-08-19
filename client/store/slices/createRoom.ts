@@ -29,7 +29,6 @@ export const createRoomSlice = createSlice({
   initialState,
   reducers: {
     findUsers: (state, action: PayloadAction<{ users: UserBD[]; count: number }>) => {
-      console.log('action.payload', action.payload);
       const { users, count } = action.payload;
 
       state.users = { data: users, count };

@@ -6,7 +6,7 @@ import { socket } from '../../api/socket';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { selectMyData } from '../../store/slices/user';
 import { RoomsState } from '../../store/slices/rooms';
-import { stopTyping } from '../../store/slices/messages';
+import { EVENTS } from '../../utils/constants';
 
 type Props = {
   selected: RoomsState['selected'];
@@ -16,14 +16,13 @@ export const MessageForm: FC<Props>  = memo(({ selected }) => {
   const [message, setMessage] = useState('');
 
   const me = useAppSelector(selectMyData);
-  const disaptch = useAppDispatch();
 
   if (!selected || !me) {
     return null;
   }
 
   const onChangeHandler = ({ target }: React.KeyboardEvent<HTMLTextAreaElement>) => {
-    socket.emit('ROOMS:TYPING', { partner: selected.userId, user: me?.name, roomId: selected.roomId });
+    socket.emit(EVENTS.MESSAGE.TYPING, { partner: selected.userId, user: me?.name, roomId: selected.roomId });
     setMessage(target.value);
   };
 
@@ -41,11 +40,11 @@ export const MessageForm: FC<Props>  = memo(({ selected }) => {
     const isNewRoom = selected.roomId === null;
 
     if (isNewRoom) {
-      socket.emit('ROOMS:CREATE', { author: me?.id, userId: selected.userId }, ({ roomId }: { roomId: string }) => {
-        socket.emit('MESSAGE:CREATE', { ...submitObject, roomId });
+      socket.emit(EVENTS.ROOM.CREATE_PRIVATE, { author: me?.id, userId: selected.userId }, ({ roomId }: { roomId: string }) => {
+        socket.emit(EVENTS.MESSAGE.MESSAGE_CREATE, { ...submitObject, roomId });
       });
     } else {
-      socket.emit('MESSAGE:CREATE', submitObject);
+      socket.emit(EVENTS.MESSAGE.MESSAGE_CREATE, submitObject);
     }
 
     setMessage('');

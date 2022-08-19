@@ -79,16 +79,18 @@ export const StyledRoom = styled.div<{ selected: boolean }>`
       justify-content: space-between;
 
       .time {
-        font-size: 15px;
+        font-size: 0.9rem;
         font-weight: 300;
       }
     }
 
     .last_message {
-      font-weight: 500;
+      font-weight: 400;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
+      font-size: 1.1rem;
+      margin-top: 5px;
     }
   }
 

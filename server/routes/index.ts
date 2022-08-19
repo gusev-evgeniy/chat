@@ -1,20 +1,15 @@
 import express from 'express';
-import socket from 'socket.io';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
 
 import Auth from '../middleware/auth';
 import Upload from '../middleware/multer';
 
-import UserController from '../controllers/user';
-import RoomController from '../controllers/room';
-import MessageController from '../controllers/message';
+import User from '../controllers/user';
+import Room from '../controllers/room';
+import Message from '../controllers/message';
 
-const createRoutes = (app: express.Express, io: socket.Server) => {
-  const User = new UserController(io);
-  const Room = new RoomController(io);
-  const Message = new MessageController(io);
-
+const createRoutes = (app: express.Express) => {
   app.use(
     cors({
       credentials: true,
@@ -31,7 +26,6 @@ const createRoutes = (app: express.Express, io: socket.Server) => {
   app.post('/user/check_name', User.checkName);
   app.get('/user/me', Auth, User.me);
 
-  app.post('/room/create', Auth, Room.create);
   app.get('/room', Auth, Room.getMany);
 
   app.get('/message', Message.getMany);

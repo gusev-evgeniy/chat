@@ -8,15 +8,14 @@ import { NewRoom } from '../components/createRoom';
 
 import { useAppDispatch, useAppSelector } from '../store/hooks';
 import { selectMyData, setUserData } from '../store/slices/user';
-import { addRoom, selectRooms, setRoomsData, updateLastMessage } from '../store/slices/rooms';
+import { addRoom, selectRooms, setRoomsData, updateLastMessage, updateUserOnline } from '../store/slices/rooms';
 import { addMessage, selectTyping, startTyping, stopTyping } from '../store/slices/messages';
 import { wrapper } from '../store';
-
-import { instance } from '../api';
 
 import { socket } from '../api/socket';
 import { MainWrapper } from '../styles';
 import { Message, Typing } from '../type/messages';
+import { EVENTS } from '../utils/constants';
 
 const Main = () => {
   const [newRoomIsOpen, setNewRoomIsOpen] = useState(false);
@@ -35,33 +34,35 @@ const Main = () => {
 
   useInsertionEffect(() => {
     //TODO. fix
-    socket.on('ROOMS:TYPINGGGG', (obj: Typing[0]) => {
+    socket.on(EVENTS.MESSAGE.RESPONSE_TYPING, (obj: Typing[0]) => {
       dispatch(startTyping(obj));
       clearInterval(typingTimeoutId.current);
 
       typingTimeoutId.current = setTimeout(() => {
-        console.log('here')
         dispatch(stopTyping(obj));
-      }, 3000);
+      }, 2000);
     });
 
-    socket.emit('ROOMS:JOIN', (obj) => {
-      console.log('objjjj', obj)
-    })
+    socket.on(EVENTS.USER.ENTER, ({ userId }: { userId: string }) => {
+      dispatch(updateUserOnline({ userId, online: true }))
+    });
 
-    socket.on('MESSAGE:NEW_MESSAGE_CREATED', (obj: Message) => {
+    socket.on(EVENTS.USER.LEAVE, ({ userId, wasOnline }: { userId: string, wasOnline: string }) => {
+      dispatch(updateUserOnline({ userId, online: false, wasOnline }))
+    });
+
+    socket.on(EVENTS.MESSAGE.NEW_MESSAGE_CREATED, (obj: Message) => {
       dispatch(addMessage(obj));
       dispatch(updateLastMessage(obj));
       dispatch(stopTyping({ roomId: obj.roomId, user: obj.author.name }));
     });
 
-    socket.on('ROOMS:NEW_ROOM_CREATED', obj => {
-      console.log('obj', obj);
+    socket.on(EVENTS.ROOM.CREATED, obj => {
       dispatch(addRoom(obj));
     });
   }, []);
 
-  const selectedRoomTyping = typing.filter(({roomId}) => roomId === rooms.selected?.roomId )
+  const selectedRoomTyping = typing.filter(({ roomId }) => roomId === rooms.selected?.roomId);
 
   return (
     <MainWrapper padding={0}>
@@ -83,10 +84,10 @@ const Main = () => {
         <div>there</div>
       </Split> */}
       {newRoomIsOpen ? (
-          <NewRoom setNewRoomIsOpen={setNewRoomIsOpen} />
-        ) : (
-          <Chat selected={rooms.selected} typing={selectedRoomTyping} />
-        )}
+        <NewRoom setNewRoomIsOpen={setNewRoomIsOpen} />
+      ) : (
+        <Chat selected={rooms.selected} typing={selectedRoomTyping} />
+      )}
     </MainWrapper>
   );
 };

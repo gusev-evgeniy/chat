@@ -11,4 +11,5 @@ export type UserBD = {
   photo: string | null;
   updatedAt: string;
   online: boolean;
+  wasOnline: string;
 };

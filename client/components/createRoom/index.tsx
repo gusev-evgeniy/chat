@@ -17,6 +17,7 @@ import { socket } from '../../api/socket';
 import { selectMyData } from '../../store/slices/user';
 import { UserBD } from '../../type/user';
 import { selectRoom } from '../../store/slices/rooms';
+import { EVENTS } from '../../utils/constants';
 
 const MAX_LENGTH = 30;
 
@@ -29,7 +30,6 @@ export const NewRoom: FC<Props> = ({ setNewRoomIsOpen }) => {
   const dispatch = useDispatch();
   const { checked, title, type, users, loaded } = useAppSelector(selectCreatingRoom);
   const me = useAppSelector(selectMyData) as UserBD;
-  console.log('me', me)
 
   const groupNameLength = title.length;
   const isGroupChat = type === 'group';
@@ -54,9 +54,8 @@ export const NewRoom: FC<Props> = ({ setNewRoomIsOpen }) => {
   const createRoomHandler = async () => {
     if (isGroupChat) {
       const usersId = checked.map(({ id }) => id);
-      socket.emit('ROOMS:CREATE_GROUP_CHAT', { author: me.id, usersId, title, type })
+      socket.emit(EVENTS.ROOM.CREATE_GROUP, { author: me.id, usersId, title, type })
 
-      // dispatch(selectRoom({ roomId: null, name, userId: checked[0] }));
       setNewRoomIsOpen(false);
     }
     const user = checked[0];
@@ -66,7 +65,7 @@ export const NewRoom: FC<Props> = ({ setNewRoomIsOpen }) => {
   };
 
   const disabled = !checked.length || (isGroupChat && !title.trim());
-  console.log('out')
+
   return (
     <StyledCreateRoom>
       <div className='group_name'>

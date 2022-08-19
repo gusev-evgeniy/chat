@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import TextareaAutosize from 'react-textarea-autosize';
 import { StyledInputIcon } from '../../styles';
+import { COLORS } from '../../styles/variables';
 
 export const StyledChat = styled.div`
   height: 100%;
@@ -38,12 +39,12 @@ export const StyledChat = styled.div`
       margin: 0 auto;
       text-align: center;
       font-weight: 600;
-      color: #ccc;
+      color: ${COLORS.BLUE};
     }
   }
 
   .header {
-    height: 66px;
+    height: 71px;
     border-bottom: 1px solid #e3e3e3;
     padding: 12px;
     display: flex;

@@ -1,149 +1,106 @@
-import cookieParser from 'cookie-parser';
-import http from 'http';
 import { Server } from 'socket.io';
 import Message from '../entities/message';
 import Participant from '../entities/participants';
 import Room from '../entities/room';
-import Auth from '../middleware/auth';
-import jwt from 'jsonwebtoken';
-import { stringify } from 'querystring';
-import User from '../entities/user';
+import { EVENTS } from './events';
+import { addMyDataToSocket } from '../utils/socket';
+import { GetTypingProps } from './types';
+import { isPrivateRoomExist, updateLastMessage } from '../utils/queries/room';
+import { updateUser } from '../utils/queries/user';
 
-export default (http: http.Server) => {
-  const io = new Server(http, { cors: { origin: 'http://localhost:3000', credentials: true }, cookie: true });
+const chatHandler = async (io: Server, socket: any) => {
+  await addMyDataToSocket(socket);
+  socket.broadcast.emit(EVENTS.USER.ENTER, { userId: socket.me });
+  
+  const createPrivateRoom = async (obj: any, callback: any) => {
+    console.log('createPrivateRoom', obj);
+    const { author, userId } = obj;
 
-  const wrap = middleware => (socket, next) => middleware(socket.request, {}, next);
-  io.use(wrap(cookieParser()));
-
-  // io.use((socket, next) => {
-  //   console.log('0', socket.request.headers['cookie']);
-  //   next();
-  // });
-  let me: any = {};
-
-  const users = {};
-  let rooms = {};
-
-  io.on('connection', async (socket: any) => {
-    const token = socket.request.cookies?.chatToken;
-
-    if (token) {
-      me = jwt.verify(token, process.env.JWT_SECRET || 'secret');
-      users[me.id] = socket.id;
-
-      await User.createQueryBuilder('user').update({ online: true }).where({ id: me.id }).execute();
+    const roomExist = await isPrivateRoomExist(userId, socket.me);
+    if (roomExist) {
+      return callback({ message: 'Room exist' });
     }
 
-    socket.on('ROOMS:JOIN', async () => {
-      const participants = await Participant.createQueryBuilder('participant')
-        .where('participant.user = :id', { id: me.id })
-        .leftJoinAndSelect('participant.room', 'room')
-        // .andWhere('room.type = :type', { type: 'group' })
-        .getMany();
+    const room = await Room.create({ author }).save();
 
-      const rooms = participants.map(({ room }) => room.id);
-      socket.join(rooms);
+    await Participant.create({ room, user: userId }).save();
+    await Participant.create({ room, user: author }).save();
+
+    const newRoom = await Room.findOne({
+      where: { id: room.id },
+      relations: ['participants', 'participants.user'],
     });
 
-    socket.on('ROOMS:TYPING', (obj: any) => {
-      const { partner, ...rest } = obj;
-      console.log('TYPING', obj)
+    socket.join(room.id);
+    callback({ roomId: room.id });
 
-      socket.broadcast.to(rest.roomId).emit('ROOMS:TYPINGGGG', rest);
+    const participants = newRoom.participants.map(({ user }) => {
+      return user;
     });
 
-    socket.on('ROOMS:CREATE', async (obj: any, callback) => {
-      const { author, userId } = obj;
+    io.to(room.id).emit(EVENTS.ROOM.CREATED, { ...newRoom, participants });
+  };
 
-      const testRoom = await Room.createQueryBuilder('room')
-        .leftJoinAndSelect('room.participants', 'participants')
-        .where('room.type = :type', { type: 'private' })
-        .andWhere('participants.userId = :id', { id: userId })
-        .andWhere('participants.userId = :id', { id: me.id })
-        .execute();
+  const createGroupRoom = async (obj: any) => {
+    console.log('createGroupRoom', obj);
+    const { author, usersId, title, type } = obj;
 
-      if (testRoom) {
-        callback({ message: 'Room exist' });
-      }
+    const room = await Room.create({ author, title, type }).save();
+    await Participant.create({ room, user: author }).save();
 
-      const room = await Room.create({ author }).save();
-
+    for (let userId of usersId) {
       await Participant.create({ room, user: userId }).save();
-      await Participant.create({ room, user: author }).save();
+    }
 
-      const newRoom = await Room.findOne({
-        where: { id: room.id },
-        relations: ['participants', 'participants.user'],
-      });
-
-      socket.join(room.id);
-      callback({ roomId: room.id });
-
-      const participants = newRoom.participants.map(({ user }) => {
-        return user;
-      });
-
-      io.to(room.id).emit('ROOMS:NEW_ROOM_CREATED', { ...newRoom, participants });
+    const newRoom = await Room.findOne({
+      where: { id: room.id },
+      relations: ['participants', 'participants.user'],
     });
 
-    socket.on('ROOMS:CREATE_GROUP_CHAT', async (obj: any) => {
-      const { author, usersId, title, type } = obj;
+    socket.join(room.id);
 
-      const room = await Room.create({ author, title, type }).save();
-      await Participant.create({ room, user: author }).save();
-
-      for (let userId of usersId) {
-        await Participant.create({ room, user: userId }).save();
-      }
-
-      const newRoom = await Room.findOne({
-        where: { id: room.id },
-        relations: ['participants', 'participants.user'],
-      });
-
-      socket.join(room.id);
-
-      const participants = newRoom.participants.map(({ user }) => {
-        return user;
-      });
-
-      const newParticipants = Object.keys(users).map(id => users[id]);
-      console.log('newParticipants', newParticipants);
-      io.to([...newParticipants, users[author]]).emit('ROOMS:NEW_ROOM_CREATED', { ...newRoom, participants });
+    const participants = newRoom.participants.map(({ user }) => {
+      return user;
     });
 
-    socket.on('ROOMS:JOIN_NEW_ROOM', async ({ roomId }) => {
-      socket.join(roomId);
+    io.to(room.id).emit(EVENTS.ROOM.CREATED, { ...newRoom, participants });
+  };
+
+  const joinRoom = ({ roomId }) => {
+    socket.join(roomId);
+  };
+
+  const createMessage = async ({ roomId, author, message, partner, type }: any) => {
+    const { id } = await Message.create({ author, roomId, text: message }).save();
+
+    const newMessage = await Message.findOne({
+      where: { id },
+      relations: ['author'],
     });
 
-    socket.on('MESSAGE:CREATE', async ({ roomId, author, message, partner, type }: any) => {
-      const { id } = await Message.create({ author, roomId, text: message }).save();
+    await updateLastMessage(newMessage, roomId);
 
-      const newMessage = await Message.findOne({
-        where: { id },
-        relations: ['author'],
-      });
+    io.to(roomId).emit(EVENTS.MESSAGE.NEW_MESSAGE_CREATED, newMessage);
+  };
 
-      await Room.createQueryBuilder('room')
-        .update({ lastMessage: newMessage })
-        .where({ id: roomId })
-        .execute();
+  const getTyping = ({ partner, ...rest }: GetTypingProps) => {
+    socket.broadcast.to(rest.roomId).emit(EVENTS.MESSAGE.RESPONSE_TYPING, rest);
+  };
 
-      // const submitTo = type === 'group' ? roomId : [users[partner], users[author]];
+  const disconnect = async () => {
+    const wasOnline = new Date();
 
-      io.to(roomId).emit('MESSAGE:NEW_MESSAGE_CREATED', newMessage);
-    });
+    socket.broadcast.emit(EVENTS.USER.LEAVE, { userId: socket.me, wasOnline });
+    await updateUser(socket.me, { online: false, wasOnline });
+  };
 
-    socket.on('disconnect', async () => {
-      // delete users[me.id];
-      await User.createQueryBuilder('user')
-        .update({ online: false, wasOnline: new Date() })
-        .where({ id: me.id })
-        .execute();
+  socket.on(EVENTS.ROOM.CREATE_PRIVATE, createPrivateRoom);
+  socket.on(EVENTS.ROOM.CREATE_GROUP, createGroupRoom);
+  socket.on(EVENTS.ROOM.JOIN, joinRoom);
 
-      console.log('Got disconnect!', users);
-    });
-  });
-
-  return io;
+  socket.on(EVENTS.MESSAGE.MESSAGE_CREATE, createMessage);
+  socket.on(EVENTS.MESSAGE.TYPING, getTyping);
+  socket.on('disconnect', disconnect);
 };
+
+export default chatHandler;

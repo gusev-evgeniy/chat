@@ -1,17 +1,11 @@
 import { Request, Response } from 'express';
 import bcrypt from 'bcrypt';
-import socket from 'socket.io';
 
 import UserEntity from '../entities/user';
-import { createTokenAndAddCookie, createJWT } from '../utils/auth';
+import { createTokenAndAddCookie } from '../utils/auth';
+import { getUsersByNameAndCount } from '../utils/queries/user';
 
 class User {
-  io: socket.Server;
-
-  constructor(io: socket.Server) {
-    this.io = io;
-  }
-
   async create(req: Request, res: Response) {
     try {
       const { password, name } = req.body || {};
@@ -31,9 +25,7 @@ class User {
   }
 
   async me(_: Request, res: Response) {
-    const me = res.locals.user;
-
-    return res.json(me);
+    return res.json(res.locals.user);
   }
 
   async checkName(req: Request, res: Response) {
@@ -52,16 +44,10 @@ class User {
   }
 
   async get(req: Request, res: Response) {
-    const name = req.query.name;
-
     try {
-      const [users, count] = await UserEntity.createQueryBuilder('user')
-        .where('user.name like :name', { name: `%${name}%` })
-        .andWhere('user.id != :id', { id: res.locals.user.id })
-        .take(50)
-        .getManyAndCount();
+      const usersAndCount = await getUsersByNameAndCount(req.query.name as string, res.locals.user.id);
 
-      res.json({ users, count });
+      res.json(usersAndCount);
     } catch (error) {
       res.json({ error });
     }
@@ -90,4 +76,4 @@ class User {
   }
 }
 
-export default User;
+export default new User();

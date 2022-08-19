@@ -22,6 +22,7 @@ type RoomInfo = {
   id: string;
   title: string;
   image: string | null;
+  online: boolean;
 };
 
 export const Room: FC<Props> = memo(
@@ -30,15 +31,15 @@ export const Room: FC<Props> = memo(
     const { participants, id: roomId, type, title: roomTitle, lastMessage } = room || {};
     const { createdAt, text } = lastMessage || {};
     const time = dayjs(createdAt).format('HH:mm');
-
-    const { image, title, id } = useMemo<RoomInfo>(() => {
+    console.log('Room render')
+    const { image, title, id, online } = useMemo<RoomInfo>(() => {
         if (type === 'group') {
-          return { image: null, title: roomTitle as string, id: roomId };
+          return { image: null, title: roomTitle as string, id: roomId, online: false };
         }
 
-        const { id, name, photo } = participants.find(({ id }) => id !== myId) as UserBD;
-        return { id, title: name, image: photo };
-      }, [room.id]) || {};
+        const { id, name, photo, online } = participants.find(({ id }) => id !== myId) as UserBD;
+        return { id, title: name, image: photo, online };
+      }, [room]) || {};
 
       const typingText = useMemo(() => returnTypingText(typing, type), [typing, type]);
 
@@ -54,7 +55,7 @@ export const Room: FC<Props> = memo(
 
     return (
       <StyledRoom selected={isSelected} onClick={onSelecteHandler}>
-        <Avatar name={title} photo={image} size={50} online={false} />
+        <Avatar name={title} photo={image} size={50} online={online} />
         <div className='data'>
           <div className='info'>
             <p className='name bold'>{title}</p>

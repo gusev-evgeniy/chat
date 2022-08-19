@@ -3,24 +3,39 @@ import 'dotenv/config';
 
 import express from 'express';
 import { createServer } from 'http';
+import { Server } from 'socket.io';
 
-import createSocket from './socket';
+// import createSocket from './socket';
 import db from './db';
 import createRoutes from './routes';
+
+import registerChatHandlers from './socket';
+import cookieParser from 'cookie-parser';
 
 const PORT = process.env.PORT || 5050;
 
 const start = async () => {
   try {
-    await db.initialize()
+    await db
+      .initialize()
       .then(() => console.log('Data Source has been initialized!'))
       .catch(err => console.error('Error during Data Source initialization:', err));
 
     const app = express();
     const http = createServer(app);
-    const io = createSocket(http);
+    const io = new Server(http, { cors: { origin: 'http://localhost:3000', credentials: true } });
 
-    createRoutes(app, io);
+    const onConnection = socket => {
+      const wrap = middleware => (socket, next) => middleware(socket.request, {}, next);
+      io.use(wrap(cookieParser()));
+
+      console.log('User connected');
+      registerChatHandlers(io, socket);
+    };
+
+    io.on('connection', onConnection);
+
+    createRoutes(app);
 
     http.listen(PORT, () => console.log(`Server started on ${PORT} port`));
   } catch (error) {
