@@ -1,17 +1,17 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from '../index';
-import { Message, MessagesResponse, Typing } from '../../type/messages';
+import { Message, MessagesResponse, RoomsTyping, Typing } from '../../type/messages';
 
 export interface MessagesState {
   data: Message[];
   count: number;
-  typing: Typing;
+  typing: RoomsTyping;
 }
 
 const initialState: MessagesState = {
   data: [],
   count: 0,
-  typing: [],
+  typing: {},
 };
 
 export const messagesSlice = createSlice({
@@ -30,15 +30,21 @@ export const messagesSlice = createSlice({
     },
 
     //TODO remake to {roomId: users[]}
-    startTyping: (state, action: PayloadAction<Typing[0]>) => {
-      if (state.typing.some(({ roomId, user }) => roomId === action.payload.roomId && user === action.payload.user )) {
-        return state;
-      }
+    startTyping: (state, action: PayloadAction<Typing>) => {
+      const { roomId, user } = action.payload;
 
-      state.typing.push(action.payload);
+      const typingInRoom = state.typing[roomId];
+      const wasTyping = typingInRoom?.includes(user);
+
+      if (!typingInRoom) state.typing[roomId] = [user];
+      else if (!wasTyping) state.typing[roomId].push(user);
     },
-    stopTyping: (state, action: PayloadAction<Typing[0]>) => {
-      state.typing = state.typing.filter(({ user }) => user !== action.payload.user);
+    stopTyping: (state, action: PayloadAction<Typing>) => {
+      const { roomId, user } = action.payload;
+      console.log('roomId, user', roomId, user)
+      if (state.typing[roomId]) {
+        state.typing[roomId] = state.typing[roomId].filter((typingUser) => typingUser !== user);
+      }
     },
   },
 });

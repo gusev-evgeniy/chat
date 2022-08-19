@@ -18,4 +18,8 @@ export type MessagesResponse = {
 export type Typing = {
   roomId: string;
   user: string;
-}[]
+}
+
+export type RoomsTyping = {
+  [key: string]: string[];
+}

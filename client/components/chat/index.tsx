@@ -1,4 +1,4 @@
-import React, { FC, Fragment, useEffect, useMemo } from 'react';
+import React, { FC, Fragment, useMemo } from 'react';
 import Image from 'next/image';
 
 import { ChatItem } from './item';
@@ -13,12 +13,11 @@ import { selectMyData } from '../../store/slices/user';
 import { selectMessagesData } from '../../store/slices/messages';
 import dayjs from 'dayjs';
 import { MessageForm } from './messageForm';
-import { Typing } from '../../type/messages';
 import { returnTypingText } from '../../utils/message';
 
 type Props = {
   selected: RoomsState['selected'];
-  typing: Typing;
+  typing: string[];
 };
 
 export const Chat: FC<Props> = ({ selected, typing }) => {
@@ -27,14 +26,14 @@ export const Chat: FC<Props> = ({ selected, typing }) => {
 
   const typingText = useMemo(() => returnTypingText(typing, selected?.type), [typing, selected?.type]);
 
-  useEffect(() => {
-    const messages = document.querySelector('.messages');
+  // useEffect(() => {
+  //   const messages = document.querySelector('.messages');
 
-    if (messages) {
-      window.scrollTo(0, messages.scrollHeight);
-    }
+  //   if (messages) {
+  //     window.scrollTo(0, messages.scrollHeight);
+  //   }
 
-  }, [messages.length]);
+  // }, [messages.length]);
 
   if (!selected) {
     return (

@@ -13,16 +13,15 @@ import { StyledRooms, StyledSearchIcon, StyledSearchInput } from './styled';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { SelectedRoom } from '../../type/room';
 import { instance } from '../../api';
-import { setMessagesData } from '../../store/slices/messages';
+import { MessagesState, setMessagesData } from '../../store/slices/messages';
 import { selectMyData } from '../../store/slices/user';
 import { StyledAva } from '../avatar/styles';
-import { Typing } from '../../type/messages';
 
 type Props = RoomsState & {
   toggleNewRoom: (isOpen: boolean) => void;
   isOpen: boolean;
   myId: string;
-  typing: Typing
+  typing: MessagesState['typing'];
 };
 
 export const Rooms: FC<Props> = ({ toggleNewRoom, isOpen, myId, data, selected, typing }) => {
@@ -58,8 +57,8 @@ export const Rooms: FC<Props> = ({ toggleNewRoom, isOpen, myId, data, selected, 
       <div className='rooms_wrapper'>
         {data.map((room, index) => {
           const isSelected = selected?.roomId === room.id;
-          const isTyping = typing.filter(({ roomId }) => roomId === room.id);
-
+          // const isTyping = typing.filter(({ roomId }) => roomId === room.id);
+          console.log('Room typing', typing)
           return (
             <Room
               key={room.id}
@@ -68,7 +67,7 @@ export const Rooms: FC<Props> = ({ toggleNewRoom, isOpen, myId, data, selected, 
               isSelected={isSelected}
               selectRoom={selectRoomHandler}
               toggleNewRoom={toggleNewRoom}
-              typing={isTyping}
+              typing={typing[room.id]}
               getMessages={getMessages}
             />
           );

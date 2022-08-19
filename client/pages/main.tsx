@@ -8,7 +8,13 @@ import { NewRoom } from '../components/createRoom';
 
 import { useAppDispatch, useAppSelector } from '../store/hooks';
 import { selectMyData, setUserData } from '../store/slices/user';
-import { addRoom, selectRooms, setRoomsData, updateLastMessage, updateUserOnline } from '../store/slices/rooms';
+import {
+  addRoom,
+  selectRooms,
+  setRoomsData,
+  updateLastMessage,
+  updateUserOnline,
+} from '../store/slices/rooms';
 import { addMessage, selectTyping, startTyping, stopTyping } from '../store/slices/messages';
 import { wrapper } from '../store';
 
@@ -34,7 +40,7 @@ const Main = () => {
 
   useInsertionEffect(() => {
     //TODO. fix
-    socket.on(EVENTS.MESSAGE.RESPONSE_TYPING, (obj: Typing[0]) => {
+    socket.on(EVENTS.MESSAGE.RESPONSE_TYPING, (obj: Typing) => {
       dispatch(startTyping(obj));
       clearInterval(typingTimeoutId.current);
 
@@ -44,17 +50,22 @@ const Main = () => {
     });
 
     socket.on(EVENTS.USER.ENTER, ({ userId }: { userId: string }) => {
-      dispatch(updateUserOnline({ userId, online: true }))
+      dispatch(updateUserOnline({ userId, online: true }));
     });
 
-    socket.on(EVENTS.USER.LEAVE, ({ userId, wasOnline }: { userId: string, wasOnline: string }) => {
-      dispatch(updateUserOnline({ userId, online: false, wasOnline }))
+    socket.on(EVENTS.USER.LEAVE, ({ userId, wasOnline }: { userId: string; wasOnline: string }) => {
+      dispatch(updateUserOnline({ userId, online: false, wasOnline }));
     });
 
     socket.on(EVENTS.MESSAGE.NEW_MESSAGE_CREATED, (obj: Message) => {
       dispatch(addMessage(obj));
       dispatch(updateLastMessage(obj));
       dispatch(stopTyping({ roomId: obj.roomId, user: obj.author.name }));
+
+      if (obj.author.id === me?.id) {
+        const messages = document.querySelector('.messages');
+        if (messages) window.scrollTo(0, messages.scrollHeight);
+      }
     });
 
     socket.on(EVENTS.ROOM.CREATED, obj => {
@@ -62,7 +73,7 @@ const Main = () => {
     });
   }, []);
 
-  const selectedRoomTyping = typing.filter(({ roomId }) => roomId === rooms.selected?.roomId);
+  const selectedRoomTyping = rooms.selected?.roomId ? typing[rooms.selected?.roomId] : [];
 
   return (
     <MainWrapper padding={0}>

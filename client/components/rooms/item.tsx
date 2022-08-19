@@ -14,7 +14,7 @@ type Props = {
   isSelected: boolean;
   selectRoom: (selectedRoom: SelectedRoom) => void;
   toggleNewRoom: (isOpen: boolean) => void;
-  typing: Typing;
+  typing: string[] | undefined;
   getMessages: (roomId: string) => void;
 };
 
