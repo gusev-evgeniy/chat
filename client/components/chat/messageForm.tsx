@@ -7,6 +7,7 @@ import { useAppSelector } from '../../store/hooks';
 import { selectMyData } from '../../store/slices/user';
 import { RoomsState } from '../../store/slices/rooms';
 import { EVENTS } from '../../utils/constants';
+import { Room } from '../../type/room';
 
 type Props = {
   selected: RoomsState['selected'];
@@ -14,7 +15,7 @@ type Props = {
 
 export const MessageForm: FC<Props> = memo(({ selected }) => {
   const [message, setMessage] = useState('');
-  const typingTimeoutId = useRef();
+  const typingTimeoutId = useRef<NodeJS.Timeout | undefined>();
 
   const me = useAppSelector(selectMyData);
 
@@ -37,11 +38,9 @@ export const MessageForm: FC<Props> = memo(({ selected }) => {
   const onSubmitMessage = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    const submitObject = {
+    let submitObject = {
       roomId: selected.id,
-      author: me?.id,
       message,
-      type: selected.type,
     };
 
     const isNewRoom = selected.id === null;
@@ -49,9 +48,14 @@ export const MessageForm: FC<Props> = memo(({ selected }) => {
     if (isNewRoom) {
       socket.emit(
         EVENTS.ROOM.CREATE_PRIVATE,
-        { author: me?.id, userId: selected.id },
-        ({ roomId }: { roomId: string }) => {
-          socket.emit(EVENTS.MESSAGE.MESSAGE_CREATE, { ...submitObject, roomId });
+        { author: me?.id, userId: selected.participants[0].id, message },
+        (obj: { id?: string, message?: string}) => {
+          console.log('obj', obj)
+
+          if (obj.id) {
+            submitObject.roomId = obj.id
+            socket.emit(EVENTS.MESSAGE.MESSAGE_CREATE, submitObject);
+          }
         }
       );
     } else {

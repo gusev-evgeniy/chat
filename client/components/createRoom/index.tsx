@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useEffect } from 'react';
 import {
   StyledCheckedItem,
   StyledCreateRoom,
@@ -11,12 +11,12 @@ import { UsersList } from './usersList';
 import { useDispatch } from 'react-redux';
 import { StyledButton } from '../auth/styles';
 import { useAppSelector } from '../../store/hooks';
-import { checkUser, selectCreatingRoom, updateTitle } from '../../store/slices/createRoom';
+import { checkUser, createRoomsDefault, selectCreatingRoom, updateTitle } from '../../store/slices/createRoom';
 import { Search } from './search';
 import { socket } from '../../api/socket';
 import { selectMyData } from '../../store/slices/user';
 import { UserBD } from '../../type/user';
-import { selectRoom } from '../../store/slices/rooms';
+import { openNewPrivateChat, selectRoom } from '../../store/slices/rooms';
 import { EVENTS } from '../../utils/constants';
 import { instance } from '../../api';
 
@@ -33,6 +33,13 @@ export const NewRoom: FC<Props> = ({ setNewRoomIsOpen }) => {
 
   const groupNameLength = title.length;
   const isGroupChat = type === 'group';
+
+  useEffect(() => {
+    return () => {
+      dispatch(createRoomsDefault());
+    }
+  }, [])
+  
 
   const onChangeName = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
@@ -51,23 +58,20 @@ export const NewRoom: FC<Props> = ({ setNewRoomIsOpen }) => {
   };
 
   const createRoomHandler = async () => {
-    if (isGroupChat) {
-      const usersId = checked.map(({ id }) => id);
-      socket.emit(EVENTS.ROOM.CREATE_GROUP, { author: me.id, usersId, title, type });
-
-      setNewRoomIsOpen(false);
-    }
-    const user = checked[0];
-
     try {
+      if (isGroupChat) {
+        const usersId = checked.map(({ id }) => id);
+        socket.emit(EVENTS.ROOM.CREATE_GROUP, { author: me.id, usersId, title, type });
+
+        setNewRoomIsOpen(false);
+      }
+
+      const user = checked[0];
       const { data } = await instance.get(`/room/checkPrivate?user=${user.id}`);
       if (data) dispatch(selectRoom(data.id));
+    } catch (error) {}
 
-    } catch (error) {
-      
-    }
-
-    // dispatch(selectRoom({ roomId: null, name: user.name, userId: user.id, type: 'private' }));
+    dispatch(openNewPrivateChat(checked));
     setNewRoomIsOpen(false);
   };
 

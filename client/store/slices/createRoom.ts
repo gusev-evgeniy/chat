@@ -49,10 +49,13 @@ export const createRoomSlice = createSlice({
     updateTitle: (state, action: PayloadAction<{ title: string }>) => {
       state.title = action.payload.title;
     },
+    createRoomsDefault: (state) => {
+      state = initialState;
+    }
   },
 });
 
-export const { findUsers, checkUser, updateTitle } = createRoomSlice.actions;
+export const { findUsers, checkUser, updateTitle, createRoomsDefault } = createRoomSlice.actions;
 
 export const selectCreatingRoom = (state: RootState) => state.createRoom;
 

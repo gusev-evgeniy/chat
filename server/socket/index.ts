@@ -12,13 +12,13 @@ const chatHandler = async (io: Server, socket: any) => {
   await addMyDataToSocket(socket);
 
   if (socket.me) {
-    socket.broadcast.emit(EVENTS.USER.ENTER, { userId: socket.me.id });
+    socket.emit(EVENTS.USER.ENTER, { userId: socket.me.id });
   }
   
   const createPrivateRoom = async (obj: any, callback: any) => {
     console.log('createPrivateRoom', obj);
     const { author, userId } = obj;
-
+    console.log('private', userId, socket.me.id);
     const roomExist = await isPrivateRoomExist(userId, socket.me.id);
     if (roomExist) {
       return callback({ message: 'Room exist' });
@@ -35,7 +35,7 @@ const chatHandler = async (io: Server, socket: any) => {
     });
 
     socket.join(room.id);
-    callback({ roomId: room.id });
+    callback({ id: room.id });
 
     const participants = newRoom.participants.map(({ user }) => {
       return user;
@@ -74,6 +74,8 @@ const chatHandler = async (io: Server, socket: any) => {
   };
 
   const createMessage = async ({ roomId, message }: any) => {
+    console.log(`4444444444444444444444444444444444444444444444444`, { roomId, message })
+
     const { id } = await Message.create({ author: socket.me.id, roomId, text: message }).save();
 
     const newMessage = await Message.findOne({

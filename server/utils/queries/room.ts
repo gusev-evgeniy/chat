@@ -7,8 +7,8 @@ export const isPrivateRoomExist = async (userId: string, myId: string) => {
     const room = await Room.createQueryBuilder('room')
       .leftJoinAndSelect('room.participants', 'participants')
       .where('room.type = :type', { type: 'private' })
-      .andWhere('participants.userId = :id', { id: userId })
-      .andWhere('participants.userId = :id', { id: myId })
+      .andWhere('participants.userId = :userId', { userId })
+      .andWhere('participants.userId = :myId', { myId })
       .getOneOrFail();
 
     return room;
@@ -41,6 +41,7 @@ export const getRoomsAndCount = async (id: string) => {
     .leftJoinAndSelect('room.participants', 'participants')
     .leftJoinAndSelect('room.lastMessage', 'lastMessage')
     .leftJoinAndSelect('participants.user', 'user')
+    .addOrderBy('room.updatedAt', 'DESC')
     .getManyAndCount();
 
   const rooms = participants.map(({ room }) => ({

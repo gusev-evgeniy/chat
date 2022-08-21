@@ -15,6 +15,8 @@ import dayjs from 'dayjs';
 import { MessageForm } from './messageForm';
 import { returnTypingText } from '../../utils/message';
 import { Header } from './header';
+import { UserBD } from '../../type/user';
+import { CreateRoomState } from '../../store/slices/createRoom';
 
 type Props = {
   selected: RoomsState['selected'];
@@ -49,13 +51,13 @@ export const Chat: FC<Props> = ({ selected, typing }) => {
     selected.type === 'private'
       ? !!selected.participants.find(participant => participant.id !== me?.id)?.online
       : false;
-
+  console.log('selected.participants', selected.participants)
   const substring =
     selected.type === 'private'
       ? ( dayjs(selected.participants.find(participant => participant.id !== me?.id)?.wasOnline as string).format('YYYY-MM-DD'))
       : `${selected.participants.length} участников, ${selected.participants.filter(
           ({ online }) => online
-        )} в сети`;
+        ).length} в сети`;
 
   const title =
     selected.type === 'private'

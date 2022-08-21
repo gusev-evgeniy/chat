@@ -3,10 +3,12 @@ import { RootState } from '../index';
 import { HYDRATE } from 'next-redux-wrapper';
 import { Room, RoomsResponse } from '../../type/room';
 import { Message } from '../../type/messages';
+import { UserBD } from '../../type/user';
 
+export type SelectedRoom = Omit<Partial<Room>, 'id'> & { id: string | null; participants: UserBD[] };
 export interface RoomsState {
   data: Room[];
-  selected: Room | null;
+  selected: SelectedRoom | null;
   count: number;
 }
 
@@ -32,14 +34,18 @@ export const roomsSlice = createSlice({
       if (!state.data.some(({ id }) => id === action.payload.id)) {
         state.data.unshift(action.payload);
         state.count = state.count + 1;
+        state.selected = action.payload;
       }
     },
     updateLastMessage: (state, action: PayloadAction<Message>) => {
       const { author, ...lastMessage } = action.payload;
 
-      state.data = state.data.map(room =>
-        action.payload.roomId === room.id ? { ...room, lastMessage } : room
-      );
+      state.data = state.data.reduce((acc, curr) => {
+        if (curr.id === action.payload.roomId) acc.unshift({ ...curr, lastMessage });
+        else acc.push(curr);
+
+        return acc;
+      }, [] as Room[]);
     },
     updateUserOnline: (
       state,
@@ -64,6 +70,9 @@ export const roomsSlice = createSlice({
         };
       });
     },
+    openNewPrivateChat(state, action: PayloadAction<UserBD[]>) {
+      state.selected = { id: null, participants: action.payload, type: 'private' };
+    },
   },
   extraReducers: {
     [HYDRATE]: (state, action) => {
@@ -75,7 +84,8 @@ export const roomsSlice = createSlice({
   },
 });
 
-export const { setRoomsData, selectRoom, addRoom, updateLastMessage, updateUserOnline } = roomsSlice.actions;
+export const { setRoomsData, selectRoom, addRoom, updateLastMessage, updateUserOnline, openNewPrivateChat } =
+  roomsSlice.actions;
 
 export const selectRooms = (state: RootState) => state.rooms;
 
