@@ -18,6 +18,7 @@ import { selectMyData } from '../../store/slices/user';
 import { UserBD } from '../../type/user';
 import { selectRoom } from '../../store/slices/rooms';
 import { EVENTS } from '../../utils/constants';
+import { instance } from '../../api';
 
 const MAX_LENGTH = 30;
 
@@ -26,7 +27,6 @@ type Props = {
 };
 
 export const NewRoom: FC<Props> = ({ setNewRoomIsOpen }) => {
-
   const dispatch = useDispatch();
   const { checked, title, type, users, loaded } = useAppSelector(selectCreatingRoom);
   const me = useAppSelector(selectMyData) as UserBD;
@@ -50,18 +50,25 @@ export const NewRoom: FC<Props> = ({ setNewRoomIsOpen }) => {
     dispatch(checkUser({ checked: false, id }));
   };
 
-  //test
   const createRoomHandler = async () => {
     if (isGroupChat) {
       const usersId = checked.map(({ id }) => id);
-      socket.emit(EVENTS.ROOM.CREATE_GROUP, { author: me.id, usersId, title, type })
+      socket.emit(EVENTS.ROOM.CREATE_GROUP, { author: me.id, usersId, title, type });
 
       setNewRoomIsOpen(false);
     }
     const user = checked[0];
 
-      dispatch(selectRoom({ roomId: null, name: user.name, userId: user.id, type: 'private' }));
-      setNewRoomIsOpen(false);
+    try {
+      const { data } = await instance.get(`/room/checkPrivate?user=${user.id}`);
+      if (data) dispatch(selectRoom(data.id));
+
+    } catch (error) {
+      
+    }
+
+    // dispatch(selectRoom({ roomId: null, name: user.name, userId: user.id, type: 'private' }));
+    setNewRoomIsOpen(false);
   };
 
   const disabled = !checked.length || (isGroupChat && !title.trim());

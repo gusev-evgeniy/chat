@@ -5,9 +5,9 @@ import cookie from 'cookie';
 import UserEntity from '../entities/user';
 
 export const createJWT = (user: UserEntity) => {
-  const { id } = user;
+  const { id, name } = user;
 
-  return jwt.sign({ id }, process.env.JWT_SECRET || 'secret');
+  return jwt.sign({ id, name }, process.env.JWT_SECRET || 'secret');
 };
 
 export const getDataFromJWT = (token: string): { id: string } | undefined => {

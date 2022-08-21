@@ -10,13 +10,16 @@ import { updateUser } from '../utils/queries/user';
 
 const chatHandler = async (io: Server, socket: any) => {
   await addMyDataToSocket(socket);
-  socket.broadcast.emit(EVENTS.USER.ENTER, { userId: socket.me });
+
+  if (socket.me) {
+    socket.broadcast.emit(EVENTS.USER.ENTER, { userId: socket.me.id });
+  }
   
   const createPrivateRoom = async (obj: any, callback: any) => {
     console.log('createPrivateRoom', obj);
     const { author, userId } = obj;
 
-    const roomExist = await isPrivateRoomExist(userId, socket.me);
+    const roomExist = await isPrivateRoomExist(userId, socket.me.id);
     if (roomExist) {
       return callback({ message: 'Room exist' });
     }
@@ -70,8 +73,8 @@ const chatHandler = async (io: Server, socket: any) => {
     socket.join(roomId);
   };
 
-  const createMessage = async ({ roomId, author, message, partner, type }: any) => {
-    const { id } = await Message.create({ author, roomId, text: message }).save();
+  const createMessage = async ({ roomId, message }: any) => {
+    const { id } = await Message.create({ author: socket.me.id, roomId, text: message }).save();
 
     const newMessage = await Message.findOne({
       where: { id },
@@ -81,17 +84,17 @@ const chatHandler = async (io: Server, socket: any) => {
     await updateLastMessage(newMessage, roomId);
 
     io.to(roomId).emit(EVENTS.MESSAGE.NEW_MESSAGE_CREATED, newMessage);
+    getTyping({ isTyping: false, roomId, user: socket.me.name });
   };
 
-  const getTyping = ({ partner, ...rest }: GetTypingProps) => {
-    socket.broadcast.to(rest.roomId).emit(EVENTS.MESSAGE.RESPONSE_TYPING, rest);
+  const getTyping = (obj: GetTypingProps) => {
+    socket.broadcast.to(obj.roomId).emit(EVENTS.MESSAGE.RESPONSE_TYPING, obj);
   };
 
   const disconnect = async () => {
     const wasOnline = new Date();
-
-    socket.broadcast.emit(EVENTS.USER.LEAVE, { userId: socket.me, wasOnline });
-    await updateUser(socket.me, { online: false, wasOnline });
+    socket.broadcast.emit(EVENTS.USER.LEAVE, { userId: socket.me?.id, wasOnline });
+    await updateUser(socket.me?.id, { online: false, wasOnline });
   };
 
   socket.on(EVENTS.ROOM.CREATE_PRIVATE, createPrivateRoom);

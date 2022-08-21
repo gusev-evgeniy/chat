@@ -1,12 +1,12 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from '../index';
 import { HYDRATE } from 'next-redux-wrapper';
-import { Room, RoomsResponse, SelectedRoom } from '../../type/room';
+import { Room, RoomsResponse } from '../../type/room';
 import { Message } from '../../type/messages';
 
 export interface RoomsState {
   data: Room[];
-  selected: SelectedRoom | null;
+  selected: Room | null;
   count: number;
 }
 
@@ -24,8 +24,9 @@ export const roomsSlice = createSlice({
       state.data = action.payload.rooms;
       state.count = action.payload.count;
     },
-    selectRoom: (state, action: PayloadAction<SelectedRoom>) => {
-      state.selected = action.payload;
+    selectRoom: (state, action: PayloadAction<string>) => {
+      const room = state.data.find(({ id }) => id === action.payload);
+      if (room) state.selected = room;
     },
     addRoom: (state, action: PayloadAction<Room>) => {
       if (!state.data.some(({ id }) => id === action.payload.id)) {

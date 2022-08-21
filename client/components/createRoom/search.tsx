@@ -1,11 +1,11 @@
 import Image from 'next/image';
 import React, { FC, memo, useState } from 'react';
-import { StyledSearchIcon } from '../rooms/styled';
 import { StyledFindUserIntput, StyledLabel } from './styled';
 import search from '../../images/search.svg';
 import { findUsers } from '../../store/slices/createRoom';
 import { instance } from '../../api';
 import { useAppDispatch } from '../../store/hooks';
+import { StyledInputSearchButton } from '../chat/styled';
 
 export const Search: FC<{}> = memo(() => {
   const [filter, setFilter] = useState('');
@@ -36,9 +36,9 @@ export const Search: FC<{}> = memo(() => {
           value={filter}
           onChange={e => setFilter(e.target.value)}
         />
-        <StyledSearchIcon>
+        <StyledInputSearchButton>
           <Image width='30px' height='30px' src={search} alt='search' />
-        </StyledSearchIcon>
+        </StyledInputSearchButton>
       </div>
     </form>
   );

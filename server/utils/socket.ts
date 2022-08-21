@@ -9,9 +9,9 @@ export const addMyDataToSocket = async (socket: any) => {
   }
 
   const me: any = jwt.verify(token, process.env.JWT_SECRET || 'secret');
-  socket.me = me.id;
+  socket.me = me;
 
-  await updateUser(socket.me, { online: true });
+  await updateUser(me.id, { online: true });
 
   const rooms = await getUserRooms(me.id);
   socket.join(rooms);

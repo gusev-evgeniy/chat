@@ -16,8 +16,9 @@ export type MessagesResponse = {
 };
 
 export type Typing = {
-  roomId: string;
   user: string;
+  roomId: string;
+  isTyping: boolean;
 }
 
 export type RoomsTyping = {

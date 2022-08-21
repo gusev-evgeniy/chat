@@ -4,16 +4,16 @@ import Room from '../../entities/room';
 
 export const isPrivateRoomExist = async (userId: string, myId: string) => {
   try {
-    await Room.createQueryBuilder('room')
+    const room = await Room.createQueryBuilder('room')
       .leftJoinAndSelect('room.participants', 'participants')
       .where('room.type = :type', { type: 'private' })
       .andWhere('participants.userId = :id', { id: userId })
       .andWhere('participants.userId = :id', { id: myId })
       .getOneOrFail();
 
-    return true;
+    return room;
   } catch (error) {
-    return false;
+    return undefined;
   }
 };
 

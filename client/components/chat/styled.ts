@@ -2,8 +2,8 @@ import styled from 'styled-components';
 import TextareaAutosize from 'react-textarea-autosize';
 import { COLORS } from '../../styles/variables';
 
-export const StyledChat = styled.div`
-  height: 100%;
+export const StyledChat = styled.div<{ empty?: boolean }>`
+  height: ${({ empty }) => (empty ? 'null' : '100%')};
   width: 80%;
   display: flex;
   flex-direction: column;
@@ -147,17 +147,20 @@ export const StyledTextareaAutosize = styled(TextareaAutosize)`
   }
 `;
 
-export const StyledSubmitIcon = styled.button`
-  bottom: 11px;
+export const StyledInputButton = styled.button`
   position: absolute;
   right: 12px;
   background-color: inherit;
-  border-radius: 100%;
   display: flex;
   padding: 2px;
   border: 0px;
+`;
 
-  :hover {
-    background-color: rgba(227, 227, 227, 0.7);
-  }
+export const StyledInputSearchButton = styled(StyledInputButton)`
+  top: 46%;
+  transform: translateY(-50%);
+`;
+
+export const StyledSubmitIcon = styled(StyledInputButton)`
+  bottom: 11px;
 `;

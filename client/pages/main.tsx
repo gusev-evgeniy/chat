@@ -1,6 +1,6 @@
-import React, { useEffect, useInsertionEffect, useRef, useState } from 'react';
+import React, { useInsertionEffect, useState } from 'react';
 import axios from 'axios';
-import { Resizable } from 'react-resizable';
+// import { Resizable } from 'react-resizable';
 
 import { Chat } from '../components/chat';
 import { Rooms } from '../components/rooms';
@@ -15,7 +15,7 @@ import {
   updateLastMessage,
   updateUserOnline,
 } from '../store/slices/rooms';
-import { addMessage, selectTyping, startTyping, stopTyping } from '../store/slices/messages';
+import { addMessage, selectTyping, setTyping } from '../store/slices/messages';
 import { wrapper } from '../store';
 
 import { socket } from '../api/socket';
@@ -32,8 +32,6 @@ const Main = () => {
 
   const dispatch = useAppDispatch();
 
-  const typingTimeoutId = useRef();
-
   const toggleNewRoom = (isOpen: boolean) => {
     setNewRoomIsOpen(isOpen);
   };
@@ -41,12 +39,7 @@ const Main = () => {
   useInsertionEffect(() => {
     //TODO. fix
     socket.on(EVENTS.MESSAGE.RESPONSE_TYPING, (obj: Typing) => {
-      dispatch(startTyping(obj));
-      clearInterval(typingTimeoutId.current);
-
-      typingTimeoutId.current = setTimeout(() => {
-        dispatch(stopTyping(obj));
-      }, 2000);
+      dispatch(setTyping(obj))
     });
 
     socket.on(EVENTS.USER.ENTER, ({ userId }: { userId: string }) => {
@@ -60,7 +53,7 @@ const Main = () => {
     socket.on(EVENTS.MESSAGE.NEW_MESSAGE_CREATED, (obj: Message) => {
       dispatch(addMessage(obj));
       dispatch(updateLastMessage(obj));
-      dispatch(stopTyping({ roomId: obj.roomId, user: obj.author.name }));
+      dispatch(setTyping({ isTyping: false, roomId: obj.id, user: obj.author.id }));
 
       if (obj.author.id === me?.id) {
         const messages = document.querySelector('.messages');
@@ -73,7 +66,7 @@ const Main = () => {
     });
   }, []);
 
-  const selectedRoomTyping = rooms.selected?.roomId ? typing[rooms.selected?.roomId] : [];
+  const selectedRoomTyping = rooms.selected?.id ? typing[rooms.selected?.id] : [];
 
   return (
     <MainWrapper padding={0}>
@@ -105,21 +98,33 @@ const Main = () => {
 
 export const getServerSideProps = wrapper.getServerSideProps(store => async ({ req, res, ...etc }) => {
   try {
-    axios.defaults.headers.get.Cookie = req.headers.cookie as string;
+    const cookie = req.headers.cookie;
+
+    if (!cookie) {
+      return {
+        redirect: {
+          destination: '/auth',
+          permanent: false,
+        },
+      };
+    }
+
+    axios.defaults.headers.get.Cookie = cookie as string;
     const { data } = await axios.get('http://localhost:5050/user/me');
     store.dispatch(setUserData(data));
 
     const rooms = await axios.get('http://localhost:5050/room/');
     store.dispatch(setRoomsData(rooms.data));
   } catch ({ response }: any) {
-    // if (response.data.message === 'Unauthenticated') {
-    //   return {
-    //     redirect: {
-    //       destination: '/auth',
-    //       permanent: false,
-    //     },
-    //   };
-    // }
+    console.log('response', response);
+    if (response?.data.message === 'Unauthenticated') {
+      return {
+        redirect: {
+          destination: '/auth',
+          permanent: false,
+        },
+      };
+    }
   }
 });
 

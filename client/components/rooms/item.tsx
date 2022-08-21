@@ -1,8 +1,7 @@
 import React, { FC, memo, useMemo } from 'react';
 import dayjs from 'dayjs';
 
-import { Typing } from '../../type/messages';
-import { Room as RoomType, SelectedRoom } from '../../type/room';
+import { Room as RoomType } from '../../type/room';
 import { UserBD } from '../../type/user';
 import { returnTypingText } from '../../utils/message';
 import { Avatar } from '../avatar';
@@ -12,7 +11,7 @@ type Props = {
   room: RoomType;
   myId: string;
   isSelected: boolean;
-  selectRoom: (selectedRoom: SelectedRoom) => void;
+  selectRoom: (id: string) => void;
   toggleNewRoom: (isOpen: boolean) => void;
   typing: string[] | undefined;
   getMessages: (roomId: string) => void;
@@ -52,7 +51,7 @@ export const Room: FC<Props> = memo(
       }
 
       getMessages(roomId);
-      selectRoom({ name: title, roomId, userId: id, type });
+      selectRoom(roomId);
     };
 
     return (

@@ -9,6 +9,7 @@ export const MainWrapper = styled(StyledWrapper)`
   margin: 0 auto;
   display: flex;
   flex-direction: row;
+  overflow: hidden;
 `;
 
 export const StyledInputIcon = styled.div`

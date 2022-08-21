@@ -11,7 +11,6 @@ import add_chat_fill from '../../images/add_chat_fill.svg';
 
 import { StyledRooms, StyledSearchIcon, StyledSearchInput } from './styled';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
-import { SelectedRoom } from '../../type/room';
 import { instance } from '../../api';
 import { MessagesState, setMessagesData } from '../../store/slices/messages';
 import { selectMyData } from '../../store/slices/user';
@@ -29,8 +28,8 @@ export const Rooms: FC<Props> = ({ toggleNewRoom, isOpen, myId, data, selected, 
 
   const me = useAppSelector(selectMyData);
 
-  const selectRoomHandler = (selectedRoom: SelectedRoom) => {
-    dispatch(selectRoom(selectedRoom));
+  const selectRoomHandler = (id: string) => {
+    dispatch(selectRoom(id));
   };
 
   const getMessages = async (roomId: string) => {
@@ -56,7 +55,7 @@ export const Rooms: FC<Props> = ({ toggleNewRoom, isOpen, myId, data, selected, 
       </div>
       <div className='rooms_wrapper'>
         {data.map((room, index) => {
-          const isSelected = selected?.roomId === room.id;
+          const isSelected = selected?.id === room.id;
           // const isTyping = typing.filter(({ roomId }) => roomId === room.id);
           console.log('Room typing', typing)
           return (

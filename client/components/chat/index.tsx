@@ -14,6 +14,7 @@ import { selectMessagesData } from '../../store/slices/messages';
 import dayjs from 'dayjs';
 import { MessageForm } from './messageForm';
 import { returnTypingText } from '../../utils/message';
+import { Header } from './header';
 
 type Props = {
   selected: RoomsState['selected'];
@@ -37,27 +38,33 @@ export const Chat: FC<Props> = ({ selected, typing }) => {
 
   if (!selected) {
     return (
-      <StyledChat>
+      <StyledChat empty={true}>
         <Empty>Сhoose who you would like to write to</Empty>
       </StyledChat>
     );
   }
+  console.log('selected', selected);
 
-  const isNewRoom = selected.roomId === null;
+  const online =
+    selected.type === 'private'
+      ? !!selected.participants.find(participant => participant.id !== me?.id)?.online
+      : false;
+
+  const substring =
+    selected.type === 'private'
+      ? ( dayjs(selected.participants.find(participant => participant.id !== me?.id)?.wasOnline as string).format('YYYY-MM-DD'))
+      : `${selected.participants.length} участников, ${selected.participants.filter(
+          ({ online }) => online
+        )} в сети`;
+
+  const title =
+    selected.type === 'private'
+      ? (selected.participants.find(participant => participant.id !== me?.id)?.name as string)
+      : (selected.title as string);
 
   return (
     <StyledChat>
-      <div className='header'>
-        {isNewRoom && (
-          <span className='arrow'>
-            <Image width='30px' height='30px' src={arrow_back} alt='arrow_back' />
-          </span>
-        )}
-        <div>
-          <p className='title'>{selected.name}</p>
-          {/* <p className='time'>{  }</p> */}
-        </div>
-      </div>
+      <Header isNewRoom={selected.id === null} online={online} substring={substring} title={title} />
 
       <div className='messages_wrapper'>
         <div className='messages'>

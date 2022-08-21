@@ -27,6 +27,7 @@ const createRoutes = (app: express.Express) => {
   app.get('/user/me', Auth, User.me);
 
   app.get('/room', Auth, Room.getMany);
+  app.get('/room/checkPrivate', Auth, Room.checkPrivate);
 
   app.get('/message', Message.getMany);
 };
