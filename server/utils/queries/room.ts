@@ -35,12 +35,15 @@ export const getUserRooms = async (id: string) => {
 };
 
 export const getRoomsAndCount = async (id: string) => {
+  console.log('id11111111111111111111111111111111111111111', id)
+
   const [participants, count] = await Participant.createQueryBuilder('participant')
     .where('participant.user = :id', { id })
     .leftJoinAndSelect('participant.room', 'room')
     .leftJoinAndSelect('room.participants', 'participants')
     .leftJoinAndSelect('room.lastMessage', 'lastMessage')
     .leftJoinAndSelect('participants.user', 'user')
+    .loadRelationCountAndMap('room.unreadedMessagesCount', 'room.messages', 'message', (qb) => qb.where('message.readed IS FAlSE'))
     .addOrderBy('room.updatedAt', 'DESC')
     .getManyAndCount();
 
@@ -50,6 +53,6 @@ export const getRoomsAndCount = async (id: string) => {
       return user;
     }),
   }));
-
+  console.log('rooms11111111111111111111111111111111111111111', rooms)
   return { rooms, count };
 };

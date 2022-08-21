@@ -23,6 +23,7 @@ export const roomsSlice = createSlice({
   initialState,
   reducers: {
     setRoomsData: (state, action: PayloadAction<RoomsResponse>) => {
+      console.log('action.payload.rooms', action.payload.rooms)
       state.data = action.payload.rooms;
       state.count = action.payload.count;
     },

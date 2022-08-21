@@ -22,7 +22,7 @@ export default class Room extends Base {
   author: User;
 
   @JoinColumn()
-  @OneToMany(() => Message, message => message.roomId)
+  @OneToMany(() => Message, message => message.room)
   messages: Message[];
 
   @JoinColumn()

@@ -16,9 +16,6 @@ export default class Message extends Base {
   @ManyToOne(() => User, user => user.messages)
   author: User;
 
-  @Column({ nullable: false })
-  roomId: string;
-
   @JoinColumn()
   @ManyToOne(() => Room, room => room.messages)
   room: Room;

@@ -62,6 +62,8 @@ const Main = () => {
     });
 
     socket.on(EVENTS.ROOM.CREATED, obj => {
+      console.log(';222222222222', obj);
+      socket.emit(EVENTS.ROOM.JOIN, { roomId: obj.id })
       dispatch(addRoom(obj));
     });
   }, []);
@@ -114,6 +116,7 @@ export const getServerSideProps = wrapper.getServerSideProps(store => async ({ r
     store.dispatch(setUserData(data));
 
     const rooms = await axios.get('http://localhost:5050/room/');
+    console.log('roomsroomsroomsroomsrooms', rooms)
     store.dispatch(setRoomsData(rooms.data));
   } catch ({ response }: any) {
     console.log('response', response);
