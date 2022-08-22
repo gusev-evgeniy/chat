@@ -41,11 +41,12 @@ export const StyledChat = styled.div<{ empty?: boolean }>`
       color: ${COLORS.BLUE};
     }
   }
+`;
 
-  .header {
-    height: 71px;
+export const StyledChatHeader = styled.div`
+    height: 65px;
     border-bottom: 1px solid #e3e3e3;
-    padding: 12px;
+    padding: 15px;
     display: flex;
     align-items: center;
 
@@ -69,13 +70,17 @@ export const StyledChat = styled.div<{ empty?: boolean }>`
       font-weight: 700;
     }
 
-    .time {
+    .substring {
       font-size: 1rem;
       opacity: 0.5;
-      margin: 0 3px;
     }
-  }
-`;
+    
+    .online {
+      color: ${COLORS.BLUE};
+      font-weight: 600;
+      font-size: 1rem;
+    }
+`
 
 export const StyledChatItem = styled.div<{ my: boolean; isLast?: boolean }>`
   width: 100%;

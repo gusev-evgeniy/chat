@@ -4,11 +4,13 @@ import Room from '../../entities/room';
 
 export const isPrivateRoomExist = async (userId: string, myId: string) => {
   try {
+    console.log('userId', userId);
+    console.log('myId', myId);
+
     const room = await Room.createQueryBuilder('room')
       .leftJoinAndSelect('room.participants', 'participants')
       .where('room.type = :type', { type: 'private' })
-      .andWhere('participants.userId = :userId', { userId })
-      .andWhere('participants.userId = :myId', { myId })
+      .andWhere('participants.userId IN (:...ids)', { ids: [ userId, myId ] })
       .getOneOrFail();
 
     return room;
@@ -28,22 +30,33 @@ export const getUserRooms = async (id: string) => {
     const participants = await Participant.createQueryBuilder('participant')
       .where('participant.user = :id', { id })
       .leftJoinAndSelect('participant.room', 'room')
+      .leftJoinAndSelect('room.participants', 'participants')
+      .leftJoinAndSelect('participants.user', 'user')
       .getMany();
 
-    return participants.map(({ room }) => room.id);
+    const roomsAndUsers = participants.reduce((acc, { room }) => {
+      acc[0].push(room.id);
+
+      const users = room.participants.map(({ user }) => user.id)
+      acc[1] = [...acc[1], ...new Set(users)]
+
+      return acc;
+    }, [[], []])
+
+    return roomsAndUsers;
   } catch (error) {}
 };
 
 export const getRoomsAndCount = async (id: string) => {
-  console.log('id11111111111111111111111111111111111111111', id)
-
   const [participants, count] = await Participant.createQueryBuilder('participant')
     .where('participant.user = :id', { id })
     .leftJoinAndSelect('participant.room', 'room')
     .leftJoinAndSelect('room.participants', 'participants')
     .leftJoinAndSelect('room.lastMessage', 'lastMessage')
     .leftJoinAndSelect('participants.user', 'user')
-    .loadRelationCountAndMap('room.unreadedMessagesCount', 'room.messages', 'message', (qb) => qb.where('message.readed IS FAlSE'))
+    .loadRelationCountAndMap('room.unreadedMessagesCount', 'room.messages', 'message', qb =>
+      qb.where('message.readed IS FAlSE').andWhere('message.authorId != :author', { author: id })
+    )
     .addOrderBy('room.updatedAt', 'DESC')
     .getManyAndCount();
 
@@ -53,6 +66,6 @@ export const getRoomsAndCount = async (id: string) => {
       return user;
     }),
   }));
-  console.log('rooms11111111111111111111111111111111111111111', rooms)
+  console.log('rooms11111111111111111111111111111111111111111', rooms);
   return { rooms, count };
 };

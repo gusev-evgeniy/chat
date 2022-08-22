@@ -11,6 +11,7 @@ export type Room = {
   type: RoomType;
   updatedAt: string;
   lastMessage: Omit<Message, 'author'> | null;
+  unreadedMessagesCount: number;
 };
 
 export type RoomsResponse = {

@@ -1,10 +1,8 @@
 import React, { FC, Fragment, useMemo } from 'react';
-import Image from 'next/image';
 
 import { ChatItem } from './item';
 import { StyledChat } from './styled';
 
-import arrow_back from '../../images/arrow_back.svg';
 import { RoomsState } from '../../store/slices/rooms';
 
 import { Empty } from '../../styles';
@@ -15,8 +13,6 @@ import dayjs from 'dayjs';
 import { MessageForm } from './messageForm';
 import { returnTypingText } from '../../utils/message';
 import { Header } from './header';
-import { UserBD } from '../../type/user';
-import { CreateRoomState } from '../../store/slices/createRoom';
 
 type Props = {
   selected: RoomsState['selected'];
@@ -45,19 +41,16 @@ export const Chat: FC<Props> = ({ selected, typing }) => {
       </StyledChat>
     );
   }
-  console.log('selected', selected);
 
   const online =
     selected.type === 'private'
       ? !!selected.participants.find(participant => participant.id !== me?.id)?.online
       : false;
-  console.log('selected.participants', selected.participants)
+
   const substring =
     selected.type === 'private'
       ? ( dayjs(selected.participants.find(participant => participant.id !== me?.id)?.wasOnline as string).format('YYYY-MM-DD'))
-      : `${selected.participants.length} участников, ${selected.participants.filter(
-          ({ online }) => online
-        ).length} в сети`;
+      : `${selected.participants.length} участников, ${selected.participants.filter(({ online }) => online).length} в сети`;
 
   const title =
     selected.type === 'private'

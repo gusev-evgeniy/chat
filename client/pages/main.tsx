@@ -22,23 +22,24 @@ import { socket } from '../api/socket';
 import { MainWrapper } from '../styles';
 import { Message, Typing } from '../type/messages';
 import { EVENTS } from '../utils/constants';
+import { openCreateRoom, selectCreatingRoom } from '../store/slices/createRoom';
 
 const Main = () => {
-  const [newRoomIsOpen, setNewRoomIsOpen] = useState(false);
-
   const me = useAppSelector(selectMyData);
   const rooms = useAppSelector(selectRooms);
   const typing = useAppSelector(selectTyping);
+  const createRoomData = useAppSelector(selectCreatingRoom);
 
   const dispatch = useAppDispatch();
 
   const toggleNewRoom = (isOpen: boolean) => {
-    setNewRoomIsOpen(isOpen);
+    dispatch(openCreateRoom(isOpen))
   };
 
   useInsertionEffect(() => {
     //TODO. fix
     socket.on(EVENTS.MESSAGE.RESPONSE_TYPING, (obj: Typing) => {
+      console.log('RESPONSE_TYPING', obj)
       dispatch(setTyping(obj))
     });
 
@@ -50,19 +51,17 @@ const Main = () => {
       dispatch(updateUserOnline({ userId, online: false, wasOnline }));
     });
 
-    socket.on(EVENTS.MESSAGE.NEW_MESSAGE_CREATED, (obj: Message) => {
-      dispatch(addMessage(obj));
-      dispatch(updateLastMessage(obj));
-      dispatch(setTyping({ isTyping: false, roomId: obj.id, user: obj.author.id }));
+    socket.on(EVENTS.MESSAGE.NEW_MESSAGE_CREATED, (message: Message) => {
+      dispatch(addMessage(message));
+      dispatch(updateLastMessage(message));
 
-      if (obj.author.id === me?.id) {
+      if (message.author.id === me?.id) {
         const messages = document.querySelector('.messages');
         if (messages) window.scrollTo(0, messages.scrollHeight);
       }
     });
 
     socket.on(EVENTS.ROOM.CREATED, obj => {
-      console.log(';222222222222', obj);
       socket.emit(EVENTS.ROOM.JOIN, { roomId: obj.id })
       dispatch(addRoom(obj));
     });
@@ -74,7 +73,7 @@ const Main = () => {
     <MainWrapper padding={0}>
       <Rooms
         toggleNewRoom={toggleNewRoom}
-        isOpen={newRoomIsOpen}
+        isOpen={createRoomData.open}
         myId={me?.id as string}
         {...rooms}
         typing={typing}
@@ -89,8 +88,8 @@ const Main = () => {
         <div>hello</div>
         <div>there</div>
       </Split> */}
-      {newRoomIsOpen ? (
-        <NewRoom setNewRoomIsOpen={setNewRoomIsOpen} />
+      {createRoomData.open ? (
+        <NewRoom setNewRoomIsOpen={toggleNewRoom} />
       ) : (
         <Chat selected={rooms.selected} typing={selectedRoomTyping} />
       )}
@@ -116,10 +115,8 @@ export const getServerSideProps = wrapper.getServerSideProps(store => async ({ r
     store.dispatch(setUserData(data));
 
     const rooms = await axios.get('http://localhost:5050/room/');
-    console.log('roomsroomsroomsroomsrooms', rooms)
     store.dispatch(setRoomsData(rooms.data));
   } catch ({ response }: any) {
-    console.log('response', response);
     if (response?.data.message === 'Unauthenticated') {
       return {
         redirect: {

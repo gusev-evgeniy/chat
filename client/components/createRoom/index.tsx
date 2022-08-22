@@ -16,9 +16,10 @@ import { Search } from './search';
 import { socket } from '../../api/socket';
 import { selectMyData } from '../../store/slices/user';
 import { UserBD } from '../../type/user';
-import { openNewPrivateChat, selectRoom } from '../../store/slices/rooms';
+import { addRoom, openNewPrivateChat, selectRoom } from '../../store/slices/rooms';
 import { EVENTS } from '../../utils/constants';
 import { instance } from '../../api';
+import { Room } from '../../type/room';
 
 const MAX_LENGTH = 30;
 
@@ -61,17 +62,19 @@ export const NewRoom: FC<Props> = ({ setNewRoomIsOpen }) => {
     try {
       if (isGroupChat) {
         const usersId = checked.map(({ id }) => id);
-        socket.emit(EVENTS.ROOM.CREATE_GROUP, { author: me.id, usersId, title, type });
+        socket.emit(EVENTS.ROOM.CREATE_GROUP, { author: me.id, usersId, title, type }, (newRoom: Room) => {
+          dispatch(addRoom(newRoom));
+          dispatch(selectRoom(newRoom.id));
+        });
 
-        setNewRoomIsOpen(false);
+        return setNewRoomIsOpen(false);
       }
 
       const user = checked[0];
       const { data } = await instance.get(`/room/checkPrivate?user=${user.id}`);
       if (data) dispatch(selectRoom(data.id));
+      else dispatch(openNewPrivateChat(checked));
     } catch (error) {}
-
-    dispatch(openNewPrivateChat(checked));
     setNewRoomIsOpen(false);
   };
 

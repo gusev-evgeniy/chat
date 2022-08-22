@@ -14,7 +14,6 @@ class Room {
   async checkPrivate(req: Request, res: Response) {
     try {
       const room = await isPrivateRoomExist(req.query.user as string, res.locals.user.id);
-
       return res.json(room);
     } catch (error) {
       

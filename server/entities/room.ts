@@ -14,7 +14,9 @@ export default class Room extends Base {
   type: string;
 
   @JoinColumn()
-  @OneToMany(() => Participant, participant => participant.room)
+  @OneToMany(() => Participant, participant => participant.room, { 
+    onDelete: 'CASCADE'
+  })
   participants: Participant[];
 
   @JoinColumn()
@@ -22,7 +24,9 @@ export default class Room extends Base {
   author: User;
 
   @JoinColumn()
-  @OneToMany(() => Message, message => message.room)
+  @OneToMany(() => Message, message => message.room, { 
+    onDelete: 'CASCADE'
+  })
   messages: Message[];
 
   @JoinColumn()

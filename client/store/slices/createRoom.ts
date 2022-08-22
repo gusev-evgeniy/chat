@@ -11,6 +11,7 @@ export interface CreateRoomState {
   title: string;
   type: 'private' | 'group';
   loaded: boolean;
+  open: boolean;
 }
 
 const initialState: CreateRoomState = {
@@ -22,6 +23,7 @@ const initialState: CreateRoomState = {
   title: '',
   type: 'private',
   loaded: false,
+  open: false,
 };
 
 export const createRoomSlice = createSlice({
@@ -51,11 +53,14 @@ export const createRoomSlice = createSlice({
     },
     createRoomsDefault: (state) => {
       state = initialState;
+    },
+    openCreateRoom: (state, action: PayloadAction<boolean>) => {
+      state.open = action.payload;
     }
   },
 });
 
-export const { findUsers, checkUser, updateTitle, createRoomsDefault } = createRoomSlice.actions;
+export const { findUsers, checkUser, updateTitle, createRoomsDefault, openCreateRoom } = createRoomSlice.actions;
 
 export const selectCreatingRoom = (state: RootState) => state.createRoom;
 

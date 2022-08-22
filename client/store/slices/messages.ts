@@ -32,11 +32,12 @@ export const messagesSlice = createSlice({
     //TODO remake to {roomId: users[]}
     setTyping: (state, action: PayloadAction<Typing>) => {
       const { roomId, user, isTyping } = action.payload;
-      console.log('roomId, user, isTyping', roomId, user, isTyping)
-      const typingInRoom = state.typing[roomId];
+      if (!user) {
+        return state;
+      }
 
+      const typingInRoom = state.typing[roomId];
       if (!isTyping && typingInRoom) {
-        console.log('typingInRoom', typingInRoom)
         state.typing[roomId] = typingInRoom.filter((typingUser) => typingUser !== user);
       }
 

@@ -23,11 +23,11 @@ export const roomsSlice = createSlice({
   initialState,
   reducers: {
     setRoomsData: (state, action: PayloadAction<RoomsResponse>) => {
-      console.log('action.payload.rooms', action.payload.rooms)
       state.data = action.payload.rooms;
       state.count = action.payload.count;
     },
     selectRoom: (state, action: PayloadAction<string>) => {
+      console.log('action.payload', action.payload)
       const room = state.data.find(({ id }) => id === action.payload);
       if (room) state.selected = room;
     },
@@ -35,13 +35,14 @@ export const roomsSlice = createSlice({
       if (!state.data.some(({ id }) => id === action.payload.id)) {
         state.data.unshift(action.payload);
         state.count = state.count + 1;
-        state.selected = action.payload;
       }
     },
     updateLastMessage: (state, action: PayloadAction<Message>) => {
       const { author, ...lastMessage } = action.payload;
 
       state.data = state.data.reduce((acc, curr) => {
+        console.log('curr', curr)
+        console.log('curr', curr)
         if (curr.id === action.payload.roomId) acc.unshift({ ...curr, lastMessage });
         else acc.push(curr);
 

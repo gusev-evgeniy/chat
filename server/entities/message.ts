@@ -19,4 +19,7 @@ export default class Message extends Base {
   @JoinColumn()
   @ManyToOne(() => Room, room => room.messages)
   room: Room;
+
+  @Column({ nullable: false })
+  roomId: string;
 }

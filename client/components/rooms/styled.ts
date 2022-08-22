@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import { StyledInputIcon, StyledTextInput } from '../../styles';
+import { COLORS } from '../../styles/variables';
 
 export const StyledRooms = styled.div`
   height: 100vh;
@@ -84,13 +85,33 @@ export const StyledRoom = styled.div<{ selected: boolean }>`
       }
     }
 
-    .last_message {
-      font-weight: 400;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      font-size: 1.1rem;
+    .messages {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
       margin-top: 5px;
+      font-size: 1.1rem;
+      font-weight: 400;
+
+      .message {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+
+      }
+      .typing {
+        color: ${COLORS.BLUE};
+        font-weight: 600;
+      }
+
+      .count {
+        background-color: ${COLORS.BLUE};
+        padding: 3px;
+        font-size: 0.9rem;
+        font-weight: 300;
+        color: white;
+        border-radius: 8px;
+      }
     }
   }
 

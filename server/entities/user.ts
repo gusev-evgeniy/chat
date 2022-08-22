@@ -26,15 +26,21 @@ export default class User extends Base {
   wasOnline: Date;
 
   @JoinColumn()
-  @OneToMany(() => Message, message => message.author)
+  @OneToMany(() => Message, message => message.author, {
+    onDelete: 'CASCADE'
+  })
   messages: Message[];
 
   @JoinColumn()
-  @OneToMany(() => Room, room => room.author)
+  @OneToMany(() => Room, room => room.author, { 
+    onDelete: 'CASCADE'
+  })
   rooms: Room[];
 
   @JoinColumn()
-  @OneToMany(() => Participant, participant => participant.user)
+  @OneToMany(() => Participant, participant => participant.user, { 
+    onDelete: 'CASCADE'
+  })
   chat: Participant[];
 
   @BeforeInsert()

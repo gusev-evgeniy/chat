@@ -26,14 +26,20 @@ type RoomInfo = {
 
 export const Room: FC<Props> = memo(
   ({ typing, myId, isSelected, selectRoom, toggleNewRoom, getMessages, room }) => {
-
-    const { participants, id: roomId, type, title: roomTitle, lastMessage } = room || {};
+    const {
+      participants,
+      id: roomId,
+      type,
+      title: roomTitle,
+      lastMessage,
+      unreadedMessagesCount,
+    } = room || {};
     const { createdAt, text } = lastMessage || {};
 
     const time = dayjs(createdAt).format('HH:mm');
-    console.log('Room render')
-    
-    const { image, title, id, online } = useMemo<RoomInfo>(() => {
+
+    const { image, title, id, online } =
+      useMemo<RoomInfo>(() => {
         if (type === 'group') {
           return { image: null, title: roomTitle as string, id: roomId, online: false };
         }
@@ -42,7 +48,7 @@ export const Room: FC<Props> = memo(
         return { id, title: name, image: photo, online };
       }, [room]) || {};
 
-      const typingText = useMemo(() => returnTypingText(typing, type), [typing, type]);
+    const typingText = useMemo(() => returnTypingText(typing, type), [typing, type]);
 
     const onSelecteHandler = () => {
       toggleNewRoom(false);
@@ -65,7 +71,10 @@ export const Room: FC<Props> = memo(
               {time}
             </div>
           </div>
-          <p className='last_message'>{!!typingText ? typingText : text}</p>
+          <div className='messages'>
+            {typingText ? <p className='message typing'>{typingText}</p> : <p className='message'>{text}</p>}
+            {!!unreadedMessagesCount && <p className='count'>{unreadedMessagesCount}</p>}
+          </div>
         </div>
       </StyledRoom>
     );
