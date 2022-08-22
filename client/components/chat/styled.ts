@@ -99,6 +99,7 @@ export const StyledChatItem = styled.div<{ my: boolean; isLast?: boolean }>`
     padding: 5px 15px;
     border-radius: 20px;
     background-color: ${({ my }) => (my ? '#ededee' : '#58d188')};
+    /* background-color: ${({ my }) => (my ? '#ededee' : `#dce3ee`)}; */
     align-items: flex-end;
     margin-left: ${({ isLast }) => (!isLast ? '44px' : '8px')};
     margin-right: ${({ isLast }) => (!isLast ? '44px' : '8px')};
@@ -113,13 +114,15 @@ export const StyledChatItem = styled.div<{ my: boolean; isLast?: boolean }>`
 
   .time {
     font-size: 11px;
-    opacity: 0.5;
+    opacity: 0.9;
     margin-left: 8px;
   }
 
   .readed_icon {
     display: flex;
     align-items: flex-end;
+    min-width: 18px;
+    margin-left: 4px;
   }
 `;
 

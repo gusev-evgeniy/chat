@@ -69,6 +69,7 @@ export const StyledRoom = styled.div<{ selected: boolean }>`
   padding: 13px 15px;
   cursor: pointer;
   background-color: ${({ selected }) => selected && 'rgba(227, 227, 227, 0.7)'};
+  /* background-color: ${({ selected }) => selected && '#dce3ee'}; */
 
   .data {
     margin-left: 10px;
@@ -117,6 +118,7 @@ export const StyledRoom = styled.div<{ selected: boolean }>`
 
   &:hover {
     background-color: ${({ selected }) => !selected && 'rgba(227, 227, 227, 0.3)'};
+    /* background-color: ${({ selected }) => !selected && 'rgba(220, 227, 238, 0.5)'}; */
   }
 `;
 

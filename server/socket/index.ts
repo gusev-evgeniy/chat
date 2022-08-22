@@ -12,7 +12,7 @@ let users = {};
 
 const chatHandler = async (io: Server, socket: any) => {
   await addMyDataToSocket(socket);
-  
+
   if (socket.me) {
     users[socket.me.id] = socket.id;
     await updateUser(socket.me.id, { online: true });
@@ -50,7 +50,6 @@ const chatHandler = async (io: Server, socket: any) => {
   };
 
   const createGroupRoom = async (obj: any, callback) => {
-    console.log('createGroupRoom', obj);
     const { author, usersId, title, type } = obj;
 
     const room = await Room.create({ author, title, type }).save();
@@ -72,7 +71,7 @@ const chatHandler = async (io: Server, socket: any) => {
     });
 
     const usersSocketId = usersId.map(id => users[id]);
-    callback( { ...newRoom, participants });
+    callback({ ...newRoom, participants });
     io.to(usersSocketId).emit(EVENTS.ROOM.CREATED, { ...newRoom, participants });
   };
 
@@ -81,7 +80,12 @@ const chatHandler = async (io: Server, socket: any) => {
   };
 
   const createMessage = async ({ roomId, message }: any) => {
-    const { id } = await Message.create({ author: socket.me.id, room: { id: roomId }, text: message, roomId }).save();
+    const { id } = await Message.create({
+      author: socket.me?.id,
+      room: { id: roomId },
+      text: message,
+      roomId,
+    }).save();
 
     const newMessage = await Message.findOne({
       where: { id },
@@ -97,6 +101,20 @@ const chatHandler = async (io: Server, socket: any) => {
     socket.broadcast.to(obj.roomId).emit(EVENTS.MESSAGE.RESPONSE_TYPING, obj);
   };
 
+  const readMessage = async ({ roomId }: { roomId: string }) => {
+    await Message.createQueryBuilder('message')
+      .where('message."roomId" = :roomId', { roomId })
+      .andWhere('message.readed IS FALSE')
+      .andWhere('message."authorId" != :author', { author: socket.me?.id })
+      .update()
+      .set({
+        readed: true,
+      })
+      .execute();
+
+    socket.to(roomId).emit(EVENTS.MESSAGE.READED, { roomId, userId: socket.me?.id });
+  };
+
   const disconnect = async () => {
     const wasOnline = new Date();
 
@@ -105,7 +123,6 @@ const chatHandler = async (io: Server, socket: any) => {
       socket.broadcast.emit(EVENTS.USER.LEAVE, { userId: socket.me?.id, wasOnline });
       await updateUser(socket.me?.id, { online: false, wasOnline });
     }
-
   };
 
   socket.on(EVENTS.ROOM.CREATE_PRIVATE, createPrivateRoom);
@@ -114,6 +131,8 @@ const chatHandler = async (io: Server, socket: any) => {
 
   socket.on(EVENTS.MESSAGE.MESSAGE_CREATE, createMessage);
   socket.on(EVENTS.MESSAGE.TYPING, getTyping);
+  socket.on(EVENTS.MESSAGE.READ, readMessage);
+
   socket.on('disconnect', disconnect);
 };
 

@@ -1,4 +1,4 @@
-import React, { FC, Fragment, useMemo } from 'react';
+import React, { FC, Fragment, useEffect, useMemo } from 'react';
 
 import { ChatItem } from './item';
 import { StyledChat } from './styled';
@@ -13,6 +13,8 @@ import dayjs from 'dayjs';
 import { MessageForm } from './messageForm';
 import { returnTypingText } from '../../utils/message';
 import { Header } from './header';
+import { socket } from '../../api/socket';
+import { EVENTS } from '../../utils/constants';
 
 type Props = {
   selected: RoomsState['selected'];
@@ -25,14 +27,18 @@ export const Chat: FC<Props> = ({ selected, typing }) => {
 
   const typingText = useMemo(() => returnTypingText(typing, selected?.type), [typing, selected?.type]);
 
-  // useEffect(() => {
-  //   const messages = document.querySelector('.messages');
+useEffect(() => {
+  if (!selected) {
+    return;
+  }
 
-  //   if (messages) {
-  //     window.scrollTo(0, messages.scrollHeight);
-  //   }
+  if (messages.some(({ readed, author }) => readed === false && author.id !== me?.id)) {
+    console.log('EVENTS.MESSAGE.READ')
+    socket.emit(EVENTS.MESSAGE.READ, { roomId: selected.id });
+  }
 
-  // }, [messages.length]);
+}, [selected])
+
 
   if (!selected) {
     return (
@@ -65,7 +71,6 @@ export const Chat: FC<Props> = ({ selected, typing }) => {
         <div className='messages'>
           {messages.map((message, index) => {
             const getDay = (createdAt: string) => dayjs(createdAt).format('YYYY-MM-DD');
-
             const isMy = message.author.id === me?.id;
             const isLast = messages[index + 1]?.author.id !== message.author.id;
             const isNewDay = getDay(messages[index - 1]?.createdAt) !== getDay(message.createdAt);

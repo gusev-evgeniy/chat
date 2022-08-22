@@ -23,7 +23,7 @@ export const MessageForm: FC<Props> = memo(({ selected }) => {
     if (!selected || typing === null) {
       return;
     }
-      console.log('useEffect', useEffect)
+
     socket.emit(EVENTS.MESSAGE.TYPING, { user: me?.name, roomId: selected.id, isTyping: typing });
   }, [typing, selected, me?.name]);
 
@@ -79,7 +79,6 @@ export const MessageForm: FC<Props> = memo(({ selected }) => {
         placeholder='To write a message...'
         onChange={onChangeHandler}
         value={message}
-        autoFocus
       />
       <StyledSubmitIcon disabled={!message.length}>
         <Image width='30px' height='30px' src={send} alt='send' />

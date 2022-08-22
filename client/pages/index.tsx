@@ -27,8 +27,6 @@ const Home = () => {
 
 export const getServerSideProps = wrapper.getServerSideProps(store => async ({ req, res, ...etc }) => {
   try {
-    console.log('req.headers', req.headers);
-
     axios.defaults.headers.get.Cookie = req.headers.cookie as string;
     const { data } = await axios.get('http://localhost:5050/user/me');
     store.dispatch(setUserData(data));

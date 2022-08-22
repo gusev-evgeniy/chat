@@ -38,7 +38,7 @@ export const Rooms: FC<Props> = ({ toggleNewRoom, isOpen, myId, data, selected, 
       dispatch(setMessagesData(data));
     } catch (error) {}
   };
-  console.log('selected', selected);
+
   return (
     <StyledRooms>
       <div className='header'>
@@ -56,7 +56,7 @@ export const Rooms: FC<Props> = ({ toggleNewRoom, isOpen, myId, data, selected, 
       <div className='rooms_wrapper'>
         {data.map((room, index) => {
           const isSelected = selected?.id === room.id;
-          console.log('Room typing', typing)
+
           return (
             <Room
               key={room.id}

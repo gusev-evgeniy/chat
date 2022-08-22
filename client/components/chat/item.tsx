@@ -3,6 +3,7 @@ import React, { FC, memo } from 'react';
 import { StyledChatItem } from './styled';
 
 import readedIcon from '../../images/readed.svg';
+import unreadedIcon from '../../images/unreaded.svg';
 import { Message } from '../../type/messages';
 
 import dayjs from 'dayjs';
@@ -14,15 +15,14 @@ export const ChatItem: FC<Props> = memo(({ isMy, text, createdAt, readed, isLast
   const { photo } = author || {};
 
   const time = dayjs(createdAt).format('HH:mm');
-
   return (
     <StyledChatItem my={isMy} isLast={isLast} data-id={id}>
       <div className='item'>
         <p className='message '>{text}</p>
         <span className='time'>{time}</span>
-        {readed && (
+        {isMy && (
           <div className='readed_icon'>
-            <Image width='18px' height='18px' src={readedIcon} alt='search' />
+            <Image width='18px' height='18px' src={readed ? readedIcon : unreadedIcon} alt='search' />
           </div>
         )}
       </div>

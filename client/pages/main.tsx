@@ -10,6 +10,7 @@ import { useAppDispatch, useAppSelector } from '../store/hooks';
 import { selectMyData, setUserData } from '../store/slices/user';
 import {
   addRoom,
+  incrementUnreadedCount,
   selectRooms,
   setRoomsData,
   updateLastMessage,
@@ -33,14 +34,13 @@ const Main = () => {
   const dispatch = useAppDispatch();
 
   const toggleNewRoom = (isOpen: boolean) => {
-    dispatch(openCreateRoom(isOpen))
+    dispatch(openCreateRoom(isOpen));
   };
 
   useInsertionEffect(() => {
     //TODO. fix
     socket.on(EVENTS.MESSAGE.RESPONSE_TYPING, (obj: Typing) => {
-      console.log('RESPONSE_TYPING', obj)
-      dispatch(setTyping(obj))
+      dispatch(setTyping(obj));
     });
 
     socket.on(EVENTS.USER.ENTER, ({ userId }: { userId: string }) => {
@@ -52,8 +52,19 @@ const Main = () => {
     });
 
     socket.on(EVENTS.MESSAGE.NEW_MESSAGE_CREATED, (message: Message) => {
-      dispatch(addMessage(message));
-      dispatch(updateLastMessage(message));
+      if (rooms.selected?.id === message.roomId) {
+
+        socket.emit(EVENTS.MESSAGE.READ, { roomId: rooms.selected?.id });
+
+        dispatch(addMessage({...message, readed: true}));
+        dispatch(updateLastMessage({...message, readed: true}));
+      }
+
+      else {
+        dispatch(addMessage(message));
+        dispatch(updateLastMessage(message));
+        dispatch(incrementUnreadedCount(message.roomId));
+      }
 
       if (message.author.id === me?.id) {
         const messages = document.querySelector('.messages');
@@ -62,8 +73,12 @@ const Main = () => {
     });
 
     socket.on(EVENTS.ROOM.CREATED, obj => {
-      socket.emit(EVENTS.ROOM.JOIN, { roomId: obj.id })
+      socket.emit(EVENTS.ROOM.JOIN, { roomId: obj.id });
       dispatch(addRoom(obj));
+    });
+
+    socket.on(EVENTS.MESSAGE.READED, obj => {
+      console.log('READED', obj);
     });
   }, []);
 

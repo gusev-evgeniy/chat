@@ -4,9 +4,6 @@ import Room from '../../entities/room';
 
 export const isPrivateRoomExist = async (userId: string, myId: string) => {
   try {
-    console.log('userId', userId);
-    console.log('myId', myId);
-
     const room = await Room.createQueryBuilder('room')
       .leftJoinAndSelect('room.participants', 'participants')
       .where('room.type = :type', { type: 'private' })
@@ -55,7 +52,7 @@ export const getRoomsAndCount = async (id: string) => {
     .leftJoinAndSelect('room.lastMessage', 'lastMessage')
     .leftJoinAndSelect('participants.user', 'user')
     .loadRelationCountAndMap('room.unreadedMessagesCount', 'room.messages', 'message', qb =>
-      qb.where('message.readed IS FAlSE').andWhere('message.authorId != :author', { author: id })
+      qb.where('message.readed IS FALSE').andWhere('message."authorId" != :author', { author: id })
     )
     .addOrderBy('room.updatedAt', 'DESC')
     .getManyAndCount();
@@ -66,6 +63,6 @@ export const getRoomsAndCount = async (id: string) => {
       return user;
     }),
   }));
-  console.log('rooms11111111111111111111111111111111111111111', rooms);
+
   return { rooms, count };
 };
