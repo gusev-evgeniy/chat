@@ -27,6 +27,7 @@ export const roomsSlice = createSlice({
       state.count = action.payload.count;
     },
     selectRoom: (state, action: PayloadAction<string>) => {
+      console.log('action.payload', action.payload);
       const room = state.data.find(({ id }) => id === action.payload);
       if (room) state.selected = room;
     },
@@ -70,6 +71,7 @@ export const roomsSlice = createSlice({
       });
     },
     openNewPrivateChat(state, action: PayloadAction<UserBD[]>) {
+      console.log('openNewPrivateChat');
       state.selected = { id: null, participants: action.payload, type: 'private' };
     },
     incrementUnreadedCount(state, action: PayloadAction<string>) {
@@ -77,6 +79,9 @@ export const roomsSlice = createSlice({
         room.id === action.payload ? { ...room, unreadedMessagesCount: room.unreadedMessagesCount + 1 } : room
       );
     },
+    readMessage: (state, action: PayloadAction<{ roomId: string, userId: string }>) => {
+
+    }
   },
   extraReducers: {
     [HYDRATE]: (state, action) => {
@@ -88,8 +93,16 @@ export const roomsSlice = createSlice({
   },
 });
 
-export const { setRoomsData, selectRoom, addRoom, updateLastMessage, updateUserOnline, openNewPrivateChat, incrementUnreadedCount } =
-  roomsSlice.actions;
+export const {
+  setRoomsData,
+  selectRoom,
+  addRoom,
+  updateLastMessage,
+  updateUserOnline,
+  openNewPrivateChat,
+  incrementUnreadedCount,
+  readMessage,
+} = roomsSlice.actions;
 
 export const selectRooms = (state: RootState) => state.rooms;
 

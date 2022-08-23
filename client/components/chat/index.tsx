@@ -3,18 +3,20 @@ import React, { FC, Fragment, useEffect, useMemo } from 'react';
 import { ChatItem } from './item';
 import { StyledChat } from './styled';
 
-import { RoomsState } from '../../store/slices/rooms';
+import { incrementUnreadedCount, RoomsState, updateLastMessage } from '../../store/slices/rooms';
 
 import { Empty } from '../../styles';
 import { useAppSelector } from '../../store/hooks';
 import { selectMyData } from '../../store/slices/user';
-import { selectMessagesData } from '../../store/slices/messages';
+import { addMessage, selectMessagesData } from '../../store/slices/messages';
 import dayjs from 'dayjs';
 import { MessageForm } from './messageForm';
 import { returnTypingText } from '../../utils/message';
 import { Header } from './header';
 import { socket } from '../../api/socket';
 import { EVENTS } from '../../utils/constants';
+import { useDispatch } from 'react-redux';
+import { Message } from '../../type/messages';
 
 type Props = {
   selected: RoomsState['selected'];
@@ -25,12 +27,14 @@ export const Chat: FC<Props> = ({ selected, typing }) => {
   const me = useAppSelector(selectMyData);
   const messages = useAppSelector(selectMessagesData);
 
-  const typingText = useMemo(() => returnTypingText(typing, selected?.type), [typing, selected?.type]);
+  const dispatch = useDispatch();
 
-useEffect(() => {
-  if (!selected) {
-    return;
-  }
+  const typingText = useMemo(() => returnTypingText(typing, selected?.type), [typing, selected?.type]);
+  useEffect(() => {
+    if (!selected) {
+      return;
+    }
+    console.log('selelcted', selected)
 
   if (messages.some(({ readed, author }) => readed === false && author.id !== me?.id)) {
     console.log('EVENTS.MESSAGE.READ')

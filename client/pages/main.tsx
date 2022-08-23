@@ -1,4 +1,4 @@
-import React, { useInsertionEffect, useState } from 'react';
+import React, { useEffect, useInsertionEffect, useState } from 'react';
 import axios from 'axios';
 // import { Resizable } from 'react-resizable';
 
@@ -24,6 +24,7 @@ import { MainWrapper } from '../styles';
 import { Message, Typing } from '../type/messages';
 import { EVENTS } from '../utils/constants';
 import { openCreateRoom, selectCreatingRoom } from '../store/slices/createRoom';
+import { messageHandler } from '../store/actions';
 
 const Main = () => {
   const me = useAppSelector(selectMyData);
@@ -51,35 +52,23 @@ const Main = () => {
       dispatch(updateUserOnline({ userId, online: false, wasOnline }));
     });
 
-    socket.on(EVENTS.MESSAGE.NEW_MESSAGE_CREATED, (message: Message) => {
-      if (rooms.selected?.id === message.roomId) {
-
-        socket.emit(EVENTS.MESSAGE.READ, { roomId: rooms.selected?.id });
-
-        dispatch(addMessage({...message, readed: true}));
-        dispatch(updateLastMessage({...message, readed: true}));
-      }
-
-      else {
-        dispatch(addMessage(message));
-        dispatch(updateLastMessage(message));
-        dispatch(incrementUnreadedCount(message.roomId));
-      }
-
-      if (message.author.id === me?.id) {
-        const messages = document.querySelector('.messages');
-        if (messages) window.scrollTo(0, messages.scrollHeight);
-      }
-    });
-
     socket.on(EVENTS.ROOM.CREATED, obj => {
       socket.emit(EVENTS.ROOM.JOIN, { roomId: obj.id });
       dispatch(addRoom(obj));
     });
 
     socket.on(EVENTS.MESSAGE.READED, obj => {
-      console.log('READED', obj);
+      // dispatch(readMessage())
     });
+
+    socket.on(EVENTS.MESSAGE.NEW_MESSAGE_CREATED, (message: Message) => {
+      dispatch(messageHandler(message));
+
+      if (message.author.id === me?.id) {
+        const messages = document.querySelector('.messages');
+        if (messages) window.scrollTo(0, messages.scrollHeight);
+      }
+     });
   }, []);
 
   const selectedRoomTyping = rooms.selected?.id ? typing[rooms.selected?.id] : [];
