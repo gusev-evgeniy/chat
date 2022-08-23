@@ -7,7 +7,7 @@ export const isPrivateRoomExist = async (userId: string, myId: string) => {
     const room = await Room.createQueryBuilder('room')
       .leftJoinAndSelect('room.participants', 'participants')
       .where('room.type = :type', { type: 'private' })
-      .andWhere('participants.userId IN (:...ids)', { ids: [ userId, myId ] })
+      .andWhere('participants.userId IN (:...ids)', { ids: [userId, myId] })
       .getOneOrFail();
 
     return room;
@@ -31,14 +31,17 @@ export const getUserRooms = async (id: string) => {
       .leftJoinAndSelect('participants.user', 'user')
       .getMany();
 
-    const roomsAndUsers = participants.reduce((acc, { room }) => {
-      acc[0].push(room.id);
+    const roomsAndUsers = participants.reduce(
+      (acc, { room }) => {
+        acc[0].push(room.id);
 
-      const users = room.participants.map(({ user }) => user.id)
-      acc[1] = [...acc[1], ...new Set(users)]
+        const users = room.participants.map(({ user }) => user.id);
+        acc[1] = [...acc[1], ...new Set(users)];
 
-      return acc;
-    }, [[], []])
+        return acc;
+      },
+      [[], []]
+    );
 
     return roomsAndUsers;
   } catch (error) {}
