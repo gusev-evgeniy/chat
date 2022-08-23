@@ -8,6 +8,7 @@ export type Message = {
   roomId: string;
   text: string;
   updatedAt: string;
+  isMy: boolean;
 };
 
 export type MessagesResponse = {

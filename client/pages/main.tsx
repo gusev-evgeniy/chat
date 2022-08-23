@@ -1,4 +1,4 @@
-import React, { useEffect, useInsertionEffect, useState } from 'react';
+import React, { useInsertionEffect } from 'react';
 import axios from 'axios';
 // import { Resizable } from 'react-resizable';
 
@@ -10,13 +10,11 @@ import { useAppDispatch, useAppSelector } from '../store/hooks';
 import { selectMyData, setUserData } from '../store/slices/user';
 import {
   addRoom,
-  incrementUnreadedCount,
   selectRooms,
   setRoomsData,
-  updateLastMessage,
   updateUserOnline,
 } from '../store/slices/rooms';
-import { addMessage, selectTyping, setTyping } from '../store/slices/messages';
+import { selectTyping, setAllReadedMessages, setTyping } from '../store/slices/messages';
 import { wrapper } from '../store';
 
 import { socket } from '../api/socket';
@@ -24,7 +22,7 @@ import { MainWrapper } from '../styles';
 import { Message, Typing } from '../type/messages';
 import { EVENTS } from '../utils/constants';
 import { openCreateRoom, selectCreatingRoom } from '../store/slices/createRoom';
-import { messageHandler } from '../store/actions';
+import { newMessageHandler, readedHandler } from '../store/actions';
 
 const Main = () => {
   const me = useAppSelector(selectMyData);
@@ -57,14 +55,14 @@ const Main = () => {
       dispatch(addRoom(obj));
     });
 
-    socket.on(EVENTS.MESSAGE.READED, obj => {
-      // dispatch(readMessage())
-    });
+    socket.on(EVENTS.MESSAGE.READED, ({ roomId }) => dispatch(readedHandler(roomId)));
 
     socket.on(EVENTS.MESSAGE.NEW_MESSAGE_CREATED, (message: Message) => {
-      dispatch(messageHandler(message));
+      const extendedMessage = {...message, isMy: message.author.id === me?.id};
 
-      if (message.author.id === me?.id) {
+      dispatch(newMessageHandler(extendedMessage));
+
+      if (extendedMessage.isMy) {
         const messages = document.querySelector('.messages');
         if (messages) window.scrollTo(0, messages.scrollHeight);
       }

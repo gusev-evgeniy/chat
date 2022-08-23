@@ -1,22 +1,21 @@
 import React, { FC, Fragment, useEffect, useMemo } from 'react';
+import { useDispatch } from 'react-redux';
 
 import { ChatItem } from './item';
 import { StyledChat } from './styled';
 
-import { incrementUnreadedCount, RoomsState, updateLastMessage } from '../../store/slices/rooms';
+import { setUnreadedCount, RoomsState } from '../../store/slices/rooms';
 
 import { Empty } from '../../styles';
 import { useAppSelector } from '../../store/hooks';
 import { selectMyData } from '../../store/slices/user';
-import { addMessage, selectMessagesData } from '../../store/slices/messages';
+import { readMessages, selectMessagesData, setAllReadedMessages } from '../../store/slices/messages';
 import dayjs from 'dayjs';
 import { MessageForm } from './messageForm';
 import { returnTypingText } from '../../utils/message';
 import { Header } from './header';
 import { socket } from '../../api/socket';
 import { EVENTS } from '../../utils/constants';
-import { useDispatch } from 'react-redux';
-import { Message } from '../../type/messages';
 
 type Props = {
   selected: RoomsState['selected'];
@@ -31,18 +30,15 @@ export const Chat: FC<Props> = ({ selected, typing }) => {
 
   const typingText = useMemo(() => returnTypingText(typing, selected?.type), [typing, selected?.type]);
   useEffect(() => {
-    if (!selected) {
+    if (!selected || !selected?.unreadedMessagesCount) {
       return;
     }
-    console.log('selelcted', selected)
-
-  if (messages.some(({ readed, author }) => readed === false && author.id !== me?.id)) {
-    console.log('EVENTS.MESSAGE.READ')
-    socket.emit(EVENTS.MESSAGE.READ, { roomId: selected.id });
-  }
-
-}, [selected])
-
+    console.log(2)
+    socket.emit(EVENTS.MESSAGE.READ, { roomId: selected.id }, () => {
+      dispatch(setUnreadedCount({ roomId: selected.id as string, count: 0 }));
+      dispatch(setAllReadedMessages());
+    });
+  }, [selected]);
 
   if (!selected) {
     return (
@@ -59,8 +55,12 @@ export const Chat: FC<Props> = ({ selected, typing }) => {
 
   const substring =
     selected.type === 'private'
-      ? ( dayjs(selected.participants.find(participant => participant.id !== me?.id)?.wasOnline as string).format('YYYY-MM-DD'))
-      : `${selected.participants.length} участников, ${selected.participants.filter(({ online }) => online).length} в сети`;
+      ? dayjs(
+          selected.participants.find(participant => participant.id !== me?.id)?.wasOnline as string
+        ).format('YYYY-MM-DD')
+      : `${selected.participants.length} участников, ${
+          selected.participants.filter(({ online }) => online).length
+        } в сети`;
 
   const title =
     selected.type === 'private'
@@ -75,14 +75,13 @@ export const Chat: FC<Props> = ({ selected, typing }) => {
         <div className='messages'>
           {messages.map((message, index) => {
             const getDay = (createdAt: string) => dayjs(createdAt).format('YYYY-MM-DD');
-            const isMy = message.author.id === me?.id;
             const isLast = messages[index + 1]?.author.id !== message.author.id;
             const isNewDay = getDay(messages[index - 1]?.createdAt) !== getDay(message.createdAt);
 
             return (
               <Fragment key={message.id}>
                 {isNewDay && <Empty margin='15px'>{dayjs(message.createdAt).format('DD MMMM')}</Empty>}
-                <ChatItem {...message} isMy={isMy} isLast={isLast} />
+                <ChatItem {...message} isLast={isLast} />
               </Fragment>
             );
           })}

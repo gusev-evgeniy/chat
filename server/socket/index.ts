@@ -101,18 +101,16 @@ const chatHandler = async (io: Server, socket: any) => {
     socket.broadcast.to(obj.roomId).emit(EVENTS.MESSAGE.RESPONSE_TYPING, obj);
   };
 
-  const readMessage = async ({ roomId }: { roomId: string }) => {
+  const readMessage = async ({ roomId }: { roomId: string }, callback) => {
     await Message.createQueryBuilder('message')
       .where('message."roomId" = :roomId', { roomId })
       .andWhere('message.readed IS FALSE')
       .andWhere('message."authorId" != :author', { author: socket.me?.id })
-      .update()
-      .set({
-        readed: true,
-      })
+      .update({ readed: true })
       .execute();
 
-    socket.to(roomId).emit(EVENTS.MESSAGE.READED, { roomId, userId: socket.me?.id });
+      callback();
+    socket.broadcast.to(roomId).emit(EVENTS.MESSAGE.READED, { roomId });
   };
 
   const disconnect = async () => {

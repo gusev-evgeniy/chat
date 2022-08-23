@@ -22,6 +22,4 @@ export default class Message extends Base {
 
   @Column({ nullable: false })
   roomId: string;
-
-  isMy: boolean;
 }

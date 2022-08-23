@@ -71,16 +71,14 @@ export const roomsSlice = createSlice({
       });
     },
     openNewPrivateChat(state, action: PayloadAction<UserBD[]>) {
-      console.log('openNewPrivateChat');
       state.selected = { id: null, participants: action.payload, type: 'private' };
     },
-    incrementUnreadedCount(state, action: PayloadAction<string>) {
-      state.data = state.data.map(room =>
-        room.id === action.payload ? { ...room, unreadedMessagesCount: room.unreadedMessagesCount + 1 } : room
-      );
-    },
-    readMessage: (state, action: PayloadAction<{ roomId: string, userId: string }>) => {
+    setUnreadedCount(state, action: PayloadAction<{ roomId: string, count: number }>) {
+      const { roomId, count } = action.payload;
 
+      state.data = state.data.map(room =>
+        room.id === roomId ? { ...room, unreadedMessagesCount: count } : room
+      );
     }
   },
   extraReducers: {
@@ -100,8 +98,7 @@ export const {
   updateLastMessage,
   updateUserOnline,
   openNewPrivateChat,
-  incrementUnreadedCount,
-  readMessage,
+  setUnreadedCount,
 } = roomsSlice.actions;
 
 export const selectRooms = (state: RootState) => state.rooms;

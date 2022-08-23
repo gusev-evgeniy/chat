@@ -29,7 +29,7 @@ const createRoutes = (app: express.Express) => {
   app.get('/room', Auth, Room.getMany);
   app.get('/room/checkPrivate', Auth, Room.checkPrivate);
 
-  app.get('/message', Message.getMany);
+  app.get('/message',Auth, Message.getMany);
 };
 
 export default createRoutes;

@@ -32,24 +32,33 @@ export const messagesSlice = createSlice({
     //TODO remake to {roomId: users[]}
     setTyping: (state, action: PayloadAction<Typing>) => {
       const { roomId, user, isTyping } = action.payload;
+
       if (!user) {
         return state;
       }
 
       const typingInRoom = state.typing[roomId];
       if (!isTyping && typingInRoom) {
-        state.typing[roomId] = typingInRoom.filter((typingUser) => typingUser !== user);
+        state.typing[roomId] = typingInRoom.filter(typingUser => typingUser !== user);
       }
 
       const wasTyping = typingInRoom?.includes(user);
 
       if (!typingInRoom) state.typing[roomId] = [user];
       else if (!wasTyping) state.typing[roomId].push(user);
-    }
+    },
+
+    readMessages: (state) => {
+      state.data= state.data.map((message) => !message.isMy ? { ...message, readed: true } : message);
+    },
+
+    setAllReadedMessages: (state) => {
+      state.data= state.data.map((message) => ({ ...message, readed: true }));
+    },
   },
 });
 
-export const { setMessagesData, addMessage, setTyping } = messagesSlice.actions;
+export const { setMessagesData, addMessage, setTyping, readMessages, setAllReadedMessages } = messagesSlice.actions;
 
 export const selectMessagesData = (state: RootState) => state.messages.data;
 export const selectTyping = (state: RootState) => state.messages.typing;

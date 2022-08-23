@@ -17,16 +17,11 @@ class Message {
         },
       });
 
-      const test = await MessageEntity.createQueryBuilder('message')
-        .select('message.*')
-        // .addSelect(`("authorId" = 'b4c6eeb6-c61b-4599-b9b7-0b0f8d2f5070')`, 'test')
-        .where('message."roomId" = :roomId', { roomId })
-        .leftJoinAndSelect('message.author', 'author')
-        .orderBy('message."createdAt"', 'ASC')
-        .getRawMany();
-      console.log('test11111111111111111111111111111', test);
+      const extendedMessages = messages.map(message =>
+        message.author.id === res.locals.user.id ? { ...message, isMy: true } : { ...message, isMy: false }
+      );
 
-      return res.json({ messages, count });
+      return res.json({ messages: extendedMessages, count });
     } catch (error) {}
   }
 }
