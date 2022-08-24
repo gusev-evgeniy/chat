@@ -20,7 +20,6 @@ export const Chat: FC<{}> = () => {
   const { messages, selected, myId, typingText } = useAppSelector(getChatData);
   const { id, unreadedMessagesCount } = selected || {}
 
-  console.log('render')
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -35,12 +34,9 @@ export const Chat: FC<{}> = () => {
   }, [id, unreadedMessagesCount]);
 
   if (!selected) {
-    return (
-      <StyledChat empty={true}>
-        <Empty>Сhoose who you would like to write to</Empty>
-      </StyledChat>
-    );
+    return null;
   }
+
   const { type, participants } = selected;
 
   const online =

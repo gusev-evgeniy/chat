@@ -11,7 +11,7 @@ import { UsersList } from './usersList';
 import { useDispatch } from 'react-redux';
 import { StyledButton } from '../auth/styles';
 import { useAppSelector } from '../../store/hooks';
-import { checkUser, createRoomsDefault, selectCreatingRoom, updateTitle } from '../../store/slices/createRoom';
+import { checkUser, createRoomsDefault, openCreateRoom, selectCreatingRoom, updateTitle } from '../../store/slices/createRoom';
 import { Search } from './search';
 import { socket } from '../../api/socket';
 import { selectMyData } from '../../store/slices/user';
@@ -23,11 +23,7 @@ import { Room } from '../../type/room';
 
 const MAX_LENGTH = 30;
 
-type Props = {
-  setNewRoomIsOpen: (isOpen: boolean) => void;
-};
-
-export const NewRoom: FC<Props> = ({ setNewRoomIsOpen }) => {
+export const NewRoom: FC<{}> = () => {
   const dispatch = useDispatch();
   const { checked, title, type, users, loaded } = useAppSelector(selectCreatingRoom);
   const me = useAppSelector(selectMyData) as UserBD;
@@ -41,6 +37,10 @@ export const NewRoom: FC<Props> = ({ setNewRoomIsOpen }) => {
     }
   }, [])
   
+
+  const setNewRoomIsOpen = (isOpen: boolean) => {
+    dispatch(openCreateRoom(isOpen));
+  };
 
   const onChangeName = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
@@ -73,7 +73,7 @@ export const NewRoom: FC<Props> = ({ setNewRoomIsOpen }) => {
       const user = checked[0];
       const { data } = await instance.get(`/room/checkPrivate?user=${user.id}`);
       if (data) dispatch(selectRoom(data.id));
-      else dispatch(openNewPrivateChat(checked));
+      else dispatch(openNewPrivateChat());
     } catch (error) {}
     setNewRoomIsOpen(false);
   };

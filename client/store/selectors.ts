@@ -8,9 +8,6 @@ export const selectMessages = (state: RootState) => state.messages;
 export const selectMyData = (state: RootState) => state.user.data;
 export const selectCreatingRoom = (state: RootState) => state.createRoom;
 
-export const getSelectedRoom = (state: RootState) =>
-  state.rooms.data.find(({ id }) => id === state.rooms.selected);
-
 export const getChatData = createSelector(
   selectRooms,
   selectMessages,

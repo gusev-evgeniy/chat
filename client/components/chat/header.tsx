@@ -17,7 +17,7 @@ export const Header: FC<Props> = memo(({ isNewRoom, title, online, substring }) 
   const dispatch = useDispatch();
 
   const onBackHandler = () => {
-    dispatch(openCreateRoom(true))
+    dispatch(openCreateRoom(true));
   }
 
   return (

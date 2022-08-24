@@ -2,40 +2,32 @@ import React, { useInsertionEffect } from 'react';
 import axios from 'axios';
 // import { Resizable } from 'react-resizable';
 
-import { Chat } from '../components/chat';
 import { Rooms } from '../components/rooms';
-import { NewRoom } from '../components/createRoom';
 
-import { useAppDispatch, useAppSelector } from '../store/hooks';
-import { selectMyData, setUserData } from '../store/slices/user';
+import { useAppDispatch } from '../store/hooks';
+import { setUserData } from '../store/slices/user';
 import {
   addRoom,
-  selectRooms,
   setRoomsData,
   updateUserOnline,
 } from '../store/slices/rooms';
-import { selectTyping, setAllReadedMessages, setTyping } from '../store/slices/messages';
+import { setTyping } from '../store/slices/messages';
 import { wrapper } from '../store';
 
 import { socket } from '../api/socket';
 import { MainWrapper } from '../styles';
 import { Message, Typing } from '../type/messages';
 import { EVENTS } from '../utils/constants';
-import { openCreateRoom, selectCreatingRoom } from '../store/slices/createRoom';
 import { newMessageHandler, readedHandler } from '../store/actions';
+import { ChatWrapper } from '../components/chat/chatWrapper';
 
 const Main = () => {
-  const createRoomData = useAppSelector(selectCreatingRoom);
-
   const dispatch = useAppDispatch();
-
-  const toggleNewRoom = (isOpen: boolean) => {
-    dispatch(openCreateRoom(isOpen));
-  };
 
   useInsertionEffect(() => {
     //TODO. fix
     socket.on(EVENTS.MESSAGE.RESPONSE_TYPING, (obj: Typing) => {
+      console.log('obj', obj)
       dispatch(setTyping(obj));
     });
 
@@ -55,7 +47,6 @@ const Main = () => {
     socket.on(EVENTS.MESSAGE.READED, ({ roomId }) => dispatch(readedHandler(roomId)));
 
     socket.on(EVENTS.MESSAGE.NEW_MESSAGE_CREATED, (message: Message) => {
-
       dispatch(newMessageHandler(message));
 
       // if (extendedMessage.isMy) {
@@ -78,11 +69,7 @@ const Main = () => {
         <div>hello</div>
         <div>there</div>
       </Split> */}
-      {createRoomData.open ? (
-        <NewRoom setNewRoomIsOpen={toggleNewRoom} />
-      ) : (
-        <Chat />
-      )}
+      <ChatWrapper />
     </MainWrapper>
   );
 };

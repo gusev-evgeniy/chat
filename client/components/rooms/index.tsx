@@ -51,16 +51,15 @@ export const Rooms: FC<{}> = () => {
           <Image width='32px' height='32px' src={isCreatRoomOpen ? add_chat_fill : add_chat} alt='add_dialog' />
         </div>
       </div>
+      
       <div className='rooms_wrapper'>
         {rooms.map((room) => {
-          const isSelected = selected === room.id;
-
           return (
             <Room
               key={room.id}
               room={room}
               myId={me?.id as string}
-              isSelected={isSelected}
+              isSelected={selected === room.id}
               selectRoom={selectRoomHandler}
               toggleNewRoom={toggleNewRoom}
               typing={typing[room.id]}
@@ -69,6 +68,7 @@ export const Rooms: FC<{}> = () => {
           );
         })}
       </div>
+
       <div className='footer'>
         <StyledAva size={45} backgroundImage={me?.photo} />
         <p>{me?.name}</p>

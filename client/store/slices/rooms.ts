@@ -103,6 +103,5 @@ export const {
 } = roomsSlice.actions;
 
 export const selectRooms = (state: RootState) => state.rooms;
-export const getSelectedRoom = (state: RootState) => state.rooms.data.find(({ id }) =>  id === state.rooms.selected);
 
 export const roomsReducer = roomsSlice.reducer;
