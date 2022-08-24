@@ -2,19 +2,17 @@ import React, { FC, memo, useMemo } from 'react';
 import dayjs from 'dayjs';
 
 import { Room as RoomType } from '../../type/room';
-import { UserBD } from '../../type/user';
 import { returnTypingText } from '../../utils/message';
 import { Avatar } from '../avatar';
 import { StyledRoom } from './styled';
+import { getRoomInfo } from '../../utils/room';
 
 type Props = {
   room: RoomType;
   myId: string;
   isSelected: boolean;
-  selectRoom: (id: string) => void;
-  toggleNewRoom: (isOpen: boolean) => void;
+  onSelecteHandler: (id: string) => void;
   typing: string[] | undefined;
-  getMessages: (roomId: string) => void;
 };
 
 type RoomInfo = {
@@ -25,12 +23,10 @@ type RoomInfo = {
 };
 
 export const Room: FC<Props> = memo(
-  ({ typing, myId, isSelected, selectRoom, toggleNewRoom, getMessages, room }) => {
+  ({ typing, myId, isSelected, onSelecteHandler, room }) => {
     const {
-      participants,
-      id: roomId,
+      id,
       type,
-      title: roomTitle,
       lastMessage,
       unreadedMessagesCount,
     } = room || {};
@@ -38,30 +34,11 @@ export const Room: FC<Props> = memo(
 
     const time = dayjs(createdAt).format('HH:mm');
 
-    const { image, title, id, online } =
-      useMemo<RoomInfo>(() => {
-        if (type === 'group') {
-          return { image: null, title: roomTitle as string, id: roomId, online: false };
-        }
-
-        const { id, name, photo, online } = participants.find(({ id }) => id !== myId) as UserBD;
-        return { id, title: name, image: photo, online };
-      }, [room]) || {};
-
+    const { image, title, online } = useMemo<RoomInfo>(() => getRoomInfo(room, myId), []);
     const typingText = useMemo(() => returnTypingText(typing, type), [typing, type]);
 
-    const onSelecteHandler = () => {
-      toggleNewRoom(false);
-      if (isSelected) {
-        return;
-      }
-
-      getMessages(roomId);
-      selectRoom(roomId);
-    };
-
     return (
-      <StyledRoom selected={isSelected} onClick={onSelecteHandler}>
+      <StyledRoom selected={isSelected} onClick={() => onSelecteHandler(id)}>
         <Avatar name={title} photo={image} size={50} online={online} />
         <div className='data'>
           <div className='info'>

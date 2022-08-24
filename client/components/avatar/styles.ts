@@ -17,7 +17,6 @@ export const StyledAva = styled.div<{ backgroundImage?: string | null; size: num
   font-weight: 700;
   font-size: ${({ size }) => `${Math.floor(size/40)}rem`};
   color: #494949;
-  cursor: pointer;
   position: relative;
   overflow: hidden;
   background-image: ${({ backgroundImage }) => `url(${backgroundImage})` || ''};

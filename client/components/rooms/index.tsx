@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import React, { FC } from 'react';
+import React, { FC, memo, useCallback } from 'react';
 
 import { Room } from './item';
 
@@ -11,31 +11,24 @@ import add_chat_fill from '../../images/add_chat_fill.svg';
 
 import { StyledRooms, StyledSearchIcon, StyledSearchInput } from './styled';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
-import { instance } from '../../api';
-import { setMessagesData } from '../../store/slices/messages';
 import { StyledAva } from '../avatar/styles';
 import { getRoomsInfo } from '../../store/selectors';
 import { openCreateRoom } from '../../store/slices/createRoom';
 
-export const Rooms: FC<{}> = () => {
+import { getMessages } from '../../store/actions/messages';
+
+export const Rooms: FC<{}> = memo(() => {
   const dispatch = useAppDispatch();
 
-  const { me, rooms, typing, selected, isCreatRoomOpen } = useAppSelector(getRoomsInfo)
-  console.log('Rooms render')
-  const selectRoomHandler = (id: string) => {
+  const { me, rooms, typing, selected, isCreatRoomOpen } = useAppSelector(getRoomsInfo);
+
+  const toggleNewRoom = (toggle: boolean) => dispatch(openCreateRoom(toggle));
+
+  const onSelecteHandler = useCallback((id: string) => {
+    toggleNewRoom(false);
+    dispatch(getMessages(id));
     dispatch(selectRoom(id));
-  };
-
-  const toggleNewRoom = (isOpen: boolean) => {
-    dispatch(openCreateRoom(isOpen));
-  };
-
-  const getMessages = async (roomId: string) => {
-    try {
-      const { data } = await instance.get(`message/?roomId=${roomId}`);
-      dispatch(setMessagesData(data));
-    } catch (error) {}
-  };
+  }, []);
 
   return (
     <StyledRooms>
@@ -48,22 +41,25 @@ export const Rooms: FC<{}> = () => {
         </form>
 
         <div className='add_chat' onClick={() => toggleNewRoom(!isCreatRoomOpen)}>
-          <Image width='32px' height='32px' src={isCreatRoomOpen ? add_chat_fill : add_chat} alt='add_dialog' />
+          <Image
+            width='32px'
+            height='32px'
+            src={isCreatRoomOpen ? add_chat_fill : add_chat}
+            alt='add_dialog'
+          />
         </div>
       </div>
-      
+
       <div className='rooms_wrapper'>
-        {rooms.map((room) => {
+        {rooms.map(room => {
           return (
             <Room
               key={room.id}
               room={room}
               myId={me?.id as string}
               isSelected={selected === room.id}
-              selectRoom={selectRoomHandler}
-              toggleNewRoom={toggleNewRoom}
+              onSelecteHandler={onSelecteHandler}
               typing={typing[room.id]}
-              getMessages={getMessages}
             />
           );
         })}
@@ -75,4 +71,6 @@ export const Rooms: FC<{}> = () => {
       </div>
     </StyledRooms>
   );
-};
+});
+
+Rooms.displayName = 'Rooms';

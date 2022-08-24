@@ -1,13 +1,14 @@
 import Image from 'next/image';
 import React, { FC, memo, useState } from 'react';
-import { StyledFindUserIntput, StyledLabel } from './styled';
-import search from '../../images/search.svg';
-import { findUsers } from '../../store/slices/createRoom';
-import { instance } from '../../api';
-import { useAppDispatch } from '../../store/hooks';
-import { StyledInputSearchButton } from '../chat/styled';
 
-export const Search: FC<{}> = memo(() => {
+import { StyledFindUserIntput, StyledLabel } from '../styled';
+import search from '../../../images/search.svg';
+import { findUsers } from '../../../store/slices/createRoom';
+import { instance } from '../../../api';
+import { useAppDispatch } from '../../../store/hooks';
+import { StyledInputSearchButton } from '../../chat/styled';
+
+export const Form: FC<{}> = memo(() => {
   const [filter, setFilter] = useState('');
 
   const dispatch = useAppDispatch();
@@ -44,4 +45,4 @@ export const Search: FC<{}> = memo(() => {
   );
 });
 
-Search.displayName = 'Search';
+Form.displayName = 'Form';

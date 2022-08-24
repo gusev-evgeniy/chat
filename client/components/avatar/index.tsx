@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, memo } from 'react';
 
 import { AvaWrapper, Online, StyledAva } from './styles';
 
@@ -9,7 +9,7 @@ type Props = {
   online: boolean;
 };
 
-export const Avatar: FC<Props> = ({ photo, name, size, online }) => {
+export const Avatar: FC<Props> = memo(({ photo, name, size, online }) => {
   return (
     <AvaWrapper size={size}>
       <StyledAva title='Add photo' backgroundImage={photo} size={size}>
@@ -18,4 +18,6 @@ export const Avatar: FC<Props> = ({ photo, name, size, online }) => {
       {online && <Online />}
     </AvaWrapper>
   );
-};
+});
+
+Avatar.displayName = 'Avatar';

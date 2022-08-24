@@ -9,6 +9,7 @@ export const selectRooms = (state: RootState) => state.rooms;
 export const selectMessages = (state: RootState) => state.messages;
 export const selectMyData = (state: RootState) => state.user.data;
 export const selectCreatingRoom = (state: RootState) => state.createRoom;
+export const selectCreatingRoomOpen = (state: RootState) => state.createRoom.open;
 
 export const getChatData = createSelector(
   selectRooms,
@@ -32,8 +33,8 @@ export const getRoomsInfo = createSelector(
   selectRooms,
   selectMessages,
   selectMyData,
-  selectCreatingRoom,
-  ({ data, selected }, { typing }, myData, { open }) => {
+  selectCreatingRoomOpen,
+  ({ data, selected }, { typing }, myData, open) => {
     return {
       typing,
       rooms: data,

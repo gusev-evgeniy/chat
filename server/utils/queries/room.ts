@@ -3,14 +3,17 @@ import Participant from '../../entities/participants';
 import Room from '../../entities/room';
 
 export const isPrivateRoomExist = async (userId: string, myId: string) => {
+  console.log('userId_________________________________________________________', userId)
+  console.log('myId____________________________________________________', myId)
   try {
-    const room = await Room.createQueryBuilder('room')
-      .leftJoinAndSelect('room.participants', 'participants')
-      .where('room.type = :type', { type: 'private' })
-      .andWhere('participants.userId IN (:...ids)', { ids: [userId, myId] })
-      .getOneOrFail();
-
-    return room;
+    // const room = await Room.createQueryBuilder('room')
+    //   .leftJoinAndSelect('room.participants', 'participants')
+    //   .where('room.type = :type', { type: 'private' })
+    //   .andWhere('participants.userId IN (:...ids)', { ids: [userId, myId] })
+    //   .getOneOrFail();
+    // console.log('room', room)
+    // return room;
+    return undefined;
   } catch (error) {
     return undefined;
   }

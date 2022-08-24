@@ -8,14 +8,14 @@ import { NewRoom } from '../createRoom'
 import { StyledChat } from './styled'
 
 export const ChatWrapper = () => {
-  const { newChat, selected } = useAppSelector(selectRooms)
+  const { selected } = useAppSelector(selectRooms)
   const isCreatingRoomOpen = useAppSelector(selectCreatingRoomOpen)
   
   if (isCreatingRoomOpen) {
     return <NewRoom/>
   }
 
-  if (!selected && !newChat) {
+  if (!selected) {
     return (
       <StyledChat empty={true}>
         <Empty>Сhoose who you would like to write to</Empty>
