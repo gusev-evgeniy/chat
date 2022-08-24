@@ -1,4 +1,4 @@
-import { createSlice, PayloadAction, createSelector } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from '../index';
 import { HYDRATE } from 'next-redux-wrapper';
 import { Room, RoomsResponse } from '../../type/room';
@@ -11,14 +11,12 @@ export interface RoomsState {
   data: Room[];
   selected: string | null;
   count: number;
-  newChat: boolean;
 }
 
 const initialState: RoomsState = {
   data: [],
   selected: null,
   count: 0,
-  newChat: false
 };
 
 export const roomsSlice = createSlice({
@@ -71,9 +69,6 @@ export const roomsSlice = createSlice({
         };
       });
     },
-    openNewPrivateChat(state) {
-      state.newChat = true
-    },
     setUnreadedCount(state, action: PayloadAction<{ roomId: string, count: number }>) {
       const { roomId, count } = action.payload;
 
@@ -98,7 +93,6 @@ export const {
   addRoom,
   updateLastMessage,
   updateUserOnline,
-  openNewPrivateChat,
   setUnreadedCount,
 } = roomsSlice.actions;
 

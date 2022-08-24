@@ -13,14 +13,13 @@ class Message {
         },
         relations: ['author'],
         order: {
-          createdAt: 'ASC',
+          createdAt: 'DESC',
         },
       });
-      console.log('messages', messages)
 
       const extendedMessages = messages.map(message =>
         message.author.id === res.locals.user.id ? { ...message, isMy: true } : { ...message, isMy: false }
-      );
+      ).reverse();
       console.log('extendedMessages', extendedMessages)
 
       return res.json({ messages: extendedMessages, count });

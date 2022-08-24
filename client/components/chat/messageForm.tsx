@@ -1,36 +1,32 @@
 import Image from 'next/image';
+
 import React, { FC, memo, useEffect, useRef, useState } from 'react';
 import { StyledMessageForm, StyledSubmitIcon, StyledTextareaAutosize } from './styled';
 import send from '../../images/send.svg';
-import { socket } from '../../api/socket';
-import { useAppSelector } from '../../store/hooks';
-import { selectMyData } from '../../store/slices/user';
-import { RoomsState } from '../../store/slices/rooms';
-import { EVENTS } from '../../utils/constants';
-import { Room } from '../../type/room';
+import { useAppDispatch } from '../../store/hooks';
+import { createMessage, createPrivateRoom, sendTyping } from '../../store/actions';
+import { NEW_ROOM } from '../../utils/constants';
 
 type Props = {
-  selected: Room;
+  selected: string;
 };
 
 export const MessageForm: FC<Props> = memo(({ selected }) => {
   const [message, setMessage] = useState('');
   const [typing, setTyping] = useState<boolean | null>(null);
+  
   const typingTimeoutId = useRef<NodeJS.Timeout | undefined>();
+  const isNewRoom = selected === NEW_ROOM;
 
-  const me = useAppSelector(selectMyData);
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
-    if (!selected || typing === null) {
+    if (isNewRoom || typing === null) {
       return;
     }
- console.log('typing', typing)
-    socket.emit(EVENTS.MESSAGE.TYPING, { user: me?.name, roomId: selected.id, isTyping: typing });
-  }, [typing, selected, me?.name]);
 
-  if (!selected || !me) {
-    return null;
-  }
+    dispatch(sendTyping(typing));
+  }, [typing, isNewRoom, dispatch]);
 
   const onChangeHandler = ({ target }: React.KeyboardEvent<HTMLTextAreaElement>) => {
     setTyping(true);
@@ -46,28 +42,8 @@ export const MessageForm: FC<Props> = memo(({ selected }) => {
   const onSubmitMessage = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    let submitObject = {
-      roomId: selected.id,
-      message,
-    };
-
-    const isNewRoom = selected.id === null;
-
-    if (isNewRoom) {
-      socket.emit(
-        EVENTS.ROOM.CREATE_PRIVATE,
-        { author: me?.id, userId: selected.participants[0].id, message },
-        (obj: { id?: string, message?: string}) => {
-
-          if (obj.id) {
-            submitObject.roomId = obj.id
-            socket.emit(EVENTS.MESSAGE.MESSAGE_CREATE, submitObject);
-          }
-        }
-      );
-    } else {
-      socket.emit(EVENTS.MESSAGE.MESSAGE_CREATE, submitObject);
-    }
+    if (isNewRoom) dispatch(createPrivateRoom(message));
+    else createMessage(selected, message);
 
     setMessage('');
     clearInterval(typingTimeoutId.current);

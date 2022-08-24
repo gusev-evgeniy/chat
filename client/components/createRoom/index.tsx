@@ -1,4 +1,13 @@
 import React, { FC, useEffect } from 'react';
+
+
+import { useAppDispatch, useAppSelector } from '../../store/hooks';
+import { checkUser, createRoomsDefault, openCreateRoom, selectCreatingRoom, updateTitle } from '../../store/slices/createRoom';
+import { createRoom, openNewRoom } from '../../store/actions';
+
+import { UsersList } from './usersList';
+import { Search } from './search';
+
 import {
   StyledCheckedItem,
   StyledCreateRoom,
@@ -6,27 +15,13 @@ import {
   StyledLabel,
   StyledSearchUserWrapper,
 } from './styled';
-
-import { UsersList } from './usersList';
-import { useDispatch } from 'react-redux';
 import { StyledButton } from '../auth/styles';
-import { useAppSelector } from '../../store/hooks';
-import { checkUser, createRoomsDefault, openCreateRoom, selectCreatingRoom, updateTitle } from '../../store/slices/createRoom';
-import { Search } from './search';
-import { socket } from '../../api/socket';
-import { selectMyData } from '../../store/slices/user';
-import { UserBD } from '../../type/user';
-import { addRoom, openNewPrivateChat, selectRoom } from '../../store/slices/rooms';
-import { EVENTS } from '../../utils/constants';
-import { instance } from '../../api';
-import { Room } from '../../type/room';
 
 const MAX_LENGTH = 30;
 
 export const NewRoom: FC<{}> = () => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const { checked, title, type, users, loaded } = useAppSelector(selectCreatingRoom);
-  const me = useAppSelector(selectMyData) as UserBD;
 
   const groupNameLength = title.length;
   const isGroupChat = type === 'group';
@@ -37,11 +32,9 @@ export const NewRoom: FC<{}> = () => {
     }
   }, [])
   
-
-  const setNewRoomIsOpen = (isOpen: boolean) => {
-    dispatch(openCreateRoom(isOpen));
-  };
-
+  const onCheck = (id: string, checked: boolean) => dispatch(checkUser({ checked, id }));
+  const onRemoveUser = (id: string) => dispatch(checkUser({ checked: false, id }));
+  
   const onChangeName = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
 
@@ -50,32 +43,11 @@ export const NewRoom: FC<{}> = () => {
     }
   };
 
-  const onCheck = (id: string, checked: boolean) => {
-    dispatch(checkUser({ checked, id }));
-  };
-
-  const onRemoveUser = (id: string) => {
-    dispatch(checkUser({ checked: false, id }));
-  };
-
   const createRoomHandler = async () => {
-    try {
-      if (isGroupChat) {
-        const usersId = checked.map(({ id }) => id);
-        socket.emit(EVENTS.ROOM.CREATE_GROUP, { author: me.id, usersId, title, type }, (newRoom: Room) => {
-          dispatch(addRoom(newRoom));
-          dispatch(selectRoom(newRoom.id));
-        });
+    if (isGroupChat) dispatch(createRoom());
+    else dispatch(openNewRoom());
 
-        return setNewRoomIsOpen(false);
-      }
-
-      const user = checked[0];
-      const { data } = await instance.get(`/room/checkPrivate?user=${user.id}`);
-      if (data) dispatch(selectRoom(data.id));
-      else dispatch(openNewPrivateChat());
-    } catch (error) {}
-    setNewRoomIsOpen(false);
+    dispatch(openCreateRoom(false))
   };
 
   const disabled = !checked.length || (isGroupChat && !title.trim());

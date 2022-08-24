@@ -20,3 +20,5 @@ export const EVENTS = {
     LEAVE: 'USER_LEAVE'
   }
 } as const;
+
+export const NEW_ROOM = 'NEW_ROOM';

@@ -3,18 +3,21 @@ import React, { FC, memo } from 'react';
 import { useDispatch } from 'react-redux';
 
 import arrow_back from '../../images/arrow_back.svg';
+import { useAppSelector } from '../../store/hooks';
+import { getHeaderInfo } from '../../store/selectors';
 import { openCreateRoom } from '../../store/slices/createRoom';
 import { StyledChatHeader } from './styled';
 
-type Props = {
-  isNewRoom: boolean;
-  title: string;
-  online: boolean;
-  substring: string;
-}
-
-export const Header: FC<Props> = memo(({ isNewRoom, title, online, substring }) => {
+export const Header: FC<{}> = memo(() => {
   const dispatch = useDispatch();
+
+  const data = useAppSelector(getHeaderInfo);
+
+  if (!data) {
+    return null;
+  }
+
+  const { isNewRoom, online, substring, title } = data;
 
   const onBackHandler = () => {
     dispatch(openCreateRoom(true));
