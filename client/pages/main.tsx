@@ -25,9 +25,6 @@ import { openCreateRoom, selectCreatingRoom } from '../store/slices/createRoom';
 import { newMessageHandler, readedHandler } from '../store/actions';
 
 const Main = () => {
-  const me = useAppSelector(selectMyData);
-  const rooms = useAppSelector(selectRooms);
-  const typing = useAppSelector(selectTyping);
   const createRoomData = useAppSelector(selectCreatingRoom);
 
   const dispatch = useAppDispatch();
@@ -58,28 +55,19 @@ const Main = () => {
     socket.on(EVENTS.MESSAGE.READED, ({ roomId }) => dispatch(readedHandler(roomId)));
 
     socket.on(EVENTS.MESSAGE.NEW_MESSAGE_CREATED, (message: Message) => {
-      const extendedMessage = {...message, isMy: message.author.id === me?.id};
 
-      dispatch(newMessageHandler(extendedMessage));
+      dispatch(newMessageHandler(message));
 
-      if (extendedMessage.isMy) {
-        const messages = document.querySelector('.messages');
-        if (messages) window.scrollTo(0, messages.scrollHeight);
-      }
+      // if (extendedMessage.isMy) {
+      //   const messages = document.querySelector('.messages');
+      //   if (messages) window.scrollTo(0, messages.scrollHeight);
+      // }
      });
   }, []);
 
-  const selectedRoomTyping = rooms.selected?.id ? typing[rooms.selected?.id] : [];
-
   return (
     <MainWrapper padding={0}>
-      <Rooms
-        toggleNewRoom={toggleNewRoom}
-        isOpen={createRoomData.open}
-        myId={me?.id as string}
-        {...rooms}
-        typing={typing}
-      />
+      <Rooms />
       {/* <Split
         sizes={[25, 75]}
         cursor='col-resize'
@@ -93,7 +81,7 @@ const Main = () => {
       {createRoomData.open ? (
         <NewRoom setNewRoomIsOpen={toggleNewRoom} />
       ) : (
-        <Chat selected={rooms.selected} typing={selectedRoomTyping} />
+        <Chat />
       )}
     </MainWrapper>
   );

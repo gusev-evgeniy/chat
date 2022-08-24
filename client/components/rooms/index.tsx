@@ -3,7 +3,7 @@ import React, { FC } from 'react';
 
 import { Room } from './item';
 
-import { RoomsState, selectRoom } from '../../store/slices/rooms';
+import { selectRoom } from '../../store/slices/rooms';
 
 import search from '../../images/search.svg';
 import add_chat from '../../images/add_chat.svg';
@@ -12,24 +12,22 @@ import add_chat_fill from '../../images/add_chat_fill.svg';
 import { StyledRooms, StyledSearchIcon, StyledSearchInput } from './styled';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { instance } from '../../api';
-import { MessagesState, setMessagesData } from '../../store/slices/messages';
-import { selectMyData } from '../../store/slices/user';
+import { setMessagesData } from '../../store/slices/messages';
 import { StyledAva } from '../avatar/styles';
+import { getRoomsInfo } from '../../store/selectors';
+import { openCreateRoom } from '../../store/slices/createRoom';
 
-type Props = RoomsState & {
-  toggleNewRoom: (isOpen: boolean) => void;
-  isOpen: boolean;
-  myId: string;
-  typing: MessagesState['typing'];
-};
-
-export const Rooms: FC<Props> = ({ toggleNewRoom, isOpen, myId, data, selected, typing }) => {
+export const Rooms: FC<{}> = () => {
   const dispatch = useAppDispatch();
 
-  const me = useAppSelector(selectMyData);
-
+  const { me, rooms, typing, selected, isCreatRoomOpen } = useAppSelector(getRoomsInfo)
+  console.log('Rooms render')
   const selectRoomHandler = (id: string) => {
     dispatch(selectRoom(id));
+  };
+
+  const toggleNewRoom = (isOpen: boolean) => {
+    dispatch(openCreateRoom(isOpen));
   };
 
   const getMessages = async (roomId: string) => {
@@ -49,19 +47,19 @@ export const Rooms: FC<Props> = ({ toggleNewRoom, isOpen, myId, data, selected, 
           </StyledSearchIcon>
         </form>
 
-        <div className='add_chat' onClick={() => toggleNewRoom(!isOpen)}>
-          <Image width='32px' height='32px' src={isOpen ? add_chat_fill : add_chat} alt='add_dialog' />
+        <div className='add_chat' onClick={() => toggleNewRoom(!isCreatRoomOpen)}>
+          <Image width='32px' height='32px' src={isCreatRoomOpen ? add_chat_fill : add_chat} alt='add_dialog' />
         </div>
       </div>
       <div className='rooms_wrapper'>
-        {data.map((room, index) => {
-          const isSelected = selected?.id === room.id;
+        {rooms.map((room) => {
+          const isSelected = selected === room.id;
 
           return (
             <Room
               key={room.id}
               room={room}
-              myId={myId}
+              myId={me?.id as string}
               isSelected={isSelected}
               selectRoom={selectRoomHandler}
               toggleNewRoom={toggleNewRoom}

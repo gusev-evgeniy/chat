@@ -63,5 +63,6 @@ export const createRoomSlice = createSlice({
 export const { findUsers, checkUser, updateTitle, createRoomsDefault, openCreateRoom } = createRoomSlice.actions;
 
 export const selectCreatingRoom = (state: RootState) => state.createRoom;
+export const selectCreatingRoomOpen = (state: RootState) => state.createRoom.open;
 
 export const createRoomReducer = createRoomSlice.reducer;

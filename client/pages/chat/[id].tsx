@@ -1,27 +1,44 @@
-import React, { FC, Fragment, memo, useEffect } from 'react';
+import axios from 'axios'
+import { useRouter } from 'next/router'
+import React, { FC, Fragment, memo, ReactElement, useEffect } from 'react'
+import Layout from '../../layout'
+import { wrapper } from '../../store'
+import { setRoomsData } from '../../store/slices/rooms'
+import { setUserData } from '../../store/slices/user'
+
 import { useDispatch } from 'react-redux';
 import dayjs from 'dayjs';
 
-import { ChatItem } from './item';
-import { StyledChat } from './styled';
 
 import { setUnreadedCount } from '../../store/slices/rooms';
 
 import { Empty } from '../../styles';
-import { useAppSelector } from '../../store/hooks';
+import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { setAllReadedMessages } from '../../store/slices/messages';
-import { MessageForm } from './messageForm';
-import { Header } from './header';
 import { socket } from '../../api/socket';
 import { EVENTS } from '../../utils/constants';
 import { getChatData } from '../../store/selectors';
+import { StyledChat } from '../../components/chat/styled'
+import { Header } from '../../components/chat/header'
+import { ChatItem } from '../../components/chat/item'
+import { MessageForm } from '../../components/chat/messageForm'
+import { getMessages } from '../../store/actions/messages'
 
-export const Chat: FC<{}> = () => {
+const Chat = () => {
+  const { query } = useRouter();
+
   const { messages, selected, myId, typingText } = useAppSelector(getChatData);
   const { id, unreadedMessagesCount } = selected || {}
 
   console.log('render')
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    if (query.id) {
+      console.log('query.id', query.id)
+      dispatch(getMessages(query.id as string))
+    }
+  }, [query.id])
 
   useEffect(() => {
     if (!id || !unreadedMessagesCount) {
@@ -87,4 +104,43 @@ export const Chat: FC<{}> = () => {
       <MessageForm selected={selected} />
     </StyledChat>
   );
-};
+}
+
+// Chat.getLayout = (page: ReactElement) => (
+//   <Layout>
+//     {page}
+//   </Layout>
+// )
+
+// export const getServerSideProps = wrapper.getServerSideProps(store => async ({ req, res, ...etc }) => {
+//   try {
+//     const cookie = req.headers.cookie;
+
+//     if (!cookie) {
+//       return {
+//         redirect: {
+//           destination: '/auth',
+//           permanent: false,
+//         },
+//       };
+//     }
+
+//     axios.defaults.headers.get.Cookie = cookie as string;
+//     // const { data } = await axios.get('http://localhost:5050/user/me');
+//     // store.dispatch(setUserData(data));
+
+//     const rooms = await axios.get('http://localhost:5050/room/');
+//     store.dispatch(setRoomsData(rooms.data));
+//   } catch ({ response }: any) {
+//     if (response?.data.message === 'Unauthenticated') {
+//       return {
+//         redirect: {
+//           destination: '/auth',
+//           permanent: false,
+//         },
+//       };
+//     }
+//   }
+// });
+
+export default Chat;

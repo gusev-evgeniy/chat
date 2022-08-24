@@ -1,21 +1,24 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction, createSelector } from '@reduxjs/toolkit';
 import { RootState } from '../index';
 import { HYDRATE } from 'next-redux-wrapper';
 import { Room, RoomsResponse } from '../../type/room';
 import { Message } from '../../type/messages';
 import { UserBD } from '../../type/user';
 
+
 export type SelectedRoom = Omit<Partial<Room>, 'id'> & { id: string | null; participants: UserBD[] };
 export interface RoomsState {
   data: Room[];
-  selected: SelectedRoom | null;
+  selected: string | null;
   count: number;
+  newChat: boolean;
 }
 
 const initialState: RoomsState = {
   data: [],
   selected: null,
   count: 0,
+  newChat: false
 };
 
 export const roomsSlice = createSlice({
@@ -27,9 +30,7 @@ export const roomsSlice = createSlice({
       state.count = action.payload.count;
     },
     selectRoom: (state, action: PayloadAction<string>) => {
-      console.log('action.payload', action.payload);
-      const room = state.data.find(({ id }) => id === action.payload);
-      if (room) state.selected = room;
+      state.selected = action.payload;
     },
     addRoom: (state, action: PayloadAction<Room>) => {
       if (!state.data.some(({ id }) => id === action.payload.id)) {
@@ -70,8 +71,8 @@ export const roomsSlice = createSlice({
         };
       });
     },
-    openNewPrivateChat(state, action: PayloadAction<UserBD[]>) {
-      state.selected = { id: null, participants: action.payload, type: 'private' };
+    openNewPrivateChat(state) {
+      state.newChat = true
     },
     setUnreadedCount(state, action: PayloadAction<{ roomId: string, count: number }>) {
       const { roomId, count } = action.payload;
@@ -102,5 +103,6 @@ export const {
 } = roomsSlice.actions;
 
 export const selectRooms = (state: RootState) => state.rooms;
+export const getSelectedRoom = (state: RootState) => state.rooms.data.find(({ id }) =>  id === state.rooms.selected);
 
 export const roomsReducer = roomsSlice.reducer;

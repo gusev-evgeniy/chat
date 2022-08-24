@@ -7,9 +7,10 @@ import { useAppSelector } from '../../store/hooks';
 import { selectMyData } from '../../store/slices/user';
 import { RoomsState } from '../../store/slices/rooms';
 import { EVENTS } from '../../utils/constants';
+import { Room } from '../../type/room';
 
 type Props = {
-  selected: RoomsState['selected'];
+  selected: Room;
 };
 
 export const MessageForm: FC<Props> = memo(({ selected }) => {
