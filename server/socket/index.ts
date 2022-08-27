@@ -46,7 +46,7 @@ const chatHandler = async (io: Server, socket: any) => {
 
     const participants = newRoom.participants.map(({ user }) => user);
 
-    io.to([users[userId], users[author]]).emit(EVENTS.ROOM.CREATED, { ...newRoom, participants });
+    io.to([users[userId], users[author]]).emit(EVENTS.ROOM.CREATED, { ...newRoom, participants, unreadedMessagesCount: 0 });
   };
 
   const createGroupRoom = async (obj: any, callback) => {
@@ -72,7 +72,7 @@ const chatHandler = async (io: Server, socket: any) => {
 
     const usersSocketId = usersId.map(id => users[id]);
     callback({ ...newRoom, participants });
-    io.to(usersSocketId).emit(EVENTS.ROOM.CREATED, { ...newRoom, participants });
+    io.to(usersSocketId).emit(EVENTS.ROOM.CREATED, { ...newRoom, participants, unreadedMessagesCount: 0 });
   };
 
   const joinRoom = ({ roomId }) => {

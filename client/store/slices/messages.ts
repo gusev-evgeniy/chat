@@ -2,16 +2,23 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from '../index';
 import { Message, MessagesResponse, RoomsTyping, Typing } from '../../type/messages';
 
-export interface MessagesState {
-  data: Message[];
+export type RoomMessages = {
+  messages: Message[];
   count: number;
+  loaded: boolean;
+};
+
+export interface MessagesState {
+  data: {
+    [key: string]: RoomMessages;
+  };
   typing: RoomsTyping;
 }
 
+
 const initialState: MessagesState = {
-  data: [],
-  count: 0,
-  typing: {},
+  data: {},
+  typing: {}
 };
 
 export const messagesSlice = createSlice({
@@ -19,17 +26,22 @@ export const messagesSlice = createSlice({
   initialState,
   reducers: {
     setMessagesData: (state, action: PayloadAction<MessagesResponse>) => {
-      state.data = action.payload.messages;
-      state.count = action.payload.count;
+      const { count, messages, roomId } = action.payload;
+
+      state.data[roomId] = {
+        messages,
+        count,
+        loaded: true
+      };
     },
     addMessage: (state, action: PayloadAction<Message>) => {
-      if (!state.data.some(({ id }) => id === action.payload.id)) {
-        state.data.push(action.payload);
-        state.count = state.count + 1;
-      }
+      const roomId = action.payload.roomId;
+      const room = state.data[roomId] || {};
+
+      room.messages.push(action.payload);
+      room.count++;
     },
 
-    //TODO remake to {roomId: users[]}
     setTyping: (state, action: PayloadAction<Typing>) => {
       const { roomId, user, isTyping } = action.payload;
 
@@ -48,19 +60,19 @@ export const messagesSlice = createSlice({
       else if (!wasTyping) state.typing[roomId].push(user);
     },
 
-    readMessages: (state) => {
-      state.data= state.data.map((message) => !message.isMy ? { ...message, readed: true } : message);
-    },
+    setAllReadedMessages: (state, action: PayloadAction<string>) => {
+      const room = state.data[action.payload];
+      console.log('room', room)
 
-    setAllReadedMessages: (state) => {
-      state.data= state.data.map((message) => ({ ...message, readed: true }));
+      if (room) {
+        room.messages = room.messages.map((message) => ({ ...message, readed: true }));
+      }
     },
   },
 });
 
-export const { setMessagesData, addMessage, setTyping, readMessages, setAllReadedMessages } = messagesSlice.actions;
+export const { setMessagesData, addMessage, setTyping, setAllReadedMessages } = messagesSlice.actions;
 
 export const selectMessagesData = (state: RootState) => state.messages.data;
-export const selectTyping = (state: RootState) => state.messages.typing;
 
 export const messagesReducer = messagesSlice.reducer;

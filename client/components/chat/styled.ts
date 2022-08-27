@@ -4,7 +4,7 @@ import { COLORS } from '../../styles/variables';
 
 export const StyledChat = styled.div<{ empty?: boolean }>`
   height: ${({ empty }) => (empty ? 'null' : '100%')};
-  width: 80%;
+  width: 70%;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -99,11 +99,10 @@ export const StyledChatItem = styled.div<{ my: boolean; isLast?: boolean }>`
     padding: 5px 15px;
     border-radius: 20px;
     background-color: ${({ my }) => (my ? '#ededee' : '#58d188')};
-    /* background-color: ${({ my }) => (my ? '#ededee' : `#dce3ee`)}; */
     align-items: flex-end;
     margin-left: ${({ isLast }) => (!isLast ? '44px' : '8px')};
     margin-right: ${({ isLast }) => (!isLast ? '44px' : '8px')};
-    max-width: 70%;
+    max-width: 80%;
 
     .message {
       word-break: break-all;

@@ -1,10 +1,8 @@
 import { AppDispatch, RootState } from '..';
-import { instance } from '../../api';
 import { socket } from '../../api/socket';
 import { Message } from '../../type/messages';
 import { Room } from '../../type/room';
-import { EVENTS, NEW_ROOM } from '../../utils/constants';
-import { openCreateRoom } from '../slices/createRoom';
+import { EVENTS } from '../../utils/constants';
 import { addMessage, setAllReadedMessages } from '../slices/messages';
 import { addRoom, selectRoom, setUnreadedCount, updateLastMessage } from '../slices/rooms';
 
@@ -18,9 +16,11 @@ export const newMessageHandler = (message: Message) => async (dispatch: AppDispa
     dispatch(updateLastMessage(extendedMessage));
 
     if (!extendedMessage.isMy) {
-      const room = rooms.data.find(({ id }) => id === extendedMessage.roomId);
+      const { unreadedMessagesCount } = rooms.data.find(({ id }) => id === extendedMessage.roomId) || {};
+      const count = unreadedMessagesCount ? unreadedMessagesCount + 1 : 1; 
+
       dispatch(
-        setUnreadedCount({ roomId: extendedMessage.roomId, count: (room?.unreadedMessagesCount as number) + 1 })
+        setUnreadedCount({ roomId: extendedMessage.roomId, count })
       );
     }
   };
@@ -29,7 +29,7 @@ export const readedHandler = (roomId: string) => async (dispatch: AppDispatch, g
   const { rooms: { selected } } = getState();
 
   if (selected === roomId) {
-    dispatch(setAllReadedMessages());
+    dispatch(setAllReadedMessages(roomId));
   }
 };
 
@@ -44,15 +44,14 @@ export const createRoom = () => async (dispatch: AppDispatch, getState: () => Ro
 };
 
 export const openNewRoom = () => async (dispatch: AppDispatch, getState: () => RootState) => {
-  const { createRoom: { checked  } } = getState();
+  const { createRoom: { checked  }, rooms: { data } } = getState();
+  //     // const { data } = await instance.get(`/room/checkPrivate?user=${checked[0].id}`);
 
-  try {
-      const { data } = await instance.get(`/room/checkPrivate?user=${checked[0].id}`);
-      console.log('data', data)
-      if (data) dispatch(selectRoom(data.id));
-      else dispatch(selectRoom(NEW_ROOM));
-  } catch (error) {
-  }
+  const room = data.find(({ type, participants }) => (
+    type === 'private' && participants.some(({ id }) => id === checked[0].id)
+  ))
+
+  if (room) dispatch(selectRoom(room.id));
 };
 
 export const createPrivateRoom = (message: string) => async (dispatch: AppDispatch, getState: () => RootState) => {
@@ -79,7 +78,7 @@ export const createMessage = (roomId: string, message: string) => {
 export const readMessage = (id: string) => async (dispatch: AppDispatch) => {
   socket.emit(EVENTS.MESSAGE.READ, { roomId: id }, () => {
     dispatch(setUnreadedCount({ roomId: id, count: 0 }));
-    dispatch(setAllReadedMessages());
+    dispatch(setAllReadedMessages(id));
   });
 };
 

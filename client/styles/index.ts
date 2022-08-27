@@ -4,12 +4,13 @@ import { StyledWrapper } from '../components/auth/styles';
 export const DISABLED_GRAY = '#dad6ca';
 
 export const MainWrapper = styled(StyledWrapper)`
-  min-width: 80%;
+  width: 100%;
   height: 100vh;
   margin: 0 auto;
   display: flex;
   flex-direction: row;
   overflow: hidden;
+  max-width: 1280px;
 `;
 
 export const StyledInputIcon = styled.div`

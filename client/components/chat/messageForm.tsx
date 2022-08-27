@@ -42,8 +42,8 @@ export const MessageForm: FC<Props> = memo(({ selected }) => {
   const onSubmitMessage = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    if (isNewRoom) dispatch(createPrivateRoom(message));
-    else createMessage(selected, message);
+    if (isNewRoom) dispatch(createPrivateRoom(message.trim()));
+    else createMessage(selected, message.trim());
 
     setMessage('');
     clearInterval(typingTimeoutId.current);
@@ -57,7 +57,7 @@ export const MessageForm: FC<Props> = memo(({ selected }) => {
         onChange={onChangeHandler}
         value={message}
       />
-      <StyledSubmitIcon disabled={!message.length}>
+      <StyledSubmitIcon disabled={!message.trim().length}>
         <Image width='30px' height='30px' src={send} alt='send' />
       </StyledSubmitIcon>
     </StyledMessageForm>

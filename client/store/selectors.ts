@@ -4,6 +4,7 @@ import dayjs from 'dayjs';
 import { RootState } from '.';
 import { NEW_ROOM } from '../utils/constants';
 import { returnTypingText } from '../utils/message';
+import { RoomMessages } from './slices/messages';
 
 export const selectRooms = (state: RootState) => state.rooms;
 export const selectMessages = (state: RootState) => state.messages;
@@ -14,17 +15,19 @@ export const selectCreatingRoomOpen = (state: RootState) => state.createRoom.ope
 export const getChatData = createSelector(
   selectRooms,
   selectMessages,
-  ({ data, selected }, { typing, data: messages }) => {
-    const openRoom = data.find(({ id }) => id === selected);
-    const typingInChat = selected ? typing[selected] : [];
+  ({ data: rooms, selected }, { data, typing }) => {
+    const openRoom = rooms.find(({ id }) => id === selected);
+    const { messages = [], loaded } =  data[selected as string] || {} as RoomMessages;
 
+    const typingInChat = selected ? typing[selected] : [];
     const typingText = returnTypingText(typingInChat, openRoom?.type);
 
     return {
       typingText,
       messages,
       selected,
-      unreadedMessagesCount: openRoom?.unreadedMessagesCount
+      unreadedMessagesCount: openRoom?.unreadedMessagesCount,
+      loaded
     };
   }
 );
@@ -34,10 +37,11 @@ export const getRoomsInfo = createSelector(
   selectMessages,
   selectMyData,
   selectCreatingRoomOpen,
-  ({ data, selected }, { typing }, myData, open) => {
+  ({ data: rooms, selected }, { typing }, myData, open) => {
+
     return {
       typing,
-      rooms: data,
+      rooms,
       me: myData,
       selected,
       isCreatRoomOpen: open

@@ -15,18 +15,15 @@ import { StyledAva } from '../avatar/styles';
 import { getRoomsInfo } from '../../store/selectors';
 import { openCreateRoom } from '../../store/slices/createRoom';
 
-import { getMessages } from '../../store/actions/messages';
-
 export const Rooms: FC<{}> = memo(() => {
   const dispatch = useAppDispatch();
 
   const { me, rooms, typing, selected, isCreatRoomOpen } = useAppSelector(getRoomsInfo);
-
+  console.log('rooms', rooms)
   const toggleNewRoom = (toggle: boolean) => dispatch(openCreateRoom(toggle));
 
   const onSelecteHandler = useCallback((id: string) => {
     toggleNewRoom(false);
-    dispatch(getMessages(id));
     dispatch(selectRoom(id));
   }, []);
 

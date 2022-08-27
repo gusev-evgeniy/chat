@@ -4,26 +4,30 @@ import dayjs from 'dayjs';
 import { ChatItem } from './item';
 import { StyledChat } from './styled';
 
-
 import { Empty } from '../../styles';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { MessageForm } from './messageForm';
 import { Header } from './header';
 import { getChatData } from '../../store/selectors';
 import { readMessage } from '../../store/actions';
+import { getMessages } from '../../store/actions/messages';
 
 export const Chat: FC<{}> = () => {
-  const { messages, selected, typingText, unreadedMessagesCount } = useAppSelector(getChatData);
+  const { messages, selected, typingText, unreadedMessagesCount, loaded = false } = useAppSelector(getChatData);
 
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    if (!selected || !unreadedMessagesCount) {
+    !loaded && dispatch(getMessages());
+  }, [loaded, dispatch]);
+
+  useEffect(() => {
+    if (!selected || !loaded || !unreadedMessagesCount) {
       return;
     }
 
-    dispatch(readMessage(selected))
-  }, [selected, unreadedMessagesCount, dispatch]);
+    dispatch(readMessage(selected));
+  }, [selected, loaded, unreadedMessagesCount, dispatch]);
 
   return (
     <StyledChat>

@@ -14,6 +14,7 @@ export type Message = {
 export type MessagesResponse = {
   count: number;
   messages: Message[];
+  roomId: string;
 };
 
 export type Typing = {

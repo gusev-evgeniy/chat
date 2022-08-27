@@ -17,7 +17,7 @@ export const StyledLabel = styled.label`
 export const StyledCreateRoom = styled.div`
   background-color: #f6f7f8;
   height: 100%;
-  width: 80%;
+  width: 70%;
   display: flex;
   flex-direction: column;
   padding: 20px;

@@ -1,23 +1,17 @@
 import React, { FC, useEffect } from 'react';
 
-
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
-import { checkUser, createRoomsDefault, openCreateRoom, selectCreatingRoom, updateTitle } from '../../store/slices/createRoom';
-import { createRoom, openNewRoom } from '../../store/actions';
+import { createRoomsDefault, selectCreatingRoom, updateTitle } from '../../store/slices/createRoom';
 
-import { UsersList } from './search/usersList';
 import { Search } from './search';
 
 import {
-  StyledCheckedItem,
   StyledCreateRoom,
   StyledGroupNameIntput,
   StyledLabel,
-  StyledSearchUserWrapper,
 } from './styled';
-import { StyledButton } from '../auth/styles';
 
-const MAX_LENGTH = 30;
+const MAX_LENGTH = 10;
 
 export const NewRoom: FC<{}> = () => {
   const dispatch = useAppDispatch();

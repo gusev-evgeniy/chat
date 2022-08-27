@@ -38,7 +38,7 @@ export const roomsSlice = createSlice({
     },
     updateLastMessage: (state, action: PayloadAction<Message>) => {
       const { author, ...lastMessage } = action.payload;
-
+      console.log('lastMessage', lastMessage)
       state.data = state.data.reduce((acc, curr) => {
         if (curr.id === action.payload.roomId) acc.unshift({ ...curr, lastMessage });
         else acc.push(curr);
