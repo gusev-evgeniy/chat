@@ -15,10 +15,9 @@ export interface MessagesState {
   typing: RoomsTyping;
 }
 
-
 const initialState: MessagesState = {
   data: {},
-  typing: {}
+  typing: {},
 };
 
 export const messagesSlice = createSlice({
@@ -26,13 +25,18 @@ export const messagesSlice = createSlice({
   initialState,
   reducers: {
     setMessagesData: (state, action: PayloadAction<MessagesResponse>) => {
-      const { count, messages, roomId } = action.payload;
+      const { count, messages: fetchedMessages, roomId } = action.payload;
+      let room = state.data[roomId];
 
-      state.data[roomId] = {
-        messages,
-        count,
-        loaded: true
-      };
+      if (!room) {
+        state.data[roomId] = {
+          messages: fetchedMessages,
+          count,
+          loaded: true,
+        };
+      } else {
+        room.messages = [...fetchedMessages, ...room.messages];
+      }
     },
     addMessage: (state, action: PayloadAction<Message>) => {
       const roomId = action.payload.roomId;
@@ -62,10 +66,10 @@ export const messagesSlice = createSlice({
 
     setAllReadedMessages: (state, action: PayloadAction<string>) => {
       const room = state.data[action.payload];
-      console.log('room', room)
+      console.log('room', room);
 
       if (room) {
-        room.messages = room.messages.map((message) => ({ ...message, readed: true }));
+        room.messages = room.messages.map(message => ({ ...message, readed: true }));
       }
     },
   },

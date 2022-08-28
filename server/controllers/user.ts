@@ -1,5 +1,8 @@
 import { Request, Response } from 'express';
 import bcrypt from 'bcrypt';
+import sharp from 'sharp';
+import fs from 'fs';
+import { v4 as uuidv4 } from 'uuid'
 
 import UserEntity from '../entities/user';
 import { createTokenAndAddCookie } from '../utils/auth';
@@ -11,8 +14,22 @@ class User {
       const { password, name } = req.body || {};
 
       const url = req.protocol + '://' + req.get('host');
+      const filePath = req.file.path;
+      
+      const fileName = uuidv4() + '-' + req.file?.filename.replace('.png', '.jpeg');
 
-      const user = UserEntity.create({ name, password, photo: url + '/public/' + req.file?.filename });
+      sharp(filePath)
+        .resize(150, 150)
+        .toFormat('jpeg')
+        .toFile(req.file.destination + fileName, (err) => {
+          if (err) {
+            throw err;
+          }
+    
+          fs.unlinkSync(filePath);
+        });
+
+      const user = UserEntity.create({ name, password, photo: url + '/public/' + fileName });
       await user.save();
 
       createTokenAndAddCookie(res, user);

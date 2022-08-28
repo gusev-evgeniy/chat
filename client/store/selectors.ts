@@ -17,7 +17,7 @@ export const getChatData = createSelector(
   selectMessages,
   ({ data: rooms, selected }, { data, typing }) => {
     const openRoom = rooms.find(({ id }) => id === selected);
-    const { messages = [], loaded } =  data[selected as string] || {} as RoomMessages;
+    const { messages = [], loaded, count } =  data[selected as string] || {} as RoomMessages;
 
     const typingInChat = selected ? typing[selected] : [];
     const typingText = returnTypingText(typingInChat, openRoom?.type);
@@ -27,7 +27,8 @@ export const getChatData = createSelector(
       messages,
       selected,
       unreadedMessagesCount: openRoom?.unreadedMessagesCount,
-      loaded
+      loaded,
+      count
     };
   }
 );

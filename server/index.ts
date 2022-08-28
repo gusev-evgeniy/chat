@@ -29,7 +29,7 @@ const start = async () => {
       const wrap = middleware => (socket, next) => middleware(socket.request, {}, next);
       io.use(wrap(cookieParser()));
 
-      console.log('User connected');
+      console.log('User socket connected');
       registerChatHandlers(io, socket);
     };
 
