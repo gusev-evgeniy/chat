@@ -54,11 +54,17 @@ export const StyledRooms = styled.div`
     background-color: #ededed;
     border-radius: 30px;
     width: 60%;
+    justify-content: space-between;
 
     p {
-      margin-left: 20%;
       font-weight: 700;
       font-size: 1.2rem;
+    }
+
+    .image_wrapper {
+      display: flex;
+      align-items: center;
+      cursor: pointer;
     }
   }
 `;

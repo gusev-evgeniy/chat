@@ -18,6 +18,9 @@ export const userSlice = createSlice({
     setUserData: (state, action: PayloadAction<UserBD>) => {
       state.data = action.payload;
     },
+    defaultUser: (state) => {
+      state.data = null;
+    }
   },
   extraReducers: {
     [HYDRATE]: (state, action) => {
@@ -29,7 +32,7 @@ export const userSlice = createSlice({
   },
 });
 
-export const { setUserData } = userSlice.actions;
+export const { setUserData, defaultUser } = userSlice.actions;
 
 export const selectMyData = (state: RootState) => state.user.data;
 

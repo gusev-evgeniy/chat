@@ -8,12 +8,14 @@ import { selectRoom } from '../../store/slices/rooms';
 import search from '../../images/search.svg';
 import add_chat from '../../images/add_chat.svg';
 import add_chat_fill from '../../images/add_chat_fill.svg';
+import logout_icon from '../../images/logout.svg';
 
 import { StyledRooms, StyledSearchIcon, StyledSearchInput } from './styled';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { StyledAva } from '../avatar/styles';
 import { getRoomsInfo } from '../../store/selectors';
 import { openCreateRoom } from '../../store/slices/createRoom';
+import { logout } from '../../store/actions/user';
 
 export const Rooms: FC<{}> = memo(() => {
   const dispatch = useAppDispatch();
@@ -27,11 +29,15 @@ export const Rooms: FC<{}> = memo(() => {
     dispatch(selectRoom(id));
   }, []);
 
+  const onExit = () => {
+    dispatch(logout());
+  }
+
   return (
     <StyledRooms>
       <div className='header'>
         <form>
-          <StyledSearchInput type='text' className='search' placeholder='Search' disabled/>
+          <StyledSearchInput type='text' className='search' placeholder='Search' disabled />
           <StyledSearchIcon>
             <Image width='30px' height='30px' src={search} alt='search' />
           </StyledSearchIcon>
@@ -65,6 +71,14 @@ export const Rooms: FC<{}> = memo(() => {
       <div className='footer'>
         <StyledAva size={45} backgroundImage={me?.photo} />
         <p>{me?.name}</p>
+        <div className='image_wrapper' title='Exit' onClick={onExit}>
+          <Image
+            width='32px'
+            height='32px'
+            src={logout_icon}
+            alt='add_dialog'
+          />
+        </div>
       </div>
     </StyledRooms>
   );

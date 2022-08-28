@@ -3,6 +3,7 @@ import bcrypt from 'bcrypt';
 import sharp from 'sharp';
 import fs from 'fs';
 import { v4 as uuidv4 } from 'uuid'
+import cookie from 'cookie';
 
 import UserEntity from '../entities/user';
 import { createTokenAndAddCookie } from '../utils/auth';
@@ -90,6 +91,20 @@ class User {
     } catch (error) {
       res.status(401).json({ error });
     }
+  }
+
+  async logout(req: Request, res: Response) {
+    console.log('eeeee')
+    res.set(
+      'Set-Cookie',
+      cookie.serialize('chatToken', '', {
+        httpOnly: true,
+        path: '/',
+        maxAge: 0, // 1 week
+      })
+    );
+
+    return res.json({ message: 'Success' });
   }
 }
 

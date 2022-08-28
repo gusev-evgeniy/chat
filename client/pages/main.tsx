@@ -1,10 +1,10 @@
-import React, { useInsertionEffect } from 'react';
+import React, { useEffect, useInsertionEffect } from 'react';
 import axios from 'axios';
 // import { Resizable } from 'react-resizable';
 
 import { Rooms } from '../components/rooms';
 
-import { useAppDispatch } from '../store/hooks';
+import { useAppDispatch, useAppSelector } from '../store/hooks';
 import { setUserData } from '../store/slices/user';
 import {
   addRoom,
@@ -20,12 +20,16 @@ import { Message, Typing } from '../type/messages';
 import { EVENTS } from '../utils/constants';
 import { newMessageHandler, readedHandler } from '../store/actions';
 import { ChatWrapper } from '../components/chat/chatWrapper';
+import { selectMyData } from '../store/selectors';
+import { useRouter } from 'next/router';
 
 const Main = () => {
   const dispatch = useAppDispatch();
 
+  const { id } = useAppSelector(selectMyData) || {};
+  const { push } = useRouter();
+
   useInsertionEffect(() => {
-    //TODO. fix
     socket.on(EVENTS.MESSAGE.RESPONSE_TYPING, (obj: Typing) => {
       dispatch(setTyping(obj));
     });
@@ -48,7 +52,17 @@ const Main = () => {
     socket.on(EVENTS.MESSAGE.NEW_MESSAGE_CREATED, (message: Message) => {
       dispatch(newMessageHandler(message));
      });
+
+     return () => {
+      socket.disconnect();
+    };
+
   }, []);
+  console.log('id', id)
+
+  useEffect(() => {
+    !id && push('/auth')
+  }, [id])
 
   return (
     <MainWrapper padding={0}>

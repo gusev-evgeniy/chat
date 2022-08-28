@@ -1,4 +1,3 @@
-import { useEffect } from 'react';
 import axios from 'axios';
 
 import { wrapper } from '../store';
@@ -6,18 +5,8 @@ import { setUserData } from '../store/slices/user';
 import Auth from './auth';
 import Main from './main';
 
-import { socket } from '../api/socket';
 
 const Home = () => {
-
-  useEffect(() => {
-
-    return () => {
-      console.log('disconnect!!!');
-      socket.disconnect();
-    };
-  }, []);
-
   return (
     <>
       <Auth />
