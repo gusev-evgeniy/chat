@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import React, { FC, memo } from 'react';
-import { StyledChatItem } from './styled';
+import { StyledChatItem, StyledSystemMessage } from './styled';
 
 import readedIcon from '../../images/readed.svg';
 import unreadedIcon from '../../images/unreaded.svg';
@@ -11,10 +11,14 @@ import { StyledAva } from '../avatar/styles';
 
 type Props = Message & { isMy?: boolean; isLast: boolean };
 
-export const ChatItem: FC<Props> = memo(({ isMy, text, createdAt, readed, isLast, author, id }) => {
+export const ChatItem: FC<Props> = memo(({ isMy, text, createdAt, readed, isLast, author, id, isSystem }) => {
   const { photo } = author || {};
 
   const time = dayjs(createdAt).format('HH:mm');
+
+  if (isSystem) {
+    return <StyledSystemMessage>{text}</StyledSystemMessage>
+  }
   
   return (
     <StyledChatItem my={isMy} isLast={isLast} data-id={id}>

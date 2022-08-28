@@ -59,9 +59,17 @@ const chatHandler = async (io: Server, socket: any) => {
       await Participant.create({ room, user: userId }).save();
     }
 
+    await Message.create({
+      text: `User ${socket.me.name} created a chat`,
+      room,
+      roomId: room.id,
+      isSystem: true,
+      readed: true
+    }).save();
+
     const newRoom = await Room.findOne({
       where: { id: room.id },
-      relations: ['participants', 'participants.user'],
+      relations: ['participants', 'participants.user', 'messages'],
     });
 
     socket.join(room.id);

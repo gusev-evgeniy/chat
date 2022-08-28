@@ -12,8 +12,11 @@ export default class Message extends Base {
   @Column({ default: false })
   readed: boolean;
 
-  @Column({ nullable: false })
+  @Column({ nullable: true })
   authorId: string;
+  
+  @Column({ default: false })
+  isSystem: boolean;
 
   @JoinColumn()
   @ManyToOne(() => User, user => user.messages)

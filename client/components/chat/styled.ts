@@ -44,43 +44,43 @@ export const StyledChat = styled.div<{ empty?: boolean }>`
 `;
 
 export const StyledChatHeader = styled.div`
-    height: 65px;
-    border-bottom: 1px solid #e3e3e3;
-    padding: 15px;
+  height: 65px;
+  border-bottom: 1px solid #e3e3e3;
+  padding: 15px;
+  display: flex;
+  align-items: center;
+
+  .arrow {
+    width: 40px;
+    height: 40px;
     display: flex;
+    justify-content: center;
     align-items: center;
+    margin-right: 10px;
+    border-radius: 100%;
+    cursor: pointer;
 
-    .arrow {
-      width: 40px;
-      height: 40px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      margin-right: 10px;
-      border-radius: 100%;
-      cursor: pointer;
+    :hover {
+      background-color: rgba(227, 227, 227, 0.7);
+    }
+  }
 
-      :hover {
-        background-color: rgba(227, 227, 227, 0.7);
-      }
-    }
+  .title {
+    font-size: 1.5rem;
+    font-weight: 700;
+  }
 
-    .title {
-      font-size: 1.5rem;
-      font-weight: 700;
-    }
+  .substring {
+    font-size: 1rem;
+    opacity: 0.5;
+  }
 
-    .substring {
-      font-size: 1rem;
-      opacity: 0.5;
-    }
-    
-    .online {
-      color: ${COLORS.BLUE};
-      font-weight: 600;
-      font-size: 1rem;
-    }
-`
+  .online {
+    color: ${COLORS.BLUE};
+    font-weight: 600;
+    font-size: 1rem;
+  }
+`;
 
 export const StyledChatItem = styled.div<{ my?: boolean; isLast?: boolean }>`
   width: 100%;
@@ -170,4 +170,14 @@ export const StyledInputSearchButton = styled(StyledInputButton)`
 
 export const StyledSubmitIcon = styled(StyledInputButton)`
   bottom: 11px;
+`;
+
+export const StyledSystemMessage = styled.div`
+  font-weight: 600;
+  padding: 8px 20px;
+  border-radius: 20px;
+  background-color: #ededee;
+  max-width: 80%;
+  margin: 0 auto 15px auto;
+  font-size: 1.2rem;
 `;

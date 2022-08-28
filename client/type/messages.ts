@@ -1,7 +1,7 @@
 import { UserBD } from './user';
 
 export type Message = {
-  author: UserBD;
+  author?: UserBD;
   createdAt: string;
   id: string;
   readed: boolean;
@@ -9,7 +9,8 @@ export type Message = {
   text: string;
   updatedAt: string;
   isMy?: boolean;
-  authorId: string;
+  authorId?: string;
+  isSystem: boolean;
 };
 
 export type MessagesResponse = {
