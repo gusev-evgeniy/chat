@@ -82,7 +82,7 @@ export const StyledChatHeader = styled.div`
     }
 `
 
-export const StyledChatItem = styled.div<{ my: boolean; isLast?: boolean }>`
+export const StyledChatItem = styled.div<{ my?: boolean; isLast?: boolean }>`
   width: 100%;
   display: flex;
   position: relative;

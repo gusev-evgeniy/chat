@@ -85,6 +85,7 @@ const chatHandler = async (io: Server, socket: any) => {
       room: { id: roomId },
       text: message,
       roomId,
+      authorId: socket.me?.id
     }).save();
 
     const newMessage = await Message.findOne({

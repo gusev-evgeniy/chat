@@ -38,7 +38,7 @@ export const Chat: FC<{}> = () => {
           {messages.map((message, index) => {
             const getDay = (createdAt: string) => dayjs(createdAt).format('YYYY-MM-DD');
             const isLast = messages[index + 1]?.author.id !== message.author.id;
-            const isNewDay = getDay(messages[index - 1]?.createdAt) !== getDay(message.createdAt);
+            const isNewDay = index === 0 || getDay(messages[index - 1]?.createdAt) !== getDay(message.createdAt);
 
             return (
               <Fragment key={message.id}>

@@ -41,19 +41,7 @@ const Auth = () => {
 
   const onSubmit = async () => {
     const formData = new FormData();
-    const { photo, name, password } = data;
-
-    if (photo) {
-      formData.append('photo', photo);
-    }
-
-    if (name) {
-      formData.append('name', name);
-    }
-
-    if (password) {
-      formData.append('password', password);
-    }
+    Object.entries(data).forEach(([key, value]) => value && formData.append(key, value));
 
     const res = await instance.post('/user/auth', formData, {
       headers: { 'content-type': 'multipart/form-data' },
@@ -71,7 +59,7 @@ const Auth = () => {
   return <main className='center'>{pages[num as keyof typeof pages]}</main>;
 };
 
-export const getServerSideProps = wrapper.getServerSideProps(store => async ({ req, res, ...etc }) => {
+export const getServerSideProps = wrapper.getServerSideProps(store => async ({ req }) => {
   try {
     axios.defaults.headers.get.Cookie = req.headers.cookie as string;
     const { data } = await axios.get('http://localhost:5050/user/me');
@@ -83,6 +71,10 @@ export const getServerSideProps = wrapper.getServerSideProps(store => async ({ r
       },
     };
   } catch (error) {}
+
+  return {
+    props: {},
+  };
 });
 
 export default Auth;

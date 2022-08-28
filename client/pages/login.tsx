@@ -12,7 +12,7 @@ const Login = () => {
   const [password, setPassword] = useState('');
 
   const router = useRouter();
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
   const me = useAppSelector(selectMyData);
 
@@ -30,7 +30,7 @@ const Login = () => {
     } catch (error: any) {
       setErrorText(error.response.data?.message as string);
     }
-  }
+  };
 
   const disabled = !password.length || !name.length;
 
@@ -40,7 +40,13 @@ const Login = () => {
       <div>
         <StyledAdvises>
           <p className='bold'>Please enter user name and password</p>
-          <p>Or <span className='signup_link' onClick={() => router.push('/auth')}>create an account</span> if you don&rsquo;t have one</p>
+          <p>
+            Or{' '}
+            <span className='signup_link' onClick={() => router.push('/auth')}>
+              create an account
+            </span>{' '}
+            if you don&rsquo;t have one
+          </p>
         </StyledAdvises>
         <StyledWrapper padding={55}>
           <form onSubmit={onSubmitHandler}>

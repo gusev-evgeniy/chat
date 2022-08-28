@@ -36,10 +36,10 @@ export const messagesSlice = createSlice({
     },
     addMessage: (state, action: PayloadAction<Message>) => {
       const roomId = action.payload.roomId;
-      const room = state.data[roomId] || {};
+      let { messages = [], count = 0 } = state.data[roomId] || {};
 
-      room.messages.push(action.payload);
-      room.count++;
+      messages.push(action.payload);
+      count++;
     },
 
     setTyping: (state, action: PayloadAction<Typing>) => {

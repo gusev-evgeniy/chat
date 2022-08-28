@@ -9,16 +9,17 @@ import { Message } from '../../type/messages';
 import dayjs from 'dayjs';
 import { StyledAva } from '../avatar/styles';
 
-type Props = Message & { isMy: boolean; isLast: boolean };
+type Props = Message & { isMy?: boolean; isLast: boolean };
 
 export const ChatItem: FC<Props> = memo(({ isMy, text, createdAt, readed, isLast, author, id }) => {
   const { photo } = author || {};
 
   const time = dayjs(createdAt).format('HH:mm');
+  
   return (
     <StyledChatItem my={isMy} isLast={isLast} data-id={id}>
       <div className='item'>
-        <p className='message '>{text}</p>
+        <p className='message'>{text}</p>
         <span className='time'>{time}</span>
         {isMy && (
           <div className='readed_icon'>

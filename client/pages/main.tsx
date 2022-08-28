@@ -27,7 +27,6 @@ const Main = () => {
   useInsertionEffect(() => {
     //TODO. fix
     socket.on(EVENTS.MESSAGE.RESPONSE_TYPING, (obj: Typing) => {
-      console.log('obj', obj)
       dispatch(setTyping(obj));
     });
 
@@ -48,33 +47,18 @@ const Main = () => {
 
     socket.on(EVENTS.MESSAGE.NEW_MESSAGE_CREATED, (message: Message) => {
       dispatch(newMessageHandler(message));
-
-      // if (extendedMessage.isMy) {
-      //   const messages = document.querySelector('.messages');
-      //   if (messages) window.scrollTo(0, messages.scrollHeight);
-      // }
      });
   }, []);
 
   return (
     <MainWrapper padding={0}>
       <Rooms />
-      {/* <Split
-        sizes={[25, 75]}
-        cursor='col-resize'
-        expandToMin={false}
-        gutterSize={10}
-        direction='vertical'
-      >
-        <div>hello</div>
-        <div>there</div>
-      </Split> */}
       <ChatWrapper />
     </MainWrapper>
   );
 };
 
-export const getServerSideProps = wrapper.getServerSideProps(store => async ({ req, res, ...etc }) => {
+export const getServerSideProps = wrapper.getServerSideProps(store => async ({ req }) => {
   try {
     const cookie = req.headers.cookie;
 
@@ -94,7 +78,7 @@ export const getServerSideProps = wrapper.getServerSideProps(store => async ({ r
     const rooms = await axios.get('http://localhost:5050/room/');
     store.dispatch(setRoomsData(rooms.data));
   } catch ({ response }: any) {
-    if (response?.data.message === 'Unauthenticated') {
+    if ((response as any)?.data.message === 'Unauthenticated') {
       return {
         redirect: {
           destination: '/auth',
@@ -102,6 +86,10 @@ export const getServerSideProps = wrapper.getServerSideProps(store => async ({ r
         },
       };
     }
+  }
+
+  return {
+    props: {}
   }
 });
 

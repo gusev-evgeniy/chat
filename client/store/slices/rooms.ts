@@ -5,7 +5,6 @@ import { Room, RoomsResponse } from '../../type/room';
 import { Message } from '../../type/messages';
 import { UserBD } from '../../type/user';
 
-
 export type SelectedRoom = Omit<Partial<Room>, 'id'> & { id: string | null; participants: UserBD[] };
 export interface RoomsState {
   data: Room[];
@@ -38,7 +37,7 @@ export const roomsSlice = createSlice({
     },
     updateLastMessage: (state, action: PayloadAction<Message>) => {
       const { author, ...lastMessage } = action.payload;
-      console.log('lastMessage', lastMessage)
+
       state.data = state.data.reduce((acc, curr) => {
         if (curr.id === action.payload.roomId) acc.unshift({ ...curr, lastMessage });
         else acc.push(curr);
@@ -51,7 +50,7 @@ export const roomsSlice = createSlice({
       action: PayloadAction<{ userId: string; online: boolean; wasOnline?: string }>
     ) => {
       const { userId, online, wasOnline } = action.payload;
-
+      console.log('userId, online', userId, online);
       state.data = state.data.map(room => {
         const participants = room.participants.map(user =>
           user.id === userId
@@ -69,13 +68,24 @@ export const roomsSlice = createSlice({
         };
       });
     },
-    setUnreadedCount(state, action: PayloadAction<{ roomId: string, count: number }>) {
+    setUnreadedCount(state, action: PayloadAction<{ roomId: string; count: number }>) {
       const { roomId, count } = action.payload;
 
-      state.data = state.data.map(room =>
-        room.id === roomId ? { ...room, unreadedMessagesCount: count } : room
-      );
-    }
+      state.data = state.data.map(room => {
+        if (room.id !== roomId) {
+          return room;
+        }
+
+        const lastMessage =
+          count === 0 && !!room.lastMessage ? { ...room.lastMessage, readed: true } : room.lastMessage;
+
+        return {
+          ...room,
+          unreadedMessagesCount: count,
+          lastMessage,
+        };
+      });
+    },
   },
   extraReducers: {
     [HYDRATE]: (state, action) => {
@@ -87,14 +97,8 @@ export const roomsSlice = createSlice({
   },
 });
 
-export const {
-  setRoomsData,
-  selectRoom,
-  addRoom,
-  updateLastMessage,
-  updateUserOnline,
-  setUnreadedCount,
-} = roomsSlice.actions;
+export const { setRoomsData, selectRoom, addRoom, updateLastMessage, updateUserOnline, setUnreadedCount } =
+  roomsSlice.actions;
 
 export const selectRooms = (state: RootState) => state.rooms;
 

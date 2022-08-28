@@ -19,7 +19,7 @@ export const Rooms: FC<{}> = memo(() => {
   const dispatch = useAppDispatch();
 
   const { me, rooms, typing, selected, isCreatRoomOpen } = useAppSelector(getRoomsInfo);
-  console.log('rooms', rooms)
+
   const toggleNewRoom = (toggle: boolean) => dispatch(openCreateRoom(toggle));
 
   const onSelecteHandler = useCallback((id: string) => {
@@ -31,7 +31,7 @@ export const Rooms: FC<{}> = memo(() => {
     <StyledRooms>
       <div className='header'>
         <form>
-          <StyledSearchInput type='text' className='search' placeholder='Search' />
+          <StyledSearchInput type='text' className='search' placeholder='Search' disabled/>
           <StyledSearchIcon>
             <Image width='30px' height='30px' src={search} alt='search' />
           </StyledSearchIcon>

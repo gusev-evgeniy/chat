@@ -20,7 +20,7 @@ class Message {
       });
 
       const extendedMessages = messages.map(message =>
-        message.author.id === res.locals.user.id ? { ...message, isMy: true } : { ...message, isMy: false }
+        message.authorId === res.locals.user.id ? { ...message, isMy: true } : { ...message, isMy: false }
       ).reverse();
 
       return res.json({ messages: extendedMessages, count });

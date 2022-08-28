@@ -98,16 +98,6 @@ export const StyledRoom = styled.div<{ selected: boolean }>`
       font-size: 1.1rem;
       font-weight: 400;
 
-      .message {
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-      }
-      .typing {
-        color: ${COLORS.BLUE};
-        font-weight: 600;
-      }
-
       .count {
         background-color: ${COLORS.BLUE};
         padding: 3px;
@@ -122,6 +112,14 @@ export const StyledRoom = styled.div<{ selected: boolean }>`
   &:hover {
     background-color: ${({ selected }) => !selected && 'rgba(227, 227, 227, 0.3)'};
   }
+`;
+
+export const StyledLastMessage = styled.p<{ unreaded: boolean }>`
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: ${({ unreaded }) => unreaded && COLORS.BLUE};
+  font-weight: ${({ unreaded }) => unreaded && 600};
 `;
 
 export const StyledSearchIcon = styled(StyledInputIcon)`

@@ -2,21 +2,19 @@ import { AppDispatch, RootState } from '..';
 import { socket } from '../../api/socket';
 import { Message } from '../../type/messages';
 import { Room } from '../../type/room';
-import { EVENTS } from '../../utils/constants';
+import { EVENTS, NEW_ROOM } from '../../utils/constants';
 import { addMessage, setAllReadedMessages } from '../slices/messages';
 import { addRoom, selectRoom, setUnreadedCount, updateLastMessage } from '../slices/rooms';
 
 export const newMessageHandler = (message: Message) => async (dispatch: AppDispatch, getState: () => RootState) => {
-  const { rooms, user } = getState();
+  const { rooms: { selected, data }, user } = getState();
   const extendedMessage = {...message, isMy: message.author.id === user.data?.id};
 
-    if (rooms.selected === extendedMessage.roomId) {
-      dispatch(addMessage(extendedMessage));
-    }
-    dispatch(updateLastMessage(extendedMessage));
+    dispatch(addMessage(extendedMessage));
+    dispatch(updateLastMessage({ ...extendedMessage, readed: selected === extendedMessage.roomId }));
 
     if (!extendedMessage.isMy) {
-      const { unreadedMessagesCount } = rooms.data.find(({ id }) => id === extendedMessage.roomId) || {};
+      const { unreadedMessagesCount } = data.find(({ id }) => id === extendedMessage.roomId) || {};
       const count = unreadedMessagesCount ? unreadedMessagesCount + 1 : 1; 
 
       dispatch(
@@ -50,8 +48,9 @@ export const openNewRoom = () => async (dispatch: AppDispatch, getState: () => R
   const room = data.find(({ type, participants }) => (
     type === 'private' && participants.some(({ id }) => id === checked[0].id)
   ))
-
+    console.log('room', room)
   if (room) dispatch(selectRoom(room.id));
+  else dispatch(selectRoom(NEW_ROOM));
 };
 
 export const createPrivateRoom = (message: string) => async (dispatch: AppDispatch, getState: () => RootState) => {
