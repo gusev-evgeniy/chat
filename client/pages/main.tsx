@@ -1,16 +1,11 @@
 import React, { useEffect, useInsertionEffect } from 'react';
 import axios from 'axios';
-// import { Resizable } from 'react-resizable';
 
 import { Rooms } from '../components/rooms';
 
 import { useAppDispatch, useAppSelector } from '../store/hooks';
 import { setUserData } from '../store/slices/user';
-import {
-  addRoom,
-  setRoomsData,
-  updateUserOnline,
-} from '../store/slices/rooms';
+import { addRoom, setRoomsData, updateUserOnline } from '../store/slices/rooms';
 import { setTyping } from '../store/slices/messages';
 import { wrapper } from '../store';
 
@@ -22,6 +17,9 @@ import { newMessageHandler, readedHandler } from '../store/actions';
 import { ChatWrapper } from '../components/chat/chatWrapper';
 import { selectMyData } from '../store/selectors';
 import { useRouter } from 'next/router';
+import Portal from '../components/dialog/portal';
+import { GroupInfo } from '../components/dialog/groupInfo';
+import { Dialog } from '../components/dialog';
 
 const Main = () => {
   const dispatch = useAppDispatch();
@@ -51,21 +49,20 @@ const Main = () => {
 
     socket.on(EVENTS.MESSAGE.NEW_MESSAGE_CREATED, (message: Message) => {
       dispatch(newMessageHandler(message));
-     });
+    });
 
-     return () => {
+    return () => {
       socket.disconnect();
     };
-
   }, []);
-  console.log('id', id)
 
   useEffect(() => {
-    !id && push('/auth')
-  }, [id])
+    !id && push('/auth');
+  }, [id]);
 
   return (
     <MainWrapper padding={0}>
+      <Dialog />
       <Rooms />
       <ChatWrapper />
     </MainWrapper>
@@ -103,8 +100,8 @@ export const getServerSideProps = wrapper.getServerSideProps(store => async ({ r
   }
 
   return {
-    props: {}
-  }
+    props: {},
+  };
 });
 
 export default Main;

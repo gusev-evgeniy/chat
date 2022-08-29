@@ -8,7 +8,7 @@ import { addRoom, selectRoom, setUnreadedCount, updateLastMessage } from '../sli
 
 export const newMessageHandler = (message: Message) => async (dispatch: AppDispatch, getState: () => RootState) => {
   const { rooms: { selected, data }, user } = getState();
-  const extendedMessage = {...message, isMy: message.author.id === user.data?.id};
+  const extendedMessage = {...message, isMy: message.authorId === user.data?.id};
 
     dispatch(addMessage(extendedMessage));
     dispatch(updateLastMessage({ ...extendedMessage, readed: selected === extendedMessage.roomId }));
@@ -48,9 +48,8 @@ export const openNewRoom = () => async (dispatch: AppDispatch, getState: () => R
   const room = data.find(({ type, participants }) => (
     type === 'private' && participants.some(({ id }) => id === checked[0].id)
   ))
-    console.log('room', room)
-  if (room) dispatch(selectRoom(room.id));
-  else dispatch(selectRoom(NEW_ROOM));
+
+  dispatch(selectRoom( room ? room.id : NEW_ROOM));
 };
 
 export const createPrivateRoom = (message: string) => async (dispatch: AppDispatch, getState: () => RootState) => {

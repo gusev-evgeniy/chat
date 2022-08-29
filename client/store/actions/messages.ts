@@ -9,8 +9,6 @@ export const getMessages = (skip = 0) => async (dispatch: AppDispatch, getState:
   }
 
   try {
-    console.log('22222')
-
     const { data } = await instance.get(`message/?roomId=${selected}&skip=${skip}`);
     dispatch(setMessagesData({ ...data, roomId: selected }));
   } catch (error) {}

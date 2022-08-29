@@ -12,7 +12,7 @@ type Props = UserBD & {
 export const FindingUser: FC<Props> = memo(({ photo, name, onCheckHandler, id, checked, online }) => {
   console.log('render')
   return (
-    <StyledSearchUserItem className='user_wrapper' onClick={(e) => onCheckHandler(e, id)}>
+    <StyledSearchUserItem className='user_wrapper' check={true} onClick={(e) => onCheckHandler(e, id)}>
       <div className='data_wrapper'>
         <Avatar size={45} photo={photo} name={name} online={online} />
         <p className='bold'>{name}</p>

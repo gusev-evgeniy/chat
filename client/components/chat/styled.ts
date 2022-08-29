@@ -70,11 +70,6 @@ export const StyledChatHeader = styled.div`
     font-weight: 700;
   }
 
-  .substring {
-    font-size: 1rem;
-    opacity: 0.5;
-  }
-
   .online {
     color: ${COLORS.BLUE};
     font-weight: 600;
@@ -181,3 +176,16 @@ export const StyledSystemMessage = styled.div`
   margin: 0 auto 15px auto;
   font-size: 1.2rem;
 `;
+
+export const StyledSubstring = styled.p`
+  font-size: 1rem;
+  opacity: 0.5;
+`;
+
+export const StyledGroupSubstring = styled(StyledSubstring)`
+  cursor: pointer;
+
+  &:hover {
+    text-decoration: underline;
+  }
+`

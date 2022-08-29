@@ -28,9 +28,9 @@ export const Room: FC<Props> = memo(({ typing, myId, isSelected, onSelecteHandle
 
   const time = dayjs(createdAt).format('HH:mm');
 
-  const { image, title, online } = useMemo<RoomInfo>(() => getRoomInfo(room, myId), [room.participants, myId]);
+  const { image, title, online } = useMemo<RoomInfo>(() => getRoomInfo(room, myId), [room, myId]);
   const typingText = useMemo(() => returnTypingText(typing, type), [typing, type]);
-  console.log('online', online)
+
   return (
     <StyledRoom selected={isSelected} onClick={() => onSelecteHandler(id)}>
       <Avatar name={title} photo={image} size={50} online={online} />

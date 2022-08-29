@@ -22,15 +22,16 @@ const createRoutes = (app: express.Express) => {
 
   app.post('/user/auth', Upload.single('photo'), User.create);
   app.get('/user/login', User.getOne);
-  app.post('/user/logout',Auth , User.logout);
+  app.post('/user/logout', Auth, User.logout);
   app.get('/user/find', Auth, User.get);
   app.post('/user/check_name', User.checkName);
   app.get('/user/me', Auth, User.me);
 
   app.get('/room', Auth, Room.getMany);
+  app.post('/room/update', Auth, Upload.single('photo'), Room.update);
   app.get('/room/checkPrivate', Auth, Room.checkPrivate);
 
-  app.get('/message',Auth, Message.getMany);
+  app.get('/message', Auth, Message.getMany);
 };
 
 export default createRoutes;

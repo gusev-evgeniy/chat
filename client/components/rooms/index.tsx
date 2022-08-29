@@ -31,7 +31,7 @@ export const Rooms: FC<{}> = memo(() => {
 
   const onExit = () => {
     dispatch(logout());
-  }
+  };
 
   return (
     <StyledRooms>
@@ -72,12 +72,7 @@ export const Rooms: FC<{}> = memo(() => {
         <StyledAva size={45} backgroundImage={me?.photo} />
         <p>{me?.name}</p>
         <div className='image_wrapper' title='Exit' onClick={onExit}>
-          <Image
-            width='32px'
-            height='32px'
-            src={logout_icon}
-            alt='add_dialog'
-          />
+          <Image width='32px' height='32px' src={logout_icon} alt='add_dialog' />
         </div>
       </div>
     </StyledRooms>

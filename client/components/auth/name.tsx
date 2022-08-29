@@ -8,18 +8,19 @@ import { Auth } from './types';
 import { AlertMessage, StyledAdvises, StyledButton, StyledWrapper } from './styles';
 import { instance } from '../../api';
 import { StyledAva } from '../avatar/styles';
+import { AvatarInput } from '../avatar/input';
 
 const VALID_TYPES = ['image/png', 'image/jpg', 'image/jpeg'];
 
 export const Name: FC<Auth> = ({ nextPage, changeData, data }) => {
-  const [preview, setPreview] = useState<string | undefined>();
+  const [preview, setPreview] = useState<string | null>(null);
   const [errorText, setErrorText] = useState('');
 
   const { name, photo } = data;
 
   useEffect(() => {
     if (!photo) {
-      setPreview(undefined);
+      setPreview(null);
       return;
     }
     const objectUrl = URL.createObjectURL(photo);
@@ -70,13 +71,7 @@ export const Name: FC<Auth> = ({ nextPage, changeData, data }) => {
       <StyledWrapper padding={55}>
         <form onSubmit={onSubmit}>
           <div className='user_data'>
-            <StyledAva title='Add photo' backgroundImage={preview} size={100}>
-              <label className='upload' htmlFor='inputTag'>
-                <Image width='30px' height='30px' src={add_photo} alt='add_photo' />
-                <input id='inputTag' type='file' onChange={onSelectFile} hidden />
-              </label>
-              <span>{!preview && name.substring(0, 2).toUpperCase()}</span>
-            </StyledAva>
+            <AvatarInput name={name} onChange={onSelectFile} photo={preview} size={30} />
           </div>
           <input
             type='text'

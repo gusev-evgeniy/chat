@@ -5,6 +5,7 @@ import { userReducer } from './slices/user';
 import { roomsReducer } from './slices/rooms';
 import { messagesReducer } from './slices/messages';
 import { createRoomReducer } from './slices/createRoom';
+import { dialogReducer } from './slices/dialog';
 
 export function makeStore() {
   return configureStore({
@@ -12,7 +13,8 @@ export function makeStore() {
       user: userReducer,
       rooms: roomsReducer,
       messages: messagesReducer,
-      createRoom: createRoomReducer
+      createRoom: createRoomReducer,
+      dialog: dialogReducer
     },
   });
 }

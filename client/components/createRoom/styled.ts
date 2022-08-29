@@ -79,8 +79,12 @@ export const StyledSearchUserWrapper = styled(StyledWrapper)`
 
   .checked_list {
     margin: 20px 0;
-    min-height: 46px;
+    min-height: 52px;
     display: flex;
+    width: inherit;
+    overflow: hidden;
+    flex-wrap: wrap;
+    justify-content: center;
   }
 `;
 
@@ -88,20 +92,20 @@ export const StyledUsers = styled(StyledWrapper)`
   width: inherit;
   max-height: 440px;
   overflow: auto;
-  max-width: 100%;
+  width: 100%;
 
   .user_wrapper:not(:first-child) {
     border-top: 1px solid #e3e3e3;
   }
 `;
 
-export const StyledSearchUserItem = styled.div`
+export const StyledSearchUserItem = styled.div<{ check?: boolean }>`
   display: flex;
   justify-content: space-between;
   width: 100%;
   padding: 18px;
   align-items: center;
-  cursor: pointer;
+  cursor: ${({ check }) => check && 'pointer'};
 
   .data_wrapper {
     display: flex;
@@ -122,7 +126,7 @@ export const StyledCheckedItem = styled.div`
   display: flex;
   cursor: pointer;
   font-size: 1.2rem;
-  margin: 0 3px;
+  margin: 3px;
 
   .close {
     margin-left: 7px;

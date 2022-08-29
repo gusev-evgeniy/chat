@@ -50,7 +50,7 @@ export const roomsSlice = createSlice({
       action: PayloadAction<{ userId: string; online: boolean; wasOnline?: string }>
     ) => {
       const { userId, online, wasOnline } = action.payload;
-      console.log('userId, online', userId, online);
+
       state.data = state.data.map(room => {
         const participants = room.participants.map(user =>
           user.id === userId
@@ -86,6 +86,11 @@ export const roomsSlice = createSlice({
         };
       });
     },
+    updateRoomDetails(state, action: PayloadAction<Partial<Room>>) {
+      state.data = state.data.map(room =>
+        room.id === action.payload.id ? { ...room, ...action.payload } : room
+      );
+    },
   },
   extraReducers: {
     [HYDRATE]: (state, action) => {
@@ -97,8 +102,15 @@ export const roomsSlice = createSlice({
   },
 });
 
-export const { setRoomsData, selectRoom, addRoom, updateLastMessage, updateUserOnline, setUnreadedCount } =
-  roomsSlice.actions;
+export const {
+  setRoomsData,
+  selectRoom,
+  addRoom,
+  updateLastMessage,
+  updateUserOnline,
+  setUnreadedCount,
+  updateRoomDetails,
+} = roomsSlice.actions;
 
 export const selectRooms = (state: RootState) => state.rooms;
 

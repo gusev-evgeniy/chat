@@ -15,7 +15,7 @@ export const StyledAva = styled.div<{ backgroundImage?: string | null; size: num
   align-items: center;
   justify-content: center;
   font-weight: 700;
-  font-size: ${({ size }) => `${Math.floor(size/40)}rem`};
+  font-size: ${({ size }) => `${Math.floor(size / 40)}rem`};
   color: #494949;
   position: relative;
   overflow: hidden;
@@ -39,7 +39,9 @@ export const StyledAva = styled.div<{ backgroundImage?: string | null; size: num
       display: none;
     }
   }
+`;
 
+export const StyledChangeAva = styled(StyledAva)`
   :hover {
     .upload {
       display: flex;

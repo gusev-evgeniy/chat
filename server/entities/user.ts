@@ -9,7 +9,7 @@ import Room from './room';
 
 @Entity()
 export default class User extends Base {
-  @Column({ unique: true }) //temp
+  @Column({ unique: true })
   name: string;
 
   @Exclude()
@@ -27,19 +27,19 @@ export default class User extends Base {
 
   @JoinColumn()
   @OneToMany(() => Message, message => message.author, {
-    onDelete: 'CASCADE'
+    cascade: true
   })
   messages: Message[];
 
   @JoinColumn()
   @OneToMany(() => Room, room => room.author, { 
-    onDelete: 'CASCADE'
+    cascade: true
   })
   rooms: Room[];
 
   @JoinColumn()
   @OneToMany(() => Participant, participant => participant.user, { 
-    onDelete: 'CASCADE'
+    cascade: true
   })
   chat: Participant[];
 

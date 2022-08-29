@@ -1,36 +1,26 @@
 import { Request, Response } from 'express';
 import bcrypt from 'bcrypt';
-import sharp from 'sharp';
-import fs from 'fs';
-import { v4 as uuidv4 } from 'uuid'
 import cookie from 'cookie';
 
 import UserEntity from '../entities/user';
 import { createTokenAndAddCookie } from '../utils/auth';
 import { getUsersByNameAndCount } from '../utils/queries/user';
-
+import { prepareImage } from '../utils/prepareImage';
 class User {
   async create(req: Request, res: Response) {
     try {
       const { password, name } = req.body || {};
 
-      const url = req.protocol + '://' + req.get('host');
-      const filePath = req.file.path;
-      
-      const fileName = uuidv4() + '-' + req.file?.filename.replace('.png', '.jpeg');
+      const userInfo: Partial<UserEntity> = {
+        name,
+        password,
+      };
+      console.log('req', req)
+      console.log('host', req.host)
+      const photoUrl = prepareImage(req);
+      if (photoUrl) userInfo.photo = photoUrl;
 
-      sharp(filePath)
-        .resize(150, 150)
-        .toFormat('jpeg')
-        .toFile(req.file.destination + fileName, (err) => {
-          if (err) {
-            throw err;
-          }
-    
-          fs.unlinkSync(filePath);
-        });
-
-      const user = UserEntity.create({ name, password, photo: url + '/public/' + fileName });
+      const user = UserEntity.create(userInfo) as UserEntity;
       await user.save();
 
       createTokenAndAddCookie(res, user);
@@ -84,8 +74,8 @@ class User {
       if (!isCorrectPassword) res.status(401).json({ message: 'Wrong password or name' });
 
       createTokenAndAddCookie(res, user);
-      
-      const { password: _, ...rest } = user; 
+
+      const { password: _, ...rest } = user;
 
       res.json({ user: rest });
     } catch (error) {
@@ -94,7 +84,7 @@ class User {
   }
 
   async logout(req: Request, res: Response) {
-    console.log('eeeee')
+    console.log('eeeee');
     res.set(
       'Set-Cookie',
       cookie.serialize('chatToken', '', {

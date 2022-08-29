@@ -11,7 +11,7 @@ import {
   StyledLabel,
 } from './styled';
 
-const MAX_LENGTH = 10;
+const MAX_LENGTH = 20;
 
 export const NewRoom: FC<{}> = () => {
   const dispatch = useAppDispatch();

@@ -50,11 +50,12 @@ export const StyledRooms = styled.div`
     left: 50%;
     transform: translateX(-50%);
     align-items: center;
-    padding: 10px 15px;
+    padding: 8px 25px;
     background-color: #ededed;
     border-radius: 30px;
-    width: 60%;
+    width: 100%;
     justify-content: space-between;
+    max-width: 250px;
 
     p {
       font-weight: 700;

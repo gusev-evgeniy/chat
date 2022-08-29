@@ -6,10 +6,10 @@ type Props = {
   photo: string | null;
   name: string;
   size: number;
-  online: boolean;
+  online?: boolean;
 };
 
-export const Avatar: FC<Props> = memo(({ photo, name, size, online }) => {
+export const Avatar: FC<Props> = memo(({ photo, name, size, online = false }) => {
   return (
     <AvaWrapper size={size}>
       <StyledAva title='Add photo' backgroundImage={photo} size={size}>

@@ -10,6 +10,9 @@ export default class Room extends Base {
   @Column({ nullable: true })
   title: string;
 
+  @Column({ nullable: true })
+  photo: string;
+
   @Column({ default: 'private', enum: ['private', 'group'] })
   type: string;
 
