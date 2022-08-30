@@ -26,6 +26,13 @@ export const StyledContainer = styled(StyledWrapper)`
   width: 60%;
   max-width: 600px;
 
+  .group_form {
+    width: fit-content;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
   .group_title {
     margin: 15px 0;
     display: flex;
@@ -34,19 +41,12 @@ export const StyledContainer = styled(StyledWrapper)`
     font-size: 1.5rem;
     font-weight: 600;
 
-    form {
-      width: fit-content;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      
-      input {
-        font-size: 1.5rem;
-        font-weight: 600;
-        border: none;
-        outline: none;
-        text-align: center;
-      }
+    input {
+      font-size: 1.5rem;
+      font-weight: 600;
+      border: none;
+      outline: none;
+      text-align: center;
     }
   }
 `;

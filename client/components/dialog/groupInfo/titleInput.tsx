@@ -1,49 +1,47 @@
 import React, { FC, useState } from 'react';
-import { useAppDispatch } from '../../../store/hooks';
 
 type Props = {
   title: string;
+  update: (data: { photo?: File; title?: string }) => void;
 };
 
-export const TitleInput: FC<Props> = ({ title }) => {
-  const [active, setActive] = useState(false);
+export const TitleInput: FC<Props> = ({ title, update }) => {
   const [newTitle, setNewTitle] = useState(title);
 
-  const dispatch = useAppDispatch();
-
-  const onSubmit = () => {
-    if (title.trim() === newTitle) {
+  const onUpdate = () => {
+    if (title === newTitle.trim()) {
       return;
     }
+
+    update({ title: newTitle.trim() });
+  };
+
+  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    onUpdate();
   };
 
   const onLeaveHandler = () => {
-    setNewTitle(title);
-    setActive(false);
+    onUpdate();
   };
 
   const onKeyHandler = ({ key }: React.KeyboardEvent<HTMLInputElement>) => {
     if (key === 'Escape') {
-      onLeaveHandler();
+      setNewTitle(title);
     }
   };
 
   return (
     <div className='group_title'>
-      {!active ? (
-        <form>
-          <input
-            onBlur={onLeaveHandler}
-            type='text'
-            value={newTitle}
-            autoFocus
-            onChange={({ target }) => setNewTitle(target.value)}
-            onKeyUp={onKeyHandler}
-          />
-        </form>
-      ) : (
-        <p onClick={() => setActive(true)}>{title}</p>
-      )}
+      <form onSubmit={onSubmit}>
+        <input
+          onBlur={onLeaveHandler}
+          type='text'
+          value={newTitle}
+          onChange={({ target }) => setNewTitle(target.value)}
+          onKeyUp={onKeyHandler}
+        />
+      </form>
     </div>
   );
 };

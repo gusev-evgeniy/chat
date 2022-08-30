@@ -26,7 +26,7 @@ export const roomsSlice = createSlice({
       state.data = action.payload.rooms;
       state.count = action.payload.count;
     },
-    selectRoom: (state, action: PayloadAction<string>) => {
+    selectRoom: (state, action: PayloadAction<RoomsState['selected']>) => {
       state.selected = action.payload;
     },
     addRoom: (state, action: PayloadAction<Room>) => {
@@ -91,6 +91,10 @@ export const roomsSlice = createSlice({
         room.id === action.payload.id ? { ...room, ...action.payload } : room
       );
     },
+    deleteRoom(state, action: PayloadAction<string>) {
+      state.data = state.data.filter(({ id }) => id !== action.payload);
+      state.selected = null;
+    },
   },
   extraReducers: {
     [HYDRATE]: (state, action) => {
@@ -110,6 +114,7 @@ export const {
   updateUserOnline,
   setUnreadedCount,
   updateRoomDetails,
+  deleteRoom
 } = roomsSlice.actions;
 
 export const selectRooms = (state: RootState) => state.rooms;

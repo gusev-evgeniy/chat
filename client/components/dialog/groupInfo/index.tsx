@@ -1,14 +1,19 @@
-import Image from 'next/image';
 import React from 'react';
-import { updateRoomAva } from '../../../store/actions/room';
+import Image from 'next/image';
+
+import { socket } from '../../../api/socket';
 import { useAppDispatch, useAppSelector } from '../../../store/hooks';
 import { GetGroupChatInfo } from '../../../store/selectors';
+import { StyledIconButton } from '../../../styles';
+import { EVENTS } from '../../../utils/constants';
 import { Avatar } from '../../avatar';
 import { AvatarInput } from '../../avatar/input';
-import logout_icon from '../../../images/logout.svg';
 import { StyledSearchUserItem, StyledUsers } from '../../createRoom/styled';
-import { StyledIconButton } from '../../../styles';
 import { TitleInput } from './titleInput';
+
+import logout_icon from '../../../images/logout.svg'
+import { deleteRoom } from '../../../store/slices/rooms';
+import { openDialog } from '../../../store/slices/dialog';
 
 const VALID_TYPES = ['image/png', 'image/jpg', 'image/jpeg'];
 
@@ -21,21 +26,32 @@ export const GroupInfo = () => {
     return null;
   }
 
-  const { myId, participants, photo, title } = roomInfo;
+  const { participants, photo, title, id, myId } = roomInfo;
 
   const onSelectFile = ({ target }: React.ChangeEvent<HTMLInputElement>) => {
     if (!target.files || target.files.length === 0 || !VALID_TYPES.includes(target.files[0].type)) {
       return;
     }
 
-    dispatch(updateRoomAva(target.files[0]));
+    updateGroup({ photo: target.files[0] })
   };
+  
+  const updateGroup = (data: { photo?: File, title?: string }) => {
+    socket.emit(EVENTS.ROOM.UPDATE, {...data, id });
+  }
+
+  const onLeave = () => {
+    socket.emit(EVENTS.ROOM.LEAVE, { roomId: id }, () => {
+      dispatch(deleteRoom(id));
+      dispatch(openDialog(null));
+    });
+  }
 
   return (
     <>
       <div className='group_form'>
         <AvatarInput name={title as string} size={120} photo={photo} onChange={onSelectFile} />
-        <TitleInput title={title as string}/>
+        <TitleInput title={title as string} update={updateGroup}/>
       </div>
       <StyledUsers padding={0}>
         {participants.map(({ name, photo, online, id }) => (
@@ -45,11 +61,10 @@ export const GroupInfo = () => {
               <p className='bold'>{name}</p>
             </div>
             {id === myId && (
-              <StyledIconButton title='Leave Group'>
+              <StyledIconButton title='Leave Group' onClick={onLeave}>
                 <Image width='32px' height='32px' src={logout_icon} alt='add_dialog' />
               </StyledIconButton>
             )}
-            {/* <MyCheckbox checked={checked} /> */}
           </StyledSearchUserItem>
         ))}
       </StyledUsers>

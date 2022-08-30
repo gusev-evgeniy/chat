@@ -5,7 +5,7 @@ import Room from '../entities/room';
 import { EVENTS } from './events';
 import { addMyDataToSocket } from '../utils/socket';
 import { GetTypingProps } from './types';
-import { getUserRooms, isPrivateRoomExist, updateLastMessage } from '../utils/queries/room';
+import { createSystemMessage, getUserRooms, isPrivateRoomExist, updateLastMessage } from '../utils/queries/room';
 import { updateUser } from '../utils/queries/user';
 
 let users = {};
@@ -59,13 +59,7 @@ const chatHandler = async (io: Server, socket: any) => {
       await Participant.create({ room, user: userId }).save();
     }
 
-    await Message.create({
-      text: `User ${socket.me.name} created a chat`,
-      room,
-      roomId: room.id,
-      isSystem: true,
-      readed: true
-    }).save();
+    await createSystemMessage(`User ${socket.me.name} created the chat`, room.id)
 
     const newRoom = await Room.findOne({
       where: { id: room.id },
@@ -86,6 +80,31 @@ const chatHandler = async (io: Server, socket: any) => {
   const joinRoom = ({ roomId }) => {
     socket.join(roomId);
   };
+
+  const updateRoom = async ({ photo, title, id }) => {
+    const roomInfo: Partial<Room> = {};
+
+    if (title) roomInfo.title = title;
+
+    const room = await Room.createQueryBuilder().update(roomInfo).where('id = :id', { id }).returning('*').execute();
+    
+    const text = title ? `User ${socket.me.name} changed chat name to "${title}"` : '';
+    const message = await createSystemMessage(text, id)
+
+    io.to(id).emit(EVENTS.MESSAGE.NEW_MESSAGE_CREATED, message);
+    io.to(id).emit(EVENTS.ROOM.UPDATED, room.raw[0]);
+  }
+
+  const leaveRoom = async ({ roomId }: { roomId: string }, callback) => {
+    const participants = await Participant.delete({ room: { id: roomId }, user: { id: socket.me?.id } });
+    socket.leave(roomId);
+
+    const message = await createSystemMessage(`User ${socket.me.name} left the chat`, roomId);
+    callback({ message: 'Success' });
+
+    io.to(roomId).emit(EVENTS.MESSAGE.NEW_MESSAGE_CREATED, message);
+    io.to(roomId).emit(EVENTS.ROOM.UPDATED, { participants });
+  }
 
   const createMessage = async ({ roomId, message }: any) => {
     const { id } = await Message.create({
@@ -135,6 +154,8 @@ const chatHandler = async (io: Server, socket: any) => {
   socket.on(EVENTS.ROOM.CREATE_PRIVATE, createPrivateRoom);
   socket.on(EVENTS.ROOM.CREATE_GROUP, createGroupRoom);
   socket.on(EVENTS.ROOM.JOIN, joinRoom);
+  socket.on(EVENTS.ROOM.UPDATE, updateRoom);
+  socket.on(EVENTS.ROOM.LEAVE, leaveRoom);
 
   socket.on(EVENTS.MESSAGE.MESSAGE_CREATE, createMessage);
   socket.on(EVENTS.MESSAGE.TYPING, getTyping);

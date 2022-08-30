@@ -5,7 +5,7 @@ import { Rooms } from '../components/rooms';
 
 import { useAppDispatch, useAppSelector } from '../store/hooks';
 import { setUserData } from '../store/slices/user';
-import { addRoom, setRoomsData, updateUserOnline } from '../store/slices/rooms';
+import { addRoom, setRoomsData, updateRoomDetails, updateUserOnline } from '../store/slices/rooms';
 import { setTyping } from '../store/slices/messages';
 import { wrapper } from '../store';
 
@@ -17,9 +17,8 @@ import { newMessageHandler, readedHandler } from '../store/actions';
 import { ChatWrapper } from '../components/chat/chatWrapper';
 import { selectMyData } from '../store/selectors';
 import { useRouter } from 'next/router';
-import Portal from '../components/dialog/portal';
-import { GroupInfo } from '../components/dialog/groupInfo';
 import { Dialog } from '../components/dialog';
+import { Room } from '../type/room';
 
 const Main = () => {
   const dispatch = useAppDispatch();
@@ -43,6 +42,10 @@ const Main = () => {
     socket.on(EVENTS.ROOM.CREATED, obj => {
       socket.emit(EVENTS.ROOM.JOIN, { roomId: obj.id });
       dispatch(addRoom(obj));
+    });
+
+    socket.on(EVENTS.ROOM.UPDATED, (room: Room ) => {
+      dispatch(updateRoomDetails(room));
     });
 
     socket.on(EVENTS.MESSAGE.READED, ({ roomId }) => dispatch(readedHandler(roomId)));

@@ -14,6 +14,9 @@ export default class Message extends Base {
 
   @Column({ nullable: true })
   authorId: string;
+
+  @Column({ nullable: true })
+  media: string;
   
   @Column({ default: false })
   isSystem: boolean;

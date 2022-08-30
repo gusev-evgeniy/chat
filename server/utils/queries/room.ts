@@ -3,8 +3,8 @@ import Participant from '../../entities/participants';
 import Room from '../../entities/room';
 
 export const isPrivateRoomExist = async (userId: string, myId: string) => {
-  console.log('userId_________________________________________________________', userId)
-  console.log('myId____________________________________________________', myId)
+  console.log('userId_________________________________________________________', userId);
+  console.log('myId____________________________________________________', myId);
   try {
     // const room = await Room.createQueryBuilder('room')
     //   .leftJoinAndSelect('room.participants', 'participants')
@@ -71,4 +71,14 @@ export const getRoomsAndCount = async (id: string) => {
   }));
 
   return { rooms, count };
+};
+
+export const createSystemMessage = async (text: string, roomId: string) => {
+  return await Message.create({
+    text,
+    room: { id: roomId },
+    roomId,
+    isSystem: true,
+    readed: true,
+  }).save();
 };
