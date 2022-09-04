@@ -3,6 +3,8 @@ import Portal from './portal';
 import { useAppSelector } from '../../store/hooks';
 import { selectDialog } from '../../store/slices/dialog';
 import { GroupInfo } from './groupInfo';
+import { Call } from './call';
+import { ReceiveCall } from './call/receive';
 
 export const Dialog = memo(() => {
   const name = useAppSelector(selectDialog);
@@ -11,6 +13,10 @@ export const Dialog = memo(() => {
     switch (name) {
       case 'GROUP_INFO':
         return <GroupInfo />;
+      case 'CALL':
+        return <Call />;
+      case 'RECEIVE_CALL':
+        return <ReceiveCall />;
       default:
         return null;
     }

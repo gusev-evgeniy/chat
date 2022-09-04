@@ -11,6 +11,7 @@ export const selectMessages = (state: RootState) => state.messages;
 export const selectMyData = (state: RootState) => state.user.data;
 export const selectCreatingRoom = (state: RootState) => state.createRoom;
 export const selectCreatingRoomOpen = (state: RootState) => state.createRoom.open;
+export const selectCall = (state: RootState) => state.call;
 
 export const getChatData = createSelector(
   selectRooms,
@@ -84,6 +85,9 @@ export const getHeaderInfo = createSelector(
       substring,
       title,
       type: selectedRoomType,
+      myId: myData?.id,
+      userId: privateUser && privateUser.id,
+      selected
     };
   }
 );
@@ -105,3 +109,30 @@ export const GetGroupChatInfo = createSelector(selectRooms, selectMyData, ({ dat
     myId: myData?.id,
   };
 });
+
+export const GetCallInfo = createSelector(selectRooms, selectCall, ({ data, selected }, { mySignal, to, callerSignal }) => {
+  const openRoom = data.find(({ id }) => id === selected);
+
+  if (!openRoom) {
+    return {};
+  }
+
+  const user = openRoom.participants.find(({ id }) => id === to);
+
+  return {
+    to: user,
+    mySignal,
+    callerSignal,
+    selected
+  }
+})
+
+export const GetReceivedCallInfo = createSelector(selectRooms, selectCall, ({ selected }, { mySignal, from, callerSignal }) => {
+
+  return {
+    mySignal,
+    from,
+    callerSignal,
+    selected
+  }
+})

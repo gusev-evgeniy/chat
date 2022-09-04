@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from '../index';
 
-type DialogType = 'GROUP_INFO';
+type DialogType = 'GROUP_INFO' | 'CALL' | 'RECEIVE_CALL';
 
 export interface DialogState {
   name: null | DialogType;
@@ -16,8 +16,8 @@ export const dialogSlice = createSlice({
   initialState,
   reducers: {
     openDialog: (state, action: PayloadAction<DialogState['name']>) => {
-      state.name = action.payload
-    }
+      state.name = action.payload;
+    },
   },
 });
 

@@ -1,63 +1,25 @@
-import React, { useEffect, useInsertionEffect } from 'react';
+import React, { useEffect } from 'react';
 import axios from 'axios';
 
 import { Rooms } from '../components/rooms';
 
 import { useAppDispatch, useAppSelector } from '../store/hooks';
 import { setUserData } from '../store/slices/user';
-import { addRoom, setRoomsData, updateRoomDetails, updateUserOnline } from '../store/slices/rooms';
-import { setTyping } from '../store/slices/messages';
+import { setRoomsData } from '../store/slices/rooms';
 import { wrapper } from '../store';
 
-import { socket } from '../api/socket';
 import { MainWrapper } from '../styles';
-import { Message, Typing } from '../type/messages';
-import { EVENTS } from '../utils/constants';
-import { newMessageHandler, readedHandler } from '../store/actions';
 import { ChatWrapper } from '../components/chat/chatWrapper';
 import { selectMyData } from '../store/selectors';
 import { useRouter } from 'next/router';
 import { Dialog } from '../components/dialog';
-import { Room } from '../type/room';
+import { useSocketOn } from '../hooks/useSocketOn';
 
 const Main = () => {
-  const dispatch = useAppDispatch();
-
   const { id } = useAppSelector(selectMyData) || {};
   const { push } = useRouter();
 
-  useInsertionEffect(() => {
-    socket.on(EVENTS.MESSAGE.RESPONSE_TYPING, (obj: Typing) => {
-      dispatch(setTyping(obj));
-    });
-
-    socket.on(EVENTS.USER.ENTER, ({ userId }: { userId: string }) => {
-      dispatch(updateUserOnline({ userId, online: true }));
-    });
-
-    socket.on(EVENTS.USER.LEAVE, ({ userId, wasOnline }: { userId: string; wasOnline: string }) => {
-      dispatch(updateUserOnline({ userId, online: false, wasOnline }));
-    });
-
-    socket.on(EVENTS.ROOM.CREATED, obj => {
-      socket.emit(EVENTS.ROOM.JOIN, { roomId: obj.id });
-      dispatch(addRoom(obj));
-    });
-
-    socket.on(EVENTS.ROOM.UPDATED, (room: Room ) => {
-      dispatch(updateRoomDetails(room));
-    });
-
-    socket.on(EVENTS.MESSAGE.READED, ({ roomId }) => dispatch(readedHandler(roomId)));
-
-    socket.on(EVENTS.MESSAGE.NEW_MESSAGE_CREATED, (message: Message) => {
-      dispatch(newMessageHandler(message));
-    });
-
-    return () => {
-      socket.disconnect();
-    };
-  }, []);
+  useSocketOn();
 
   useEffect(() => {
     !id && push('/auth');

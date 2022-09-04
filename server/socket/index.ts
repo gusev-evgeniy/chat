@@ -5,8 +5,14 @@ import Room from '../entities/room';
 import { EVENTS } from './events';
 import { addMyDataToSocket } from '../utils/socket';
 import { GetTypingProps } from './types';
-import { createSystemMessage, getUserRooms, isPrivateRoomExist, updateLastMessage } from '../utils/queries/room';
+import {
+  createSystemMessage,
+  getUserRooms,
+  isPrivateRoomExist,
+  updateLastMessage,
+} from '../utils/queries/room';
 import { updateUser } from '../utils/queries/user';
+import User from '../entities/user';
 
 let users = {};
 
@@ -46,7 +52,11 @@ const chatHandler = async (io: Server, socket: any) => {
 
     const participants = newRoom.participants.map(({ user }) => user);
 
-    io.to([users[userId], users[author]]).emit(EVENTS.ROOM.CREATED, { ...newRoom, participants, unreadedMessagesCount: 0 });
+    io.to([users[userId], users[author]]).emit(EVENTS.ROOM.CREATED, {
+      ...newRoom,
+      participants,
+      unreadedMessagesCount: 0,
+    });
   };
 
   const createGroupRoom = async (obj: any, callback) => {
@@ -59,7 +69,7 @@ const chatHandler = async (io: Server, socket: any) => {
       await Participant.create({ room, user: userId }).save();
     }
 
-    await createSystemMessage(`User ${socket.me.name} created the chat`, room.id)
+    await createSystemMessage(`User ${socket.me.name} created the chat`, room.id);
 
     const newRoom = await Room.findOne({
       where: { id: room.id },
@@ -86,14 +96,18 @@ const chatHandler = async (io: Server, socket: any) => {
 
     if (title) roomInfo.title = title;
 
-    const room = await Room.createQueryBuilder().update(roomInfo).where('id = :id', { id }).returning('*').execute();
-    
+    const room = await Room.createQueryBuilder()
+      .update(roomInfo)
+      .where('id = :id', { id })
+      .returning('*')
+      .execute();
+
     const text = title ? `User ${socket.me.name} changed chat name to "${title}"` : '';
-    const message = await createSystemMessage(text, id)
+    const message = await createSystemMessage(text, id);
 
     io.to(id).emit(EVENTS.MESSAGE.NEW_MESSAGE_CREATED, message);
     io.to(id).emit(EVENTS.ROOM.UPDATED, room.raw[0]);
-  }
+  };
 
   const leaveRoom = async ({ roomId }: { roomId: string }, callback) => {
     const participants = await Participant.delete({ room: { id: roomId }, user: { id: socket.me?.id } });
@@ -104,7 +118,7 @@ const chatHandler = async (io: Server, socket: any) => {
 
     io.to(roomId).emit(EVENTS.MESSAGE.NEW_MESSAGE_CREATED, message);
     io.to(roomId).emit(EVENTS.ROOM.UPDATED, { participants });
-  }
+  };
 
   const createMessage = async ({ roomId, message }: any) => {
     const { id } = await Message.create({
@@ -112,7 +126,7 @@ const chatHandler = async (io: Server, socket: any) => {
       room: { id: roomId },
       text: message,
       roomId,
-      authorId: socket.me?.id
+      authorId: socket.me?.id,
     }).save();
 
     const newMessage = await Message.findOne({
@@ -137,8 +151,27 @@ const chatHandler = async (io: Server, socket: any) => {
       .update({ readed: true })
       .execute();
 
-      callback();
+    callback();
     socket.broadcast.to(roomId).emit(EVENTS.MESSAGE.READED, { roomId });
+  };
+
+  const acceptCall = ({ signal, to }) => {
+    io.to(users[to]).emit(EVENTS.CALL.ACCEPTED, { signal });
+  };
+
+  const callUser = async ({ signal, to }, callback) => {
+    callback();
+
+    const me = await User.findOneBy({ id: socket.me.id });
+    console.log('1111', me);
+    io.to(users[to]).emit(EVENTS.CALL.GET, { signal, from: me });
+  };
+
+  const endCall = async ({ roomId }) => {
+    const text = `User ${socket.me.name} end call`;
+    const message = await createSystemMessage(text, roomId);
+
+    io.to(roomId).emit(EVENTS.CALL.ENDED, { roomId, message });
   };
 
   const disconnect = async () => {
@@ -160,6 +193,10 @@ const chatHandler = async (io: Server, socket: any) => {
   socket.on(EVENTS.MESSAGE.MESSAGE_CREATE, createMessage);
   socket.on(EVENTS.MESSAGE.TYPING, getTyping);
   socket.on(EVENTS.MESSAGE.READ, readMessage);
+  
+  socket.on(EVENTS.CALL.MADE, callUser);
+  socket.on(EVENTS.CALL.END, endCall);
+  socket.on(EVENTS.CALL.ACCEPT, acceptCall);
 
   socket.on('disconnect', disconnect);
 };

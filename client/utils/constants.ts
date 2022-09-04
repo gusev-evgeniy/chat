@@ -6,7 +6,7 @@ export const EVENTS = {
     JOIN: 'JOIN_ROOM',
     UPDATE: 'ROOM_UPDATE',
     LEAVE: 'ROOM_LEAVE',
-    UPDATED: 'ROOM_UPDATED'
+    UPDATED: 'ROOM_UPDATED',
   },
 
   MESSAGE: {
@@ -21,6 +21,15 @@ export const EVENTS = {
   USER: {
     ENTER: 'USER_ENTER',
     LEAVE: 'USER_LEAVE'
+  },
+
+  CALL: {
+    MADE: 'CALL',
+    GET: 'GET_CALL',
+    ACCEPT: 'ACCEPT_CALL',
+    ACCEPTED: 'CALL_ACCEPTED',
+    END: 'END_CALL',
+    ENDED: 'CALL_ENDED'
   }
 } as const;
 

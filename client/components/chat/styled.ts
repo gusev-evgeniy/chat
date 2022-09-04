@@ -46,8 +46,10 @@ export const StyledChat = styled.div<{ empty?: boolean }>`
 export const StyledChatHeader = styled.div`
   height: 65px;
   border-bottom: 1px solid #e3e3e3;
-  padding: 15px;
+  padding: 15px 25px;
   display: flex;
+  justify-content: space-between;
+  width: 100%;
   align-items: center;
 
   .arrow {

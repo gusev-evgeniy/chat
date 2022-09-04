@@ -6,6 +6,7 @@ import { roomsReducer } from './slices/rooms';
 import { messagesReducer } from './slices/messages';
 import { createRoomReducer } from './slices/createRoom';
 import { dialogReducer } from './slices/dialog';
+import { callReducer } from './slices/call';
 
 export function makeStore() {
   return configureStore({
@@ -14,8 +15,10 @@ export function makeStore() {
       rooms: roomsReducer,
       messages: messagesReducer,
       createRoom: createRoomReducer,
-      dialog: dialogReducer
+      dialog: dialogReducer,
+      call: callReducer
     },
+    middleware: (getDefaultMiddleware) => getDefaultMiddleware(),
   });
 }
 
