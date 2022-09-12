@@ -40,10 +40,21 @@ export const messagesSlice = createSlice({
     },
     addMessage: (state, action: PayloadAction<Message>) => {
       const roomId = action.payload.roomId;
-      let { messages = [], count = 0 } = state.data[roomId] || {};
 
-      messages.push(action.payload);
-      count++;
+      let room = state.data[roomId];
+
+      if (!room) {
+        state.data[roomId] = {
+          messages: [action.payload],
+          count: 1,
+          loaded: true,
+        };
+      } else {
+        room.messages = [...room.messages, action.payload];
+      }
+
+      // messages.push(action.payload);
+      // count++;
     },
 
     setTyping: (state, action: PayloadAction<Typing>) => {
@@ -66,7 +77,6 @@ export const messagesSlice = createSlice({
 
     setAllReadedMessages: (state, action: PayloadAction<string>) => {
       const room = state.data[action.payload];
-      console.log('room', room);
 
       if (room) {
         room.messages = room.messages.map(message => ({ ...message, readed: true }));

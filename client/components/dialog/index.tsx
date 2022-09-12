@@ -1,10 +1,11 @@
 import React, { memo, useMemo } from 'react';
-import Portal from './portal';
+import Portal from '../portal';
 import { useAppSelector } from '../../store/hooks';
 import { selectDialog } from '../../store/slices/dialog';
 import { GroupInfo } from './groupInfo';
 import { Call } from './call';
 import { ReceiveCall } from './call/receive';
+import { CreateRoom } from './createRoom';
 
 export const Dialog = memo(() => {
   const name = useAppSelector(selectDialog);
@@ -17,8 +18,8 @@ export const Dialog = memo(() => {
         return <Call />;
       case 'RECEIVE_CALL':
         return <ReceiveCall />;      
-      // case 'GROUP_INFO':
-      //   return <div>hello there</div>;
+      case 'CREATE_ROOM':
+        return <CreateRoom />;
       default:
         return null;
     }
@@ -28,7 +29,7 @@ export const Dialog = memo(() => {
     return null;
   }
 
-  return <Portal>{dialog}</Portal>;
+  return <Portal type='dialog'>{dialog}</Portal>;
 });
 
 Dialog.displayName = 'Dialog';

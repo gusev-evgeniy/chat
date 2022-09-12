@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from '../index';
 
-type DialogType = 'GROUP_INFO' | 'CALL' | 'RECEIVE_CALL';
+type DialogType = 'GROUP_INFO' | 'CALL' | 'RECEIVE_CALL' | 'CREATE_ROOM';
 
 export interface DialogState {
   name: null | DialogType;

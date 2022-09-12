@@ -11,8 +11,9 @@ const MyDocument = () => {
       </Head>
       <body>
         <Main />
+        <div id='side_menu' />
+        <div id='dialog' />
         <div id='call' />
-        <div id='myportal' />
         <NextScript />
       </body>
     </Html>

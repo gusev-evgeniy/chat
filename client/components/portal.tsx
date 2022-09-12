@@ -3,9 +3,10 @@ import { createPortal } from 'react-dom';
 
 type Props = {
   children: React.ReactElement;
+  type: 'dialog' | 'side_menu'
 };
 
-const Portal: FC<Props> = ({ children }) => {
+const Portal: FC<Props> = ({ children, type }) => {
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
@@ -18,7 +19,7 @@ const Portal: FC<Props> = ({ children }) => {
     return null;
   }
 
-  return createPortal(children, document.getElementById('myportal') as HTMLElement);
+  return createPortal(children, document.getElementById(type) as HTMLElement);
 };
 
 export default Portal;

@@ -48,15 +48,16 @@ const chatHandler = async (io: Server, socket: any) => {
     });
 
     socket.join(room.id);
-    callback({ id: room.id });
-
+    
     const participants = newRoom.participants.map(({ user }) => user);
-
+    
     io.to([users[userId], users[author]]).emit(EVENTS.ROOM.CREATED, {
       ...newRoom,
       participants,
       unreadedMessagesCount: 0,
     });
+
+    callback({ id: room.id });
   };
 
   const createGroupRoom = async (obj: any, callback) => {

@@ -5,7 +5,7 @@ import { useMediaQuery } from '../../hooks/useMediaQuery';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { openSideMenu, sideMenuIsOpen } from '../../store/slices/sideMenu';
 
-import Portal from '../dialog/portal';
+import Portal from '../portal';
 import { Rooms } from '../rooms';
 
 import { WIDTH } from '../../styles/variables';
@@ -26,7 +26,7 @@ export const SideMenu = memo(() => {
   };
 
   return (
-    <Portal>
+    <Portal type='side_menu'>
       <StyledSideMenuWrapper datatype='veil' onClick={closeHandler}>
         <StyledSideMenu onClick={e => e.stopPropagation()}>
           <Rooms isSideMenu={true} />

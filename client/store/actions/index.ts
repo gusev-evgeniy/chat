@@ -62,7 +62,7 @@ export const createPrivateRoom = (message: string) => async (dispatch: AppDispat
       if (!id) {
         return;
       } 
-      
+
       dispatch(selectRoom(id));
       createMessage(id, message);
     }
@@ -70,6 +70,7 @@ export const createPrivateRoom = (message: string) => async (dispatch: AppDispat
 };
 
 export const createMessage = (roomId: string, message: string) => {
+  console.log('roomId, message', roomId, message)
   socket.emit(EVENTS.MESSAGE.MESSAGE_CREATE, { roomId, message });
 };
 

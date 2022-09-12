@@ -1,4 +1,4 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 import { RootState } from '../index';
 
 export interface SideMenuState {
@@ -14,7 +14,6 @@ export const sideMenuSlice = createSlice({
   initialState,
   reducers: {
     openSideMenu: (state) => {
-      console.log(34324)
       state.isOpen = !state.isOpen;
     },
   },

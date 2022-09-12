@@ -20,6 +20,7 @@ import { openSideMenu } from '../../store/slices/sideMenu';
 import { Empty } from '../../styles';
 import { useMediaQuery } from '../../hooks/useMediaQuery';
 import { WIDTH } from '../../styles/variables';
+import { openDialog } from '../../store/slices/dialog';
 
 type Props = {
   isSideMenu?: boolean;
@@ -32,8 +33,11 @@ export const Rooms: FC<Props> = memo(({ isSideMenu = false }) => {
   const matches = useMediaQuery(`(max-width: ${WIDTH.MEDIUM})`);
 
   const toggleNewRoom = (toggle: boolean) => {
+    if (matches) {
+      return dispatch(openDialog('CREATE_ROOM'));
+    }
+
     dispatch(openCreateRoom(toggle));
-    dispatch(openSideMenu());
   };
 
   const onSelecteHandler = useCallback((id: string) => {
