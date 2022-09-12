@@ -15,7 +15,7 @@ export const Password: FC<Auth> = ({ nextPage, changeData, data }) => {
         <p className='bold'>Create a password</p>
         <span>Length must be between {MIN_LENGTH} and 255 characters</span>
       </StyledAdvises>
-      <StyledWrapper padding={55}>
+      <StyledWrapper padding={'5vh'}>
         <input
           type='password'
           className='text-input'

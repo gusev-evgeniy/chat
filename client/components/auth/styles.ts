@@ -1,19 +1,20 @@
 import styled from 'styled-components';
 import { COLORS } from '../../styles/variables';
-export const baseRadius = `20px`;
-export const padding = `18px`;
 
-export const StyledWrapper = styled.div<{ padding: number }>`
+export const baseRadius = `20px`;
+export const sign_in_padding = `18px`;
+
+export const StyledWrapper = styled.div<{ padding?: string }>`
   background-color: #fff;
   border-radius: ${baseRadius};
   border: 1px solid #e8e3d7;
   box-shadow: 0px 2px 10px 0px rgba(31, 29, 29, 0.05);
-  max-width: 500px;
+  max-width: 550px;
   min-width: 320px;
   display: flex;
   align-items: center;
   flex-direction: column;
-  padding: ${props => props.padding}px;
+  padding: ${({ padding }) => padding && `${padding}`};
 
   h3 {
     margin-bottom: 35px;
@@ -23,7 +24,7 @@ export const StyledWrapper = styled.div<{ padding: number }>`
   & .sign_in {
     font-size: 15px;
     font-weight: 700;
-    margin-top: ${padding};
+    margin-top: ${sign_in_padding};
     color: #4f6fa5;
     cursor: pointer;
   }

@@ -27,7 +27,7 @@ export const Search = () => {
   };
 
   return (
-    <StyledSearchUserWrapper padding={50}>
+    <StyledSearchUserWrapper padding={'50px'}>
       <Form />
 
       <div className='checked_list'>

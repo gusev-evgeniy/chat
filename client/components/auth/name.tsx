@@ -68,10 +68,10 @@ export const Name: FC<Auth> = ({ nextPage, changeData, data }) => {
         <p className='bold'>Please enter your name</p>
         <span>and upload your photo</span>
       </StyledAdvises>
-      <StyledWrapper padding={55}>
+      <StyledWrapper padding={'5vh'}>
         <form onSubmit={onSubmit}>
           <div className='user_data'>
-            <AvatarInput name={name} onChange={onSelectFile} photo={preview} size={30} />
+            <AvatarInput name={name} onChange={onSelectFile} photo={preview} size={100} />
           </div>
           <input
             type='text'

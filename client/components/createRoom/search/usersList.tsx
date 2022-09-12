@@ -28,7 +28,7 @@ export const UsersList: FC<Props> = ({ loaded, users, onCheck, checked }) => {
   }
 
   return (
-    <StyledUsers padding={0}>
+    <StyledUsers>
       {users.map(user => {
         const checkedUser = checked.some(({ id }) => id === user.id);
 

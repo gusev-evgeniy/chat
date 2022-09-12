@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { StyledTextInput } from '../../styles';
-import { COLORS } from '../../styles/variables';
+import { COLORS, WIDTH } from '../../styles/variables';
 import { StyledWrapper } from '../auth/styles';
 
 export const StyledLabel = styled.label`
@@ -20,7 +20,10 @@ export const StyledCreateRoom = styled.div`
   width: 70%;
   display: flex;
   flex-direction: column;
-  padding: 20px;
+
+  .container {
+    padding: 0 20px;
+  }
 
   .group_name {
     width: 100%;
@@ -53,6 +56,10 @@ export const StyledCreateRoom = styled.div`
     width: inherit;
     display: flex;
     justify-content: flex-end;
+  }
+
+  @media screen and (max-width: ${WIDTH.MEDIUM}) {
+    width: 100%;
   }
 `;
 

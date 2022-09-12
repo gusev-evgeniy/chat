@@ -16,13 +16,25 @@ import { StyledAva } from '../avatar/styles';
 import { getRoomsInfo } from '../../store/selectors';
 import { openCreateRoom } from '../../store/slices/createRoom';
 import { logout } from '../../store/actions/user';
+import { openSideMenu } from '../../store/slices/sideMenu';
+import { Empty } from '../../styles';
+import { useMediaQuery } from '../../hooks/useMediaQuery';
+import { WIDTH } from '../../styles/variables';
 
-export const Rooms: FC<{}> = memo(() => {
+type Props = {
+  isSideMenu?: boolean;
+};
+
+export const Rooms: FC<Props> = memo(({ isSideMenu = false }) => {
   const dispatch = useAppDispatch();
 
   const { me, rooms, typing, selected, isCreatRoomOpen } = useAppSelector(getRoomsInfo);
+  const matches = useMediaQuery(`(max-width: ${WIDTH.MEDIUM})`);
 
-  const toggleNewRoom = (toggle: boolean) => dispatch(openCreateRoom(toggle));
+  const toggleNewRoom = (toggle: boolean) => {
+    dispatch(openCreateRoom(toggle));
+    dispatch(openSideMenu());
+  };
 
   const onSelecteHandler = useCallback((id: string) => {
     toggleNewRoom(false);
@@ -34,7 +46,7 @@ export const Rooms: FC<{}> = memo(() => {
   };
 
   return (
-    <StyledRooms>
+    <StyledRooms fullWidth={isSideMenu}>
       <div className='header'>
         <form>
           <StyledSearchInput type='text' className='search' placeholder='Search' disabled />
@@ -53,19 +65,23 @@ export const Rooms: FC<{}> = memo(() => {
         </div>
       </div>
 
+      {!rooms.length && matches && (
+        <div className='rooms_wrapper'>
+          <Empty>Your rooms will be displayed here</Empty>
+        </div>
+      )}
+
       <div className='rooms_wrapper'>
-        {rooms.map(room => {
-          return (
-            <Room
-              key={room.id}
-              room={room}
-              myId={me?.id as string}
-              isSelected={selected === room.id}
-              onSelecteHandler={onSelecteHandler}
-              typing={typing[room.id]}
-            />
-          );
-        })}
+        {rooms.map(room => (
+          <Room
+            key={room.id}
+            room={room}
+            myId={me?.id as string}
+            isSelected={selected === room.id}
+            onSelecteHandler={onSelecteHandler}
+            typing={typing[room.id]}
+          />
+        ))}
       </div>
 
       <div className='footer'>

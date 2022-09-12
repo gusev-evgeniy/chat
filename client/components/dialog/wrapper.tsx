@@ -20,7 +20,7 @@ export const DialogWrapper: FC<Props> = ({ children }) => {
 
   return (
     <StyledVeil onClick={closeHandler} datatype='veil'>
-      <StyledContainer padding={25} onClick={e => e.stopPropagation()}>
+      <StyledContainer padding={'25px'} onClick={e => e.stopPropagation()}>
         <>
           <div className='header'>
             <CloseIconWrapper onClick={closeHandler}>

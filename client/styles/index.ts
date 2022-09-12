@@ -1,6 +1,5 @@
 import styled from 'styled-components';
 import { StyledWrapper } from '../components/auth/styles';
-import { StyledInputButton } from '../components/chat/styled';
 import { COLORS } from './variables';
 
 export const DISABLED_GRAY = '#dad6ca';
@@ -39,6 +38,11 @@ export const Empty = styled.div<{ margin?: string }>`
   font-size: 1.2rem;
   color: #7c7c7c;
   text-align: center;
+  /* height: 100vh;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center; */
 `;
 
 export const StyledIconButton = styled.button`
@@ -49,6 +53,6 @@ export const StyledIconButton = styled.button`
   border: 0px;
 
   &:hover {
-    background-color: ${COLORS.GREY}
+    background-color: ${COLORS.GREY};
   }
 `;

@@ -48,7 +48,7 @@ const Login = () => {
             if you don&rsquo;t have one
           </p>
         </StyledAdvises>
-        <StyledWrapper padding={55}>
+        <StyledWrapper padding={'5vh'}>
           <form onSubmit={onSubmitHandler}>
             <input
               type='text'

@@ -16,7 +16,9 @@ export const Dialog = memo(() => {
       case 'CALL':
         return <Call />;
       case 'RECEIVE_CALL':
-        return <ReceiveCall />;
+        return <ReceiveCall />;      
+      // case 'GROUP_INFO':
+      //   return <div>hello there</div>;
       default:
         return null;
     }

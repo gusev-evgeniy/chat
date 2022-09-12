@@ -55,7 +55,7 @@ export const GroupInfo = () => {
           <AvatarInput name={title as string} size={120} photo={photo} onChange={onSelectFile} />
           <TitleInput title={title as string} update={updateGroup} />
         </div>
-        <StyledUsers padding={0}>
+        <StyledUsers>
           {participants.map(({ name, photo, online, id }) => (
             <StyledSearchUserItem className='user_wrapper' key={id}>
               <div className='data_wrapper'>

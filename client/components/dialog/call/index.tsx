@@ -47,7 +47,7 @@ export const Call = () => {
 
   return (
     <StyledVeil>
-      <StyledContainer padding={25}>
+      <StyledContainer padding={'25px'}>
         <Avatar name={name || ''} size={100} photo={photo} online={false} />
 
         {partnerVideo && <Video playsInline ref={partnerVideo} autoPlay />}

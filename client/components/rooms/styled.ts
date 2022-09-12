@@ -2,11 +2,12 @@ import styled from 'styled-components';
 import { StyledInputIcon, StyledTextInput } from '../../styles';
 import { COLORS } from '../../styles/variables';
 
-export const StyledRooms = styled.div`
+export const StyledRooms = styled.div<{ fullWidth: boolean }>`
   height: 100vh;
-  width: 30%;
-  border-right: 1px solid #e3e3e3;
+  width: ${({ fullWidth }) => fullWidth ? '100%' : '30%' };
+  border-right: ${({ fullWidth }) => !fullWidth && '1px solid #e3e3e3' };
   position: relative;
+
 
   .header {
     padding: 10px 12px;

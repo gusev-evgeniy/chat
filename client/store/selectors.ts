@@ -87,7 +87,7 @@ export const getHeaderInfo = createSelector(
       type: selectedRoomType,
       myId: myData?.id,
       userId: privateUser && privateUser.id,
-      selected
+      selected,
     };
   }
 );

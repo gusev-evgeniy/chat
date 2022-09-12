@@ -1,21 +1,22 @@
 import React, { FC, useEffect } from 'react';
+import { useMediaQuery } from '../../hooks/useMediaQuery';
 
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { createRoomsDefault, selectCreatingRoom, updateTitle } from '../../store/slices/createRoom';
+import { WIDTH } from '../../styles/variables';
+import { SideMenuIcon } from '../sideMenu/icon';
 
 import { Search } from './search';
 
-import {
-  StyledCreateRoom,
-  StyledGroupNameIntput,
-  StyledLabel,
-} from './styled';
+import { StyledCreateRoom, StyledGroupNameIntput, StyledLabel } from './styled';
 
 const MAX_LENGTH = 20;
 
 export const NewRoom: FC<{}> = () => {
   const dispatch = useAppDispatch();
-  const { title, type} = useAppSelector(selectCreatingRoom);
+  const { title, type } = useAppSelector(selectCreatingRoom);
+
+  const matches = useMediaQuery(`(max-width: ${WIDTH.MEDIUM})`);
 
   const groupNameLength = title.length;
   const isGroupChat = type === 'group';
@@ -23,10 +24,9 @@ export const NewRoom: FC<{}> = () => {
   useEffect(() => {
     return () => {
       dispatch(createRoomsDefault());
-    }
-  }, [])
-  
-  
+    };
+  }, []);
+
   const onChangeName = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
 
@@ -37,27 +37,31 @@ export const NewRoom: FC<{}> = () => {
 
   return (
     <StyledCreateRoom>
-      <div className='group_name'>
-        {isGroupChat && (
-          <form>
-            <StyledLabel htmlFor=''>group name</StyledLabel>
-            <div className='input_wrapper'>
-              <StyledGroupNameIntput
-                type='text'
-                className='search'
-                placeholder='Type here'
-                value={title}
-                onChange={onChangeName}
-              />
-              <div className='count'>
-                {groupNameLength}/{MAX_LENGTH}
-              </div>
-            </div>
-          </form>
-        )}
-      </div>
+      {matches && <SideMenuIcon absolute={true} />}
 
-      <Search />
+      <div className='container'>
+        <div className='group_name'>
+          {isGroupChat && (
+            <form>
+              <StyledLabel htmlFor=''>group name</StyledLabel>
+              <div className='input_wrapper'>
+                <StyledGroupNameIntput
+                  type='text'
+                  className='search'
+                  placeholder='Type here'
+                  value={title}
+                  onChange={onChangeName}
+                />
+                <div className='count'>
+                  {groupNameLength}/{MAX_LENGTH}
+                </div>
+              </div>
+            </form>
+          )}
+        </div>
+
+        <Search />
+      </div>
     </StyledCreateRoom>
   );
 };

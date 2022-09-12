@@ -4,7 +4,7 @@ import { MainWrapper } from "../styles";
 export default function Layout({ children }) {
 
   return (
-    <MainWrapper padding={0}>
+    <MainWrapper>
       <Rooms />
       {/* <Split
         sizes={[25, 75]}

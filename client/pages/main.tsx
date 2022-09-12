@@ -14,11 +14,16 @@ import { selectMyData } from '../store/selectors';
 import { useRouter } from 'next/router';
 import { Dialog } from '../components/dialog';
 import { useSocketOn } from '../hooks/useSocketOn';
+import { useMediaQuery } from '../hooks/useMediaQuery';
+import { WIDTH } from '../styles/variables';
+import { SideMenu } from '../components/sideMenu';
 
 const Main = () => {
   const { id } = useAppSelector(selectMyData) || {};
+
   const { push } = useRouter();
 
+  const matches = useMediaQuery(`(min-width: ${WIDTH.MEDIUM})`);
   useSocketOn();
 
   useEffect(() => {
@@ -26,10 +31,11 @@ const Main = () => {
   }, [id]);
 
   return (
-    <MainWrapper padding={0}>
+    <MainWrapper>
       <Dialog />
-      <Rooms />
-      <ChatWrapper />
+      <SideMenu />
+      {matches && <Rooms />}
+      <ChatWrapper matches={matches}/>
     </MainWrapper>
   );
 };

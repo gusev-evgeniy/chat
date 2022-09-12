@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import TextareaAutosize from 'react-textarea-autosize';
-import { COLORS } from '../../styles/variables';
+import { COLORS, WIDTH } from '../../styles/variables';
 
 export const StyledChat = styled.div<{ empty?: boolean }>`
   height: ${({ empty }) => (empty ? 'null' : '100%')};
@@ -41,6 +41,10 @@ export const StyledChat = styled.div<{ empty?: boolean }>`
       color: ${COLORS.BLUE};
     }
   }
+
+  @media screen and (max-width: ${WIDTH.MEDIUM}) {
+    width: 100%;
+  } 
 `;
 
 export const StyledChatHeader = styled.div`
@@ -51,21 +55,7 @@ export const StyledChatHeader = styled.div`
   justify-content: space-between;
   width: 100%;
   align-items: center;
-
-  .arrow {
-    width: 40px;
-    height: 40px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-right: 10px;
-    border-radius: 100%;
-    cursor: pointer;
-
-    :hover {
-      background-color: rgba(227, 227, 227, 0.7);
-    }
-  }
+  background-color: #fff;
 
   .title {
     font-size: 1.5rem;

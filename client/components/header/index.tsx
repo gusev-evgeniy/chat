@@ -1,31 +1,27 @@
 import Image from 'next/image';
 import React, { FC, memo } from 'react';
 
-import arrow_back from '../../images/arrow_back.svg';
+import menu from '../../images/menu.svg';
 import call_icon from '../../images/call.svg';
 
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { getHeaderInfo } from '../../store/selectors';
-import { openCreateRoom } from '../../store/slices/createRoom';
 import { openDialog } from '../../store/slices/dialog';
 import { StyledIconButton } from '../../styles';
-import { StyledChatHeader, StyledGroupSubstring, StyledSubstring } from './styled';
+import { StyledChatHeader, StyledGroupSubstring, StyledSubstring } from '../chat/styled';
 import { call } from '../../store/actions/call';
+import { useMediaQuery } from '../../hooks/useMediaQuery';
+import { WIDTH } from '../../styles/variables';
+import { openSideMenu } from '../../store/slices/sideMenu';
+import { SideMenuIcon } from '../sideMenu/icon';
 
 export const Header: FC<{}> = memo(() => {
   const dispatch = useAppDispatch();
 
-  const data = useAppSelector(getHeaderInfo);
+  const matches = useMediaQuery(`(max-width: ${WIDTH.MEDIUM})`);
 
-  if (!data) {
-    return null;
-  }
-
-  const { isNewRoom, online, substring, title, type, myId, userId, selected } = data;
-
-  const onBackHandler = () => {
-    dispatch(openCreateRoom(true));
-  };
+  const { online, substring, title, type, myId, userId, selected, isNewRoom } =
+    useAppSelector(getHeaderInfo) || {};
 
   const openDialogHandler = () => {
     dispatch(openDialog('GROUP_INFO'));
@@ -37,10 +33,8 @@ export const Header: FC<{}> = memo(() => {
 
   return (
     <StyledChatHeader>
-      {isNewRoom && (
-        <span className='arrow' onClick={onBackHandler}>
-          <Image width='30px' height='30px' src={arrow_back} alt='arrow_back' />
-        </span>
+      {matches && (
+        <SideMenuIcon />
       )}
 
       <div>

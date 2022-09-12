@@ -8,7 +8,7 @@ import { StyledChat } from './styled';
 import { Empty } from '../../styles';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { MessageForm } from './messageForm';
-import { Header } from './header';
+import { Header } from '../header';
 import { getChatData } from '../../store/selectors';
 import { readMessage } from '../../store/actions';
 import { getMessages } from '../../store/actions/messages';

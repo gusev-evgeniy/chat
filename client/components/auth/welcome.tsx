@@ -10,7 +10,7 @@ export const Welcome: FC<Props> = ({ nextPage }) => {
   const router = useRouter();
 
   return (
-    <StyledWrapper padding={55}>
+    <StyledWrapper padding={'5vh'}>
       <h3>Welcome to TalkClub!</h3>
       <div className='hello_letter'>
         We&rsquo;re working hard to get TalkClub ready for everyone! While we wrap up the finishing youches,
