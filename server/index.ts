@@ -39,7 +39,7 @@ const start = async () => {
 
     http.listen(PORT, () => console.log(`Server started on ${PORT} port`));
   } catch (error) {
-    console.log('Something goes wrong');
+    console.log('Something goes wrong:', error);
   }
 };
 

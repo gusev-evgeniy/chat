@@ -1,12 +1,15 @@
-import { DataSource } from 'typeorm';
+import { DataSource, DatabaseType } from 'typeorm';
 
 import User from './entities/user';
 import Room from './entities/room';
 import Message from './entities/message';
 import Participant from './entities/participants';
 
+type KeysOfUnion<T> = T extends T ? keyof T: never;
+type AvailableKeys = KeysOfUnion<DatabaseType>; 
+
 const myDataSource = new DataSource({
-  type: process.env.DB_TYPE || 'postgres',
+  type: process.env.DB_TYPE as 'postgres' || 'postgres',
   host: process.env.DB_HOST || 'localhost',
   port:  +process.env.DB_PORT ||  5432,
   username: process.env.DB_USER || 'postgres',
