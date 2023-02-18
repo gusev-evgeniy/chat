@@ -28,7 +28,7 @@ export const StyledCreateRoom = styled.div`
   .group_name {
     width: 100%;
     max-width: 700px;
-    margin: 100px auto 100px auto;
+    margin: 10% auto;
     min-height: 81px;
   }
 

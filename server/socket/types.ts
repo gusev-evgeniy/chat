@@ -3,3 +3,6 @@ export type GetTypingProps = {
   roomId: string;
   isTyping: boolean;
 }
+
+
+export type Callback = (...arg: any) => void;
