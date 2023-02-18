@@ -11,7 +11,7 @@ export const prepareImage = (req: Request) => {
   const url = req.protocol + '://' + req.get('host');
   const filePath = req.file.path;
   const fileName = uuidv4() + '-' + req.file?.filename.replace('.png', '.jpeg');
-
+  console.log('req.file.destination', req.file.destination)
   sharp(filePath)
     .resize(150, 150)
     .toFormat('jpeg')
@@ -23,5 +23,5 @@ export const prepareImage = (req: Request) => {
       fs.unlinkSync(filePath);
     });
 
-  return url + '/public/' + fileName;
+  return url + '/static/' + fileName;
 };

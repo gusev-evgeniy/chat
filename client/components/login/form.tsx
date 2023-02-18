@@ -1,5 +1,6 @@
 import React, { FC } from 'react';
 import { LoginKeysData } from '../../hooks/useLoginForm';
+import { StyledForm } from '../../styles';
 import { StyledButton, StyledWrapper } from '../auth/styles';
 
 type Props = {
@@ -19,7 +20,7 @@ export const LoginForm: FC<Props> = ({
 
   return (
     <StyledWrapper padding={'5vh'}>
-      <form onSubmit={onSubmitHandler}>
+      <StyledForm onSubmit={onSubmitHandler}>
         <input
           type='text'
           className='text-input'
@@ -39,7 +40,7 @@ export const LoginForm: FC<Props> = ({
           Next
           <span className='arrow'>&rarr;</span>
         </StyledButton>
-      </form>
+      </StyledForm>
     </StyledWrapper>
   );
 };

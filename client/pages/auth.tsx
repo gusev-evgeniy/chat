@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { useState } from 'react';
 
 import { setUserData } from '../store/slices/user';
 
@@ -6,13 +7,17 @@ import { Name } from '../components/auth/name';
 import { Password } from '../components/auth/password';
 import { Welcome } from '../components/auth/welcome';
 import { wrapper } from '../store';
-import { useAuthForm } from '../hooks/useAuthForm';
+import { useAuth } from '../hooks/useAuth';
 import { useAuthGuard } from '../hooks/useAuthGuard';
 
 const Auth = () => {
   useAuthGuard();
-  
-  const { changeData, data, nextPage, num, onSubmit } = useAuthForm();
+
+  const [num, setNum] = useState(1);
+
+  const { changeData, data, onSubmit } = useAuth();
+
+  const nextPage = () => setNum(prev => ++prev);
 
   const pages = {
     1: <Welcome nextPage={nextPage} />,

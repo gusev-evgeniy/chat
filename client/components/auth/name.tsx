@@ -1,7 +1,4 @@
-import Image from 'next/image';
 import React, { FC } from 'react';
-
-import add_photo from '../../images/add_photo.svg';
 
 import { Auth } from './types';
 
@@ -9,19 +6,23 @@ import {
   AlertMessage,
   StyledAdvises,
   StyledButton,
-  StyledFormAuth,
   StyledWrapper,
 } from './styles';
-import { StyledAva } from '../avatar/styles';
 import { AvatarInput } from '../avatar/input';
 import { usePreview } from './usePreview';
-import { useAuthForm } from './useAuthForm';
+import { useAuthUserForm } from './useAuthUserForm';
+import { StyledForm } from '../../styles';
 
-export const Name: FC<Auth> = (props) => {
-  const { name, photo } = props.data;
+export const Name: FC<Auth> = props => {
+  const { data, changeData } = props
+  const { name, photo } = data;
 
   const { preview } = usePreview(photo);
-  const { onKeyChange, onSelectFile, onSubmit, errorText } = useAuthForm(props)
+  const { onSelectFile, onSubmit, errorText } = useAuthUserForm(props);
+
+  const onKeyChange = ({ target }: React.ChangeEvent<HTMLInputElement>) => {
+    changeData({ name: target.value.trim() });
+  };
 
   return (
     <div>
@@ -30,7 +31,7 @@ export const Name: FC<Auth> = (props) => {
         <span>and upload your photo</span>
       </StyledAdvises>
       <StyledWrapper padding={'5vh'}>
-        <StyledFormAuth onSubmit={onSubmit}>
+        <StyledForm onSubmit={onSubmit}>
           <div className='user_data'>
             <AvatarInput
               name={name}
@@ -50,7 +51,7 @@ export const Name: FC<Auth> = (props) => {
             Next
             <span className='arrow'>&rarr;</span>
           </StyledButton>
-        </StyledFormAuth>
+        </StyledForm>
       </StyledWrapper>
 
       {!!errorText && <AlertMessage>{errorText}</AlertMessage>}

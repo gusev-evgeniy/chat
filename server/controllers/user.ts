@@ -15,9 +15,9 @@ class User {
         name,
         password,
       };
-      console.log('req', req)
-      console.log('host', req.host)
+
       const photoUrl = prepareImage(req);
+      console.log('photoUrl', photoUrl)
       if (photoUrl) userInfo.photo = photoUrl;
 
       const user = UserEntity.create(userInfo) as UserEntity;
@@ -28,7 +28,7 @@ class User {
       res.json(user);
     } catch (error: any) {
       console.log('error', error);
-      res.json({ error: error.detail });
+      res.status(400).json({ error: error.detail });
     }
   }
 
@@ -38,9 +38,12 @@ class User {
 
   async checkName(req: Request, res: Response) {
     try {
+      console.log('req.body.name', req.body.name)
       const user = await UserEntity.find({
         where: { name: req.body.name },
       });
+
+      console.log('user111', user)
       if (user.length) {
         return res.status(401).json({ message: 'A user with the same name already exists' });
       }
@@ -62,7 +65,7 @@ class User {
   }
 
   async getOne(req: Request, res: Response) {
-    const { name, password } = req.query;
+    const { name, password } = req.body;
     try {
       const user = await UserEntity.findOne({
         where: { name: name as string },
@@ -77,7 +80,7 @@ class User {
 
       const { password: _, ...rest } = user;
 
-      res.json({ user: rest });
+      res.json(rest);
     } catch (error) {
       res.status(401).json({ error });
     }

@@ -1,3 +1,4 @@
+import dayjs from 'dayjs';
 import { Room } from '../type/room';
 import { UserBD } from '../type/user';
 
@@ -20,3 +21,11 @@ export const getRoomInfo = (
 
   return { id, title: name, image: photo, online };
 };
+
+export const createOnlineSubstring = (privateUser: UserBD | undefined, participants: UserBD[]) => {
+  return privateUser
+    ? dayjs(privateUser.wasOnline).format('YYYY-MM-DD')
+    : `${participants.length} участников, ${
+        participants.filter(({ online }) => online).length
+      } в сети`;
+}

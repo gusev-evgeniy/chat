@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react';
-import { instance } from '../../api';
+import { UserAPI } from '../../api/user';
 import { Auth } from './types';
 
 const VALID_TYPES = ['image/png', 'image/jpg', 'image/jpeg'];
@@ -8,14 +8,15 @@ Invalid file type.
 Please select .jpg, .jpeg or .png file. 
 `;
 
-export const useAuthForm = ({ nextPage, changeData, data }: Auth) => {
+export const useAuthUserForm = ({ nextPage, changeData, data }: Auth) => {
   const [errorText, setErrorText] = useState('');
 
   const onSelectFile = ({ target }: React.ChangeEvent<HTMLInputElement>) => {
+    console.log('target', target)
     if (!target.files || target.files.length === 0) {
       return;
     }
-
+    console.log('target.files', target.files)
     if (!VALID_TYPES.includes(target.files[0].type)) {
       setErrorText(TEXT_ERROR);
       changeData({ photo: undefined });
@@ -26,15 +27,11 @@ export const useAuthForm = ({ nextPage, changeData, data }: Auth) => {
     changeData({ photo: target.files[0] });
   };
 
-  const onKeyChange = ({ target }: React.ChangeEvent<HTMLInputElement>) => {
-    changeData({ name: target.value.trim() });
-  };
-
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
+    console.log('data.name', data)
     try {
-      await instance.post('/user/check_name', { name: data.name });
+      await UserAPI.checkName(data.name);
       nextPage();
     } catch (error: any) {
       setErrorText(error.response.data?.message as string);
@@ -44,10 +41,9 @@ export const useAuthForm = ({ nextPage, changeData, data }: Auth) => {
   return useMemo(
     () => ({
       onSelectFile,
-      onKeyChange,
       onSubmit,
       errorText
     }),
-    [errorText]
+    [errorText, data]
   );
 };

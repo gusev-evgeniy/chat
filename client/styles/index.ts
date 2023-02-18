@@ -56,3 +56,9 @@ export const StyledIconButton = styled.button`
     background-color: ${COLORS.GREY};
   }
 `;
+
+export const StyledForm = styled.form`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`

@@ -3,11 +3,10 @@ import { useState, useMemo } from 'react';
 import { useAppDispatch } from '../store/hooks';
 import { setUserData } from '../store/slices/user';
 
-import { instance } from '../api';
 import { UserData } from '../components/auth/types';
+import { UserAPI } from '../api/user';
 
-export const useAuthForm = () => {
-  const [num, setNum] = useState(1);
+export const useAuth = () => {
   const [data, setData] = useState<UserData>({
     name: '',
     password: '',
@@ -20,19 +19,14 @@ export const useAuthForm = () => {
     setData(prev => ({ ...prev, ...changed }));
   };
 
-  const nextPage = () => {
-    setNum(prev => ++prev);
-  };
-
   const onSubmit = async () => {
     const formData = new FormData();
+
     Object.entries(data).forEach(
       ([key, value]) => value && formData.append(key, value)
     );
 
-    const res = await instance.post('/user/auth', formData, {
-      headers: { 'content-type': 'multipart/form-data' },
-    });
+    const res = await UserAPI.auth(formData);
 
     dispatch(setUserData(res.data));
   };
@@ -40,11 +34,9 @@ export const useAuthForm = () => {
   return useMemo(
     () => ({
       data,
-      num,
       onSubmit,
-      nextPage,
       changeData,
     }),
-    []
+    [data]
   );
 };

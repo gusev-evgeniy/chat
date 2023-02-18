@@ -3,7 +3,7 @@ import { v4 as uuidv4 } from 'uuid'
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, './public/');
+    cb(null, './static/');
   },
   filename: (req, file, cb) => {
     const fileName = file.originalname.toLowerCase().split(' ').join('-');

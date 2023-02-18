@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react";
-import { instance } from "../api";
+import { UserAPI } from "../api/user";
 import { useAppDispatch } from "../store/hooks";
 import { setUserData } from "../store/slices/user";
 
@@ -23,14 +23,11 @@ export const useLoginForm = () => {
   const onSubmitHandler = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    const { name, password } = data;
+    const { errorText, ...rest } = data;
 
     try {
-      const res = await instance.get(
-        `/user/login?name=${name}&password=${password}`
-      );
-
-      dispatch(setUserData(res.data.user));
+      const res = await UserAPI.loging(rest);
+      dispatch(setUserData(res.data));
     } catch (error: any) {
       changeData("errorText", error.response.data?.message as string)
     }

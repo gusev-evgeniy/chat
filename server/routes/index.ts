@@ -16,12 +16,12 @@ const createRoutes = (app: express.Express) => {
       origin: 'http://localhost:3000',
     })
   );
-  app.use('/public', express.static('public'));
+  app.use('/static', express.static('static'));
   app.use(express.json());
   app.use(cookieParser());
 
   app.post('/user/auth', Upload.single('photo'), User.create);
-  app.get('/user/login', User.getOne);
+  app.post('/user/login', User.getOne);
   app.post('/user/logout', Auth, User.logout);
   app.get('/user/find', Auth, User.get);
   app.post('/user/check_name', User.checkName);

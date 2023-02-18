@@ -4,6 +4,7 @@ import dayjs from 'dayjs';
 import { RootState } from '.';
 import { NEW_ROOM } from '../utils/constants';
 import { returnTypingText } from '../utils/message';
+import { createOnlineSubstring } from '../utils/room';
 import { RoomMessages } from './slices/messages';
 
 export const selectRooms = (state: RootState) => state.rooms;
@@ -82,11 +83,7 @@ export const getHeaderInfo = createSelector(
         : undefined;
 
     const online = privateUser?.online;
-    const substring = privateUser
-      ? dayjs(privateUser.wasOnline).format('YYYY-MM-DD')
-      : `${participants.length} участников, ${
-          participants.filter(({ online }) => online).length
-        } в сети`;
+    const substring = createOnlineSubstring(privateUser, participants);
 
     const title = privateUser?.name || selectedRoomTitle;
 
