@@ -3,6 +3,7 @@ import Message from '../../entities/message';
 import { EVENTS } from '../events';
 import { GetTypingProps } from '../types';
 import { updateRoomLastMessage } from '../../utils/room';
+import { readMessagesQuary } from '../../utils/message';
 
 type Callback = (...arg: any) => void;
 
@@ -34,12 +35,7 @@ export default async (io: Server, socket: any) => {
     { roomId }: { roomId: string },
     callback: Callback
   ) => {
-    await Message.createQueryBuilder('message')
-      .where('message."roomId" = :roomId', { roomId })
-      .andWhere('message.readed IS FALSE')
-      .andWhere('message."authorId" != :author', { author: socket.me?.id })
-      .update({ readed: true })
-      .execute();
+    await readMessagesQuary( socket.me?.id, roomId)
 
     callback();
     socket.broadcast.to(roomId).emit(EVENTS.MESSAGE.READED, { roomId });

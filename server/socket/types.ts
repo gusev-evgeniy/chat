@@ -4,5 +4,4 @@ export type GetTypingProps = {
   isTyping: boolean;
 }
 
-
 export type Callback = (...arg: any) => void;

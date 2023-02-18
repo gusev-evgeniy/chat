@@ -2,6 +2,7 @@ import Message from '../entities/message';
 import Participant from '../entities/participants';
 import Room from '../entities/room';
 import User from '../entities/user';
+import { createSystemMessage } from './message';
 
 export const isPrivateRoomExist = async (userId: string, myId: string) => {
   console.log(
@@ -44,15 +45,12 @@ export const getUserRooms = async (id: string) => {
       .leftJoinAndSelect('participants.user', 'user')
       .getMany();
 
-    console.log('participants', participants)
+    console.log('participants', participants);
 
     return participants.reduce(
       (acc, { room }) => {
         acc[0].push(room.id);
-          console.log('room.participants.', room.participants)
         const users = room.participants.map(({ user }) => user.socketId);
-        console.log('users', new Set(users))
-        console.log('cc[1]', acc[1])
         acc[1] = [...acc[1], ...new Set(users)];
 
         return acc;
@@ -93,27 +91,6 @@ export const getRoomsAndCount = async (id: string) => {
   return { rooms, count };
 };
 
-export const createSystemMessage = async (text: string, roomId: string) => {
-  return await Message.create({
-    text,
-    room: { id: roomId },
-    roomId,
-    isSystem: true,
-    readed: true,
-  }).save();
-};
-
-// export const addNewRoom = async (author: User, userId: User ) => {
-//   const room = await Room.create({ author }).save();
-//   await Participant.create({ room, user: userId }).save();
-//   await Participant.create({ room, user: author }).save();
-
-//   return await Room.findOne({
-//     where: { id: room.id },
-//     relations: ['participants', 'participants.user'],
-//   }) as Room;
-// }
-
 type RoomProps = {
   data: Partial<Room>;
   users: { id: User; socketId: string }[];
@@ -121,23 +98,23 @@ type RoomProps = {
 };
 
 export const addNewRoom = async ({ data, authorName, users }: RoomProps) => {
-try {
-  const room = (await Room.create(data).save()) as Room;
-  await Participant.create({ room, user: data.author }).save();
+  try {
+    const room = (await Room.create(data).save()) as Room;
+    await Participant.create({ room, user: data.author }).save();
 
-  for (let { id } of users) {
-    await Participant.create({ room, user: id }).save();
+    for (let { id } of users) {
+      await Participant.create({ room, user: id }).save();
+    }
+
+    if (data.type === 'group') {
+      await createSystemMessage(`User ${authorName} created the chat`, room.id);
+    }
+
+    return (await Room.findOne({
+      where: { id: room.id },
+      relations: ['participants', 'participants.user', 'messages'],
+    })) as Room;
+  } catch (error) {
+    console.log('Add new room error:', error);
   }
-
-  if (data.type === 'group') {
-    await createSystemMessage(`User ${authorName} created the chat`, room.id);
-  }
-
-  return (await Room.findOne({
-    where: { id: room.id },
-    relations: ['participants', 'participants.user', 'messages'],
-  })) as Room;
-} catch (error) {
-  console.log('Add new room error:', error)
-}
 };
