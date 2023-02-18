@@ -126,6 +126,7 @@ export const StyledSubButton = styled.button`
   margin-top: 18px;
   cursor: pointer;
 `;
+
 export const AlertMessage = styled.p`
   font-weight: 600;
   color: #ea0027;
@@ -133,3 +134,9 @@ export const AlertMessage = styled.p`
   margin-top: 30px;
   font-size: 1.4rem;
 `;
+
+export const StyledFormAuth = styled.form`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`

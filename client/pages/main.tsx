@@ -3,7 +3,7 @@ import axios from 'axios';
 
 import { Rooms } from '../components/rooms';
 
-import { useAppDispatch, useAppSelector } from '../store/hooks';
+import { useAppSelector } from '../store/hooks';
 import { setUserData } from '../store/slices/user';
 import { setRoomsData } from '../store/slices/rooms';
 import { wrapper } from '../store';
@@ -17,62 +17,60 @@ import { useSocketOn } from '../hooks/useSocketOn';
 import { useMediaQuery } from '../hooks/useMediaQuery';
 import { WIDTH } from '../styles/variables';
 import { SideMenu } from '../components/sideMenu';
+import { useAuthGuard } from '../hooks/useAuthGuard';
 
 const Main = () => {
-  const { id } = useAppSelector(selectMyData) || {};
-
-  const { push } = useRouter();
+  useAuthGuard(false);
 
   const matches = useMediaQuery(`(min-width: ${WIDTH.MEDIUM})`);
   useSocketOn();
-
-  useEffect(() => {
-    !id && push('/auth');
-  }, [id]);
 
   return (
     <MainWrapper>
       <Dialog />
       <SideMenu />
       {matches && <Rooms />}
-      <ChatWrapper matches={matches}/>
+      <ChatWrapper matches={matches} />
     </MainWrapper>
   );
 };
 
-export const getServerSideProps = wrapper.getServerSideProps(store => async ({ req }) => {
-  try {
-    const cookie = req.headers.cookie;
+export const getServerSideProps = wrapper.getServerSideProps(
+  store =>
+    async ({ req }) => {
+      try {
+        const cookie = req.headers.cookie;
 
-    if (!cookie) {
+        if (!cookie) {
+          return {
+            redirect: {
+              destination: '/auth',
+              permanent: false,
+            },
+          };
+        }
+
+        axios.defaults.headers.get.Cookie = cookie as string;
+        const { data } = await axios.get('http://localhost:5050/user/me');
+        store.dispatch(setUserData(data));
+
+        const rooms = await axios.get('http://localhost:5050/room/');
+        store.dispatch(setRoomsData(rooms.data));
+      } catch ({ response }: any) {
+        if ((response as any)?.data.message === 'Unauthenticated') {
+          return {
+            redirect: {
+              destination: '/auth',
+              permanent: false,
+            },
+          };
+        }
+      }
+
       return {
-        redirect: {
-          destination: '/auth',
-          permanent: false,
-        },
+        props: {},
       };
     }
-
-    axios.defaults.headers.get.Cookie = cookie as string;
-    const { data } = await axios.get('http://localhost:5050/user/me');
-    store.dispatch(setUserData(data));
-
-    const rooms = await axios.get('http://localhost:5050/room/');
-    store.dispatch(setRoomsData(rooms.data));
-  } catch ({ response }: any) {
-    if ((response as any)?.data.message === 'Unauthenticated') {
-      return {
-        redirect: {
-          destination: '/auth',
-          permanent: false,
-        },
-      };
-    }
-  }
-
-  return {
-    props: {},
-  };
-});
+);
 
 export default Main;

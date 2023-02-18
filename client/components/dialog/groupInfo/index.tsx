@@ -1,20 +1,17 @@
 import React from 'react';
-import Image from 'next/image';
 
 import { socket } from '../../../api/socket';
 import { useAppDispatch, useAppSelector } from '../../../store/hooks';
 import { GetGroupChatInfo } from '../../../store/selectors';
-import { StyledIconButton } from '../../../styles';
 import { EVENTS } from '../../../utils/constants';
-import { Avatar } from '../../avatar';
 import { AvatarInput } from '../../avatar/input';
-import { StyledSearchUserItem, StyledUsers } from '../../createRoom/styled';
+import { StyledUsers } from '../../createRoom/styled';
 import { TitleInput } from './titleInput';
 
-import logout_icon from '../../../images/logout.svg';
 import { deleteRoom } from '../../../store/slices/rooms';
 import { openDialog } from '../../../store/slices/dialog';
 import { DialogWrapper } from '../wrapper';
+import { Participant } from './participant';
 
 const VALID_TYPES = ['image/png', 'image/jpg', 'image/jpeg'];
 
@@ -30,7 +27,11 @@ export const GroupInfo = () => {
   const { participants, photo, title, id, myId } = roomInfo;
 
   const onSelectFile = ({ target }: React.ChangeEvent<HTMLInputElement>) => {
-    if (!target.files || target.files.length === 0 || !VALID_TYPES.includes(target.files[0].type)) {
+    if (
+      !target.files ||
+      target.files.length === 0 ||
+      !VALID_TYPES.includes(target.files[0].type)
+    ) {
       return;
     }
 
@@ -52,22 +53,22 @@ export const GroupInfo = () => {
     <DialogWrapper>
       <>
         <div className='group_form'>
-          <AvatarInput name={title as string} size={120} photo={photo} onChange={onSelectFile} />
+          <AvatarInput
+            name={title as string}
+            size={120}
+            photo={photo}
+            onChange={onSelectFile}
+          />
           <TitleInput title={title as string} update={updateGroup} />
         </div>
         <StyledUsers>
-          {participants.map(({ name, photo, online, id }) => (
-            <StyledSearchUserItem className='user_wrapper' key={id}>
-              <div className='data_wrapper'>
-                <Avatar size={45} photo={photo} name={name} online={online} />
-                <p className='bold'>{name}</p>
-              </div>
-              {id === myId && (
-                <StyledIconButton title='Leave Group' onClick={onLeave}>
-                  <Image width='32px' height='32px' src={logout_icon} alt='add_dialog' />
-                </StyledIconButton>
-              )}
-            </StyledSearchUserItem>
+          {participants.map(user => (
+            <Participant
+              key={user.id}
+              {...user}
+              onLeave={onLeave}
+              myId={myId}
+            />
           ))}
         </StyledUsers>
       </>

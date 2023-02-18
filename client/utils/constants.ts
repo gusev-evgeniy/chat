@@ -7,7 +7,7 @@ export const EVENTS = {
     UPDATE: 'ROOM_UPDATE',
     LEAVE: 'ROOM_LEAVE',
     UPDATED: 'ROOM_UPDATED',
-  },
+  } as const,
 
   MESSAGE: {
     TYPING: 'MESSAGE_TYPING',
@@ -16,12 +16,12 @@ export const EVENTS = {
     RESPONSE_TYPING: 'MESSAGE_SUBMIT_TYPING',
     READ: 'MESSAGE_READ',
     READED: 'MESSAGE_WAS_READ',
-  },
+  } as const,
 
   USER: {
     ENTER: 'USER_ENTER',
-    LEAVE: 'USER_LEAVE'
-  },
+    LEAVE: 'USER_LEAVE',
+  } as const,
 
   CALL: {
     MADE: 'CALL',
@@ -29,8 +29,10 @@ export const EVENTS = {
     ACCEPT: 'ACCEPT_CALL',
     ACCEPTED: 'CALL_ACCEPTED',
     END: 'END_CALL',
-    ENDED: 'CALL_ENDED'
-  }
+    ENDED: 'CALL_ENDED',
+  } as const,
 } as const;
+
+export type Events = typeof EVENTS;
 
 export const NEW_ROOM = 'NEW_ROOM';

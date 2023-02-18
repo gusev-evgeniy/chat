@@ -1,54 +1,22 @@
 import Image from 'next/image';
 
-import React, { FC, memo, useEffect, useRef, useState } from 'react';
-import { StyledMessageForm, StyledSubmitIcon, StyledTextareaAutosize } from './styled';
+import React, { FC, memo } from 'react';
+import {
+  StyledMessageForm,
+  StyledSubmitIcon,
+  StyledTextareaAutosize,
+} from './styled';
 import send from '../../images/send.svg';
-import { useAppDispatch } from '../../store/hooks';
-import { createMessage, createPrivateRoom, sendTyping } from '../../store/actions';
-import { NEW_ROOM } from '../../utils/constants';
+
+import { useMessageForm } from './useMessageForm';
 
 type Props = {
   selected: string;
 };
 
 export const MessageForm: FC<Props> = memo(({ selected }) => {
-  const [message, setMessage] = useState('');
-  const [typing, setTyping] = useState<boolean | null>(null);
-  
-  const typingTimeoutId = useRef<NodeJS.Timeout | undefined>();
-  const isNewRoom = selected === NEW_ROOM;
-
-  const dispatch = useAppDispatch();
-
-  useEffect(() => {
-    if (isNewRoom || typing === null) {
-      return;
-    }
-
-    dispatch(sendTyping(typing));
-  }, [typing, isNewRoom, dispatch]);
-
-  const onChangeHandler = ({ target }: React.KeyboardEvent<HTMLTextAreaElement>) => {
-    setTyping(true);
-    clearInterval(typingTimeoutId.current);
-
-    typingTimeoutId.current = setTimeout(() => {
-      setTyping(false);
-    }, 3000);
-
-    setMessage(target.value);
-  };
-
-  const onSubmitMessage = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-
-    if (isNewRoom) dispatch(createPrivateRoom(message.trim()));
-    else createMessage(selected, message.trim());
-
-    setMessage('');
-    clearInterval(typingTimeoutId.current);
-    setTyping(false);
-  };
+  const { message, onChangeHandler, onSubmitMessage } =
+    useMessageForm(selected);
 
   return (
     <StyledMessageForm onSubmit={onSubmitMessage}>

@@ -1,49 +1,49 @@
 import React from 'react';
 import { createRoom, openNewRoom } from '../../../store/actions';
 import { useAppDispatch, useAppSelector } from '../../../store/hooks';
-import { selectCreatingRoom } from '../../../store/selectors';
+import { getSecetRoom } from '../../../store/selectors';
 import { checkUser, openCreateRoom } from '../../../store/slices/createRoom';
+
 import { StyledButton } from '../../auth/styles';
-import { StyledCheckedItem, StyledSearchUserWrapper } from '../styled';
+import { StyledSearchUserWrapper } from '../styled';
 import { UsersList } from './usersList';
 import { Form } from './form';
+import { CheckedList } from './checkedList';
+import { useSearch } from './useSearch';
 
 export const Search = () => {
-  const { checked, title, type, users, loaded } = useAppSelector(selectCreatingRoom);
+  const {
+    checked,
+    createRoomHandler,
+    disabled,
+    loaded,
+    onCheckHandler,
+    onRemoveUser,
+    users,
+  } = useSearch();
 
-  const dispatch = useAppDispatch();
-
-  const isGroupChat = type === 'group';
-  const disabled = !checked.length || (isGroupChat && !title.trim());
-
-  const onCheck = (id: string, checked: boolean) => dispatch(checkUser({ checked, id }));
-  const onRemoveUser = (id: string) => dispatch(checkUser({ checked: false, id }));
-
-  const createRoomHandler = async () => {
-    if (isGroupChat) dispatch(createRoom());
-    else dispatch(openNewRoom());
-
-    dispatch(openCreateRoom(false));
-  };
+  const showButton = loaded && users.data.length > 0;
 
   return (
     <StyledSearchUserWrapper padding={'50px'}>
       <Form />
 
-      <div className='checked_list'>
-        {checked.map(checkedUser => (
-          <StyledCheckedItem key={checkedUser.id} onClick={() => onRemoveUser(checkedUser.id)}>
-            {checkedUser.name}
-            <span className='close'>&#10006;</span>
-          </StyledCheckedItem>
-        ))}
-      </div>
+      <CheckedList checked={checked} onRemoveUser={onRemoveUser} />
 
-      <UsersList loaded={loaded} users={users.data} onCheck={onCheck} checked={checked} />
+      <UsersList
+        loaded={loaded}
+        users={users.data}
+        onCheck={onCheckHandler}
+        checked={checked}
+      />
 
-      {loaded && users.data.length > 0 && (
+      {showButton && (
         <div className='buttons'>
-          <StyledButton width='160px' height='48px' disabled={disabled} onClick={createRoomHandler}>
+          <StyledButton
+            width='160px'
+            height='48px'
+            disabled={disabled}
+            onClick={createRoomHandler}>
             Create Room
           </StyledButton>
         </div>

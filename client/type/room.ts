@@ -7,7 +7,7 @@ export type Room = {
   createdAt: string;
   id: string;
   participants: UserBD[];
-  title: null | string;
+  title:  string;
   type: RoomType;
   updatedAt: string;
   lastMessage: Omit<Message, 'author'> | null;

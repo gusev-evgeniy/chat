@@ -1,8 +1,11 @@
-import { RoomType } from "../type/room";
+import { RoomType } from '../type/room';
 
-export const returnTypingText = ( typing: string[] | undefined, type: RoomType = 'private') => {
+export const returnTypingText = (
+  typing: string[] | undefined,
+  type: RoomType = 'private'
+) => {
   if (!typing || !typing.length) return '';
-  if (type === 'private') return '...types'
+  if (type === 'private') return '...types';
 
-  return `...${typing.join(',')} печатают`
-}
+  return `...${typing.join(',')} печатают`;
+};

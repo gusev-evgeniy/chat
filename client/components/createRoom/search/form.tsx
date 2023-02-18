@@ -1,30 +1,13 @@
 import Image from 'next/image';
-import React, { FC, memo, useState } from 'react';
+import React, { FC, memo } from 'react';
 
 import { StyledFindUserIntput, StyledLabel } from '../styled';
 import search from '../../../images/search.svg';
-import { findUsers } from '../../../store/slices/createRoom';
-import { instance } from '../../../api';
-import { useAppDispatch } from '../../../store/hooks';
 import { StyledInputSearchButton } from '../../chat/styled';
+import { useSearchForm } from './useSearchForm';
 
 export const Form: FC<{}> = memo(() => {
-  const [filter, setFilter] = useState('');
-
-  const dispatch = useAppDispatch();
-
-  const onFindUsersHandler = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-
-    if (!filter) {
-      return;
-    }
-
-    try {
-      const { data } = await instance.get(`user/find?name=${filter}`);
-      dispatch(findUsers(data));
-    } catch (error) {}
-  };
+  const { filter, onFindUsersHandler, setFilter } = useSearchForm();
 
   return (
     <form onSubmit={onFindUsersHandler}>

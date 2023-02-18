@@ -27,8 +27,7 @@ export const Password: FC<Auth> = ({ nextPage, changeData, data }) => {
           width='160px'
           height='48px'
           onClick={nextPage}
-          disabled={data.password.length < MIN_LENGTH}
-        >
+          disabled={data.password.length < MIN_LENGTH}>
           Submit
           <span className='arrow'>&rarr;</span>
         </StyledButton>

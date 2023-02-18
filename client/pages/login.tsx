@@ -1,38 +1,16 @@
 import { useRouter } from 'next/router';
-import React, { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { instance } from '../api';
-import { AlertMessage, StyledAdvises, StyledButton, StyledWrapper } from '../components/auth/styles';
-import { useAppSelector } from '../store/hooks';
-import { selectMyData, setUserData } from '../store/slices/user';
+import React from 'react';
+import { AlertMessage, StyledAdvises } from '../components/auth/styles';
+import { LoginForm } from '../components/login/form';
+import { useAuthGuard } from '../hooks/useAuthGuard';
+import { useLoginForm } from '../hooks/useLoginForm';
 
 const Login = () => {
-  const [errorText, setErrorText] = useState('');
-  const [name, setName] = useState('');
-  const [password, setPassword] = useState('');
-
+  useAuthGuard();
   const router = useRouter();
-  const dispatch = useDispatch();
 
-  const me = useAppSelector(selectMyData);
-
-  useEffect(() => {
-    if (me) router.push('/main');
-  }, [me, router]);
-
-  const onSubmitHandler = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-
-    try {
-      const res = await instance.get(`/user/login?name=${name}&password=${password}`);
-
-      dispatch(setUserData(res.data.user));
-    } catch (error: any) {
-      setErrorText(error.response.data?.message as string);
-    }
-  };
-
-  const disabled = !password.length || !name.length;
+  const { changeData, data, onSubmitHandler } = useLoginForm();
+  const { errorText, name, password } = data;
 
   return (
     <main className='center'>
@@ -48,29 +26,12 @@ const Login = () => {
             if you don&rsquo;t have one
           </p>
         </StyledAdvises>
-        <StyledWrapper padding={'5vh'}>
-          <form onSubmit={onSubmitHandler}>
-            <input
-              type='text'
-              className='text-input'
-              placeholder='Name'
-              value={name}
-              onChange={e => setName(e.target.value)}
-            />
-            <input
-              type='password'
-              className='text-input'
-              placeholder='Password'
-              value={password}
-              onChange={e => setPassword(e.target.value)}
-            />
-
-            <StyledButton width='160px' height='48px' disabled={disabled}>
-              Next
-              <span className='arrow'>&rarr;</span>
-            </StyledButton>
-          </form>
-        </StyledWrapper>
+        <LoginForm
+          changeData={changeData}
+          name={name}
+          onSubmitHandler={onSubmitHandler}
+          password={password}
+        />
 
         {!!errorText && <AlertMessage>{errorText}</AlertMessage>}
       </div>

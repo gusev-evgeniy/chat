@@ -1,54 +1,18 @@
-import { useRouter } from 'next/router';
-import { useState, useEffect } from 'react';
 import axios from 'axios';
 
-import { useAppDispatch, useAppSelector } from '../store/hooks';
-import { selectMyData, setUserData } from '../store/slices/user';
-
-import { instance } from '../api';
+import { setUserData } from '../store/slices/user';
 
 import { Name } from '../components/auth/name';
 import { Password } from '../components/auth/password';
-import { UserData } from '../components/auth/types';
 import { Welcome } from '../components/auth/welcome';
 import { wrapper } from '../store';
+import { useAuthForm } from '../hooks/useAuthForm';
+import { useAuthGuard } from '../hooks/useAuthGuard';
 
 const Auth = () => {
-  const [num, setNum] = useState(1);
-  const [data, setData] = useState<UserData>({
-    name: '',
-    password: '',
-    photo: undefined,
-  });
-
-  const router = useRouter();
-  const dispatch = useAppDispatch();
-
-  const me = useAppSelector(selectMyData);
-  useEffect(() => {
-    if (me) {
-      router.push('/main');
-    }
-  }, [me, router]);
-
-  const changeData = (changed: Partial<UserData>) => {
-    setData(prev => ({ ...prev, ...changed }));
-  };
-
-  const nextPage = () => {
-    setNum(prev => ++prev);
-  };
-
-  const onSubmit = async () => {
-    const formData = new FormData();
-    Object.entries(data).forEach(([key, value]) => value && formData.append(key, value));
-
-    const res = await instance.post('/user/auth', formData, {
-      headers: { 'content-type': 'multipart/form-data' },
-    });
-
-    dispatch(setUserData(res.data));
-  };
+  useAuthGuard();
+  
+  const { changeData, data, nextPage, num, onSubmit } = useAuthForm();
 
   const pages = {
     1: <Welcome nextPage={nextPage} />,
@@ -59,22 +23,25 @@ const Auth = () => {
   return <main className='center'>{pages[num as keyof typeof pages]}</main>;
 };
 
-export const getServerSideProps = wrapper.getServerSideProps(store => async ({ req }) => {
-  try {
-    axios.defaults.headers.get.Cookie = req.headers.cookie as string;
-    const { data } = await axios.get('http://localhost:5050/user/me');
-    store.dispatch(setUserData(data));
-    return {
-      redirect: {
-        destination: '/main',
-        permanent: false,
-      },
-    };
-  } catch (error) {}
+export const getServerSideProps = wrapper.getServerSideProps(
+  store =>
+    async ({ req }) => {
+      try {
+        axios.defaults.headers.get.Cookie = req.headers.cookie as string;
+        const { data } = await axios.get('http://localhost:5050/user/me');
+        store.dispatch(setUserData(data));
+        return {
+          redirect: {
+            destination: '/main',
+            permanent: false,
+          },
+        };
+      } catch (error) {}
 
-  return {
-    props: {},
-  };
-});
+      return {
+        props: {},
+      };
+    }
+);
 
 export default Auth;

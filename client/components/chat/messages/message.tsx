@@ -1,17 +1,17 @@
 import Image from 'next/image';
 import React, { FC, memo } from 'react';
-import { StyledChatItem, StyledSystemMessage } from './styled';
+import { StyledChatItem, StyledSystemMessage } from '../styled';
 
-import readedIcon from '../../images/readed.svg';
-import unreadedIcon from '../../images/unreaded.svg';
-import { Message } from '../../type/messages';
+import readedIcon from '../../../images/readed.svg';
+import unreadedIcon from '../../../images/unreaded.svg';
+import { Message as MessageType } from '../../../type/messages';
 
 import dayjs from 'dayjs';
-import { StyledAva } from '../avatar/styles';
+import { StyledAva } from '../../avatar/styles';
 
-type Props = Message & { isMy?: boolean; isLast: boolean };
+type Props = MessageType & { isMy?: boolean; isLast: boolean };
 
-export const ChatItem: FC<Props> = memo(({ isMy, text, createdAt, readed, isLast, author, id, isSystem }) => {
+export const Message: FC<Props> = memo(({ isMy, text, createdAt, readed, isLast, author, id, isSystem }) => {
   const { photo } = author || {};
 
   const time = dayjs(createdAt).format('HH:mm');
@@ -36,4 +36,4 @@ export const ChatItem: FC<Props> = memo(({ isMy, text, createdAt, readed, isLast
   );
 });
 
-ChatItem.displayName = 'ChatItem';
+Message.displayName = 'Message';
