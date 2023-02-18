@@ -4,12 +4,18 @@ import cookie from 'cookie';
 
 import UserEntity from '../entities/user';
 import { createTokenAndAddCookie } from '../utils/auth';
-import { getUsersByNameAndCount } from '../utils/queries/user';
+import { getOtherUsersByNameAndCount } from '../utils/user';
 import { prepareImage } from '../utils/prepareImage';
 class User {
   async create(req: Request, res: Response) {
     try {
       const { password, name } = req.body || {};
+
+      if (!password || !name) {
+        return res
+          .status(400)
+          .json({ message: 'Password and Name are required' });
+      }
 
       const userInfo: Partial<UserEntity> = {
         name,
@@ -17,15 +23,15 @@ class User {
       };
 
       const photoUrl = prepareImage(req);
-      console.log('photoUrl', photoUrl)
+      console.log('photoUrl', photoUrl);
       if (photoUrl) userInfo.photo = photoUrl;
 
       const user = UserEntity.create(userInfo) as UserEntity;
       await user.save();
 
       createTokenAndAddCookie(res, user);
-
-      res.json(user);
+      const { password: userPassword, ...rest } = user;
+      res.json(rest);
     } catch (error: any) {
       console.log('error', error);
       res.status(400).json({ error: error.detail });
@@ -38,14 +44,15 @@ class User {
 
   async checkName(req: Request, res: Response) {
     try {
-      console.log('req.body.name', req.body.name)
       const user = await UserEntity.find({
         where: { name: req.body.name },
       });
 
-      console.log('user111', user)
+      console.log('user111', user);
       if (user.length) {
-        return res.status(401).json({ message: 'A user with the same name already exists' });
+        return res
+          .status(401)
+          .json({ message: 'A user with the same name already exists' });
       }
 
       return res.json({ message: 'Success' });
@@ -56,7 +63,10 @@ class User {
 
   async get(req: Request, res: Response) {
     try {
-      const usersAndCount = await getUsersByNameAndCount(req.query.name as string, res.locals.user.id);
+      const usersAndCount = await getOtherUsersByNameAndCount(
+        req.query.name as string,
+        res.locals.user.id
+      );
 
       res.json(usersAndCount);
     } catch (error) {
@@ -64,7 +74,7 @@ class User {
     }
   }
 
-  async getOne(req: Request, res: Response) {
+  async login(req: Request, res: Response) {
     const { name, password } = req.body;
     try {
       const user = await UserEntity.findOne({
@@ -72,9 +82,13 @@ class User {
       });
 
       if (!user) res.status(401).json({ message: 'Wrong password or name' });
-      const isCorrectPassword = bcrypt.compareSync(password as string, user.password);
+      const isCorrectPassword = bcrypt.compareSync(
+        password as string,
+        user.password
+      );
 
-      if (!isCorrectPassword) res.status(401).json({ message: 'Wrong password or name' });
+      if (!isCorrectPassword)
+        res.status(401).json({ message: 'Wrong password or name' });
 
       createTokenAndAddCookie(res, user);
 

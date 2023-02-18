@@ -21,7 +21,7 @@ const createRoutes = (app: express.Express) => {
   app.use(cookieParser());
 
   app.post('/user/auth', Upload.single('photo'), User.create);
-  app.post('/user/login', User.getOne);
+  app.post('/user/login', User.login);
   app.post('/user/logout', Auth, User.logout);
   app.get('/user/find', Auth, User.get);
   app.post('/user/check_name', User.checkName);

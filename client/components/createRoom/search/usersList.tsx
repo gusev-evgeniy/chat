@@ -1,4 +1,4 @@
-import React, { FC, useCallback } from 'react';
+import React, { FC } from 'react';
 import { CreateRoomState } from '../../../store/slices/createRoom';
 import { Empty } from '../../../styles';
 import { FindingUser } from './item';

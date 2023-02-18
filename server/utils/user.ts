@@ -1,6 +1,6 @@
-import User from '../../entities/user';
+import User from '../entities/user';
 
-export const getUsersByNameAndCount = async (name: string, me: string) => {
+export const getOtherUsersByNameAndCount = async (name: string, me: string) => {
   try {
     const [users, count] = await User.createQueryBuilder('user')
       .where('user.name like :name', { name: `%${name}%` })

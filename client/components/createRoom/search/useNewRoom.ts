@@ -4,7 +4,7 @@ import { useAppDispatch, useAppSelector } from '../../../store/hooks';
 import { getSecetRoom } from '../../../store/selectors';
 import { checkUser, openCreateRoom } from '../../../store/slices/createRoom';
 
-export const useSearch = () => {
+export const useNewRoom = () => {
   const { checked, users, loaded, disabled, isGroupChat } =
     useAppSelector(getSecetRoom);
 

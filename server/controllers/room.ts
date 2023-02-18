@@ -3,7 +3,7 @@ import { prepareImage } from '../utils/prepareImage';
 
 import RoomEntity from '../entities/room';
 
-import { getRoomsAndCount, isPrivateRoomExist } from '../utils/queries/room';
+import { getRoomsAndCount, isPrivateRoomExist } from '../utils/room';
 
 class Room {
   async getMany(req: Request, res: Response) {

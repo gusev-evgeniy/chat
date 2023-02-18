@@ -12,5 +12,9 @@
       "esModuleInterop": true,
       "experimentalDecorators": true,
       "sourceMap": true,
+      "allowJs": false,
+      "skipLibCheck": true,
+      "strict": true,
+      "strictPropertyInitialization": false
    }
 }

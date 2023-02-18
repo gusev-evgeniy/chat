@@ -23,6 +23,7 @@ export const getRoomInfo = (
 };
 
 export const createOnlineSubstring = (privateUser: UserBD | undefined, participants: UserBD[]) => {
+  console.log('participants', participants)
   return privateUser
     ? dayjs(privateUser.wasOnline).format('YYYY-MM-DD')
     : `${participants.length} участников, ${

@@ -5,16 +5,16 @@ import Room from './entities/room';
 import Message from './entities/message';
 import Participant from './entities/participants';
 
-type KeysOfUnion<T> = T extends T ? keyof T: never;
-type AvailableKeys = KeysOfUnion<DatabaseType>; 
+type KeysOfUnion<T> = T extends T ? keyof T : never;
+type AvailableKeys = KeysOfUnion<DatabaseType>;
 
 const myDataSource = new DataSource({
-  type: process.env.DB_TYPE as 'postgres' || 'postgres',
+  type: (process.env.DB_TYPE as 'postgres') || 'postgres',
   host: process.env.DB_HOST || 'localhost',
-  port:  +process.env.DB_PORT ||  5432,
+  port: process.env.DB_PORT ? +process.env.DB_PORT : 5432,
   username: process.env.DB_USER || 'postgres',
   password: process.env.DB_PASSWORD || 'postgres',
-  database: process.env.DB_NAME ||  'chat',
+  database: process.env.DB_NAME || 'chat',
   entities: [User, Room, Message, Participant],
   logging: true,
   synchronize: true,

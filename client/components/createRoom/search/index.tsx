@@ -1,15 +1,11 @@
 import React from 'react';
-import { createRoom, openNewRoom } from '../../../store/actions';
-import { useAppDispatch, useAppSelector } from '../../../store/hooks';
-import { getSecetRoom } from '../../../store/selectors';
-import { checkUser, openCreateRoom } from '../../../store/slices/createRoom';
 
 import { StyledButton } from '../../auth/styles';
 import { StyledSearchUserWrapper } from '../styled';
 import { UsersList } from './usersList';
 import { Form } from './form';
 import { CheckedList } from './checkedList';
-import { useSearch } from './useSearch';
+import { useNewRoom } from './useNewRoom';
 
 export const Search = () => {
   const {
@@ -20,9 +16,7 @@ export const Search = () => {
     onCheckHandler,
     onRemoveUser,
     users,
-  } = useSearch();
-
-  const showButton = loaded && users.data.length > 0;
+  } = useNewRoom();
 
   return (
     <StyledSearchUserWrapper padding={'50px'}>
@@ -37,7 +31,7 @@ export const Search = () => {
         checked={checked}
       />
 
-      {showButton && (
+      {loaded && (
         <div className='buttons'>
           <StyledButton
             width='160px'
