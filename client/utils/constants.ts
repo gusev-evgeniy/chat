@@ -23,7 +23,7 @@ export const EVENTS = {
   } as const,
 
   CALL: {
-    MADE: 'CALL',
+    CALL: 'CALL',
     GET: 'GET_CALL',
     ACCEPT: 'ACCEPT_CALL',
     ACCEPTED: 'CALL_ACCEPTED',

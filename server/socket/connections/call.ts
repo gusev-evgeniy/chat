@@ -1,27 +1,40 @@
 import { Server } from 'socket.io';
+import User from '../../entities/user';
+import { createSystemMessage } from '../../utils/message';
+import { EVENTS } from '../events';
+import { MySocket } from '../types';
 
-export default async (io: Server, socket: any) => {
-  // const acceptCall = ({ signal, to }) => {
-  //   io.to(users[to]).emit(EVENTS.CALL.ACCEPTED, { signal });
-  // };
+type CallProps = {
+  to: string;
+  signal: unknown;
+}
 
-  // const callUser = async ({ signal, to }, callback) => {
-  //   callback();
+let participant: string | undefined;
 
-  //   const me = await User.findOneBy({ id: socket.me.id });
-  //   console.log('1111', me);
-  //   io.to(users[to]).emit(EVENTS.CALL.GET, { signal, from: me });
-  // };
+export default async (io: Server, socket: MySocket) => {
+  const callUser = async ({ signal, to }: CallProps) => {
+    console.log('to', to)
+    participant = to;
 
-  // const endCall = async ({ roomId }) => {
-  //   const text = `User ${socket.me.name} end call`;
-  //   const message = await createSystemMessage(text, roomId);
+    socket.to(to).emit(EVENTS.CALL.GET, { signal, from: socket.me });
+  };
 
-  //   io.to(roomId).emit(EVENTS.CALL.ENDED, { roomId, message });
-  // };
-  
+  const answerCall = ({ signal, to }: CallProps) => {
+    console.log('tottt', to)
+    console.log('socket', socket.me)
+    io.to(to).emit('test', { signal });
+  };
+
+  const endCall = async () => {
+    const text = `User ${socket.me.name} end call`;
+    // const message = await createSystemMessage(text, roomId);
+
+    // io.to(participant as string).emit(EVENTS.CALL.ENDED, { roomId, message });
+    socket.to(participant as string).emit(EVENTS.CALL.ENDED);
+    participant = undefined;
+  };
     
-  // socket.on(EVENTS.CALL.MADE, callUser);
-  // socket.on(EVENTS.CALL.END, endCall);
-  // socket.on(EVENTS.CALL.ACCEPT, acceptCall);
+  socket.on(EVENTS.CALL.CALL, callUser);
+  socket.on(EVENTS.CALL.END, endCall);
+  socket.on(EVENTS.CALL.ACCEPT, answerCall);
 }

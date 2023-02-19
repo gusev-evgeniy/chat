@@ -1,10 +1,15 @@
-import { Server } from 'socket.io';
+import { Server, Socket } from 'socket.io';
+import User from '../../entities/user';
 import { getUserRooms } from '../../utils/room';
 import { addMyDataToSocket } from '../../utils/socket';
 import { updateUser } from '../../utils/user';
 import { EVENTS } from '../events';
 
-export default async (io: Server, socket: any) => {
+interface MySocket extends Socket {
+  me?: User;
+}
+
+export default async (io: Server, socket: MySocket) => {
   await addMyDataToSocket(socket);
 
   if (socket.me) {

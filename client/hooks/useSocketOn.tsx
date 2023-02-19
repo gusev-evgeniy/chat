@@ -2,13 +2,20 @@ import { useInsertionEffect } from 'react'
 import { socket } from '../api/socket';
 import { newMessageHandler, readedHandler } from '../store/actions';
 import { useAppDispatch } from '../store/hooks';
-import { acceptCall, receiveUser } from '../store/slices/call';
+import { getAnswerSignal, receiveCall } from '../store/slices/call';
 import { openDialog } from '../store/slices/dialog';
 import { setTyping } from '../store/slices/messages';
 import { addRoom, updateRoomDetails, updateUserOnline } from '../store/slices/rooms';
 import { Message, Typing } from '../type/messages';
 import { Room } from '../type/room';
+import { UserBD } from '../type/user';
 import { EVENTS } from '../utils/constants';
+import Peer from 'simple-peer';
+
+type GetCall = {
+  from: UserBD;
+  signal: Peer.SignalData;
+}
 
 export const useSocketOn = () => {
   const dispatch = useAppDispatch();
@@ -27,6 +34,7 @@ export const useSocketOn = () => {
     });
 
     socket.on(EVENTS.ROOM.CREATED, room => {
+      console.log('created11111111!!!!!!')
       socket.emit(EVENTS.ROOM.JOIN, { roomId: room.id });
       dispatch(addRoom(room));
     });
@@ -41,23 +49,23 @@ export const useSocketOn = () => {
       dispatch(newMessageHandler(message));
     });
 
-    socket.on(EVENTS.CALL.GET, ({ from, signal }) => {
-      console.log('from', from)
-      dispatch(receiveUser({ from, signal }));
-      dispatch(openDialog('RECEIVE_CALL'));
+    socket.on(EVENTS.CALL.GET, ({ from, signal }: GetCall) => {
+      console.log('from111', from)
+      console.log('signal2222', signal)
+      dispatch(receiveCall({ from, signal }));
+      dispatch(openDialog('CALL'));
     })
 
     socket.on(EVENTS.CALL.ENDED, ({ message }) => {
-      // dispatch(receiveUser({ from, signal }));
+      // dispatch(receiveCall({ from, signal }));
       dispatch(newMessageHandler(message));
       dispatch(openDialog(null));
     })
 
-    socket.on(EVENTS.CALL.ACCEPTED, ({ signal }) => {
+    socket.on('test', ({ signal }) => {
       console.log('ACCEPTED', signal)
-      dispatch(acceptCall({ signal }))
+      dispatch(getAnswerSignal({ signal }))
     })
-
 
     return () => {
       socket.disconnect();

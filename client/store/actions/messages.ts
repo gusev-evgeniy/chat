@@ -1,10 +1,11 @@
 import { AppDispatch, RootState } from "..";
 import { instance } from "../../api";
+import { NEW_ROOM } from "../../utils/constants";
 import { setMessagesData } from "../slices/messages";
 
 export const getMessages = (skip = 0) => async (dispatch: AppDispatch, getState: () => RootState) => {
   const { rooms: { selected } } = getState();
-  if (!selected) {
+  if (!selected || selected === NEW_ROOM) {
     return;
   }
 

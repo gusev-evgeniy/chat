@@ -1,16 +1,16 @@
 import { Server } from 'socket.io';
 import Message from '../../entities/message';
 import { EVENTS } from '../events';
-import { GetTypingProps } from '../types';
+import { GetTypingProps, MySocket } from '../types';
 import { updateRoomLastMessage } from '../../utils/room';
 import { readMessagesQuary } from '../../utils/message';
 
 type Callback = (...arg: any) => void;
 
-export default async (io: Server, socket: any) => {
+export default async (io: Server, socket: MySocket) => {
   const createMessage = async ({ roomId, message }: any) => {
     const { id } = await Message.create({
-      author: socket.me?.id,
+      author: socket.me,
       room: { id: roomId },
       text: message,
       roomId,
@@ -23,7 +23,7 @@ export default async (io: Server, socket: any) => {
     });
 
     await updateRoomLastMessage(newMessage as Message, roomId);
-
+    console.log('newMessage', newMessage)
     io.to(roomId).emit(EVENTS.MESSAGE.NEW_MESSAGE_CREATED, newMessage);
   };
 

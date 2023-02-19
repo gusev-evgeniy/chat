@@ -1,3 +1,6 @@
+import { Socket } from "socket.io";
+import User from "../entities/user";
+
 export type GetTypingProps = {
   user: string;
   roomId: string;
@@ -5,3 +8,7 @@ export type GetTypingProps = {
 }
 
 export type Callback = (...arg: any) => void;
+
+export interface MySocket extends Socket {
+  me: User;
+}

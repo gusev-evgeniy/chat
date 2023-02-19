@@ -1,44 +1,40 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { UserBD } from '../../type/user';
+import Peer, { SignalData } from 'simple-peer';
 
-export interface CallState {
-  mySignal: null | MediaStream;
-  callerSignal: null | MediaStream;
-  to: string;
-  from: UserBD | null;
-  receivingCall: boolean;
-  callAccepted: boolean;
-}
-
-const initialState: CallState = {
-  mySignal: null,
+const initialState = {
+  mySignal: null as MediaStream | null,
   receivingCall: false,
-  from: null,
-  callerSignal: null,
+  from: null as UserBD | null,
+  callerSignal: null as SignalData | null,
   callAccepted: false,
-  to: ''
+  to: null as UserBD | null,
+  peer: null as Peer.Instance | null
 };
+
+export type CallState = typeof initialState;
 
 export const callSlice = createSlice({
   name: 'call',
   initialState,
   reducers: {
-    receiveUser: (state, action: PayloadAction<any>) => {
+    receiveCall: (state, action: PayloadAction<any>) => {
       state.receivingCall = true;
       state.from = action.payload.from;
       state.callerSignal = action.payload.signal;
     },
     callUser: (state, action: PayloadAction<any>) => {
       state.mySignal = action.payload.stream;
-      state.to = action.payload.to;
+      state.to = action.payload.participant;
+      state.peer = action.payload.peer;
     },
-    acceptCall: (state, action: PayloadAction<any>) => {
+    getAnswerSignal: (state, action: PayloadAction<any>) => {
       state.mySignal = action.payload.signal;
       state.callAccepted = true;
     }
   },
 });
 
-export const { receiveUser, callUser, acceptCall } = callSlice.actions;
+export const { receiveCall, callUser, getAnswerSignal } = callSlice.actions;
 
 export const callReducer = callSlice.reducer;

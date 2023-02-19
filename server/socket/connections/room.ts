@@ -1,11 +1,12 @@
 import { Server } from 'socket.io';
 import Participant from '../../entities/participants';
 import Room from '../../entities/room';
-import { addNewRoom, createSystemMessage } from '../../utils/room';
+import { createSystemMessage } from '../../utils/message';
+import { addNewRoom } from '../../utils/room';
 import { EVENTS } from '../events';
-import { Callback } from '../types';
+import { Callback, MySocket } from '../types';
 
-export default async (io: Server, socket: any) => {
+export default async (io: Server, socket: MySocket) => {
   const createRoom = async (obj: any, callback: Callback) => {
     const { users, title, type } = obj;
 
@@ -15,7 +16,6 @@ export default async (io: Server, socket: any) => {
     };
 
     if (title) roomData.title = title;
-    console.log('roomData', roomData);
     const room = await addNewRoom({
       data: roomData,
       authorName: socket.me.name,
@@ -31,8 +31,10 @@ export default async (io: Server, socket: any) => {
     const participants = room.participants.map(({ user }) => user);
 
     const usersSocketId = users.map(({ socketId }) => socketId);
+    console.log('________________________________usersSocketId', usersSocketId)
     callback({ ...room, participants });
-    io.to(usersSocketId).emit(EVENTS.ROOM.CREATED, {
+
+    socket.to(usersSocketId).emit(EVENTS.ROOM.CREATED, {
       ...room,
       participants,
       unreadedMessagesCount: 0,

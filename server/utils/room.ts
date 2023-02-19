@@ -45,8 +45,6 @@ export const getUserRooms = async (id: string) => {
       .leftJoinAndSelect('participants.user', 'user')
       .getMany();
 
-    console.log('participants', participants);
-
     return participants.reduce(
       (acc, { room }) => {
         acc[0].push(room.id);

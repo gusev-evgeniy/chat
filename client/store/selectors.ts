@@ -1,5 +1,4 @@
 import { createSelector } from '@reduxjs/toolkit';
-import dayjs from 'dayjs';
 
 import { RootState } from '.';
 import { NEW_ROOM } from '../utils/constants';
@@ -132,7 +131,7 @@ export const GetCallInfo = createSelector(
       return {};
     }
 
-    const user = openRoom.participants.find(({ id }) => id === to);
+    const user = openRoom.participants.find(({ id }) => id === to?.id);
 
     return {
       to: user,
