@@ -45,13 +45,15 @@ export const Empty = styled.div<{ margin?: string }>`
   align-items: center; */
 `;
 
-export const StyledIconButton = styled.button`
+export const SyledDefaultIconButton = styled.button`
   padding: 3px;
   border-radius: 100%;
   background-color: inherit;
   display: flex;
   border: 0px;
+`;
 
+export const StyledIconButton = styled(SyledDefaultIconButton)`
   &:hover {
     background-color: ${COLORS.GREY};
   }
@@ -61,4 +63,4 @@ export const StyledForm = styled.form`
   display: flex;
   flex-direction: column;
   align-items: center;
-`
+`;

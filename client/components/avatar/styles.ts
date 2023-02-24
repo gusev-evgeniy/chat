@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { COLORS } from '../../styles/variables';
 
 export const AvaWrapper = styled.div<{ size: number }>`
   position: relative;
@@ -56,7 +57,7 @@ export const StyledChangeAva = styled(StyledAva)`
 export const Online = styled.div`
   width: 13px;
   height: 13px;
-  background-color: #58d188;
+  background-color: ${COLORS.GREEN};
   border-radius: 100%;
   border: 2px solid white;
   position: absolute;

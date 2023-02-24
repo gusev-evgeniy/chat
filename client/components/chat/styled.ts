@@ -85,7 +85,7 @@ export const StyledChatItem = styled.div<{ my?: boolean; isLast?: boolean }>`
     font-weight: 400;
     padding: 5px 15px;
     border-radius: 20px;
-    background-color: ${({ my }) => (my ? '#ededee' : '#58d188')};
+    background-color: ${({ my }) => (my ? COLORS.GREY : COLORS.GREEN)};
     align-items: flex-end;
     margin-left: ${({ isLast }) => (!isLast ? '44px' : '8px')};
     margin-right: ${({ isLast }) => (!isLast ? '44px' : '8px')};
@@ -163,7 +163,7 @@ export const StyledSystemMessage = styled.div`
   font-weight: 600;
   padding: 8px 20px;
   border-radius: 20px;
-  background-color: #ededee;
+  background-color: ${COLORS.GREY};
   max-width: 80%;
   margin: 0 auto 15px auto;
   font-size: 1.2rem;

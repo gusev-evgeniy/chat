@@ -1,54 +1,53 @@
 import React from 'react';
-import { selectCall } from '../../../store/selectors';
-import { StyledIconButton } from '../../../styles';
-import { StyledContainer, StyledVeil } from '../styles';
+import {
+  CallButton,
+  CallButtons,
+  CompanionVideo,
+  MyVideo,
+  StyledContainer,
+  StyledVeil,
+  VidoeContainer,
+} from '../styles';
 import Image from 'next/image';
 import call_end_icon from '../../../images/call_end.svg';
-import call_icon from '../../../images/call.svg';
-import styled from 'styled-components';
-import { Avatar } from '../../avatar';
 import { useCall } from '../../providers/callProvider';
 import { useVideoCall } from './useVideoCall';
-
-const Video = styled.video`
-  border: 1px solid blue;
-  width: 50%;
-  height: 50%;
-`;
+import { Avatar } from '../../avatar';
 
 export const Call = () => {
-  const { caller, answerCall } = useCall();
+  const { answerCall, callFrom, callTo } = useCall();
+  const { callerVideo, myVideo } = useVideoCall();
+  const user = callFrom || callTo;
 
-  const { callerVideo, myVideo } = useVideoCall()
+  if (!user) {
+    return null;
+  }
 
   return (
     <StyledVeil>
       <StyledContainer padding={'25px'}>
-        {caller && (
+        <VidoeContainer>
           <Avatar
-            name={caller.name}
-            size={100}
-            photo={caller.photo}
+            name={user.name}
+            size={50}
+            photo={user.photo}
             online={false}
           />
-        )}
+          <CompanionVideo playsInline ref={callerVideo} autoPlay />
+          <MyVideo playsInline muted ref={myVideo} autoPlay />
+        </VidoeContainer>
 
-        <Video playsInline ref={callerVideo} autoPlay />
-        <Video playsInline muted ref={myVideo} autoPlay />
-
-        <div className='buttons'>
-          <StyledIconButton>
+        <CallButtons>
+          <CallButton acceptBtn={false}>
             <Image
               width='30px'
               height='30px'
               src={call_end_icon}
               alt='end call'
+              title='end call'
             />
-          </StyledIconButton>
-          <StyledIconButton onClick={answerCall}>
-            <Image width='30px' height='30px' src={call_icon} alt='end call' />
-          </StyledIconButton>
-        </div>
+          </CallButton>
+        </CallButtons>
       </StyledContainer>
     </StyledVeil>
   );

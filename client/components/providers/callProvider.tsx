@@ -5,9 +5,12 @@ import {
   useMemo,
   useState,
   useInsertionEffect,
+  useEffect,
 } from 'react';
 import Peer from 'simple-peer';
 import { socket } from '../../api/socket';
+import { useAppDispatch } from '../../store/hooks';
+import { openDialog } from '../../store/slices/dialog';
 import { UserBD } from '../../type/user';
 import { EVENTS } from '../../utils/constants';
 
@@ -16,8 +19,9 @@ type CallContextType = {
   companionStream: MediaStream | undefined;
   leaveCall: () => void;
   answerCall: () => void;
-  callUser: (socketId: string) => void;
-  caller: null | UserBD;
+  setCallTo: (user: UserBD) => void;
+  callFrom: null | UserBD;
+  callTo: null | UserBD;
 };
 type GetCall = {
   from: UserBD;
@@ -29,53 +33,73 @@ export const CallContext = createContext({} as CallContextType);
 export const CallProvider: FC<{ children: React.ReactElement }> = ({
   children,
 }) => {
+  const dispatch = useAppDispatch();
+
   const [myStream, setMyStream] = useState<MediaStream>();
   const [companionStream, setCompanionStream] = useState<MediaStream>();
 
   const [companionSignal, setCompanionSignal] =
     useState<Peer.SignalData | null>(null);
-  const [caller, setCaller] = useState<null | UserBD>(null);
 
-  const setStream = async () => {
-    const stream = await navigator.mediaDevices.getUserMedia({
-      video: true,
-      audio: true,
-    });
-    setMyStream(stream);
-    return stream;
-  };
+  const [callFrom, setCallFrom] = useState<null | UserBD>(null);
+  const [callTo, setCallTo] = useState<null | UserBD>(null);
 
   useInsertionEffect(() => {
     const getCall = async ({ from, signal }: GetCall) => {
-      setCaller(from);
+      dispatch(openDialog('CALL_OFFER'));
+      setCallFrom(from);
       setCompanionSignal(signal);
     };
 
     socket.on(EVENTS.CALL.GET, getCall);
   }, []);
 
-  const callUser = async (id: string) => {
-    const stream = await setStream();
-    const peer = new Peer({
-      initiator: true,
-      trickle: false,
-      stream,
-    });
+  useEffect(() => {
+    if (!callTo) {
+      return;
+    }
 
-    peer.on('signal', data => {
-      socket.emit('callUser', {
-        to: id,
-        signal: data,
+    const callUser = async () => {
+      dispatch(openDialog('CALL_OFFER'));
+
+      const stream = await setStream();
+      const peer = new Peer({
+        initiator: true,
+        trickle: false,
+        stream,
       });
-    });
 
-    peer.on('stream', stream => {
-      setCompanionStream(stream);
-    });
+      peer.on('signal', data => {
+        socket.emit('callUser', {
+          to: callTo.id,
+          signal: data,
+        });
+      });
 
-    socket.on(EVENTS.CALL.ACCEPTED, signal => {
-      peer.signal(signal);
+      peer.on('stream', stream => {
+        setCompanionStream(stream);
+      });
+
+      socket.on(EVENTS.CALL.ACCEPTED, signal => {
+        peer.signal(signal);
+      });
+    };
+    callUser();
+  }, [callTo]);
+
+  useEffect(() => {
+    if (companionStream && myStream) {
+      dispatch(openDialog('CALL'));
+    }
+  }, [companionStream, myStream]);
+
+  const setStream = async () => {
+    const stream = await navigator.mediaDevices.getUserMedia({
+      video: true,
+      // audio: true,
     });
+    setMyStream(stream);
+    return stream;
   };
 
   const answerCall = async () => {
@@ -87,7 +111,7 @@ export const CallProvider: FC<{ children: React.ReactElement }> = ({
     });
 
     peer.on('signal', data => {
-      socket.emit('answerCall', { signal: data, to: caller?.id });
+      socket.emit('answerCall', { signal: data, to: callFrom?.id });
     });
 
     peer.on('stream', stream => {
@@ -104,11 +128,12 @@ export const CallProvider: FC<{ children: React.ReactElement }> = ({
       myStream,
       leaveCall,
       answerCall,
-      callUser,
-      caller,
+      setCallTo,
+      callFrom,
       companionStream,
+      callTo,
     }),
-    [myStream, caller, companionStream]
+    [myStream, companionStream, callFrom, callTo]
   );
 
   return <CallContext.Provider value={value}>{children}</CallContext.Provider>;

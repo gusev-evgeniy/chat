@@ -6,8 +6,6 @@ export const useVideoCall = () => {
   const callerVideo = useRef<HTMLVideoElement>(null);
 
   const { myStream, companionStream } = useCall();
-  console.log('companionStream', companionStream)
-  console.log('myStream', myStream)
 
   useEffect(() => {
     if (callerVideo.current && companionStream) {

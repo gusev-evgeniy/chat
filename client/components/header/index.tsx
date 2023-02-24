@@ -7,7 +7,6 @@ import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { getHeaderInfo } from '../../store/selectors';
 import { StyledIconButton } from '../../styles';
 import { StyledChatHeader } from '../chat/styled';
-import { call } from '../../store/actions/call';
 import { useMediaQuery } from '../../hooks/useMediaQuery';
 import { WIDTH } from '../../styles/variables';
 import { SideMenuIcon } from '../sideMenu/icon';
@@ -18,12 +17,12 @@ import { openDialog } from '../../store/slices/dialog';
 export const Header: FC<{}> = memo(() => {
   const dispatch = useAppDispatch();
   const matches = useMediaQuery(`(max-width: ${WIDTH.MEDIUM})`);
-  const { callUser } = useCall();
+  const { setCallTo } = useCall();
   const { title, type, isNewRoom, privateUser } = useAppSelector(getHeaderInfo) || {};
 
   const onCallHandler = () => {
     dispatch(openDialog('CALL'));
-    if (privateUser?.id) callUser(privateUser.id)
+    if (privateUser) setCallTo(privateUser)
   };
 
   return (
