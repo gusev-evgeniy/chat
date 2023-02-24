@@ -12,16 +12,18 @@ import { useMediaQuery } from '../../hooks/useMediaQuery';
 import { WIDTH } from '../../styles/variables';
 import { SideMenuIcon } from '../sideMenu/icon';
 import { UserInfo } from './userInfo';
+import { useCall } from '../providers/callProvider';
+import { openDialog } from '../../store/slices/dialog';
 
 export const Header: FC<{}> = memo(() => {
   const dispatch = useAppDispatch();
-
   const matches = useMediaQuery(`(max-width: ${WIDTH.MEDIUM})`);
-
-  const { title, type, isNewRoom } = useAppSelector(getHeaderInfo) || {};
+  const { callUser } = useCall();
+  const { title, type, isNewRoom, privateUser } = useAppSelector(getHeaderInfo) || {};
 
   const onCallHandler = () => {
-    dispatch(call());
+    dispatch(openDialog('CALL'));
+    if (privateUser?.id) callUser(privateUser.id)
   };
 
   return (

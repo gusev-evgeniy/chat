@@ -7,7 +7,6 @@ export const useAuthGuard = (isAllowed: boolean = true) => {
   const { push } = useRouter();
 
   const me = useAppSelector(selectMyData);
-
   useEffect(() => {
     if (isAllowed && me) {
       push('/main');

@@ -7,34 +7,41 @@ import { MySocket } from '../types';
 type CallProps = {
   to: string;
   signal: unknown;
-}
-
-let participant: string | undefined;
+};
 
 export default async (io: Server, socket: MySocket) => {
   const callUser = async ({ signal, to }: CallProps) => {
-    console.log('to', to)
-    participant = to;
-
-    socket.to(to).emit(EVENTS.CALL.GET, { signal, from: socket.me });
+    try {
+      const { socketId } = await User.findOneByOrFail({
+        id: to,
+      });
+      io.to(socketId).emit(EVENTS.CALL.GET, { signal, from: socket.me });
+    } catch (error) {
+      console.log('Call User Error: ', error);
+    }
   };
 
-  const answerCall = ({ signal, to }: CallProps) => {
-    console.log('tottt', to)
-    console.log('socket', socket.me)
-    io.to(to).emit('test', { signal });
+  const answerCall = async ({ signal, to }: CallProps) => {
+    try {
+      const { socketId } = await User.findOneByOrFail({
+        id: to,
+      });
+
+      io.to(socketId).emit(EVENTS.CALL.ACCEPTED, signal);
+    } catch (error) {
+      console.log('Anser Call Error: ', error);
+    }
   };
 
-  const endCall = async () => {
+  const endCall = async ({ to }: CallProps) => {
     const text = `User ${socket.me.name} end call`;
     // const message = await createSystemMessage(text, roomId);
 
     // io.to(participant as string).emit(EVENTS.CALL.ENDED, { roomId, message });
-    socket.to(participant as string).emit(EVENTS.CALL.ENDED);
-    participant = undefined;
+    io.to(to).emit(EVENTS.CALL.ENDED);
   };
-    
-  socket.on(EVENTS.CALL.CALL, callUser);
+
+  socket.on('callUser', callUser);
+  socket.on('answerCall', answerCall);
   socket.on(EVENTS.CALL.END, endCall);
-  socket.on(EVENTS.CALL.ACCEPT, answerCall);
-}
+};

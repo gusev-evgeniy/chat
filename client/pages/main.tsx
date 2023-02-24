@@ -1,23 +1,21 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import axios from 'axios';
 
 import { Rooms } from '../components/rooms';
 
-import { useAppSelector } from '../store/hooks';
 import { setUserData } from '../store/slices/user';
 import { setRoomsData } from '../store/slices/rooms';
 import { wrapper } from '../store';
 
 import { MainWrapper } from '../styles';
 import { ChatWrapper } from '../components/chat/chatWrapper';
-import { selectMyData } from '../store/selectors';
-import { useRouter } from 'next/router';
 import { Dialog } from '../components/dialog';
 import { useSocketOn } from '../hooks/useSocketOn';
 import { useMediaQuery } from '../hooks/useMediaQuery';
 import { WIDTH } from '../styles/variables';
 import { SideMenu } from '../components/sideMenu';
 import { useAuthGuard } from '../hooks/useAuthGuard';
+import { CallProvider } from '../components/providers/callProvider';
 
 const Main = () => {
   useAuthGuard(false);
@@ -26,12 +24,14 @@ const Main = () => {
   useSocketOn();
 
   return (
-    <MainWrapper>
-      <Dialog />
-      <SideMenu />
-      {matches && <Rooms />}
-      <ChatWrapper matches={matches} />
-    </MainWrapper>
+    <CallProvider>
+      <MainWrapper>
+        <Dialog />
+        <SideMenu />
+        {matches && <Rooms />}
+        <ChatWrapper matches={matches} />
+      </MainWrapper>
+    </CallProvider>
   );
 };
 

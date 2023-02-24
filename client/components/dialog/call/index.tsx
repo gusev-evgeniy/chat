@@ -18,7 +18,6 @@ const Video = styled.video`
   height: 50%;
 `;
 
-
 export const Call = () => {
   const { mySignal, to, selected, callerSignal } = useAppSelector(GetCallInfo);
   const { name, photo } = to || ({} as UserBD);
@@ -31,6 +30,7 @@ export const Call = () => {
 
   useEffect(() => {
     if (userVideo.current && mySignal) {
+      console.log('mySignal', mySignal)
       userVideo.current.srcObject = mySignal;
     }
   }, [mySignal])

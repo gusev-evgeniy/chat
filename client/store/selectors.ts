@@ -95,6 +95,7 @@ export const getHeaderInfo = createSelector(
       myId: myData?.id,
       userId: privateUser && privateUser.id,
       selected,
+      privateUser,
     };
   }
 );

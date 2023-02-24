@@ -32,6 +32,8 @@ export const call =
           trickle: false,
           stream,
         });
+
+        
         dispatch(callUser({ stream, to: user as UserBD, peer }));
 
         const sendCall = (signal: Peer.SignalData) => {
