@@ -5,15 +5,15 @@ export const useVideoCall = () => {
   const myVideo = useRef<HTMLVideoElement>(null);
   const callerVideo = useRef<HTMLVideoElement>(null);
 
-  const { myStream, callerStream } = useCall();
-  console.log('callerStream', callerStream)
+  const { myStream, companionStream } = useCall();
+  console.log('companionStream', companionStream)
   console.log('myStream', myStream)
 
   useEffect(() => {
-    if (callerVideo.current && callerStream) {
-      callerVideo.current.srcObject = callerStream;
+    if (callerVideo.current && companionStream) {
+      callerVideo.current.srcObject = companionStream;
     }
-  }, [callerVideo, callerStream])
+  }, [callerVideo, companionStream])
 
   useEffect(() => {
     if (myVideo.current && myStream) {

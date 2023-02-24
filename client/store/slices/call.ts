@@ -6,7 +6,7 @@ const initialState = {
   mySignal: null as MediaStream | null,
   receivingCall: false,
   from: null as UserBD | null,
-  callerSignal: null as SignalData | null,
+  companionSignal: null as SignalData | null,
   callAccepted: false,
   to: null as UserBD | null,
   peer: null as Peer.Instance | null
@@ -21,7 +21,7 @@ export const callSlice = createSlice({
     receiveCall: (state, action: PayloadAction<any>) => {
       state.receivingCall = true;
       state.from = action.payload.from;
-      state.callerSignal = action.payload.signal;
+      state.companionSignal = action.payload.signal;
     },
     callUser: (state, action: PayloadAction<any>) => {
       state.mySignal = action.payload.stream;

@@ -19,13 +19,13 @@ const Video = styled.video`
 `;
 
 export const Call = () => {
-  const { mySignal, to, selected, callerSignal } = useAppSelector(GetCallInfo);
+  const { mySignal, to, selected, companionSignal } = useAppSelector(GetCallInfo);
   const { name, photo } = to || ({} as UserBD);
 
   const userVideo = useRef(null)
   const partnerVideo = useRef(null);
 
-  console.log('callerSignal', callerSignal)
+  console.log('companionSignal', companionSignal)
   console.log('mySignal', mySignal)
 
   useEffect(() => {
@@ -36,10 +36,10 @@ export const Call = () => {
   }, [mySignal])
 
   useEffect(() => {
-    if (partnerVideo.current && callerSignal) {
-      partnerVideo.current.srcObject = callerSignal;
+    if (partnerVideo.current && companionSignal) {
+      partnerVideo.current.srcObject = companionSignal;
     }
-  }, [callerSignal])
+  }, [companionSignal])
 
   const endCallHandler = () => {
     socket.emit(EVENTS.CALL.END, { roomId: selected });

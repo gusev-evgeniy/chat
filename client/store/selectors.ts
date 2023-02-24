@@ -125,7 +125,7 @@ export const GetGroupChatInfo = createSelector(
 export const GetCallInfo = createSelector(
   selectRooms,
   selectCall,
-  ({ data, selected }, { mySignal, to, callerSignal }) => {
+  ({ data, selected }, { mySignal, to, companionSignal }) => {
     const openRoom = data.find(({ id }) => id === selected);
 
     if (!openRoom) {
@@ -137,7 +137,7 @@ export const GetCallInfo = createSelector(
     return {
       to: user,
       mySignal,
-      callerSignal,
+      companionSignal,
       selected,
     };
   }
@@ -146,11 +146,11 @@ export const GetCallInfo = createSelector(
 export const GetReceivedCallInfo = createSelector(
   selectRooms,
   selectCall,
-  ({ selected }, { mySignal, from, callerSignal }) => {
+  ({ selected }, { mySignal, from, companionSignal }) => {
     return {
       mySignal,
       from,
-      callerSignal,
+      companionSignal,
       selected,
     };
   }
