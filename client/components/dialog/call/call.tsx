@@ -9,10 +9,10 @@ import {
   VidoeContainer,
 } from '../styles';
 import Image from 'next/image';
-import call_end_icon from '../../../images/call_end.svg';
-import { useCall } from '../../providers/callProvider';
+import call_end_icon from '../../../../images/call_end.svg';
 import { useVideoCall } from './useVideoCall';
 import { Avatar } from '../../avatar';
+import { useCall } from '../../../providers/call/provider';
 
 export const Call = () => {
   const { leaveCall, companion } = useCall();

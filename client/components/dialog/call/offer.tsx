@@ -10,7 +10,7 @@ import Image from 'next/image';
 import call_end_icon from '../../../images/call_end.svg';
 import call_icon from '../../../images/call.svg';
 import { Avatar } from '../../avatar';
-import { useCall } from '../../providers/callProvider';
+import { useCall } from '../../../providers/callProvider';
 
 export const CallOffer = () => {
   const { companion, isGetCall, answerCall, leaveCall } = useCall();

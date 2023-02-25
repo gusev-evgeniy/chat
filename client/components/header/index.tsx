@@ -11,7 +11,7 @@ import { useMediaQuery } from '../../hooks/useMediaQuery';
 import { WIDTH } from '../../styles/variables';
 import { SideMenuIcon } from '../sideMenu/icon';
 import { UserInfo } from './userInfo';
-import { useCall } from '../providers/callProvider';
+import { useCall } from '../../providers/call/provider';
 
 export const Header: FC<{}> = memo(() => {
   const matches = useMediaQuery(`(max-width: ${WIDTH.MEDIUM})`);

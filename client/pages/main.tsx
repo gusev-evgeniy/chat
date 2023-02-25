@@ -15,7 +15,7 @@ import { useMediaQuery } from '../hooks/useMediaQuery';
 import { WIDTH } from '../styles/variables';
 import { SideMenu } from '../components/sideMenu';
 import { useAuthGuard } from '../hooks/useAuthGuard';
-import { CallProvider } from '../components/providers/callProvider';
+import { CallProvider } from '../providers/callProvider';
 
 const Main = () => {
   useAuthGuard(false);

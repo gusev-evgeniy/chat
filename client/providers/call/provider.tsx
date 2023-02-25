@@ -3,9 +3,8 @@ import {
   FC,
   useContext,
   useMemo,
-  useState,
-  useInsertionEffect,
   useEffect,
+  useReducer,
 } from 'react';
 import Peer from 'simple-peer';
 import { socket } from '../../api/socket';
@@ -15,6 +14,9 @@ import { openDialog } from '../../store/slices/dialog';
 import { Message } from '../../type/messages';
 import { UserBD } from '../../type/user';
 import { EVENTS } from '../../utils/constants';
+import { callReducer, initCallState } from './reducers';
+
+import { callActions as actions } from './actions';
 
 type CallContextType = {
   myStream: MediaStream | null;
@@ -37,97 +39,49 @@ export const CallProvider: FC<{ children: React.ReactElement }> = ({
   children,
 }) => {
   const dispatch = useAppDispatch();
-
-  const [myStream, setMyStream] = useState<MediaStream | null>(null);
-  const [companionStream, setCompanionStream] = useState<MediaStream | null>(
-    null
-  );
-
-  const [companionSignal, setCompanionSignal] =
-    useState<Peer.SignalData | null>(null);
-
-  const [companion, setCompanion] = useState<null | UserBD>(null);
-
-  const [roomId, setRoomId] = useState<string | null>(null);
-  const [isGetCall, setIsGetCall] = useState(false);
+  const [state, callDispatch] = useReducer(callReducer, initCallState);
+  const {
+    companion,
+    companionSignal,
+    companionStream,
+    isGetCall,
+    myStream,
+    roomId,
+  } = state;
 
   const setStream = async () => {
     const stream = await navigator.mediaDevices.getUserMedia({
       video: true,
       // audio: true,
     });
-    setMyStream(stream);
+    callDispatch(actions.setMyStream(stream));
     return stream;
   };
 
-  const closeStream = () => {
-    myStream?.getTracks().forEach(function (track) {
-      track.stop();
-    });
-    companionStream?.getTracks().forEach(function (track) {
-      track.stop();
-    });
-
-    setRoomId(null);
-    setCompanionStream(null);
-    setMyStream(null);
-  };
-
-  useInsertionEffect(() => {
-    socket.on(EVENTS.CALL.GET, async ({ from, signal, roomId }: GetCall) => {
+  useEffect(() => {
+    socket.on(EVENTS.CALL.GET, async (data: GetCall) => {
       dispatch(openDialog('CALL_OFFER'));
-      setCompanion(from);
-      setCompanionSignal(signal);
-      setRoomId(roomId);
-      setIsGetCall(true);
+      callDispatch(actions.getCall(data));
     });
-
-    socket.on(EVENTS.CALL.ENDED, (message: Message) => {
-      dispatch(newMessageHandler(message));
-      closeStream();
-      dispatch(openDialog(null));
-    });
-  }, [myStream, companionStream]);
+  }, [dispatch]);
 
   useEffect(() => {
-    if (!roomId) {
-      return;
+    if (myStream) {
+      socket.on(EVENTS.CALL.ENDED, (message: Message) => {
+        dispatch(newMessageHandler(message));
+        myStream?.getTracks().forEach(t => t.stop());
+
+        dispatch(openDialog(null));
+        callDispatch(actions.callEnded());
+      });
     }
-
-    const callUser = async () => {
-      dispatch(openDialog('CALL_OFFER'));
-
-      const stream = await setStream();
-      const peer = new Peer({
-        initiator: true,
-        trickle: false,
-        stream,
-      });
-
-      peer.on('signal', data => {
-        socket.emit(EVENTS.CALL.CALL, {
-          signal: data,
-          roomId,
-        });
-      });
-
-      peer.on('stream', stream => {
-        setCompanionStream(stream);
-      });
-
-      socket.on(EVENTS.CALL.ACCEPTED, signal => {
-        peer.signal(signal);
-      });
-    };
-    callUser();
-  }, [roomId]);
+  }, [myStream, dispatch]);
 
   useEffect(() => {
-    console.log('companionStream', companionStream);
     if (companionStream && myStream) {
       dispatch(openDialog('CALL'));
     }
-  }, [companionStream, myStream]);
+  }, [companionStream, myStream, dispatch]);
 
   const answerCall = async () => {
     const stream = await setStream();
@@ -138,11 +92,11 @@ export const CallProvider: FC<{ children: React.ReactElement }> = ({
     });
 
     peer.on('signal', data => {
-      socket.emit('answerCall', { signal: data, to: companion?.id });
+      socket.emit('answerCall', { signal: data, to: state.companion?.id });
     });
 
     peer.on('stream', stream => {
-      setCompanionStream(stream);
+      callDispatch(actions.setCompanionStream(stream));
     });
 
     peer.signal(companionSignal as Peer.SignalData);
@@ -152,9 +106,35 @@ export const CallProvider: FC<{ children: React.ReactElement }> = ({
     socket.emit(EVENTS.CALL.END, roomId);
   };
 
+  const callUser = async (roomId: string) => {
+    dispatch(openDialog('CALL_OFFER'));
+
+    const stream = await setStream();
+    const peer = new Peer({
+      initiator: true,
+      trickle: false,
+      stream,
+    });
+
+    peer.on('signal', data => {
+      socket.emit(EVENTS.CALL.CALL, {
+        signal: data,
+        roomId,
+      });
+    });
+
+    peer.on('stream', stream => {
+      callDispatch(actions.setCompanionStream(stream));
+    });
+
+    socket.on(EVENTS.CALL.ACCEPTED, signal => {
+      peer.signal(signal);
+    });
+  };
+
   const setCallData = (user: UserBD, roomId: string | null) => {
-    setCompanion(user);
-    setRoomId(roomId);
+    callDispatch(actions.setCallData(user, roomId));
+    callUser(roomId as string);
   };
 
   const value = useMemo(
