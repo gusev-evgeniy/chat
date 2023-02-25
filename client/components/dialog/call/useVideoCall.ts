@@ -1,27 +1,28 @@
-import { useRef, useMemo, useEffect } from "react"
-import { useCall } from "../../providers/callProvider";
+import { useRef, useMemo, useEffect } from 'react';
+import { useCall } from '../../providers/callProvider';
 
 export const useVideoCall = () => {
   const myVideo = useRef<HTMLVideoElement>(null);
   const callerVideo = useRef<HTMLVideoElement>(null);
 
   const { myStream, companionStream } = useCall();
-
   useEffect(() => {
-    if (callerVideo.current && companionStream) {
+    if (callerVideo.current) {
       callerVideo.current.srcObject = companionStream;
     }
-  }, [callerVideo, companionStream])
+  }, [callerVideo, companionStream]);
 
   useEffect(() => {
-    if (myVideo.current && myStream) {
+    if (myVideo.current) {
       myVideo.current.srcObject = myStream;
     }
-  }, [myVideo, myStream])
+  }, [myVideo, myStream]);
 
-
-  return useMemo(() => ({
-    myVideo,
-    callerVideo
-  }), [myVideo, callerVideo,])
-}
+  return useMemo(
+    () => ({
+      myVideo,
+      callerVideo,
+    }),
+    [myVideo, callerVideo]
+  );
+};

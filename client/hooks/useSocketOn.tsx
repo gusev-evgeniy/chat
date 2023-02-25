@@ -40,24 +40,6 @@ export const useSocketOn = () => {
       dispatch(newMessageHandler(message));
     });
 
-    // socket.on(EVENTS.CALL.GET, ({ from, signal }: GetCall) => {
-    //   console.log('from111', from)
-    //   console.log('signal2222', signal)
-    //   // dispatch(receiveCall({ from, signal }));
-    //   dispatch(openDialog('CALL'));
-    // })
-
-    // socket.on(EVENTS.CALL.ENDED, ({ message }) => {
-    //   // dispatch(receiveCall({ from, signal }));
-    //   dispatch(newMessageHandler(message));
-    //   dispatch(openDialog(null));
-    // })
-
-    socket.on(EVENTS.CALL.ACCEPTED, ({ signal }) => {
-      console.log('ACCEPTED', signal)
-      // dispatch(getAnswerSignal({ signal }))
-    })
-
     return () => {
       socket.disconnect();
     };

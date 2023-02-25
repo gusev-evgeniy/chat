@@ -15,11 +15,10 @@ import { useVideoCall } from './useVideoCall';
 import { Avatar } from '../../avatar';
 
 export const Call = () => {
-  const { answerCall, callFrom, callTo } = useCall();
+  const { leaveCall, companion } = useCall();
   const { callerVideo, myVideo } = useVideoCall();
-  const user = callFrom || callTo;
 
-  if (!user) {
+  if (!companion) {
     return null;
   }
 
@@ -28,9 +27,9 @@ export const Call = () => {
       <StyledContainer padding={'25px'}>
         <VidoeContainer>
           <Avatar
-            name={user.name}
+            name={companion.name}
             size={50}
-            photo={user.photo}
+            photo={companion.photo}
             online={false}
           />
           <CompanionVideo playsInline ref={callerVideo} autoPlay />
@@ -38,7 +37,7 @@ export const Call = () => {
         </VidoeContainer>
 
         <CallButtons>
-          <CallButton acceptBtn={false}>
+          <CallButton acceptBtn={false} onClick={leaveCall}>
             <Image
               width='30px'
               height='30px'

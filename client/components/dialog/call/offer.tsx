@@ -13,16 +13,13 @@ import { Avatar } from '../../avatar';
 import { useCall } from '../../providers/callProvider';
 
 export const CallOffer = () => {
-  const { callFrom, callTo, answerCall } = useCall();
-  const getCall = !!callFrom;
-
-  const user = getCall ? callFrom : callTo;
-  if (!user) {
+  const { companion, isGetCall, answerCall, leaveCall } = useCall();
+  if (!companion) {
     return null;
   }
 
-  const { name, photo } = user;
-  const headerText = getCall ? `Call from:` : 'Call to:';
+  const { name, photo } = companion;
+  const headerText = isGetCall ? `Call from:` : 'Call to:';
 
   return (
     <StyledVeil>
@@ -34,7 +31,7 @@ export const CallOffer = () => {
         </CallUser>
 
         <CallButtons>
-          <CallButton acceptBtn={false}>
+          <CallButton acceptBtn={false} onClick={leaveCall}>
             <Image
               width='30px'
               height='30px'
@@ -44,7 +41,7 @@ export const CallOffer = () => {
             />
           </CallButton>
 
-          {getCall && (
+          {isGetCall && (
             <CallButton onClick={answerCall} acceptBtn>
               <Image
                 width='30px'

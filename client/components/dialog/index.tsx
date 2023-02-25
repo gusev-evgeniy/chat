@@ -11,6 +11,7 @@ export const Dialog = memo(() => {
   const name = useAppSelector(selectDialog);
 
   const dialog = useMemo(() => {
+    console.log('name', name)
     switch (name) {
       case 'GROUP_INFO':
         return <GroupInfo />;
