@@ -1,21 +1,23 @@
 import React from 'react';
 import axios from 'axios';
 
-import { Rooms } from '../components/rooms';
+import { setUserData } from 'store/slices/user';
+import { setRoomsData } from 'store/slices/rooms';
+import { wrapper } from 'store';
 
-import { setUserData } from '../store/slices/user';
-import { setRoomsData } from '../store/slices/rooms';
-import { wrapper } from '../store';
+import { CallProvider } from 'providers/call/provider';
 
-import { MainWrapper } from '../styles';
-import { ChatWrapper } from '../components/chat/chatWrapper';
-import { Dialog } from '../components/dialog';
-import { useSocketOn } from '../hooks/useSocketOn';
-import { useMediaQuery } from '../hooks/useMediaQuery';
-import { WIDTH } from '../styles/variables';
-import { SideMenu } from '../components/sideMenu';
-import { useAuthGuard } from '../hooks/useAuthGuard';
-import { CallProvider } from '../providers/callProvider';
+import { useAuthGuard } from 'hooks/useAuthGuard';
+import { useSocketOn } from 'hooks/useSocketOn';
+import { useMediaQuery } from 'hooks/useMediaQuery';
+
+import { Rooms } from 'components/rooms';
+import { ChatWrapper } from 'components/chat/chatWrapper';
+import { Dialog } from 'components/dialog';
+import { SideMenu } from 'components/sideMenu';
+
+import { WIDTH } from 'styles/variables';
+import { MainWrapper } from 'styles';
 
 const Main = () => {
   useAuthGuard(false);

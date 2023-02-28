@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react';
-import { UserAPI } from '../../api/user';
+import { UserAPI } from 'api/user';
 import { Auth } from './types';
 
 const VALID_TYPES = ['image/png', 'image/jpg', 'image/jpeg'];

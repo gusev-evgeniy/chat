@@ -1,8 +1,11 @@
 import React from 'react';
-import { useAppDispatch } from '../../store/hooks';
-import { openSideMenu } from '../../store/slices/sideMenu';
 import Image from 'next/image';
-import menu from '../../images/menu.svg';
+
+import { useAppDispatch } from 'store/hooks';
+import { openSideMenu } from 'store/slices/sideMenu';
+
+import menu from 'images/menu.svg';
+
 import { StyledAbsoluteSideMenuIcon, StyledSideMenuIcon } from './styles';
 
 export const SideMenuIcon = ({ absolute = false }) => {

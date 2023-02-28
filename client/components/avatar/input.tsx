@@ -2,7 +2,7 @@ import Image from 'next/image';
 import React, { FC, memo } from 'react';
 import { StyledChangeAva } from './styles';
 
-import add_photo from '../../images/add_photo.svg';
+import add_photo from 'images/add_photo.svg';
 
 type Props = {
   photo: string | null;

@@ -1,4 +1,4 @@
-import { RoomType } from '../type/room';
+import { RoomType } from 'types/room';
 
 export const returnTypingText = (
   typing: string[] | undefined,

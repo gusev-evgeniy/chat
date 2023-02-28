@@ -5,8 +5,8 @@ import {
   StyledMessageForm,
   StyledSubmitIcon,
   StyledTextareaAutosize,
-} from './styled';
-import send from '../../images/send.svg';
+} from './styles';
+import send from 'images/send.svg';
 
 import { useMessageForm } from './useMessageForm';
 

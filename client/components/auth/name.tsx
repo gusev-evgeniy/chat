@@ -1,6 +1,8 @@
 import React, { FC } from 'react';
 
-import { Auth } from './types';
+import { AvatarInput } from 'components/avatar/input';
+import { usePreview } from './usePreview';
+import { useAuthUserForm } from './useAuthUserForm';
 
 import {
   AlertMessage,
@@ -8,10 +10,9 @@ import {
   StyledButton,
   StyledWrapper,
 } from './styles';
-import { AvatarInput } from '../avatar/input';
-import { usePreview } from './usePreview';
-import { useAuthUserForm } from './useAuthUserForm';
-import { StyledForm } from '../../styles';
+import { StyledForm } from 'styles';
+
+import { Auth } from './types';
 
 export const Name: FC<Auth> = props => {
   const { data, changeData } = props

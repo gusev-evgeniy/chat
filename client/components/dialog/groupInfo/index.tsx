@@ -1,15 +1,17 @@
 import React from 'react';
 
-import { socket } from '../../../api/socket';
-import { useAppDispatch, useAppSelector } from '../../../store/hooks';
-import { GetGroupChatInfo } from '../../../store/selectors';
-import { EVENTS } from '../../../utils/constants';
-import { AvatarInput } from '../../avatar/input';
-import { StyledUsers } from '../../createRoom/styled';
-import { TitleInput } from './titleInput';
+import { socket } from 'api/socket';
 
-import { deleteRoom } from '../../../store/slices/rooms';
-import { openDialog } from '../../../store/slices/dialog';
+import { deleteRoom } from 'store/slices/rooms';
+import { openDialog } from 'store/slices/dialog';
+import { useAppDispatch, useAppSelector } from 'store/hooks';
+import { GetGroupChatInfo } from 'store/selectors';
+
+import { EVENTS } from 'utils/constants';
+
+import { AvatarInput } from 'components/avatar/input';
+import { StyledUsers } from 'components/createRoom/styles';
+import { TitleInput } from './titleInput';
 import { DialogWrapper } from '../wrapper';
 import { Participant } from './participant';
 

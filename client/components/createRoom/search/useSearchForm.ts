@@ -1,7 +1,7 @@
-import { useMemo, useState } from "react";
-import { instance } from "../../../api";
-import { useAppDispatch } from "../../../store/hooks";
-import { findUsers } from "../../../store/slices/createRoom";
+import { useMemo, useState } from 'react';
+import { instance } from 'api';
+import { useAppDispatch } from 'store/hooks';
+import { findUsers } from 'store/slices/createRoom';
 
 export const useSearchForm = () => {
   const [filter, setFilter] = useState('');
@@ -20,9 +20,16 @@ export const useSearchForm = () => {
     } catch (error) {}
   };
 
-  return useMemo(() => ({
-    onFindUsersHandler,
-    setFilter,
-    filter
-  }), [filter])
-}
+  const onChangeFilter = ({ target }: React.ChangeEvent<HTMLInputElement>) => {
+    setFilter(target.value);
+  };
+
+  return useMemo(
+    () => ({
+      onFindUsersHandler,
+      onChangeFilter,
+      filter,
+    }),
+    [filter]
+  );
+};

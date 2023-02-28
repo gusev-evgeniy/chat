@@ -7,16 +7,19 @@ import {
   useReducer,
 } from 'react';
 import Peer from 'simple-peer';
-import { socket } from '../../api/socket';
-import { newMessageHandler } from '../../store/actions';
-import { useAppDispatch } from '../../store/hooks';
-import { openDialog } from '../../store/slices/dialog';
-import { Message } from '../../type/messages';
-import { UserBD } from '../../type/user';
-import { EVENTS } from '../../utils/constants';
-import { callReducer, initCallState } from './reducers';
 
+import { socket } from 'api/socket';
+
+import { newMessageHandler } from 'store/actions';
+import { useAppDispatch } from 'store/hooks';
+import { openDialog } from 'store/slices/dialog';
+import { EVENTS } from 'utils/constants';
+
+import { callReducer, initCallState } from './reducers';
 import { callActions as actions } from './actions';
+
+import { Message } from 'types/messages';
+import { UserBD } from 'types/user';
 
 type CallContextType = {
   myStream: MediaStream | null;

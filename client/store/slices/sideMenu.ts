@@ -1,13 +1,10 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { RootState } from '../index';
 
-export interface SideMenuState {
-  isOpen: boolean;
-}
-
-const initialState: SideMenuState = {
+const initialState = {
   isOpen: true
 };
+export type SideMenuState = typeof initialState;
 
 export const sideMenuSlice = createSlice({
   name: 'sideMenu',

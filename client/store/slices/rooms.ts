@@ -1,22 +1,17 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { RootState } from '../index';
 import { HYDRATE } from 'next-redux-wrapper';
-import { Room, RoomsResponse } from '../../type/room';
-import { Message } from '../../type/messages';
-import { UserBD } from '../../type/user';
 
-export type SelectedRoom = Omit<Partial<Room>, 'id'> & { id: string | null; participants: UserBD[] };
-export interface RoomsState {
-  data: Room[];
-  selected: string | null;
-  count: number;
-}
+import { RootState } from 'store';
 
-const initialState: RoomsState = {
-  data: [],
-  selected: null,
+import { Room, RoomsResponse } from 'types/room';
+import { Message } from 'types/messages';
+
+const initialState = {
+  data: [] as Room[],
+  selected: null as string | null,
   count: 0,
 };
+export type RoomsState = typeof initialState;
 
 export const roomsSlice = createSlice({
   name: 'rooms',
@@ -39,7 +34,8 @@ export const roomsSlice = createSlice({
       const { author, ...lastMessage } = action.payload;
 
       state.data = state.data.reduce((acc, curr) => {
-        if (curr.id === action.payload.roomId) acc.unshift({ ...curr, lastMessage });
+        if (curr.id === action.payload.roomId)
+          acc.unshift({ ...curr, lastMessage });
         else acc.push(curr);
 
         return acc;
@@ -47,7 +43,11 @@ export const roomsSlice = createSlice({
     },
     updateUserOnline: (
       state,
-      action: PayloadAction<{ userId: string; online: boolean; wasOnline?: string }>
+      action: PayloadAction<{
+        userId: string;
+        online: boolean;
+        wasOnline?: string;
+      }>
     ) => {
       const { userId, online, wasOnline } = action.payload;
 
@@ -68,7 +68,10 @@ export const roomsSlice = createSlice({
         };
       });
     },
-    setUnreadedCount(state, action: PayloadAction<{ roomId: string; count: number }>) {
+    setUnreadedCount(
+      state,
+      action: PayloadAction<{ roomId: string; count: number }>
+    ) {
       const { roomId, count } = action.payload;
 
       state.data = state.data.map(room => {
@@ -77,7 +80,9 @@ export const roomsSlice = createSlice({
         }
 
         const lastMessage =
-          count === 0 && !!room.lastMessage ? { ...room.lastMessage, readed: true } : room.lastMessage;
+          count === 0 && !!room.lastMessage
+            ? { ...room.lastMessage, readed: true }
+            : room.lastMessage;
 
         return {
           ...room,
@@ -114,7 +119,7 @@ export const {
   updateUserOnline,
   setUnreadedCount,
   updateRoomDetails,
-  deleteRoom
+  deleteRoom,
 } = roomsSlice.actions;
 
 export const selectRooms = (state: RootState) => state.rooms;

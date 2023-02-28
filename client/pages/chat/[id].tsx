@@ -2,27 +2,27 @@
 // import { useRouter } from 'next/router'
 // import React, { FC, Fragment, memo, ReactElement, useEffect } from 'react'
 // import Layout from '../../layout'
-// import { wrapper } from '../../store'
-// import { setRoomsData } from '../../store/slices/rooms'
-// import { setUserData } from '../../store/slices/user'
+// import { wrapper } from 'store'
+// import { setRoomsData } from 'store/slices/rooms'
+// import { setUserData } from 'store/slices/user'
 
 // import { useDispatch } from 'react-redux';
 // import dayjs from 'dayjs';
 
 
-// import { setUnreadedCount } from '../../store/slices/rooms';
+// import { setUnreadedCount } from 'store/slices/rooms';
 
 // import { Empty } from '../../styles';
-// import { useAppDispatch, useAppSelector } from '../../store/hooks';
-// import { setAllReadedMessages } from '../../store/slices/messages';
+// import { useAppDispatch, useAppSelector } from 'store/hooks';
+// import { setAllReadedMessages } from 'store/slices/messages';
 // import { socket } from '../../api/socket';
-// import { EVENTS } from '../../utils/constants';
-// import { getChatData } from '../../store/selectors';
+// import { EVENTS } from 'utils/constants';
+// import { getChatData } from 'store/selectors';
 // import { StyledChat } from '../../components/chat/styled'
 // import { Header } from '../../components/chat/header'
 // import { ChatItem } from '../../components/chat/item'
 // import { MessageForm } from '../../components/chat/messageForm'
-// import { getMessages } from '../../store/actions/messages'
+// import { getMessages } from 'store/actions/messages'
 
 // const Chat = () => {
 //   const { query } = useRouter();

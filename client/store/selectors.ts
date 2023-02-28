@@ -1,10 +1,11 @@
 import { createSelector } from '@reduxjs/toolkit';
 
-import { RootState } from '.';
-import { NEW_ROOM } from '../utils/constants';
-import { returnTypingText } from '../utils/message';
-import { createOnlineSubstring } from '../utils/room';
-import { RoomMessages } from './slices/messages';
+import { NEW_ROOM } from 'utils/constants';
+import { returnTypingText } from 'utils/message';
+import { createOnlineSubstring } from 'utils/room';
+
+import { RootState } from 'store';
+import { RoomMessages } from 'types/room';
 
 export const selectRooms = (state: RootState) => state.rooms;
 export const selectMessages = (state: RootState) => state.messages;

@@ -1,10 +1,10 @@
 import Image from 'next/image';
 import { FC } from 'react';
-import { StyledSearchIcon, StyledSearchInput } from './styled';
+import { StyledSearchIcon, StyledSearchInput } from './styles';
 
-import search from '../../images/search.svg';
-import add_chat from '../../images/add_chat.svg';
-import add_chat_fill from '../../images/add_chat_fill.svg';
+import search from 'images/search.svg';
+import add_chat from 'images/add_chat.svg';
+import add_chat_fill from 'images/add_chat_fill.svg';
 
 type Props = {
   onToggle: () => void;

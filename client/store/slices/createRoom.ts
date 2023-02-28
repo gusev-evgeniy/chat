@@ -1,30 +1,20 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { RootState } from '../index';
-import { UserBD } from '../../type/user';
+import { RootState } from 'store';
+import { UserBD } from 'types/user';
 
-export interface CreateRoomState {
+const initialState = {
   users: {
-    data: UserBD[];
-    count: number;
-  };
-  checked: UserBD[];
-  title: string;
-  type: 'private' | 'group';
-  loaded: boolean;
-  open: boolean;
-}
-
-const initialState: CreateRoomState = {
-  users: {
-    data: [],
+    data: [] as UserBD[],
     count: 0,
   },
-  checked: [],
+  checked: [] as UserBD[],
   title: '',
   type: 'private',
   loaded: false,
   open: false,
 };
+
+export type CreateRoomState = typeof initialState;
 
 export const createRoomSlice = createSlice({
   name: 'createRoom',

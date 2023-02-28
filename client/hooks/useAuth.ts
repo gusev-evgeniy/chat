@@ -1,10 +1,11 @@
 import { useState, useMemo } from 'react';
 
-import { useAppDispatch } from '../store/hooks';
-import { setUserData } from '../store/slices/user';
+import { UserAPI } from 'api/user';
 
-import { UserData } from '../components/auth/types';
-import { UserAPI } from '../api/user';
+import { useAppDispatch } from 'store/hooks';
+import { setUserData } from 'store/slices/user';
+
+import { UserData } from 'components/auth/types';
 
 export const useAuth = () => {
   const [data, setData] = useState<UserData>({

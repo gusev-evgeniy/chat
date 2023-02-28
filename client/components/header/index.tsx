@@ -1,17 +1,21 @@
 import Image from 'next/image';
 import React, { FC, memo } from 'react';
 
-import call_icon from '../../images/call.svg';
+import { useCall } from 'providers/call/provider';
 
-import { useAppSelector } from '../../store/hooks';
-import { getHeaderInfo } from '../../store/selectors';
-import { StyledIconButton } from '../../styles';
-import { StyledChatHeader } from '../chat/styled';
-import { useMediaQuery } from '../../hooks/useMediaQuery';
-import { WIDTH } from '../../styles/variables';
-import { SideMenuIcon } from '../sideMenu/icon';
+import { useAppSelector } from 'store/hooks';
+import { getHeaderInfo } from 'store/selectors';
+
+import { useMediaQuery } from 'hooks/useMediaQuery';
+
+import { StyledChatHeader } from 'components/chat/styles';
+import { SideMenuIcon } from 'components/sideMenu/icon';
 import { UserInfo } from './userInfo';
-import { useCall } from '../../providers/call/provider';
+
+import call_icon from 'images/call.svg';
+
+import { StyledIconButton } from 'styles';
+import { WIDTH } from 'styles/variables';
 
 export const Header: FC<{}> = memo(() => {
   const matches = useMediaQuery(`(max-width: ${WIDTH.MEDIUM})`);

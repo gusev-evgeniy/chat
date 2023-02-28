@@ -1,9 +1,13 @@
 import React, { memo, useMemo } from 'react';
-import Portal from '../portal';
-import { useAppSelector } from '../../store/hooks';
-import { selectDialog } from '../../store/slices/dialog';
+
+import Portal from 'components/portal';
+
+import { useAppSelector } from 'store/hooks';
+import { selectDialog } from 'store/slices/dialog';
+
 import { GroupInfo } from './groupInfo';
 import { CreateRoom } from './createRoom';
+
 import { Call } from './call/call';
 import { CallOffer } from './call/offer';
 
@@ -11,7 +15,6 @@ export const Dialog = memo(() => {
   const name = useAppSelector(selectDialog);
 
   const dialog = useMemo(() => {
-    console.log('name', name)
     switch (name) {
       case 'GROUP_INFO':
         return <GroupInfo />;

@@ -4,13 +4,7 @@ import Head from 'next/head';
 import { ReactElement, ReactNode } from 'react';
 
 import '../globals.scss';
-import { wrapper } from '../store';
-
-//TODO поиск по комнатам
-//TODO групповой чат. сообщение от админа (создал группу. покинул чат)
-//TODO выход из чата
-//TODO адаптив
-//TODO тесты
+import { wrapper } from 'store';
 
 type NextPageWithLayout = NextPage & {
   getLayout?: (page: ReactElement) => ReactNode

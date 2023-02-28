@@ -1,12 +1,13 @@
 import React, { FC } from 'react';
 import Image from 'next/image';
 
-import { StyledIconButton } from '../../../styles';
-import { Avatar } from '../../avatar';
-import { StyledSearchUserItem } from '../../createRoom/styled';
+import { Avatar } from 'components/avatar';
 
-import logout_icon from '../../../images/logout.svg';
-import { UserBD } from '../../../type/user';
+import logout_icon from 'images/logout.svg';
+
+import { StyledSearchUserItem } from 'styles';
+import { StyledIconButton } from 'styles';
+import { UserBD } from 'types/user';
 
 type Props = UserBD & {
   onLeave: () => void;

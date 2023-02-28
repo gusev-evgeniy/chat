@@ -1,13 +1,14 @@
 import React, { FC } from 'react';
-import { LoginKeysData } from '../../hooks/useLoginForm';
-import { StyledForm } from '../../styles';
-import { StyledButton, StyledWrapper } from '../auth/styles';
+
+import { StyledButton, StyledWrapper } from 'components/auth/styles';
+
+import { StyledForm } from 'styles';
 
 type Props = {
   password: string;
   name: string;
   onSubmitHandler: (e: React.FormEvent<HTMLFormElement>) => void;
-  changeData: (name: LoginKeysData, value: string) => void;
+  changeData: (e: React.ChangeEvent<HTMLInputElement>) => void;
 };
 
 export const LoginForm: FC<Props> = ({
@@ -26,14 +27,17 @@ export const LoginForm: FC<Props> = ({
           className='text-input'
           placeholder='Name'
           value={name}
-          onChange={e => changeData('name', e.target.value)}
+          data-type='name'
+          onChange={changeData}
+          autoFocus
         />
         <input
           type='password'
           className='text-input'
           placeholder='Password'
           value={password}
-          onChange={e => changeData('password', e.target.value)}
+          data-type='password'
+          onChange={changeData}
         />
 
         <StyledButton width='160px' height='48px' disabled={disabled}>

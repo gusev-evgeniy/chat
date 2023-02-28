@@ -1,8 +1,11 @@
 import React, { FC } from 'react';
-import { CreateRoomState } from '../../../store/slices/createRoom';
-import { Empty } from '../../../styles';
+
+import { CreateRoomState } from 'store/slices/createRoom';
+
 import { FindingUser } from './item';
-import { StyledUsers } from '../styled';
+
+import { Empty } from 'styles';
+import { StyledUsers } from '../styles';
 
 type Props = {
   loaded: CreateRoomState['loaded'];

@@ -1,6 +1,8 @@
 import React, { FC } from 'react';
-import { UserBD } from '../../../type/user';
-import { StyledCheckedItem } from '../styled';
+
+import { UserBD } from 'types/user';
+
+import { StyledCheckedItem } from '../styles';
 
 type Props = {
   checked: UserBD[];

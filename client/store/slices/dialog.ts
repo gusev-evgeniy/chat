@@ -7,13 +7,11 @@ type DialogType =
   | 'CREATE_ROOM'
   | 'CALL_OFFER';
 
-export interface DialogState {
-  name: null | DialogType;
-}
-
-const initialState: DialogState = {
-  name: null,
+const initialState = {
+  name: null as DialogType | null, 
 };
+
+export type DialogState = typeof initialState;
 
 export const dialogSlice = createSlice({
   name: 'dialog',

@@ -1,7 +1,7 @@
 import styled from 'styled-components';
-import { StyledTextInput } from '../../styles';
-import { COLORS, WIDTH } from '../../styles/variables';
-import { StyledWrapper } from '../auth/styles';
+import { StyledTextInput } from 'styles';
+import { COLORS, WIDTH } from 'styles/variables';
+import { StyledWrapper } from 'components/auth/styles';
 
 export const StyledLabel = styled.label`
   font-size: 0.9rem;
@@ -71,7 +71,7 @@ export const StyledGroupNameIntput = styled(StyledTextInput)`
 `;
 
 export const StyledFindUserIntput = styled(StyledGroupNameIntput)`
-  background-color: #F6F7F8;
+  background-color: #f6f7f8;
 `;
 
 export const StyledSearchUserWrapper = styled(StyledWrapper)`
@@ -106,25 +106,6 @@ export const StyledUsers = styled(StyledWrapper)`
   }
 `;
 
-export const StyledSearchUserItem = styled.div<{ check?: boolean }>`
-  display: flex;
-  justify-content: space-between;
-  width: 100%;
-  padding: 18px;
-  align-items: center;
-  cursor: ${({ check }) => check && 'pointer'};
-
-  .data_wrapper {
-    display: flex;
-    align-items: center;
-
-    p {
-      margin-left: 15px;
-      font-size: 1.3rem;
-    }
-  }
-`;
-
 export const StyledCheckedItem = styled.div`
   padding: 10px 20px;
   border-radius: 100px;
@@ -144,4 +125,4 @@ export const StyledCheckedItem = styled.div`
   :hover {
     background-color: #e5e5e5;
   }
-`
+`;

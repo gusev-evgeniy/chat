@@ -1,11 +1,14 @@
 import React, { FC, memo, useMemo } from 'react';
 import dayjs from 'dayjs';
 
-import { Room as RoomType } from '../../type/room';
-import { returnTypingText } from '../../utils/message';
-import { Avatar } from '../avatar';
-import { StyledLastMessage, StyledRoom } from './styled';
-import { getRoomInfo } from '../../utils/room';
+import { returnTypingText } from 'utils/message';
+import { getRoomInfo } from 'utils/room';
+
+import { Avatar } from 'components/avatar';
+
+import { Room as RoomType } from 'types/room';
+
+import { StyledLastMessage, StyledRoom } from './styles';
 
 type Props = {
   room: RoomType;

@@ -1,14 +1,14 @@
 import { useCallback, useMemo } from 'react';
 
+import { selectRoom } from 'store/slices/rooms';
+import { useAppDispatch } from 'store/hooks';
+import { openCreateRoom } from 'store/slices/createRoom';
+import { logout } from 'store/actions/user';
+import { openDialog } from 'store/slices/dialog';
 
-import { selectRoom } from '../../store/slices/rooms';
+import { useMediaQuery } from 'hooks/useMediaQuery';
 
-import { useAppDispatch } from '../../store/hooks';
-import { openCreateRoom } from '../../store/slices/createRoom';
-import { logout } from '../../store/actions/user';
-import { useMediaQuery } from '../../hooks/useMediaQuery';
-import { WIDTH } from '../../styles/variables';
-import { openDialog } from '../../store/slices/dialog';
+import { WIDTH } from 'styles/variables';
 
 export const useRooms = (isCreatRoomOpen: boolean) => {
   const dispatch = useAppDispatch();

@@ -1,8 +1,10 @@
 import React, { FC } from 'react';
-import { useAppDispatch, useAppSelector } from '../../store/hooks';
-import { getHeaderInfo } from '../../store/selectors';
-import { openDialog } from '../../store/slices/dialog';
-import { StyledGroupSubstring, StyledSubstring } from '../chat/styled';
+
+import { useAppDispatch, useAppSelector } from 'store/hooks';
+import { getHeaderInfo } from 'store/selectors';
+import { openDialog } from 'store/slices/dialog';
+
+import { StyledGroupSubstring, StyledSubstring } from 'components/chat/styles';
 
 export const UserInfo: FC<{}> = ({}) => {
   const dispatch = useAppDispatch();

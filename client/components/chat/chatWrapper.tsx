@@ -1,12 +1,15 @@
 import React from 'react'
 import { Chat } from '.'
-import { useAppSelector } from '../../store/hooks'
-import { selectRooms } from '../../store/selectors'
-import { selectCreatingRoomOpen } from '../../store/slices/createRoom'
-import { Empty } from '../../styles'
-import { NewRoom } from '../createRoom'
-import { SideMenuIcon } from '../sideMenu/icon'
-import { StyledChat } from './styled'
+
+import { useAppSelector } from 'store/hooks'
+import { selectRooms } from 'store/selectors'
+import { selectCreatingRoomOpen } from 'store/slices/createRoom'
+
+import { NewRoom } from 'components/createRoom'
+import { SideMenuIcon } from 'components/sideMenu/icon'
+
+import { Empty } from 'styles'
+import { StyledChat } from './styles'
 
 export const ChatWrapper = ({ matches }: { matches: boolean }) => {
   const { selected } = useAppSelector(selectRooms)

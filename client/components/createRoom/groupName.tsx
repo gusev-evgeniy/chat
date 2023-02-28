@@ -1,9 +1,9 @@
 import React from 'react';
 
-import { useAppDispatch, useAppSelector } from '../../store/hooks';
-import { selectCreatingRoom, updateTitle } from '../../store/slices/createRoom';
+import { useAppDispatch, useAppSelector } from 'store/hooks';
+import { selectCreatingRoom, updateTitle } from 'store/slices/createRoom';
 
-import { StyledGroupNameIntput, StyledLabel } from './styled';
+import { StyledGroupNameIntput, StyledLabel } from './styles';
 
 const MAX_LENGTH = 20;
 

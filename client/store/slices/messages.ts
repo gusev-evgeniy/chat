@@ -1,24 +1,15 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { RootState } from '../index';
-import { Message, MessagesResponse, RoomsTyping, Typing } from '../../type/messages';
 
-export type RoomMessages = {
-  messages: Message[];
-  count: number;
-  loaded: boolean;
+import { RootState } from 'store';
+
+import { Message, MessagesResponse, RoomsTyping, Typing } from 'types/messages';
+import { MessageData } from 'types/room';
+
+const initialState = {
+  data: {} as MessageData,
+  typing: {} as RoomsTyping,
 };
-
-export interface MessagesState {
-  data: {
-    [key: string]: RoomMessages;
-  };
-  typing: RoomsTyping;
-}
-
-const initialState: MessagesState = {
-  data: {},
-  typing: {},
-};
+export type MessagesState = typeof initialState;
 
 export const messagesSlice = createSlice({
   name: 'messages',
@@ -66,7 +57,9 @@ export const messagesSlice = createSlice({
 
       const typingInRoom = state.typing[roomId];
       if (!isTyping && typingInRoom) {
-        state.typing[roomId] = typingInRoom.filter(typingUser => typingUser !== user);
+        state.typing[roomId] = typingInRoom.filter(
+          typingUser => typingUser !== user
+        );
       }
 
       const wasTyping = typingInRoom?.includes(user);
@@ -79,13 +72,17 @@ export const messagesSlice = createSlice({
       const room = state.data[action.payload];
 
       if (room) {
-        room.messages = room.messages.map(message => ({ ...message, readed: true }));
+        room.messages = room.messages.map(message => ({
+          ...message,
+          readed: true,
+        }));
       }
     },
   },
 });
 
-export const { setMessagesData, addMessage, setTyping, setAllReadedMessages } = messagesSlice.actions;
+export const { setMessagesData, addMessage, setTyping, setAllReadedMessages } =
+  messagesSlice.actions;
 
 export const selectMessagesData = (state: RootState) => state.messages.data;
 

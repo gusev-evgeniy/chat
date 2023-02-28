@@ -1,14 +1,14 @@
 import React, { memo } from 'react';
 
-import { useMediaQuery } from '../../hooks/useMediaQuery';
+import { useAppDispatch, useAppSelector } from 'store/hooks';
+import { openSideMenu, sideMenuIsOpen } from 'store/slices/sideMenu';
 
-import { useAppDispatch, useAppSelector } from '../../store/hooks';
-import { openSideMenu, sideMenuIsOpen } from '../../store/slices/sideMenu';
+import { useMediaQuery } from 'hooks/useMediaQuery';
 
-import Portal from '../portal';
-import { Rooms } from '../rooms';
+import Portal from 'components/portal';
+import { Rooms } from 'components/rooms';
 
-import { WIDTH } from '../../styles/variables';
+import { WIDTH } from 'styles/variables';
 import { StyledSideMenuWrapper, StyledSideMenu } from './styles';
 
 export const SideMenu = memo(() => {

@@ -1,6 +1,6 @@
 import Peer from 'simple-peer';
 
-import { UserBD } from '../../type/user';
+import { UserBD } from 'types/user';
 
 type GetCall = {
   from: UserBD;

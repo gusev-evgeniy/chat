@@ -1,4 +1,13 @@
 import React from 'react';
+import Image from 'next/image';
+
+import { Avatar } from 'components/avatar';
+
+import { useCall } from 'providers/call/provider';
+
+import call_end_icon from 'images/call_end.svg';
+import call_icon from 'images/call.svg';
+
 import {
   CallButton,
   CallButtons,
@@ -6,11 +15,6 @@ import {
   StyledContainer,
   StyledVeil,
 } from '../styles';
-import Image from 'next/image';
-import call_end_icon from '../../../images/call_end.svg';
-import call_icon from '../../../images/call.svg';
-import { Avatar } from '../../avatar';
-import { useCall } from '../../../providers/callProvider';
 
 export const CallOffer = () => {
   const { companion, isGetCall, answerCall, leaveCall } = useCall();

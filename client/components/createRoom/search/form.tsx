@@ -1,13 +1,16 @@
 import Image from 'next/image';
 import React, { FC, memo } from 'react';
 
-import { StyledFindUserIntput, StyledLabel } from '../styled';
-import search from '../../../images/search.svg';
-import { StyledInputSearchButton } from '../../chat/styled';
+import search from 'images/search.svg';
+
+import { StyledFindUserIntput, StyledLabel } from '../styles';
+
+import { StyledInputSearchButton } from 'components/chat/styles';
+
 import { useSearchForm } from './useSearchForm';
 
 export const Form: FC<{}> = memo(() => {
-  const { filter, onFindUsersHandler, setFilter } = useSearchForm();
+  const { filter, onFindUsersHandler, onChangeFilter } = useSearchForm();
 
   return (
     <form onSubmit={onFindUsersHandler}>
@@ -18,7 +21,7 @@ export const Form: FC<{}> = memo(() => {
           className='search'
           placeholder='Type usernames'
           value={filter}
-          onChange={e => setFilter(e.target.value)}
+          onChange={onChangeFilter}
         />
         <StyledInputSearchButton>
           <Image width='30px' height='30px' src={search} alt='search' />

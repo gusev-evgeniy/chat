@@ -1,8 +1,7 @@
-import { Rooms } from "../components/rooms";
-import { MainWrapper } from "../styles";
+import { Rooms } from 'components/rooms';
+import { MainWrapper } from 'styles';
 
 export default function Layout({ children }) {
-
   return (
     <MainWrapper>
       <Rooms />
@@ -16,7 +15,7 @@ export default function Layout({ children }) {
         <div>hello</div>
         <div>there</div>
       </Split> */}
-      { children }
+      {children}
     </MainWrapper>
-  )
+  );
 }

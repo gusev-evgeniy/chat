@@ -1,4 +1,13 @@
 import React from 'react';
+import Image from 'next/image';
+
+import { useCall } from 'providers/call/provider';
+
+import { useVideoCall } from './useVideoCall';
+import { Avatar } from 'components/avatar';
+
+import call_end_icon from 'images/call_end.svg';
+
 import {
   CallButton,
   CallButtons,
@@ -8,11 +17,6 @@ import {
   StyledVeil,
   VidoeContainer,
 } from '../styles';
-import Image from 'next/image';
-import call_end_icon from '../../../../images/call_end.svg';
-import { useVideoCall } from './useVideoCall';
-import { Avatar } from '../../avatar';
-import { useCall } from '../../../providers/call/provider';
 
 export const Call = () => {
   const { leaveCall, companion } = useCall();

@@ -1,10 +1,10 @@
 import { useEffect, useInsertionEffect, useMemo } from 'react';
 import { useDebouncedCallback } from 'use-debounce';
 
-import { useAppDispatch, useAppSelector } from '../../store/hooks';
-import { getChatData } from '../../store/selectors';
-import { readMessage } from '../../store/actions';
-import { getMessages } from '../../store/actions/messages';
+import { useAppDispatch, useAppSelector } from 'store/hooks';
+import { getChatData } from 'store/selectors';
+import { readMessage } from 'store/actions';
+import { getMessages } from 'store/actions/messages';
 
 export const useChat = () => {
   const {

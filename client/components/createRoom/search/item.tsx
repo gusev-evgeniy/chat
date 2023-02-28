@@ -1,8 +1,11 @@
 import React, { FC, memo } from 'react';
-import { UserBD } from '../../../type/user';
-import { Avatar } from '../../avatar';
-import { MyCheckbox } from '../../checkbox';
-import { StyledSearchUserItem } from '../styled';
+
+import { Avatar } from 'components/avatar';
+import { MyCheckbox } from 'components/checkbox';
+
+import { UserBD } from 'types/user';
+
+import { StyledSearchUserItem } from 'styles';
 
 type Props = UserBD & {
   onCheck: (e: React.MouseEvent<HTMLDivElement>) => void;

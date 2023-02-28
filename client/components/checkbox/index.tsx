@@ -1,5 +1,5 @@
 import React, { FC, memo } from 'react';
-import { StyledCheckbox } from './styled';
+import { StyledCheckbox } from './styles';
 
 type Props = {
   checked: boolean;

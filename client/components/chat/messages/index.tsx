@@ -1,8 +1,10 @@
 import dayjs from 'dayjs';
 import React, { FC, Fragment } from 'react';
-import { Empty } from '../../../styles';
-import { Message as MessageType} from '../../../type/messages';
+import { Empty } from 'styles';
+
 import { Message } from './message';
+
+import { Message as MessageType} from 'types/messages';
 
 type Props = {
   messages: MessageType[];

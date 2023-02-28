@@ -1,5 +1,6 @@
 import { useRef, useMemo, useEffect } from 'react';
-import { useCall } from '../../../providers/callProvider';
+
+import { useCall } from 'providers/call/provider';
 
 export const useVideoCall = () => {
   const myVideo = useRef<HTMLVideoElement>(null);

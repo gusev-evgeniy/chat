@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { COLORS } from '../../styles/variables';
+import { COLORS } from 'styles/variables';
 
 export const baseRadius = `20px`;
 export const sign_in_padding = `18px`;

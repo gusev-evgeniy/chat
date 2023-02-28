@@ -26,3 +26,13 @@ export type SelectedRoom = {
   userId: string;
   type: RoomType;
 };
+
+export type RoomMessages = {
+  messages: Message[];
+  count: number;
+  loaded: boolean;
+};
+
+export type MessageData = {
+  [key: string]: RoomMessages;
+}

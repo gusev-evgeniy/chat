@@ -1,11 +1,10 @@
-import { AppDispatch } from '..';
-import { instance } from '../../api';
-import { defaultUser } from '../slices/user';
+import { AppDispatch } from 'store';
+import { instance } from 'api';
+import { defaultUser } from 'store/slices/user';
 
 export const logout = () => async (dispatch: AppDispatch) => {
   try {
-    const response = await instance.post('/user/logout');
-    console.log('response', response);
+    await instance.post('/user/logout');
     dispatch(defaultUser());
   } catch (error) {}
 };

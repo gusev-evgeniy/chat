@@ -1,17 +1,18 @@
 import Image from 'next/image';
 import React, { FC, memo } from 'react';
 
+import { useAppSelector } from 'store/hooks';
+import { getRoomsInfo } from 'store/selectors';
+
 import { Room } from './item';
-
-import logout_icon from '../../images/logout.svg';
-
-import { StyledRooms } from './styled';
-import { useAppSelector } from '../../store/hooks';
-import { StyledAva } from '../avatar/styles';
-import { getRoomsInfo } from '../../store/selectors';
-import { Empty } from '../../styles';
+import { StyledAva } from 'components/avatar/styles';
 import { RoomsHeader } from './header';
 import { useRooms } from './useRooms';
+
+import logout_icon from 'images/logout.svg';
+
+import { StyledRooms } from './styles';
+import { Empty } from 'styles';
 
 type Props = {
   isSideMenu?: boolean;

@@ -1,15 +1,13 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
-import {
-  createMessage,
-  createPrivateRoom,
-  sendTyping,
-} from '../../store/actions';
-import { useAppDispatch } from '../../store/hooks';
-import { NEW_ROOM } from '../../utils/constants';
+
+import { createMessage, createPrivateRoom, sendTyping } from 'store/actions';
+import { useAppDispatch } from 'store/hooks';
+
+import { NEW_ROOM } from 'utils/constants';
 
 export const useMessageForm = (selected: string) => {
   const dispatch = useAppDispatch();
-  
+
   const [message, setMessage] = useState('');
   const [typing, setTyping] = useState<boolean | null>(null);
 
@@ -49,9 +47,12 @@ export const useMessageForm = (selected: string) => {
     setTyping(false);
   };
 
-  return useMemo(() => ({
-    onSubmitMessage,
-    onChangeHandler,
-    message
-  }), [message])
+  return useMemo(
+    () => ({
+      onSubmitMessage,
+      onChangeHandler,
+      message,
+    }),
+    [message]
+  );
 };

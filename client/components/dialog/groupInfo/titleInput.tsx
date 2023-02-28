@@ -1,4 +1,5 @@
-import React, { FC, useState } from 'react';
+import React, { FC } from 'react';
+
 import { useGroupTitleForm } from './useGroupTitleForm';
 
 type Props = {

@@ -1,5 +1,6 @@
 import Peer from 'simple-peer';
-import { UserBD } from '../type/user';
+import { InferActionsTypes } from 'types/actions';
+import { UserBD } from 'types/user';
 import { callActions } from './actions';
 
 export const initCallState = {
@@ -13,10 +14,6 @@ export const initCallState = {
 };
 
 type CallState = typeof initCallState;
-type PropertiesTypes<T> = T extends { [key: string]: infer U } ? U : never;
-export type InferActionsTypes<
-  T extends { [key: string]: (...args: any[]) => any }
-> = ReturnType<PropertiesTypes<T>>;
 
 type ActionsType = InferActionsTypes<typeof callActions>;
 

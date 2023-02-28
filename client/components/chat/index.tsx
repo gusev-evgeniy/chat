@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 
-import { StyledChat } from './styled';
+import { StyledChat } from './styles';
 
 import { MessageForm } from './messageForm';
 import { Header } from '../header';

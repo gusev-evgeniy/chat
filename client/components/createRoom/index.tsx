@@ -1,15 +1,16 @@
 import React, { FC, useEffect } from 'react';
-import { useMediaQuery } from '../../hooks/useMediaQuery';
 
-import { useAppDispatch } from '../../store/hooks';
-import { createRoomsDefault } from '../../store/slices/createRoom';
-import { WIDTH } from '../../styles/variables';
-import { SideMenuIcon } from '../sideMenu/icon';
+import { useMediaQuery } from 'hooks/useMediaQuery';
+
+import { useAppDispatch } from 'store/hooks';
+import { createRoomsDefault } from 'store/slices/createRoom';
+
+import { SideMenuIcon } from 'components/sideMenu/icon';
 import { GroupName } from './groupName';
-
 import { Search } from './search';
 
-import { StyledCreateRoom } from './styled';
+import { WIDTH } from 'styles/variables';
+import { StyledCreateRoom } from './styles';
 
 export const NewRoom: FC<{}> = () => {
   const dispatch = useAppDispatch();

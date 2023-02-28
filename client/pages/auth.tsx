@@ -1,21 +1,21 @@
 import axios from 'axios';
 import { useState } from 'react';
 
-import { setUserData } from '../store/slices/user';
+import { wrapper } from 'store';
+import { setUserData } from 'store/slices/user';
 
-import { Name } from '../components/auth/name';
-import { Password } from '../components/auth/password';
-import { Welcome } from '../components/auth/welcome';
-import { wrapper } from '../store';
-import { useAuth } from '../hooks/useAuth';
-import { useAuthGuard } from '../hooks/useAuthGuard';
+import { useAuth } from 'hooks/useAuth';
+import { useAuthGuard } from 'hooks/useAuthGuard';
+
+import { Name } from 'components/auth/name';
+import { Password } from 'components/auth/password';
+import { Welcome } from 'components/auth/welcome';
 
 const Auth = () => {
   useAuthGuard();
+  const { changeData, data, onSubmit } = useAuth();
 
   const [num, setNum] = useState(1);
-
-  const { changeData, data, onSubmit } = useAuth();
 
   const nextPage = () => setNum(prev => ++prev);
 

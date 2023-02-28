@@ -1,12 +1,13 @@
 import React from 'react';
 
-import { StyledButton } from '../../auth/styles';
-import { StyledSearchUserWrapper } from '../styled';
+import { StyledButton } from 'components/auth/styles';
 import { UsersList } from './usersList';
 import { Form } from './form';
 import { CheckedList } from './checkedList';
 import { useNewRoom } from './useNewRoom';
-import { Empty } from '../../../styles';
+
+import { Empty } from 'styles';
+import { StyledSearchUserWrapper } from '../styles';
 
 export const Search = () => {
   const {
