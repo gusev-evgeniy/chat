@@ -1,7 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-import { RootState } from 'store';
-
 import { Message, MessagesResponse, RoomsTyping, Typing } from 'types/messages';
 import { MessageData } from 'types/room';
 
@@ -83,7 +81,5 @@ export const messagesSlice = createSlice({
 
 export const { setMessagesData, addMessage, setTyping, setAllReadedMessages } =
   messagesSlice.actions;
-
-export const selectMessagesData = (state: RootState) => state.messages.data;
 
 export const messagesReducer = messagesSlice.reducer;

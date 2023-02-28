@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState } from 'react';
 
-export const usePreview = ( photo: File | undefined ) => {
+export const usePreview = (photo: File | undefined) => {
   const [preview, setPreview] = useState<string | null>(null);
 
   useEffect(() => {
@@ -15,6 +15,6 @@ export const usePreview = ( photo: File | undefined ) => {
   }, [photo]);
 
   return {
-    preview
-  }
-}
+    preview,
+  };
+};

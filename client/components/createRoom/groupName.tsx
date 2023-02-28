@@ -1,7 +1,8 @@
 import React from 'react';
 
 import { useAppDispatch, useAppSelector } from 'store/hooks';
-import { selectCreatingRoom, updateTitle } from 'store/slices/createRoom';
+import { selectCreatingRoom } from 'store/selectors';
+import { updateTitle } from 'store/slices/createRoom';
 
 import { StyledGroupNameIntput, StyledLabel } from './styles';
 

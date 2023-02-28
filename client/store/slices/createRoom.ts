@@ -1,5 +1,4 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { RootState } from 'store';
 import { UserBD } from 'types/user';
 
 const initialState = {
@@ -20,13 +19,19 @@ export const createRoomSlice = createSlice({
   name: 'createRoom',
   initialState,
   reducers: {
-    findUsers: (state, action: PayloadAction<{ users: UserBD[]; count: number }>) => {
+    findUsers: (
+      state,
+      action: PayloadAction<{ users: UserBD[]; count: number }>
+    ) => {
       const { users, count } = action.payload;
 
       state.users = { data: users, count };
       state.loaded = true;
     },
-    checkUser: (state, action: PayloadAction<{ checked: boolean; id: string }>) => {
+    checkUser: (
+      state,
+      action: PayloadAction<{ checked: boolean; id: string }>
+    ) => {
       const { checked, id } = action.payload;
 
       if (checked) {
@@ -41,18 +46,21 @@ export const createRoomSlice = createSlice({
     updateTitle: (state, action: PayloadAction<{ title: string }>) => {
       state.title = action.payload.title;
     },
-    createRoomsDefault: (state) => {
+    createRoomsDefault: state => {
       state = initialState;
     },
     openCreateRoom: (state, action: PayloadAction<boolean>) => {
       state.open = action.payload;
-    }
+    },
   },
 });
 
-export const { findUsers, checkUser, updateTitle, createRoomsDefault, openCreateRoom } = createRoomSlice.actions;
-
-export const selectCreatingRoom = (state: RootState) => state.createRoom;
-export const selectCreatingRoomOpen = (state: RootState) => state.createRoom.open;
+export const {
+  findUsers,
+  checkUser,
+  updateTitle,
+  createRoomsDefault,
+  openCreateRoom,
+} = createRoomSlice.actions;
 
 export const createRoomReducer = createRoomSlice.reducer;

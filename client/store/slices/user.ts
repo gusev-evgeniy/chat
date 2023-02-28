@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { RootState } from '../index';
 import { HYDRATE } from 'next-redux-wrapper';
+
 import { UserBD } from 'types/user';
 
 const initialState = {
@@ -30,7 +30,5 @@ export const userSlice = createSlice({
 });
 
 export const { setUserData, defaultUser } = userSlice.actions;
-
-export const selectMyData = (state: RootState) => state.user.data;
 
 export const userReducer = userSlice.reducer;

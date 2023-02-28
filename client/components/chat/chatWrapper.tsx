@@ -2,8 +2,7 @@ import React from 'react'
 import { Chat } from '.'
 
 import { useAppSelector } from 'store/hooks'
-import { selectRooms } from 'store/selectors'
-import { selectCreatingRoomOpen } from 'store/slices/createRoom'
+import { selectCreatingRoomOpen, selectRooms } from 'store/selectors'
 
 import { NewRoom } from 'components/createRoom'
 import { SideMenuIcon } from 'components/sideMenu/icon'

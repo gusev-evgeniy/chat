@@ -1,8 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { HYDRATE } from 'next-redux-wrapper';
 
-import { RootState } from 'store';
-
 import { Room, RoomsResponse } from 'types/room';
 import { Message } from 'types/messages';
 
@@ -121,7 +119,5 @@ export const {
   updateRoomDetails,
   deleteRoom,
 } = roomsSlice.actions;
-
-export const selectRooms = (state: RootState) => state.rooms;
 
 export const roomsReducer = roomsSlice.reducer;

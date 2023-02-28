@@ -1,13 +1,11 @@
 import Image from 'next/image';
 import React, { FC, memo } from 'react';
 
-import search from 'images/search.svg';
-
-import { StyledFindUserIntput, StyledLabel } from '../styles';
-
 import { StyledInputSearchButton } from 'components/chat/styles';
-
 import { useSearchForm } from './useSearchForm';
+
+import search from 'images/search.svg';
+import { StyledFindUserIntput, StyledLabel } from '../styles';
 
 export const Form: FC<{}> = memo(() => {
   const { filter, onFindUsersHandler, onChangeFilter } = useSearchForm();

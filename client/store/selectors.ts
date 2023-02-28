@@ -13,6 +13,7 @@ export const selectMyData = (state: RootState) => state.user.data;
 export const selectCreatingRoom = (state: RootState) => state.createRoom;
 export const selectCreatingRoomOpen = (state: RootState) =>
   state.createRoom.open;
+export const selectSideMenu = (state: RootState) => state.sideMenu;
 
 export const getChatData = createSelector(
   selectRooms,

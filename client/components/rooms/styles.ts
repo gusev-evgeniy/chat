@@ -1,6 +1,7 @@
 import styled from 'styled-components';
-import { StyledInputIcon, StyledTextInput } from '../../styles';
-import { COLORS } from '../../styles/variables';
+
+import { StyledInputIcon, StyledTextInput } from 'styles';
+import { COLORS } from 'styles/variables';
 
 export const StyledRooms = styled.div<{ fullWidth: boolean }>`
   height: 100vh;
