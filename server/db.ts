@@ -4,6 +4,7 @@ import User from './entities/user';
 import Room from './entities/room';
 import Message from './entities/message';
 import Participant from './entities/participants';
+import Attachment from './entities/attachment';
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 type AvailableKeys = KeysOfUnion<DatabaseType>;
@@ -15,7 +16,7 @@ const myDataSource = new DataSource({
   username: process.env.DB_USER || 'postgres',
   password: process.env.DB_PASSWORD || 'postgres',
   database: process.env.DB_NAME || 'chat',
-  entities: [User, Room, Message, Participant],
+  entities: [User, Room, Message, Participant, Attachment],
   logging: true,
   synchronize: true,
 });

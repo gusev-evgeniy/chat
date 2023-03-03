@@ -3,16 +3,16 @@ import React, { memo, useMemo } from 'react';
 import Portal from 'components/portal';
 
 import { useAppSelector } from 'store/hooks';
-import { selectDialog } from 'store/slices/dialog';
 
 import { GroupInfo } from './groupInfo';
 import { CreateRoom } from './createRoom';
 
 import { Call } from './call/call';
 import { CallOffer } from './call/offer';
+import { selectDialogName } from 'store/selectors';
 
 export const Dialog = memo(() => {
-  const name = useAppSelector(selectDialog);
+  const name = useAppSelector(selectDialogName);
 
   const dialog = useMemo(() => {
     switch (name) {

@@ -1,6 +1,7 @@
-import { Entity, Column, ManyToOne, JoinColumn } from 'typeorm';
+import { Entity, Column, ManyToOne, JoinColumn, OneToOne } from 'typeorm';
 
 import Base from '.';
+import Attachment from './attachment';
 import Room from './room';
 import User from './user';
 
@@ -28,6 +29,10 @@ export default class Message extends Base {
   @JoinColumn()
   @ManyToOne(() => Room, room => room.messages)
   room: Room;
+
+  @JoinColumn()
+  @OneToOne(() => Attachment, attach => attach.message)
+  attachment: Attachment;
 
   @Column({ nullable: false })
   roomId: string;

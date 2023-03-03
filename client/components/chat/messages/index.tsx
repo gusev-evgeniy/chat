@@ -21,6 +21,8 @@ export const Messages: FC<Props> = ({ messages }) => {
           index === 0 ||
           getDay(messages[index - 1]?.createdAt) !== getDay(message.createdAt);
 
+        console.log('message', message)
+
         return (
           <Fragment key={message.id}>
             {isNewDay && (

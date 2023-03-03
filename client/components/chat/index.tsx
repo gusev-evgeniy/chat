@@ -2,7 +2,7 @@ import React, { FC } from 'react';
 
 import { StyledChat } from './styles';
 
-import { MessageForm } from './messageForm';
+import { Form } from './form';
 import { Header } from '../header';
 import { useChat } from './useChat';
 import { Messages } from './messages';
@@ -21,7 +21,7 @@ export const Chat: FC<{}> = () => {
         </div>
       </div>
 
-      <MessageForm selected={selected as string} />
+      <Form selected={selected as string} />
     </StyledChat>
   );
 };

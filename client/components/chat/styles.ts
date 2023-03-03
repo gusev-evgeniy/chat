@@ -45,7 +45,7 @@ export const StyledChat = styled.div<{ empty?: boolean }>`
 
   @media screen and (max-width: ${WIDTH.MEDIUM}) {
     width: 100%;
-  } 
+  }
 `;
 
 export const StyledChatHeader = styled.div`
@@ -92,6 +92,36 @@ export const StyledChatItem = styled.div<{ my?: boolean; isLast?: boolean }>`
     margin-right: ${({ isLast }) => (!isLast ? '44px' : '8px')};
     max-width: 80%;
 
+    .attachment {
+      display: flex;
+      flex: 1;
+      overflow: hidden;
+      cursor: pointer;
+
+      .icon {
+        min-width: 40px;
+        min-height: 40px;
+        width: 40px;
+        height: 40px;
+        display: flex;
+        border-radius: 100%;
+        align-items: center;
+        background-color: white;
+        justify-content: center;
+        border: #ccc;
+        margin-right: 10px;
+      }
+
+      .name {
+        margin-bottom: 10px;
+      }
+
+      .size {
+        font-size: 1rem;
+        opacity: 0.8;
+      }
+    }
+
     .message {
       word-break: break-all;
       white-space: pre-line;
@@ -131,7 +161,7 @@ export const StyledTextareaAutosize = styled(TextareaAutosize)`
   border: none;
   outline: none;
   min-height: 57px;
-  padding: 15px 50px 15px 15px;
+  padding: 15px 120px 15px 15px;
 
   ::-webkit-scrollbar {
     display: none;
@@ -181,4 +211,18 @@ export const StyledGroupSubstring = styled(StyledSubstring)`
   &:hover {
     text-decoration: underline;
   }
-`
+`;
+
+export const AttachIcon = styled.label`
+  position: absolute;
+  display: flex;
+  right: 70px;
+  padding: 5px;
+  border-radius: 100%;
+  bottom: 8px;
+  cursor: pointer;
+
+  &:hover {
+    background-color: ${COLORS.GREY};
+  }
+`;

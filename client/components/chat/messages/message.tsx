@@ -4,6 +4,7 @@ import Image from 'next/image';
 
 import readedIcon from 'images/readed.svg';
 import unreadedIcon from 'images/unreaded.svg';
+import fileIcon from 'images/file.svg';
 
 import { Message as MessageType } from 'types/messages';
 
@@ -13,7 +14,17 @@ import { StyledAva } from 'components/avatar/styles';
 type Props = MessageType & { isMy?: boolean; isLast: boolean };
 
 export const Message: FC<Props> = memo(
-  ({ isMy, text, createdAt, readed, isLast, author, id, isSystem }) => {
+  ({
+    isMy,
+    text,
+    createdAt,
+    readed,
+    isLast,
+    author,
+    id,
+    isSystem,
+    attachment,
+  }) => {
     const { photo } = author || {};
 
     const time = dayjs(createdAt).format('HH:mm');
@@ -25,7 +36,20 @@ export const Message: FC<Props> = memo(
     return (
       <StyledChatItem my={isMy} isLast={isLast} data-id={id}>
         <div className='item'>
-          <p className='message'>{text}</p>
+          <div className='message'>{text}</div>
+
+          {attachment && (
+            <div className='attachment'>
+              <div className='icon'>
+                <Image width='18px' height='18px' src={fileIcon} alt='file' />
+              </div>
+              <div className='file_info'>
+                <div className='name'>{attachment.name}</div>
+                <div className='size'>{attachment.size}</div>
+              </div>
+            </div>
+          )}
+
           <span className='time'>{time}</span>
 
           {isMy && (

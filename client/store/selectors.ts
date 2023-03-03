@@ -14,6 +14,7 @@ export const selectCreatingRoom = (state: RootState) => state.createRoom;
 export const selectCreatingRoomOpen = (state: RootState) =>
   state.createRoom.open;
 export const selectSideMenu = (state: RootState) => state.sideMenu;
+export const selectDialogName = (state: RootState) => state.dialog.name;
 
 export const getChatData = createSelector(
   selectRooms,

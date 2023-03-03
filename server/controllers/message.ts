@@ -11,7 +11,7 @@ class Message {
         where: {
           roomId: roomId as string,
         },
-        relations: ['author'],
+        relations: ['author', 'attachment'],
         order: {
           createdAt: 'DESC',
         },

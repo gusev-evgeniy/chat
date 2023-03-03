@@ -81,7 +81,8 @@ class User {
         where: { name: name as string },
       });
 
-      if (!user) res.status(401).json({ message: 'Wrong password or name' });
+      if (!user) return res.status(401).json({ message: 'Wrong password or name' });
+      
       const isCorrectPassword = bcrypt.compareSync(
         password as string,
         user.password

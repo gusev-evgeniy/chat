@@ -12,7 +12,7 @@ import {
 
 import { AppDispatch, RootState } from 'store';
 
-import { Message } from 'types/messages';
+import { Message, NewMessage } from 'types/messages';
 import { Room } from 'types/room';
 
 export const newMessageHandler =
@@ -92,7 +92,7 @@ export const openNewRoom =
   };
 
 export const createPrivateRoom =
-  (message: string) =>
+  (data: NewMessage) =>
   async (dispatch: AppDispatch, getState: () => RootState) => {
     const {
       createRoom: { checked, type },
@@ -107,14 +107,14 @@ export const createPrivateRoom =
         }
 
         dispatch(selectRoom(id));
-        createMessage(id, message);
+        createMessage(id, data);
       }
     );
   };
 
-export const createMessage = (roomId: string, message: string) => {
-  console.log('roomId, message', roomId, message);
-  socket.emit(EVENTS.MESSAGE.MESSAGE_CREATE, { roomId, message });
+export const createMessage = (roomId: string, data: NewMessage) => {
+
+  socket.emit(EVENTS.MESSAGE.MESSAGE_CREATE, { roomId, data });
 };
 
 export const readMessage = (id: string) => async (dispatch: AppDispatch) => {

@@ -9,3 +9,14 @@ export const returnTypingText = (
 
   return `...${typing.join(',')} печатают`;
 };
+
+export const prepareFile = (content: File) => {
+  const { name, size, type } = content;
+
+  return {
+    name,
+    size,
+    type,
+    content,
+  };
+};

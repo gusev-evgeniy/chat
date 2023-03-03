@@ -4,6 +4,7 @@ import { createMessage, createPrivateRoom, sendTyping } from 'store/actions';
 import { useAppDispatch } from 'store/hooks';
 
 import { NEW_ROOM } from 'utils/constants';
+import { prepareFile } from 'utils/message';
 
 export const useMessageForm = (selected: string) => {
   const dispatch = useAppDispatch();
@@ -39,12 +40,27 @@ export const useMessageForm = (selected: string) => {
   const onSubmitMessage = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    if (isNewRoom) dispatch(createPrivateRoom(message.trim()));
-    else createMessage(selected, message.trim());
+    const data = { message: message.trim() };
+
+    if (isNewRoom) dispatch(createPrivateRoom(data));
+    else createMessage(selected, data);
 
     setMessage('');
     clearInterval(typingTimeoutId.current);
     setTyping(false);
+  };
+
+  const onAttachFile = ({ target }: React.ChangeEvent<HTMLInputElement>) => {
+    const files = target.files;
+
+    if (!files || files.length === 0) {
+      return;
+    }
+
+    const file = prepareFile(files[0]);
+
+    if (isNewRoom) dispatch(createPrivateRoom({ file }));
+    else createMessage(selected, { file });
   };
 
   return useMemo(
@@ -52,6 +68,7 @@ export const useMessageForm = (selected: string) => {
       onSubmitMessage,
       onChangeHandler,
       message,
+      onAttachFile,
     }),
     [message]
   );
