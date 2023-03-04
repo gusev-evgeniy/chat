@@ -1,5 +1,5 @@
 import dayjs from 'dayjs';
-import React, { FC, Fragment } from 'react';
+import React, { FC, Fragment, useCallback } from 'react';
 
 import { Message } from './message';
 
@@ -13,14 +13,14 @@ type Props = {
 };
 
 export const Messages: FC<Props> = ({ messages }) => {
-  const downloadHandler = async ({
+  const downloadHandler =  useCallback(({
     currentTarget,
   }: React.MouseEvent<HTMLDivElement>) => {
     const id = currentTarget.getAttribute('data-id');
 
     if (id) download(id);
-  };
-
+  }, []);
+  
   return (
     <>
       {messages.map((message, index) => {

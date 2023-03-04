@@ -16,7 +16,6 @@ export const messagesSlice = createSlice({
     setMessagesData: (state, action: PayloadAction<MessagesResponse>) => {
       const { count, messages: fetchedMessages, roomId } = action.payload;
       let room = state.data[roomId];
-
       if (!room) {
         state.data[roomId] = {
           messages: fetchedMessages,
@@ -39,7 +38,8 @@ export const messagesSlice = createSlice({
           loaded: true,
         };
       } else {
-        room.messages = [...room.messages, action.payload];
+        room.messages.push(action.payload);
+        // room.messages = [...room.messages, action.payload];
       }
 
       // messages.push(action.payload);

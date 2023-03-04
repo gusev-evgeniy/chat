@@ -10,6 +10,8 @@ type Props = {
 };
 
 export const Avatar: FC<Props> = memo(({ photo, name = '', size, online = false }) => {
+  console.log(!photo && name.substring(0, 2).toUpperCase())
+
   return (
     <AvaWrapper size={size} className="avatar">
       <StyledAva backgroundImage={photo} size={size}>

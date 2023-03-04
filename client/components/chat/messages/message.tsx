@@ -4,12 +4,11 @@ import Image from 'next/image';
 
 import readedIcon from 'images/readed.svg';
 import unreadedIcon from 'images/unreaded.svg';
-import fileIcon from 'images/file.svg';
 
 import { Message as MessageType } from 'types/messages';
 
 import { StyledChatItem, StyledSystemMessage } from '../styles';
-import { StyledAva } from 'components/avatar/styles';
+import { Avatar } from 'components/avatar';
 import { Attachment } from './attachment';
 
 type Props = MessageType & {
@@ -31,8 +30,6 @@ export const Message: FC<Props> = memo(
     attachment,
     download,
   }) => {
-    const { photo } = author || {};
-
     const time = dayjs(createdAt).format('HH:mm');
 
     if (isSystem) {
@@ -45,7 +42,6 @@ export const Message: FC<Props> = memo(
           <div className='message'>{text}</div>
 
           <Attachment attachment={attachment} download={download} />
-
           <span className='time'>{time}</span>
 
           {isMy && (
@@ -60,8 +56,8 @@ export const Message: FC<Props> = memo(
           )}
         </div>
 
-        {isLast && (
-          <StyledAva size={35} backgroundImage={photo ? photo : undefined} />
+        {isLast && !!author && (
+          <Avatar name={author.name} photo={author.photo} size={35}/>
         )}
       </StyledChatItem>
     );

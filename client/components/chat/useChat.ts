@@ -41,7 +41,7 @@ export const useChat = () => {
       (-scrollTop / (scrollHeight - clientHeight)) * 100
     );
 
-    if (scrolled >= 80 && messages.length < count) {
+    if (scrolled >= 0 && messages.length < count) {
       dispatch(getMessages(messages.length));
     }
   }, 300);
@@ -53,6 +53,6 @@ export const useChat = () => {
       messages,
       selected
     }),
-    [typingText, messages, selected]
+    []
   );
 };

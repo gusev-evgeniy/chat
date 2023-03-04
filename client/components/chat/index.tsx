@@ -6,9 +6,17 @@ import { Form } from './form';
 import { Header } from '../header';
 import { useChat } from './useChat';
 import { Messages } from './messages';
+import { useAppSelector } from 'store/hooks';
+import { getChatData } from 'store/selectors';
 
 export const Chat: FC<{}> = () => {
-  const { listenToScroll, typingText, messages, selected } = useChat();
+  const { listenToScroll } = useChat();
+
+  const {
+    messages,
+    selected,
+    typingText,
+  } = useAppSelector(getChatData);
 
   return (
     <StyledChat>

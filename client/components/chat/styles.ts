@@ -92,36 +92,6 @@ export const StyledChatItem = styled.div<{ my?: boolean; isLast?: boolean }>`
     margin-right: ${({ isLast }) => (!isLast ? '44px' : '8px')};
     max-width: 80%;
 
-    .attachment {
-      display: flex;
-      flex: 1;
-      overflow: hidden;
-      cursor: pointer;
-
-      .icon {
-        min-width: 40px;
-        min-height: 40px;
-        width: 40px;
-        height: 40px;
-        display: flex;
-        border-radius: 100%;
-        align-items: center;
-        background-color: white;
-        justify-content: center;
-        border: #ccc;
-        margin-right: 10px;
-      }
-
-      .name {
-        margin-bottom: 10px;
-      }
-
-      .size {
-        font-size: 1rem;
-        opacity: 0.8;
-      }
-    }
-
     .message {
       word-break: break-all;
       white-space: pre-line;
@@ -140,6 +110,37 @@ export const StyledChatItem = styled.div<{ my?: boolean; isLast?: boolean }>`
     align-items: flex-end;
     min-width: 18px;
     margin-left: 4px;
+  }
+`;
+
+export const StyledAttachment = styled.div`
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+  cursor: pointer;
+
+  .icon {
+    min-width: 45px;
+    min-height: 45px;
+    width: 45px;
+    height: 45px;
+    display: flex;
+    border-radius: 20px;
+    margin-top: 5px;
+    align-items: center;
+    background-color: white;
+    justify-content: center;
+    border: #ccc;
+    margin-right: 10px;
+  }
+
+  .name {
+    margin-bottom: 10px;
+  }
+
+  .size {
+    font-size: 1rem;
+    opacity: 0.8;
   }
 `;
 
