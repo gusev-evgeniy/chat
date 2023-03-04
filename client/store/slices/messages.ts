@@ -48,7 +48,6 @@ export const messagesSlice = createSlice({
 
     setTyping: (state, action: PayloadAction<Typing>) => {
       const { roomId, user, isTyping } = action.payload;
-
       if (!user) {
         return state;
       }

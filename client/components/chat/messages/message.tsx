@@ -10,8 +10,13 @@ import { Message as MessageType } from 'types/messages';
 
 import { StyledChatItem, StyledSystemMessage } from '../styles';
 import { StyledAva } from 'components/avatar/styles';
+import { Attachment } from './attachment';
 
-type Props = MessageType & { isMy?: boolean; isLast: boolean };
+type Props = MessageType & {
+  isMy?: boolean;
+  isLast: boolean;
+  download: (e: React.MouseEvent<HTMLDivElement>) => void;
+};
 
 export const Message: FC<Props> = memo(
   ({
@@ -24,6 +29,7 @@ export const Message: FC<Props> = memo(
     id,
     isSystem,
     attachment,
+    download,
   }) => {
     const { photo } = author || {};
 
@@ -38,17 +44,7 @@ export const Message: FC<Props> = memo(
         <div className='item'>
           <div className='message'>{text}</div>
 
-          {attachment && (
-            <div className='attachment'>
-              <div className='icon'>
-                <Image width='18px' height='18px' src={fileIcon} alt='file' />
-              </div>
-              <div className='file_info'>
-                <div className='name'>{attachment.name}</div>
-                <div className='size'>{attachment.size}</div>
-              </div>
-            </div>
-          )}
+          <Attachment attachment={attachment} download={download} />
 
           <span className='time'>{time}</span>
 

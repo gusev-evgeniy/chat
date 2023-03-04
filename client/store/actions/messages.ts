@@ -1,7 +1,8 @@
 import { AppDispatch, RootState } from 'store';
 import { instance } from 'api';
-import { NEW_ROOM } from 'utils/constants';
+import { BASE_URL, NEW_ROOM } from 'utils/constants';
 import { setMessagesData } from 'store/slices/messages';
+import { MessageAPI } from 'api/message';
 
 export const getMessages =
   (skip = 0) =>

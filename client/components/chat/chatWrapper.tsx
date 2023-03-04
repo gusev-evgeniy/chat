@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { FC } from 'react'
 import { Chat } from '.'
 
 import { useAppSelector } from 'store/hooks'
@@ -10,7 +10,7 @@ import { SideMenuIcon } from 'components/sideMenu/icon'
 import { Empty } from 'styles'
 import { StyledChat } from './styles'
 
-export const ChatWrapper = ({ matches }: { matches: boolean }) => {
+export const ChatWrapper: FC<{ matches: boolean }> = ({ matches }) => {
   const { selected } = useAppSelector(selectRooms)
   const isCreatingRoomOpen = useAppSelector(selectCreatingRoomOpen)
   

@@ -1,4 +1,6 @@
+import { MessageAPI } from 'api/message';
 import { RoomType } from 'types/room';
+import { BASE_URL } from './constants';
 
 export const returnTypingText = (
   typing: string[] | undefined,
@@ -20,3 +22,20 @@ export const prepareFile = (content: File) => {
     content,
   };
 };
+
+export const download = async (id: string) => {
+  await MessageAPI.download(id);
+  const address = `${BASE_URL}attachment/${id}`
+
+  const Id = `download-files`
+  let iframe = document.getElementById(Id)
+  if (iframe === null) {
+    iframe = document.createElement(`iframe`)
+    iframe.style.display = `none`
+    iframe.id = Id
+
+    document.body.appendChild(iframe)
+  }
+
+  return ((iframe as HTMLImageElement).src = address)
+}

@@ -1,16 +1,26 @@
 import dayjs from 'dayjs';
 import React, { FC, Fragment } from 'react';
-import { Empty } from 'styles';
 
 import { Message } from './message';
 
-import { Message as MessageType} from 'types/messages';
+import { Empty } from 'styles';
+
+import { Message as MessageType } from 'types/messages';
+import { download } from 'utils/message';
 
 type Props = {
   messages: MessageType[];
 };
 
 export const Messages: FC<Props> = ({ messages }) => {
+  const downloadHandler = async ({
+    currentTarget,
+  }: React.MouseEvent<HTMLDivElement>) => {
+    const id = currentTarget.getAttribute('data-id');
+
+    if (id) download(id);
+  };
+
   return (
     <>
       {messages.map((message, index) => {
@@ -21,8 +31,6 @@ export const Messages: FC<Props> = ({ messages }) => {
           index === 0 ||
           getDay(messages[index - 1]?.createdAt) !== getDay(message.createdAt);
 
-        console.log('message', message)
-
         return (
           <Fragment key={message.id}>
             {isNewDay && (
@@ -30,7 +38,7 @@ export const Messages: FC<Props> = ({ messages }) => {
                 {dayjs(message.createdAt).format('DD MMMM')}
               </Empty>
             )}
-            <Message {...message} isLast={isLast} />
+            <Message {...message} isLast={isLast} download={downloadHandler} />
           </Fragment>
         );
       })}

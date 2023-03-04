@@ -11,7 +11,7 @@ export type Message = {
   isMy?: boolean;
   authorId?: string;
   isSystem: boolean;
-  attachment: FileType
+  attachment: MessageAttachment;
 };
 
 export type MessagesResponse = {
@@ -35,9 +35,11 @@ export type NewMessage = {
   message?: string;
 };
 
-export type FileType<T = File> = {
+export type FileType = {
   name: string;
   size: number;
   type: string;
-  content: T;
+  content: File;
 };
+
+export type MessageAttachment = FileType & { id: string };

@@ -35,3 +35,5 @@ export const EVENTS = {
 export type Events = typeof EVENTS;
 
 export const NEW_ROOM = 'NEW_ROOM';
+
+export const BASE_URL = `http://localhost:5050/`
