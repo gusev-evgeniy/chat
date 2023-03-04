@@ -1,7 +1,6 @@
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, useEffect } from 'react';
 
-import { useMessageForm } from './form/useMessageForm';
-import { StyledDraggingWrapper } from './styles';
+import { StyledDraggingWrapper } from '../styles';
 
 type Props = {
   dropHandler: (e: React.DragEvent<HTMLDivElement>) => void;

@@ -1,10 +1,10 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 
 import { createMessage, createPrivateRoom, sendTyping } from 'store/actions';
+import { uploadFile } from 'store/actions/messages';
 import { useAppDispatch } from 'store/hooks';
 
 import { NEW_ROOM } from 'utils/constants';
-import { prepareFile } from 'utils/message';
 
 export const useMessageForm = (selected: string) => {
   const dispatch = useAppDispatch();
@@ -57,15 +57,8 @@ export const useMessageForm = (selected: string) => {
       return;
     }
 
-    uploadFile(files[0])
+    dispatch(uploadFile(files[0]));
   };
-
-  const uploadFile = (fileForUpload: File) => {
-    const file = prepareFile(fileForUpload);
-
-    if (isNewRoom) dispatch(createPrivateRoom({ file }));
-    else createMessage(selected, { file });
-  }
 
   return useMemo(
     () => ({
@@ -73,7 +66,6 @@ export const useMessageForm = (selected: string) => {
       onChangeHandler,
       message,
       onAttachFile,
-      uploadFile
     }),
     [message]
   );
