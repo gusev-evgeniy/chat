@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
-
+import Attachment from '../entities/attachment';
+import stream from 'stream'
 import MessageEntity from '../entities/message';
 
 class Message {
@@ -25,6 +26,39 @@ class Message {
 
       return res.json({ messages: extendedMessages, count });
     } catch (error) {}
+  }
+
+  async download(req: Request, res: Response) {
+    try {
+
+      // const fileData = 'SGVsbG8sIFdvcmxkIQ=='
+      // const fileName = 'hello_world.txt'
+      // const fileType = 'text/plain'
+    
+      // var fileContents = Buffer.from(fileData, "base64");
+  
+      // var readStream = new stream.PassThrough();
+      // readStream.end(fileContents);
+    
+      // res.set('Content-disposition', 'attachment; filename=' + fileName);
+      // res.set('Content-Type', fileType);
+    
+      // readStream.pipe(res);
+
+      const attach = await Attachment.findOneBy({ id: req.params.id });
+      if (!attach) return;
+      console.log(`attach :>>`, attach);
+      res.set({
+          'Content-Disposition': `attachment; filename=${encodeURIComponent(attach.name)}`,
+          'Content-Type': attach.type, 
+          'Content-Length': attach.size
+      });
+
+      return res.send(attach.content);
+
+    } catch (error) {
+      
+    }
   }
 }
 

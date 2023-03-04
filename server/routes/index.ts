@@ -14,6 +14,7 @@ const createRoutes = (app: express.Express) => {
     cors({
       credentials: true,
       origin: 'http://localhost:3000',
+      exposedHeaders: ['Content-Disposition'],
     })
   );
   app.use('/static', express.static('static'));
@@ -32,6 +33,7 @@ const createRoutes = (app: express.Express) => {
   app.get('/room/checkPrivate', Auth, Room.checkPrivate);
 
   app.get('/message', Auth, Message.getMany);
+  app.get('/attachment/:id', Auth, Message.download);
 };
 
 export default createRoutes;
