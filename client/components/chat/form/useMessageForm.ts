@@ -57,11 +57,15 @@ export const useMessageForm = (selected: string) => {
       return;
     }
 
-    const file = prepareFile(files[0]);
+    uploadFile(files[0])
+  };
+
+  const uploadFile = (fileForUpload: File) => {
+    const file = prepareFile(fileForUpload);
 
     if (isNewRoom) dispatch(createPrivateRoom({ file }));
     else createMessage(selected, { file });
-  };
+  }
 
   return useMemo(
     () => ({
@@ -69,6 +73,7 @@ export const useMessageForm = (selected: string) => {
       onChangeHandler,
       message,
       onAttachFile,
+      uploadFile
     }),
     [message]
   );

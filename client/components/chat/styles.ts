@@ -15,6 +15,7 @@ export const StyledChat = styled.div<{ empty?: boolean }>`
     flex-direction: column-reverse;
     overflow-y: auto;
     height: inherit;
+    position: relative;
   }
 
   .messages {
@@ -45,6 +46,60 @@ export const StyledChat = styled.div<{ empty?: boolean }>`
 
   @media screen and (max-width: ${WIDTH.MEDIUM}) {
     width: 100%;
+  }
+`;
+
+export const StyledDraggingWrapper = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  opacity: 0.9;
+  z-index: 1;
+  display: flex;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  background-color: white;
+
+  form {
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    background-color: white;
+    .drag-area {
+      width: inherit;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      border: 2px dashed #d7d7d7;
+      background-color: #fafafa;
+      border-color: #ccc;
+      /* background-color: rgba(242, 249, 255, 0.95); */
+      .drag-label {
+        color: #979797;
+        padding-bottom: 20px;
+      }
+      .buttons {
+        position: relative;
+        .upload-file {
+          position: absolute;
+          top: 0;
+          right: 0;
+          margin: 0;
+          opacity: 0;
+          font-size: 0;
+          direction: ltr;
+          cursor: pointer;
+          height: 33px;
+          width: 100%;
+        }
+      }
+    }
   }
 `;
 

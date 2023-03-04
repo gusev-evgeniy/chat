@@ -1,6 +1,6 @@
 import Image from 'next/image';
 
-import React, { FC, memo, useRef } from 'react';
+import React, { FC, memo } from 'react';
 import {
   AttachIcon,
   StyledMessageForm,
