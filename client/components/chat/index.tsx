@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import React, { FC } from 'react';
 
 import { useAppSelector } from 'store/hooks';
 import { getChatData } from 'store/selectors';
@@ -15,7 +15,6 @@ import { StyledChat } from './styles';
 export const Chat: FC<{}> = () => {
   const { listenToScroll } = useChat();
 
-  const { messages, selected, typingText } = useAppSelector(getChatData);
   const {
     dragLeaveHandler,
     dragStartHandler,
@@ -40,13 +39,11 @@ export const Chat: FC<{}> = () => {
             dragLeaveHandler={dragLeaveHandler}
           />
         )}
-        <div className='messages'>
-          <Messages messages={messages} />
-          <div className='typing'>{typingText}</div>
-        </div>
+
+        <Messages />
       </div>
 
-      <Form selected={selected as string} />
+      <Form />
     </StyledChat>
   );
 };

@@ -5,43 +5,45 @@ import { Message } from './message';
 
 import { Empty } from 'styles';
 
-import { Message as MessageType } from 'types/messages';
-import { download } from 'utils/message';
+import { download, getDay } from 'utils/message';
+import { useAppSelector } from 'store/hooks';
+import { getChatData } from 'store/selectors';
 
-type Props = {
-  messages: MessageType[];
-};
+export const Messages: FC<{}> = () => {
+  const { messages, typingText } = useAppSelector(getChatData);
 
-export const Messages: FC<Props> = ({ messages }) => {
-  const downloadHandler =  useCallback(({
-    currentTarget,
-  }: React.MouseEvent<HTMLDivElement>) => {
-    const id = currentTarget.getAttribute('data-id');
+  const downloadHandler = useCallback(
+    ({ currentTarget }: React.MouseEvent<HTMLDivElement>) => {
+      const id = currentTarget.getAttribute('data-id');
 
-    if (id) download(id);
-  }, []);
-  
+      if (id) download(id);
+    },
+    []
+  );
+
   return (
-    <>
+    <div className='messages'>
       {messages.map((message, index) => {
-        const getDay = (createdAt: string) =>
-          dayjs(createdAt).format('YYYY-MM-DD');
-        const isLast = messages[index + 1]?.authorId !== message.authorId;
+        const { authorId, createdAt, id } = message;
+
+        const nextMessage = messages[index + 1];
+        const prevMessage = messages[index - 1];
+
+        const isLast = nextMessage?.authorId !== authorId;
         const isNewDay =
-          index === 0 ||
-          getDay(messages[index - 1]?.createdAt) !== getDay(message.createdAt);
+          index === 0 || getDay(prevMessage?.createdAt) !== getDay(createdAt);
 
         return (
-          <Fragment key={message.id}>
+          <Fragment key={id}>
             {isNewDay && (
-              <Empty margin='15px'>
-                {dayjs(message.createdAt).format('DD MMMM')}
-              </Empty>
+              <Empty margin='15px'>{dayjs(createdAt).format('DD MMMM')}</Empty>
             )}
             <Message {...message} isLast={isLast} download={downloadHandler} />
           </Fragment>
         );
       })}
-    </>
+
+      <div className='typing'>{typingText}</div>
+    </div>
   );
 };

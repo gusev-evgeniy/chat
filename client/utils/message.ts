@@ -1,4 +1,5 @@
 import { MessageAPI } from 'api/message';
+import dayjs from 'dayjs';
 import { RoomType } from 'types/room';
 import { BASE_URL } from './constants';
 
@@ -39,3 +40,5 @@ export const download = async (id: string) => {
 
   return ((iframe as HTMLImageElement).src = address)
 }
+
+export const getDay = (createdAt: string) => dayjs(createdAt).format('YYYY-MM-DD');

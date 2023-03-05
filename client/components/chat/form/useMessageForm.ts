@@ -1,44 +1,33 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 
-import { createMessage, createPrivateRoom, sendTyping } from 'store/actions';
-import { uploadFile } from 'store/actions/messages';
-import { useAppDispatch } from 'store/hooks';
+import { createMessage, createPrivateRoom } from 'store/actions';
+import { useAppDispatch, useAppSelector } from 'store/hooks';
+import { selectRooms } from 'store/selectors';
 
 import { NEW_ROOM } from 'utils/constants';
+import { useTyping } from './useTyping';
 
-export const useMessageForm = (selected: string) => {
+export const useMessageForm = () => {
   const dispatch = useAppDispatch();
 
+  const { selected } = useAppSelector(selectRooms);
+  const isNewRoom = selected === NEW_ROOM;
+
+  const { clearTyping, onPress } = useTyping(isNewRoom);
+
   const [message, setMessage] = useState('');
-  const [typing, setTyping] = useState<boolean | null>(null);
 
   const typingTimeoutId = useRef<NodeJS.Timeout | undefined>();
 
-  const isNewRoom = selected === NEW_ROOM;
-
-  useEffect(() => {
-    if (isNewRoom || typing === null) {
-      return;
-    }
-
-    dispatch(sendTyping(typing));
-  }, [typing, isNewRoom, dispatch]);
-
-  const onChangeHandler = ({
-    target,
-  }: React.KeyboardEvent<HTMLTextAreaElement>) => {
-    setTyping(true);
-    clearInterval(typingTimeoutId.current);
-
-    typingTimeoutId.current = setTimeout(() => {
-      setTyping(false);
-    }, 3000);
-
-    setMessage(target.value);
+  const onChangeHandler = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    onPress();
+    setMessage(e.target.value);
   };
 
-  const onSubmitMessage = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const onSubmitMessage = () => {
+    if (!selected) {
+      return;
+    }
 
     const data = { message: message.trim() };
 
@@ -47,26 +36,12 @@ export const useMessageForm = (selected: string) => {
 
     setMessage('');
     clearInterval(typingTimeoutId.current);
-    setTyping(false);
+    clearTyping();
   };
 
-  const onAttachFile = ({ target }: React.ChangeEvent<HTMLInputElement>) => {
-    const files = target.files;
-
-    if (!files || files.length === 0) {
-      return;
-    }
-
-    dispatch(uploadFile(files[0]));
+  return {
+    onSubmitMessage,
+    onChangeHandler,
+    message,
   };
-
-  return useMemo(
-    () => ({
-      onSubmitMessage,
-      onChangeHandler,
-      message,
-      onAttachFile,
-    }),
-    [message]
-  );
 };

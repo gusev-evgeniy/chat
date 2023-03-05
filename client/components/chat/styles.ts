@@ -217,7 +217,7 @@ export const StyledTextareaAutosize = styled(TextareaAutosize)`
   border: none;
   outline: none;
   min-height: 57px;
-  padding: 15px 120px 15px 15px;
+  padding: 15px 120px 15px 55px;
 
   ::-webkit-scrollbar {
     display: none;
@@ -272,7 +272,7 @@ export const StyledGroupSubstring = styled(StyledSubstring)`
 export const AttachIcon = styled.label`
   position: absolute;
   display: flex;
-  right: 70px;
+  left: 8px;
   padding: 5px;
   border-radius: 100%;
   bottom: 8px;
