@@ -33,6 +33,7 @@ export const getChatData = createSelector(
     return {
       typingText,
       messages,
+      selected,
       unreadedMessagesCount: openRoom?.unreadedMessagesCount,
       loaded,
       count,

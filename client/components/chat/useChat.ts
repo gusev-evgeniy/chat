@@ -6,11 +6,12 @@ import { getChatData } from 'store/selectors';
 import { readMessage } from 'store/actions';
 import { getMessages } from 'store/actions/messages';
 
+const SCROLLED_PRECENT = 70;
+
 export const useChat = () => {
   const {
     messages,
     selected,
-    typingText,
     unreadedMessagesCount,
     loaded = false,
     count,
@@ -41,7 +42,7 @@ export const useChat = () => {
       (-scrollTop / (scrollHeight - clientHeight)) * 100
     );
 
-    if (scrolled >= 0 && messages.length < count) {
+    if (scrolled >= SCROLLED_PRECENT && messages.length < count) {
       dispatch(getMessages(messages.length));
     }
   }, 300);
@@ -49,9 +50,6 @@ export const useChat = () => {
   return useMemo(
     () => ({
       listenToScroll,
-      typingText,
-      messages,
-      selected
     }),
     []
   );

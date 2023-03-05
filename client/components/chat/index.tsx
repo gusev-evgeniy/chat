@@ -1,8 +1,5 @@
 import React, { FC } from 'react';
 
-import { useAppSelector } from 'store/hooks';
-import { getChatData } from 'store/selectors';
-
 import { Form } from './form';
 import { Header } from '../header';
 import { useChat } from './useChat';

@@ -5,10 +5,9 @@ import { COLORS } from 'styles/variables';
 
 export const StyledRooms = styled.div<{ fullWidth: boolean }>`
   height: 100vh;
-  width: ${({ fullWidth }) => fullWidth ? '100%' : '30%' };
-  border-right: ${({ fullWidth }) => !fullWidth && '1px solid #e3e3e3' };
+  width: ${({ fullWidth }) => (fullWidth ? '100%' : '30%')};
+  border-right: ${({ fullWidth }) => !fullWidth && '1px solid #e3e3e3'};
   position: relative;
-
 
   .header {
     padding: 10px 12px;
@@ -39,29 +38,30 @@ export const StyledRooms = styled.div<{ fullWidth: boolean }>`
   }
 
   .rooms_wrapper {
-    height: calc(100% - 140px);
+    height: calc(100% - 124px);
     overflow: auto;
     flex: 1;
   }
 
   .footer {
-    position: absolute;
     display: flex;
-    bottom: 0;
-    bottom: 5px;
-    left: 50%;
-    transform: translateX(-50%);
     align-items: center;
-    padding: 8px 25px;
-    background-color: #ededed;
-    border-radius: 30px;
+    padding: 13px;
+    background-color: inherit;
     width: 100%;
     justify-content: space-between;
-    max-width: 250px;
+    height: 57px;
+    border-top: 1px solid #e3e3e3;
 
-    p {
-      font-weight: 700;
-      font-size: 1.2rem;
+    .user_info {
+      display: flex;
+      align-items: center;
+
+      p {
+        font-weight: 700;
+        font-size: 1.2rem;
+        margin-left: 15px;
+      }
     }
 
     .image_wrapper {
@@ -119,7 +119,8 @@ export const StyledRoom = styled.div<{ selected: boolean }>`
   }
 
   &:hover {
-    background-color: ${({ selected }) => !selected && 'rgba(227, 227, 227, 0.3)'};
+    background-color: ${({ selected }) =>
+      !selected && 'rgba(227, 227, 227, 0.3)'};
   }
 `;
 

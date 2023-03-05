@@ -48,8 +48,10 @@ export const Rooms: FC<Props> = memo(({ isSideMenu = false }) => {
       </div>
 
       <div className='footer'>
-        <StyledAva size={45} backgroundImage={me?.photo} />
-        <p>{me?.name}</p>
+        <div className='user_info'>
+          <StyledAva size={40} backgroundImage={me?.photo} />
+          <p>{me?.name}</p>
+        </div>
         <div className='image_wrapper' title='Exit' onClick={onExit}>
           <Image
             width='32px'

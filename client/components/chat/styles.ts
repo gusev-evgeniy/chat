@@ -269,10 +269,9 @@ export const StyledGroupSubstring = styled(StyledSubstring)`
   }
 `;
 
-export const AttachIcon = styled.label`
+export const MessageFormIcon = styled.label`
   position: absolute;
   display: flex;
-  left: 8px;
   padding: 5px;
   border-radius: 100%;
   bottom: 8px;
@@ -281,4 +280,16 @@ export const AttachIcon = styled.label`
   &:hover {
     background-color: ${COLORS.GREY};
   }
+`;
+
+export const AttachIcon = styled(MessageFormIcon)`
+  left: 8px;
+`;
+
+export const SmileIcon = styled(MessageFormIcon)`
+  right: 55px;
+`;
+
+export const MicIcon = styled(MessageFormIcon)`
+  right: 8px;
 `;

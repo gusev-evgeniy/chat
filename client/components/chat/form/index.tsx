@@ -7,18 +7,25 @@ import { uploadFile } from 'store/actions/messages';
 import { useMessageForm } from './useMessageForm';
 
 import attach from 'images/attach.svg';
+import smile from 'images/smile.svg';
+import mic from 'images/mic.svg';
 
 import {
   AttachIcon,
+  MicIcon,
+  SmileIcon,
   StyledMessageForm,
   StyledTextareaAutosize,
 } from '../styles';
+import { useRecord } from './useRecord';
 
 export const Form: FC<{}> = memo(() => {
   const dispatch = useAppDispatch();
 
   const { message, onChangeHandler, onSubmitMessage } =
     useMessageForm();
+
+    const { isRecording, onRecord, stopRecord } = useRecord();
 
   const onAttachFile = ({ target }: React.ChangeEvent<HTMLInputElement>) => {
     const files = target.files;
@@ -36,19 +43,32 @@ export const Form: FC<{}> = memo(() => {
     }
   }
 
+  console.log('isRecording', isRecording)
+
   return (
     <StyledMessageForm >
       <StyledTextareaAutosize
         placeholder='To write a message...'
         onKeyDown={handleKeyDown}
         onChange={onChangeHandler}
-        value={message}
+        value={isRecording ? 'Recording...' : message}
+        disabled={isRecording}
       />
 
-      <AttachIcon htmlFor='inputTag'>
-        <Image width='30px' height='30px' src={attach} alt='add_photo' />
-        <input id='inputTag' type='file' onChange={onAttachFile} hidden />
+      <AttachIcon htmlFor='attach'>
+        <Image width='30px' height='30px' src={attach} alt='attach file' />
+        <input id='attach' type='file' onChange={onAttachFile} hidden />
       </AttachIcon>
+
+      <SmileIcon htmlFor='smile'>
+        <Image width='30px' height='30px' src={smile} alt='smile' />
+        <input id='smile' type='file' onChange={onAttachFile} hidden />
+      </SmileIcon>
+
+      <MicIcon htmlFor='mic' onClick={isRecording ? stopRecord : onRecord}>
+        <Image width='30px' height='30px' src={mic} alt='mic' />
+        {/* <input id='mic' type='file' onChange={onAttachFile} hidden /> */}
+      </MicIcon>
     </StyledMessageForm>
   );
 });
