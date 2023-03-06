@@ -24,7 +24,9 @@ export const useMessageForm = () => {
     setMessage(e.target.value);
   };
 
-  const onSubmitMessage = () => {
+  const onSubmitMessage = (e?: React.FormEvent<HTMLFormElement>) => {
+    e?.preventDefault();
+
     if (!selected) {
       return;
     }

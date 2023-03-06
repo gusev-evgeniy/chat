@@ -9,12 +9,14 @@ import { useMessageForm } from './useMessageForm';
 import attach from 'images/attach.svg';
 import smile from 'images/smile.svg';
 import mic from 'images/mic.svg';
+import send from 'images/send.svg';
 
 import {
   AttachIcon,
   MicIcon,
   SmileIcon,
   StyledMessageForm,
+  StyledSubmitIcon,
   StyledTextareaAutosize,
 } from '../styles';
 import { useRecord } from './useRecord';
@@ -22,10 +24,9 @@ import { useRecord } from './useRecord';
 export const Form: FC<{}> = memo(() => {
   const dispatch = useAppDispatch();
 
-  const { message, onChangeHandler, onSubmitMessage } =
-    useMessageForm();
+  const { message, onChangeHandler, onSubmitMessage } = useMessageForm();
 
-    const { isRecording, onRecord, stopRecord } = useRecord();
+  const { isRecording, onRecord, stopRecord } = useRecord();
 
   const onAttachFile = ({ target }: React.ChangeEvent<HTMLInputElement>) => {
     const files = target.files;
@@ -39,14 +40,14 @@ export const Form: FC<{}> = memo(() => {
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault();
-      onSubmitMessage()
+      onSubmitMessage();
     }
-  }
+  };
 
-  console.log('isRecording', isRecording)
+  const canSubmit = message.trim().length > 0;
 
   return (
-    <StyledMessageForm >
+    <StyledMessageForm onSubmit={onSubmitMessage}>
       <StyledTextareaAutosize
         placeholder='To write a message...'
         onKeyDown={handleKeyDown}
@@ -65,10 +66,17 @@ export const Form: FC<{}> = memo(() => {
         <input id='smile' type='file' onChange={onAttachFile} hidden />
       </SmileIcon>
 
-      <MicIcon htmlFor='mic' onClick={isRecording ? stopRecord : onRecord}>
-        <Image width='30px' height='30px' src={mic} alt='mic' />
-        {/* <input id='mic' type='file' onChange={onAttachFile} hidden /> */}
-      </MicIcon>
+      {canSubmit ? (
+        <StyledSubmitIcon disabled={!canSubmit}>
+          <Image width='30px' height='30px' src={send} alt='send' />
+        </StyledSubmitIcon>
+      ) : (
+        <MicIcon htmlFor='mic' onClick={isRecording ? stopRecord : onRecord}>
+          <Image width='30px' height='30px' src={mic} alt='mic' />
+          {/* <input id='mic' type='file' onChange={onAttachFile} hidden /> */}
+        </MicIcon>
+      )}
+
     </StyledMessageForm>
   );
 });
