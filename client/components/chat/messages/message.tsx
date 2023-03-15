@@ -10,6 +10,7 @@ import { Message as MessageType } from 'types/messages';
 import { StyledChatItem, StyledSystemMessage } from '../styles';
 import { Avatar } from 'components/avatar';
 import { Attachment } from './attachment';
+import { Audio } from './audioPlayer';
 
 type Props = MessageType & {
   isMy?: boolean;
@@ -29,18 +30,20 @@ export const Message: FC<Props> = memo(
     isSystem,
     attachment,
     download,
+    media
   }) => {
     const time = dayjs(createdAt).format('HH:mm');
 
     if (isSystem) {
       return <StyledSystemMessage>{text}</StyledSystemMessage>;
     }
-
+    console.log('media', media)
     return (
       <StyledChatItem my={isMy} isLast={isLast} data-id={id}>
         <div className='item'>
           <div className='message'>{text}</div>
 
+          <Audio media={media}/>
           <Attachment attachment={attachment} download={download} />
           <span className='time'>{time}</span>
 

@@ -3,7 +3,7 @@ import { Message } from 'types/messages';
 import Image from 'next/image';
 
 import fileIcon from 'images/file.svg';
-import { StyledAttachment } from '../styles';
+import { MessageIcon, StyledAttachment } from '../styles';
 
 type Props = {
   download: (e: React.MouseEvent<HTMLDivElement>) => void;
@@ -19,9 +19,9 @@ export const Attachment: FC<Props> = memo(({ attachment, download }) => {
 
   return (
     <StyledAttachment data-id={id} onClick={download}>
-      <div className='icon'>
+      <MessageIcon>
         <Image width='18px' height='18px' src={fileIcon} alt='file' />
-      </div>
+      </MessageIcon>
       <div className='file_info'>
         <div className='name'>{name}</div>
         <div className='size'>{size}</div>

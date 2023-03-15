@@ -1,19 +1,14 @@
 import { useRef, useState } from 'react';
 
-import { createMessage, createPrivateRoom } from 'store/actions';
-import { useAppDispatch, useAppSelector } from 'store/hooks';
-import { selectRooms } from 'store/selectors';
+import { createMessageOrPrivateRoom } from 'store/actions/messages';
+import { useAppDispatch } from 'store/hooks';
 
-import { NEW_ROOM } from 'utils/constants';
 import { useTyping } from './useTyping';
 
 export const useMessageForm = () => {
   const dispatch = useAppDispatch();
 
-  const { selected } = useAppSelector(selectRooms);
-  const isNewRoom = selected === NEW_ROOM;
-
-  const { clearTyping, onPress } = useTyping(isNewRoom);
+  const { clearTyping, onPress } = useTyping();
 
   const [message, setMessage] = useState('');
 
@@ -27,14 +22,9 @@ export const useMessageForm = () => {
   const onSubmitMessage = (e?: React.FormEvent<HTMLFormElement>) => {
     e?.preventDefault();
 
-    if (!selected) {
-      return;
-    }
-
     const data = { message: message.trim() };
 
-    if (isNewRoom) dispatch(createPrivateRoom(data));
-    else createMessage(selected, data);
+    dispatch(createMessageOrPrivateRoom(data))
 
     setMessage('');
     clearInterval(typingTimeoutId.current);

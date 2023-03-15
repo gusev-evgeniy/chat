@@ -21,6 +21,8 @@ export const Messages: FC<{}> = () => {
     []
   );
 
+  console.log('messages', messages)
+
   return (
     <div className='messages'>
       {messages.map((message, index) => {

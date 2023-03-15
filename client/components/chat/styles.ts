@@ -168,33 +168,33 @@ export const StyledChatItem = styled.div<{ my?: boolean; isLast?: boolean }>`
   }
 `;
 
+export const MessageIcon = styled.div`
+  min-width: 45px;
+  min-height: 45px;
+  width: 45px;
+  height: 45px;
+  display: flex;
+  border-radius: 20px;
+  margin-top: 5px;
+  align-items: center;
+  background-color: white;
+  justify-content: center;
+  border: #ccc;
+  margin-right: 10px;
+`;
+
 export const StyledAttachment = styled.div`
   display: flex;
   flex: 1;
   overflow: hidden;
   cursor: pointer;
 
-  .icon {
-    min-width: 45px;
-    min-height: 45px;
-    width: 45px;
-    height: 45px;
-    display: flex;
-    border-radius: 20px;
-    margin-top: 5px;
-    align-items: center;
-    background-color: white;
-    justify-content: center;
-    border: #ccc;
-    margin-right: 10px;
-  }
-
   .name {
     margin-bottom: 10px;
   }
 
   .size {
-    font-size: 1rem;
+    font-size: 0.8rem;
     opacity: 0.8;
   }
 `;
@@ -292,4 +292,31 @@ export const SmileIcon = styled(MessageFormIcon)`
 
 export const MicIcon = styled(MessageFormIcon)`
   right: 8px;
+`;
+
+export const StyledBar = styled.div`
+  user-select: none;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  margin: 16px 0;
+
+  .bar_progress {
+    background: #e4e4ec;
+    flex: 1;
+    border-radius: 4px;
+    height: 2px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    width: 150px;
+    .knob {
+      position: relative;
+      height: 16px;
+      width: 16px;
+      border: 1.5px solid #e4e4ec;
+      border-radius: 50%;
+      background-color: #025efd;
+    }
+  }
 `;

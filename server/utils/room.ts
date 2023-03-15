@@ -9,7 +9,7 @@ export const isPrivateRoomExist = async (userId: string, myId: string) => {
     'userId_________________________________________________________',
     userId
   );
-  console.log('myId____________________________________________________', myId);
+
   try {
     // const room = await Room.createQueryBuilder('room')
     //   .leftJoinAndSelect('room.participants', 'participants')

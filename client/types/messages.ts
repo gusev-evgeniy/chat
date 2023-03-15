@@ -12,6 +12,7 @@ export type Message = {
   authorId?: string;
   isSystem: boolean;
   attachment: MessageAttachment;
+  media: string | null;
 };
 
 export type MessagesResponse = {
@@ -33,6 +34,7 @@ export type RoomsTyping = {
 export type NewMessage = {
   file?: FileType;
   message?: string;
+  media?: File;
 };
 
 export type FileType = {

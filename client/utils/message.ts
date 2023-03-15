@@ -42,3 +42,15 @@ export const download = async (id: string) => {
 }
 
 export const getDay = (createdAt: string) => dayjs(createdAt).format('YYYY-MM-DD');
+
+export const convertSecondsToMinutesAndSeconds = (totalSeconds: number) => {
+  const minutes = Math.floor(totalSeconds / 60);
+  const seconds = totalSeconds % 60;
+  
+  const padTo2Digits = (num: number) => {
+    return num.toString().padStart(2, '0');
+  }
+  
+  return `${padTo2Digits(minutes)}:${padTo2Digits(seconds)}`;
+}
+

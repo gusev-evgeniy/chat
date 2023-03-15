@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react';
-import { uploadFile } from 'store/actions/messages';
+import { createMessageOrPrivateRoom } from 'store/actions/messages';
 import { useAppDispatch } from 'store/hooks';
 
 export const useRecord = () => {
@@ -32,8 +32,9 @@ export const useRecord = () => {
     };
 
     recorder.ondataavailable = e => {
-      const file = new File([e.data], 'audio.webm');
-      dispatch(uploadFile(file));
+      const media = new File([e.data], 'audio.webm');
+      dispatch(createMessageOrPrivateRoom({ media }));
+      
       stream.getTracks().forEach(track => track.stop());
     };
   };

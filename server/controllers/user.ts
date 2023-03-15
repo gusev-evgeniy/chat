@@ -23,7 +23,6 @@ class User {
       };
 
       const photoUrl = prepareImage(req);
-      console.log('photoUrl', photoUrl);
       if (photoUrl) userInfo.photo = photoUrl;
 
       const user = UserEntity.create(userInfo) as UserEntity;
@@ -48,7 +47,6 @@ class User {
         where: { name: req.body.name },
       });
 
-      console.log('user111', user);
       if (user.length) {
         return res
           .status(401)
@@ -102,7 +100,6 @@ class User {
   }
 
   async logout(req: Request, res: Response) {
-    console.log('eeeee');
     res.set(
       'Set-Cookie',
       cookie.serialize('chatToken', '', {

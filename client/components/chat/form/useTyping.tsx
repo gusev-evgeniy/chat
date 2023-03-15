@@ -1,10 +1,15 @@
 import { useEffect, useRef, useState } from 'react';
 
 import { sendTyping } from 'store/actions';
-import { useAppDispatch } from 'store/hooks';
+import { useAppDispatch, useAppSelector } from 'store/hooks';
+import { selectRooms } from 'store/selectors';
+import { NEW_ROOM } from 'utils/constants';
 
-export const useTyping = (isNewRoom: boolean) => {
+export const useTyping = () => {
   const dispatch = useAppDispatch();
+
+  const { selected } = useAppSelector(selectRooms);
+  const isNewRoom = selected === NEW_ROOM;
 
   const [typing, setTyping] = useState<boolean | null>(null);
 

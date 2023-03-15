@@ -1,10 +1,10 @@
 import { AppDispatch, RootState } from 'store';
 import { instance } from 'api';
-import { BASE_URL, NEW_ROOM } from 'utils/constants';
+import { NEW_ROOM } from 'utils/constants';
 import { setMessagesData } from 'store/slices/messages';
-import { MessageAPI } from 'api/message';
 import { prepareFile } from 'utils/message';
 import { createMessage, createPrivateRoom } from '.';
+import { NewMessage } from 'types/messages';
 
 export const getMessages =
   (skip = 0) =>
@@ -24,21 +24,24 @@ export const getMessages =
     } catch (error) {}
   };
 
-export const uploadFile =
-  (fileForUpload: File) =>
-  (dispatch: AppDispatch, getState: () => RootState) => {
+export const uploadFile = (fileForUpload: File) => (dispatch: AppDispatch) => {
+  const file = prepareFile(fileForUpload);
+  dispatch(createMessageOrPrivateRoom({ file }));
+};
+
+export const createMessageOrPrivateRoom =
+  (data: NewMessage) => (dispatch: AppDispatch, getState: () => RootState) => {
     const {
       rooms: { selected },
     } = getState();
 
-    if (!selected) {
-      return;
-    }
-
     const isNewRoom = selected === NEW_ROOM;
 
-    const file = prepareFile(fileForUpload);
+    if (isNewRoom) {
+      return dispatch(createPrivateRoom(data));
+    }
 
-    if (isNewRoom) dispatch(createPrivateRoom({ file }));
-    else createMessage(selected, { file });
+    if (selected) {
+      createMessage(selected, data);
+    }
   };

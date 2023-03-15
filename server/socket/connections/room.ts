@@ -31,7 +31,6 @@ export default async (io: Server, socket: MySocket) => {
     const participants = room.participants.map(({ user }) => user);
 
     const usersSocketId = users.map(({ socketId }) => socketId);
-    console.log('________________________________usersSocketId', usersSocketId)
     callback({ ...room, participants });
 
     socket.to(usersSocketId).emit(EVENTS.ROOM.CREATED, {

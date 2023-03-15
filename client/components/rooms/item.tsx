@@ -28,7 +28,7 @@ type RoomInfo = {
 export const Room: FC<Props> = memo(({ typing, myId, isSelected, onSelecteHandler, room }) => {
   const { id, type, lastMessage, unreadedMessagesCount } = room || {};
   const { createdAt, text, readed, authorId } = lastMessage || {};
-  console.log('lastMessage',lastMessage)
+
   const time = dayjs(createdAt).format('HH:mm');
 
   const { image, title, online } = useMemo<RoomInfo>(() => getRoomInfo(room, myId), [room, myId]);

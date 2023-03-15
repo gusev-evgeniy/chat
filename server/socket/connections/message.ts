@@ -1,5 +1,5 @@
 import { Server } from 'socket.io';
-import { writeFile } from 'fs';
+import { writeFileSync } from 'fs';
 
 import Message from '../../entities/message';
 import { EVENTS } from '../events';
@@ -8,11 +8,14 @@ import { updateRoomLastMessage } from '../../utils/room';
 import { readMessagesQuary } from '../../utils/message';
 import Room from '../../entities/room';
 import Attachment from '../../entities/attachment';
+import { v4 as uuidv4 } from 'uuid';
+import path from 'path';
 
 type Callback = (...arg: any) => void;
 type Data = {
   message?: string;
   file?: File;
+  media?: Buffer;
 };
 type File = {
   name: string;
@@ -26,14 +29,14 @@ type NewMessage = {
   data: Data;
 };
 
+const BASE_URL = 'http://localhost:5050';
+
 export default async (io: Server, socket: MySocket) => {
   const createMessage = async ({ roomId, data }: NewMessage) => {
     try {
-      console.log('data', data);
+      const { message, file, media } = data;
 
-      const { message, file } = data;
-
-      if (!message && !file) {
+      if (!message && !file && !media) {
         return;
       }
 
@@ -44,6 +47,13 @@ export default async (io: Server, socket: MySocket) => {
         roomId,
         authorId: socket.me?.id,
       };
+
+      if (media) {
+        const filePath = '/static' + '/' + uuidv4();
+        const mediaSrc = path.join(process.cwd() + filePath)
+        writeFileSync(mediaSrc, media);
+        newMessageInfo.media = BASE_URL + filePath;
+      }
 
       //add transaction
       if (file) {
@@ -63,7 +73,6 @@ export default async (io: Server, socket: MySocket) => {
       });
 
       await updateRoomLastMessage(newMessage as Message, roomId);
-      console.log('newMessage', newMessage);
       io.to(roomId).emit(EVENTS.MESSAGE.NEW_MESSAGE_CREATED, newMessage);
     } catch (error) {
       console.log('Create message error:', error);
