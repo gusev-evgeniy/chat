@@ -20,7 +20,7 @@ export const Password: FC<Auth> = ({ nextPage, changeData, data }) => {
           type='password'
           className='text-input'
           placeholder='Password'
-          onChange={e => onKeyChange(e)}
+          onChange={onKeyChange}
           autoFocus
         />
         <StyledButton

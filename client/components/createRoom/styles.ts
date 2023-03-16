@@ -30,7 +30,7 @@ export const StyledCreateRoom = styled.div`
   .group_name {
     width: 100%;
     max-width: 700px;
-    margin: 10% auto;
+    margin: 10vh auto;
     min-height: 81px;
   }
 

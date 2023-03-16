@@ -37,7 +37,7 @@ export const Message: FC<Props> = memo(
     if (isSystem) {
       return <StyledSystemMessage>{text}</StyledSystemMessage>;
     }
-    console.log('media', media)
+
     return (
       <StyledChatItem my={isMy} isLast={isLast} data-id={id}>
         <div className='item'>

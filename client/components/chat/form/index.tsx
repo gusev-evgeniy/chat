@@ -20,13 +20,14 @@ import {
   StyledTextareaAutosize,
 } from '../styles';
 import { useRecord } from './useRecord';
+import { RecordForm } from './recordForm';
 
 export const Form: FC<{}> = memo(() => {
   const dispatch = useAppDispatch();
 
   const { message, onChangeHandler, onSubmitMessage } = useMessageForm();
 
-  const { isRecording, onRecord, stopRecord } = useRecord();
+  const { isRecording, onRecord, stop, submit } = useRecord();
 
   const onAttachFile = ({ target }: React.ChangeEvent<HTMLInputElement>) => {
     const files = target.files;
@@ -46,14 +47,17 @@ export const Form: FC<{}> = memo(() => {
 
   const canSubmit = message.trim().length > 0;
 
+  if (isRecording) {
+    return <RecordForm submit={submit} cancel={stop}/>;
+  }
+
   return (
     <StyledMessageForm onSubmit={onSubmitMessage}>
       <StyledTextareaAutosize
-        placeholder='To write a message...'
+        placeholder='Write a message...'
         onKeyDown={handleKeyDown}
         onChange={onChangeHandler}
-        value={isRecording ? 'Recording...' : message}
-        disabled={isRecording}
+        value={message}
       />
 
       <AttachIcon htmlFor='attach'>
@@ -71,12 +75,10 @@ export const Form: FC<{}> = memo(() => {
           <Image width='30px' height='30px' src={send} alt='send' />
         </StyledSubmitIcon>
       ) : (
-        <MicIcon htmlFor='mic' onClick={isRecording ? stopRecord : onRecord}>
+        <MicIcon onClick={onRecord}>
           <Image width='30px' height='30px' src={mic} alt='mic' />
-          {/* <input id='mic' type='file' onChange={onAttachFile} hidden /> */}
         </MicIcon>
       )}
-
     </StyledMessageForm>
   );
 });

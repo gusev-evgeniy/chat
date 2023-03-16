@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 
 import { sendTyping } from 'store/actions';
 import { useAppDispatch, useAppSelector } from 'store/hooks';
@@ -34,8 +34,8 @@ export const useTyping = () => {
 
   const clearTyping = () => setTyping(false);
 
-  return {
+  return useMemo(() => ({
     onPress,
     clearTyping,
-  };
+  }), [])
 };

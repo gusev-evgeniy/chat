@@ -13,6 +13,7 @@ export const DraggingArea: FC<Props> = ({
   dragLeaveHandler,
   dragStartHandler,
 }) => {
+  
   useEffect(() => {
     window.addEventListener('dragover', e => e.preventDefault());
     window.addEventListener('drop', e => e.preventDefault());

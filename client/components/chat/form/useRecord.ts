@@ -14,6 +14,7 @@ export const useRecord = () => {
     const stream = await window.navigator.mediaDevices.getUserMedia({
       audio: true,
     });
+
     onRecording(stream);
   };
 
@@ -29,24 +30,30 @@ export const useRecord = () => {
 
     recorder.onstop = () => {
       setIsRecording(false);
-    };
-
-    recorder.ondataavailable = e => {
-      const media = new File([e.data], 'audio.webm');
-      dispatch(createMessageOrPrivateRoom({ media }));
-      
       stream.getTracks().forEach(track => track.stop());
     };
   };
 
-  const stopRecord = () => {
+  const stop = () => {
     mediaRecorder?.stop();
+  };
+
+  const submit = () => {
+    stop();
+
+    if (mediaRecorder) {
+      mediaRecorder.ondataavailable = e => {
+        const media = new File([e.data], 'audio.webm');
+        dispatch(createMessageOrPrivateRoom({ media }));
+      };
+    }
   };
 
   return useMemo(
     () => ({
-      stopRecord,
+      stop,
       onRecord,
+      submit,
       isRecording,
     }),
     [isRecording]

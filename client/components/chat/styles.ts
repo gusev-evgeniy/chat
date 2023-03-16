@@ -199,6 +199,34 @@ export const StyledAttachment = styled.div`
   }
 `;
 
+export const StyledMessageFooter = styled.div`
+  font-size: 20px;
+  font-weight: 500;
+  color: #1c1c1c;
+  width: 100%;
+  border: none;
+  outline: none;
+  min-height: 57px;
+  padding: 15px;
+  display: flex;
+  justify-content: center;
+
+  .info {
+    display: flex;
+    align-items: center;
+    position: absolute;
+    left: 15px;
+    top: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+
+    .time {
+      margin-left: 10px;
+      font-size: 0.9rem;
+    }
+  }
+`;
+
 export const StyledMessageForm = styled.form`
   position: relative;
   width: 100%;
@@ -292,6 +320,12 @@ export const SmileIcon = styled(MessageFormIcon)`
 
 export const MicIcon = styled(MessageFormIcon)`
   right: 8px;
+`;
+
+export const StopRecordIcon = styled(MessageFormIcon)`
+  right: 55px;
+  bottom: 50%;
+  transform: translateY(50%);
 `;
 
 export const StyledBar = styled.div`

@@ -45,7 +45,7 @@ export const Name: FC<Auth> = props => {
             type='text'
             className='text-input'
             placeholder='Your name'
-            onChange={e => onKeyChange(e)}
+            onChange={onKeyChange}
             autoFocus
           />
           <StyledButton width='160px' height='48px' disabled={!name.length}>
