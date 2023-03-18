@@ -39,12 +39,9 @@ export const Bar: FC<Props> = ({ duration, curTime, onTimeUpdate }) => {
   }
 
   return (
-    <StyledBar>
+    <StyledBar curPercentage={curPercentage}>
       <div
         className='bar_progress'
-        style={{
-          background: `linear-gradient(to right, #025EFD ${curPercentage}%, #E4E4EC 0)`,
-        }}
         onMouseDown={handleTimeDrag}>
         <span
           className='knob'

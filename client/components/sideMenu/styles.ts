@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { COLORS } from 'styles/variables';
 import { StyledWrapper } from '../auth/styles';
 
 export const StyledSideMenuWrapper = styled.div`
@@ -27,7 +28,7 @@ export const StyledSideMenuIcon = styled.div`
   cursor: pointer;
 
   :hover {
-    background-color: rgba(227, 227, 227, 0.7);
+    background-color: ${COLORS.OPACITY_GRAY};
   }
 `;
 
@@ -45,7 +46,7 @@ export const StyledAbsoluteSideMenuIcon = styled(StyledSideMenuIcon)`
   left: 10px;
 
   :hover {
-    background-color: rgba(227, 227, 227, 0.7);
+    background-color: ${COLORS.OPACITY_GRAY};
   }
 `;
 

@@ -13,7 +13,7 @@ import { convertSecondsToMinutesAndSeconds as convert } from 'utils/message';
 type Props = Pick<Message, 'media'>;
 
 export const Audio: FC<Props> = ({ media }) => {
-  const { curTime, playing, setClickedTime, audioRef, start, stop } =
+  const { curTime, playing, setClickedTime, audioRef, start, stop, rewind } =
     useAudioPlayer();
 
   if (!media) {
@@ -47,7 +47,7 @@ export const Audio: FC<Props> = ({ media }) => {
           <Bar
             duration={duration}
             curTime={curTime}
-            onTimeUpdate={setClickedTime}
+            onTimeUpdate={rewind}
           />
           <div className='size'>{`${convert(curTime)} / ${convert(
             mathDuration

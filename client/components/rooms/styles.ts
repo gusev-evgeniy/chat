@@ -26,7 +26,7 @@ export const StyledRooms = styled.div<{ fullWidth: boolean }>`
       justify-content: center;
 
       :hover {
-        background-color: rgba(227, 227, 227, 0.7);
+        background-color: ${COLORS.OPACITY_GRAY};
       }
     }
 
@@ -77,7 +77,7 @@ export const StyledRoom = styled.div<{ selected: boolean }>`
   align-items: center;
   padding: 13px 15px;
   cursor: pointer;
-  background-color: ${({ selected }) => selected && 'rgba(227, 227, 227, 0.7)'};
+  background-color: ${({ selected }) => selected && COLORS.OPACITY_GRAY};
 
   .data {
     margin-left: 10px;

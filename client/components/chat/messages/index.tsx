@@ -22,7 +22,7 @@ export const Messages: FC<{}> = () => {
   );
 
   return (
-    <div className='messages'>
+    <div className='messages' id='messages'>
       {messages.map((message, index) => {
         const { authorId, createdAt, id } = message;
 

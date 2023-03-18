@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-import { COLORS } from 'styles/variables';
+import { BOX_SHADOW, COLORS } from 'styles/variables';
 
 export const AvaWrapper = styled.div<{ size: number }>`
   position: relative;
@@ -11,7 +11,7 @@ export const StyledAva = styled.div<{ backgroundImage?: string | null; size: num
   min-width: ${({ size }) => `${size}px`};
   height: ${({ size }) => `${size}px`};
   min-height: ${({ size }) => `${size}px`};
-  background-color: #e0e0e0;
+  background-color: white;
   border-radius: 20px;
   display: flex;
   align-items: center;
@@ -24,6 +24,7 @@ export const StyledAva = styled.div<{ backgroundImage?: string | null; size: num
   background-image: ${({ backgroundImage }) => `url(${backgroundImage})` || ''};
   background-size: cover;
   position: relative;
+  box-shadow: ${BOX_SHADOW};
 
   .upload {
     position: absolute;

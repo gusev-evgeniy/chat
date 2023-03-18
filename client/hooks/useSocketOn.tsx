@@ -48,7 +48,7 @@ export const useSocketOn = () => {
       dispatch(readedHandler(roomId))
     );
 
-    socket.on(EVENTS.MESSAGE.NEW_MESSAGE_CREATED, (message: Message) => {
+    socket.on(EVENTS.MESSAGE.CREATED, (message: Message) => {
       dispatch(newMessageHandler(message));
     });
 

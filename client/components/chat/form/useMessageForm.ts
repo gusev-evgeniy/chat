@@ -19,16 +19,23 @@ export const useMessageForm = () => {
     setMessage(e.target.value);
   };
 
+  const scrollToNewMessage = () => {
+    const container = document.getElementById('messages');
+
+    if (container) container.scrollIntoView({ behavior: 'smooth' });
+  };
+
   const onSubmitMessage = (e?: React.FormEvent<HTMLFormElement>) => {
     e?.preventDefault();
 
     const data = { message: message.trim() };
 
-    dispatch(createMessageOrPrivateRoom(data))
+    dispatch(createMessageOrPrivateRoom(data));
 
     setMessage('');
     clearInterval(typingTimeoutId.current);
     clearTyping();
+    scrollToNewMessage();
   };
 
   return {

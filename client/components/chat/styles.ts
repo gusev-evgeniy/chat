@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import TextareaAutosize from 'react-textarea-autosize';
 
-import { COLORS, WIDTH } from 'styles/variables';
+import { BOX_SHADOW, COLORS, WIDTH } from 'styles/variables';
 
 export const StyledChat = styled.div<{ empty?: boolean }>`
   height: ${({ empty }) => (empty ? 'null' : '100%')};
@@ -141,7 +141,8 @@ export const StyledChatItem = styled.div<{ my?: boolean; isLast?: boolean }>`
     font-weight: 400;
     padding: 5px 15px;
     border-radius: 20px;
-    background-color: ${({ my }) => (my ? COLORS.GREY : COLORS.GREEN)};
+    background-color: ${({ my }) =>
+      my ? `rgba(227,227,227,0.5)` : `rgba(79, 111, 165, 0.2)`};
     align-items: flex-end;
     margin-left: ${({ isLast }) => (!isLast ? '44px' : '8px')};
     margin-right: ${({ isLast }) => (!isLast ? '44px' : '8px')};
@@ -179,8 +180,8 @@ export const MessageIcon = styled.div`
   align-items: center;
   background-color: white;
   justify-content: center;
-  border: #ccc;
   margin-right: 10px;
+  box-shadow: ${BOX_SHADOW};
 `;
 
 export const StyledAttachment = styled.div`
@@ -328,7 +329,7 @@ export const StopRecordIcon = styled(MessageFormIcon)`
   transform: translateY(50%);
 `;
 
-export const StyledBar = styled.div`
+export const StyledBar = styled.div<{ curPercentage: number }>`
   user-select: none;
   width: 100%;
   display: flex;
@@ -336,21 +337,25 @@ export const StyledBar = styled.div`
   margin: 16px 0;
 
   .bar_progress {
-    background: #e4e4ec;
     flex: 1;
-    border-radius: 4px;
-    height: 2px;
+    border-radius: 20px;
+    height: 4px;
     display: flex;
     align-items: center;
     cursor: pointer;
-    width: 150px;
+    width: 180px;
+    background: ${({ curPercentage }) =>
+      `linear-gradient(to right, #4f6fa5 ${curPercentage}%, #FFFFFF 0)`};
+    box-shadow: ${BOX_SHADOW};
+
     .knob {
       position: relative;
       height: 16px;
       width: 16px;
-      border: 1.5px solid #e4e4ec;
+      border: 1.5px solid #4f6fa5;
       border-radius: 50%;
-      background-color: #025efd;
+      background-color: #4f6fa5;
+      left: ${({ curPercentage }) => `${curPercentage - 2}%`};
     }
   }
 `;

@@ -26,10 +26,10 @@ function useAudioPlayer() {
     const setAudioTime = () => {
       if (playing && audio.duration === audio.currentTime) {
         audio.currentTime = 0;
-        stop()
+        stop();
       }
       setCurTime(audio.currentTime);
-    }
+    };
 
     audio.addEventListener('loadeddata', setAudioData);
     audio.addEventListener('timeupdate', setAudioTime);
@@ -55,6 +55,15 @@ function useAudioPlayer() {
     setPlaying(false);
   };
 
+  const rewind = (time: number | null) => {
+    if (time === null || !audioRef.current) {
+      return;
+    }
+
+    audioRef.current.currentTime = time;
+    setClickedTime(time);
+  };
+
   return {
     curTime: Math.trunc(curTime),
     playing,
@@ -62,6 +71,7 @@ function useAudioPlayer() {
     audioRef,
     start,
     stop,
+    rewind,
   };
 }
 

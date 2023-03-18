@@ -113,8 +113,7 @@ export const createPrivateRoom =
   };
 
 export const createMessage = (roomId: string, data: NewMessage) => {
-
-  socket.emit(EVENTS.MESSAGE.MESSAGE_CREATE, { roomId, data });
+  socket.emit(EVENTS.MESSAGE.CREATE, { roomId, data });
 };
 
 export const readMessage = (id: string) => async (dispatch: AppDispatch) => {

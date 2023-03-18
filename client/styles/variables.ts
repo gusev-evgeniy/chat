@@ -3,9 +3,12 @@ export const COLORS = {
   GREY: '#EDEDED',
   GREEN: '#58d188',
   RED: '#D95956',
-  DISABLED_GRAY: '#dad6ca'
-}
+  DISABLED_GRAY: '#dad6ca',
+  OPACITY_GRAY: 'rgba(227, 227, 227, 0.7)',
+};
 
 export const WIDTH = {
-  MEDIUM: '768px'
-}
+  MEDIUM: '768px',
+};
+
+export const BOX_SHADOW = `0 0 10px 0px rgba(31, 29, 29, 0.05)`;

@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-import { COLORS } from 'styles/variables';
+import { BOX_SHADOW, COLORS } from 'styles/variables';
 
 export const baseRadius = `20px`;
 export const sign_in_padding = `18px`;
@@ -9,7 +9,7 @@ export const StyledWrapper = styled.div<{ padding?: string }>`
   background-color: #fff;
   border-radius: ${baseRadius};
   border: 1px solid #e8e3d7;
-  box-shadow: 0px 2px 10px 0px rgba(31, 29, 29, 0.05);
+  box-shadow: ${BOX_SHADOW};
   max-width: 550px;
   min-width: 320px;
   display: flex;
