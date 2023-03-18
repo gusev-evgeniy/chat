@@ -1,25 +1,42 @@
-import { useMemo, useState } from 'react';
+import { useCall } from 'providers/call/callProvider';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { createMessageOrPrivateRoom } from 'store/actions/messages';
 import { useAppDispatch } from 'store/hooks';
 
 export const useRecord = () => {
   const dispatch = useAppDispatch();
 
+  const { isGetCall } = useCall();
+
   const [isRecording, setIsRecording] = useState(false);
   const [mediaRecorder, setMediaRecorder] = useState<MediaRecorder | null>(
     null
   );
 
+  const streamRef = useRef<MediaStream | null>(null);
+
+  useEffect(() => {
+    if (isGetCall) {
+      setMediaRecorder(null);
+      setIsRecording(false);
+      streamRef.current?.getTracks().forEach(track => track.stop());
+    }
+  }, [isGetCall]);
+
   const onRecord = async () => {
-    const stream = await window.navigator.mediaDevices.getUserMedia({
+    streamRef.current = await window.navigator.mediaDevices.getUserMedia({
       audio: true,
     });
 
-    onRecording(stream);
+    onRecording();
   };
 
-  const onRecording = (stream: MediaStream) => {
-    const recorder = new MediaRecorder(stream);
+  const onRecording = () => {
+    if (!streamRef.current) {
+      return;
+    }
+
+    const recorder = new MediaRecorder(streamRef.current);
     setMediaRecorder(recorder);
 
     recorder.start();
@@ -30,7 +47,7 @@ export const useRecord = () => {
 
     recorder.onstop = () => {
       setIsRecording(false);
-      stream.getTracks().forEach(track => track.stop());
+      streamRef.current?.getTracks().forEach(track => track.stop());
     };
   };
 

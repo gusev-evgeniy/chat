@@ -1,11 +1,18 @@
+import { useCall } from 'providers/call/callProvider';
 import { useState, useEffect, useRef } from 'react';
 
-function useAudioPlayer() {
+export const useAudioPlayer = () => {
+  const { isGetCall } = useCall();
+
   const [curTime, setCurTime] = useState<number>(0);
   const [playing, setPlaying] = useState(false);
   const [clickedTime, setClickedTime] = useState<number | null>(null);
 
   const audioRef = useRef<HTMLAudioElement>(null);
+
+  useEffect(() => {
+    if (isGetCall) stop();
+  }, [isGetCall]);
 
   useEffect(() => {
     if (!audioRef.current) {
@@ -73,6 +80,4 @@ function useAudioPlayer() {
     stop,
     rewind,
   };
-}
-
-export default useAudioPlayer;
+};

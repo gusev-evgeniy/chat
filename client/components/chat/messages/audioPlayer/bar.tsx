@@ -5,14 +5,16 @@ type Props = {
   duration: number;
   curTime: number;
   onTimeUpdate: (time: number | null) => void;
+  id: string;
 }
 
-export const Bar: FC<Props> = ({ duration, curTime, onTimeUpdate }) => {
+export const Bar: FC<Props> = ({ duration, curTime, onTimeUpdate, id }) => {
   const curPercentage = (curTime / duration) * 100;
+  const ID = `${id}_bar_progress`;
 
   function calcClickedTime(e: MouseEvent | React.MouseEvent<HTMLDivElement>) {
     const clickPositionInPage = e.pageX;
-    const bar = document.querySelector('.bar_progress');
+    const bar = document.getElementById(ID)
     if (!bar) {
       return null;
     }
@@ -41,6 +43,7 @@ export const Bar: FC<Props> = ({ duration, curTime, onTimeUpdate }) => {
   return (
     <StyledBar curPercentage={curPercentage}>
       <div
+        id={ID}
         className='bar_progress'
         onMouseDown={handleTimeDrag}>
         <span

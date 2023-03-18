@@ -12,6 +12,7 @@ export const getMessages =
     const {
       rooms: { selected },
     } = getState();
+    console.log('selected', selected)
     if (!selected || selected === NEW_ROOM) {
       return;
     }
@@ -20,6 +21,7 @@ export const getMessages =
       const { data } = await instance.get(
         `message/?roomId=${selected}&skip=${skip}`
       );
+      console.log('data', data)
       dispatch(setMessagesData({ ...data, roomId: selected }));
     } catch (error) {}
   };

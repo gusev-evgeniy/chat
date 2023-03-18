@@ -12,7 +12,7 @@ export const useMessageForm = () => {
 
   const [message, setMessage] = useState('');
 
-  const typingTimeoutId = useRef<NodeJS.Timeout | undefined>();
+  const typingTimeoutRef = useRef<NodeJS.Timeout | undefined>();
 
   const onChangeHandler = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     onPress();
@@ -33,7 +33,7 @@ export const useMessageForm = () => {
     dispatch(createMessageOrPrivateRoom(data));
 
     setMessage('');
-    clearInterval(typingTimeoutId.current);
+    clearInterval(typingTimeoutRef.current);
     clearTyping();
     scrollToNewMessage();
   };

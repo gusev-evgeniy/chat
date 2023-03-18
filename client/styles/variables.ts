@@ -4,7 +4,7 @@ export const COLORS = {
   GREEN: '#58d188',
   RED: '#D95956',
   DISABLED_GRAY: '#dad6ca',
-  OPACITY_GRAY: 'rgba(227, 227, 227, 0.7)',
+  OPACITY_GRAY: 'rgba(227, 227, 227, 0.6)',
 };
 
 export const WIDTH = {

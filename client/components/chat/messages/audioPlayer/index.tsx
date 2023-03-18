@@ -4,15 +4,15 @@ import React, { FC } from 'react';
 
 import { Message } from 'types/messages';
 import { Bar } from './bar';
-import useAudioPlayer from './useAudioPlayer';
+import { useAudioPlayer } from './useAudioPlayer';
 
 import playIcon from 'images/play.svg';
 import stopIcon from 'images/stop.svg';
 import { convertSecondsToMinutesAndSeconds as convert } from 'utils/message';
 
-type Props = Pick<Message, 'media'>;
+type Props = Pick<Message, 'media'> & { id: string };
 
-export const Audio: FC<Props> = ({ media }) => {
+export const Audio: FC<Props> = ({ media, id }) => {
   const { curTime, playing, setClickedTime, audioRef, start, stop, rewind } =
     useAudioPlayer();
 
@@ -48,6 +48,7 @@ export const Audio: FC<Props> = ({ media }) => {
             duration={duration}
             curTime={curTime}
             onTimeUpdate={rewind}
+            id={id}
           />
           <div className='size'>{`${convert(curTime)} / ${convert(
             mathDuration

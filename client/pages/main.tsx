@@ -5,7 +5,7 @@ import { setUserData } from 'store/slices/user';
 import { setRoomsData } from 'store/slices/rooms';
 import { wrapper } from 'store';
 
-import { CallProvider } from 'providers/callProvider';
+import { CallProvider } from 'providers/call/callProvider';
 
 import { useAuthGuard } from 'hooks/useAuthGuard';
 import { useSocketOn } from 'hooks/useSocketOn';

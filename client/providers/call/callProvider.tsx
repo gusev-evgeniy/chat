@@ -15,8 +15,8 @@ import { useAppDispatch } from 'store/hooks';
 import { openDialog } from 'store/slices/dialog';
 import { EVENTS } from 'utils/constants';
 
-import { callReducer, initCallState } from '../store/call_store/reducers';
-import { callActions as actions } from '../store/call_store/actions';
+import { callReducer, initCallState } from './reducers';
+import { callActions as actions } from './actions';
 
 import { Message } from 'types/messages';
 import { UserBD } from 'types/user';
@@ -69,15 +69,13 @@ export const CallProvider: FC<{ children: React.ReactElement }> = ({
   }, [dispatch]);
 
   useEffect(() => {
-    if (myStream) {
-      socket.on(EVENTS.CALL.ENDED, (message: Message) => {
-        dispatch(newMessageHandler(message));
-        myStream?.getTracks().forEach(t => t.stop());
+    socket.on(EVENTS.CALL.ENDED, (message: Message) => {
+      dispatch(newMessageHandler(message));
+      myStream?.getTracks().forEach(t => t.stop());
 
-        dispatch(openDialog(null));
-        callDispatch(actions.callEnded());
-      });
-    }
+      dispatch(openDialog(null));
+      callDispatch(actions.callEnded());
+    });
   }, [myStream, dispatch]);
 
   useEffect(() => {
@@ -107,6 +105,7 @@ export const CallProvider: FC<{ children: React.ReactElement }> = ({
 
   const leaveCall = () => {
     socket.emit(EVENTS.CALL.END, roomId);
+    dispatch(openDialog(null));
   };
 
   const callUser = async (roomId: string) => {

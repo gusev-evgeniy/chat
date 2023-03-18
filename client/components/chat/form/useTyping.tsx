@@ -13,7 +13,7 @@ export const useTyping = () => {
 
   const [typing, setTyping] = useState<boolean | null>(null);
 
-  const typingTimeoutId = useRef<NodeJS.Timeout | undefined>();
+  const typingTimeoutRef = useRef<NodeJS.Timeout | undefined>();
 
   useEffect(() => {
     if (isNewRoom || typing === null) {
@@ -25,9 +25,9 @@ export const useTyping = () => {
 
   const onPress = () => {
     setTyping(true);
-    clearInterval(typingTimeoutId.current);
+    clearInterval(typingTimeoutRef.current);
 
-    typingTimeoutId.current = setTimeout(() => {
+    typingTimeoutRef.current = setTimeout(() => {
       setTyping(false);
     }, 3000);
   };

@@ -30,18 +30,20 @@ export const messagesSlice = createSlice({
       const roomId = action.payload.roomId;
 
       let room = state.data[roomId];
-
-      if (!room) {
-        state.data[roomId] = {
-          messages: [action.payload],
-          count: 1,
-          loaded: true,
-        };
-      } else {
+      if (room) {
         room.messages.push(action.payload);
-        // room.messages = [...room.messages, action.payload];
       }
 
+      // if (!room) {
+      //   state.data[roomId] = {
+      //     messages: [action.payload],
+      //     count: 1,
+      //     loaded: true,
+      //   };
+      // } else {
+      //   room.messages.push(action.payload);
+      //   // room.messages = [...room.messages, action.payload];
+      // }
       // messages.push(action.payload);
       // count++;
     },

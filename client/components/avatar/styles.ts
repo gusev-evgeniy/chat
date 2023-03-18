@@ -11,8 +11,8 @@ export const StyledAva = styled.div<{ backgroundImage?: string | null; size: num
   min-width: ${({ size }) => `${size}px`};
   height: ${({ size }) => `${size}px`};
   min-height: ${({ size }) => `${size}px`};
-  background-color: white;
-  border-radius: 20px;
+  background-color: #e0e0e0;
+  border-radius: 100%;
   display: flex;
   align-items: center;
   justify-content: center;

@@ -43,7 +43,7 @@ export const Message: FC<Props> = memo(
         <div className='item'>
           <div className='message'>{text}</div>
 
-          <Audio media={media}/>
+          <Audio media={media} id={id}/>
           <Attachment attachment={attachment} download={download} />
           <span className='time'>{time}</span>
 
@@ -60,7 +60,7 @@ export const Message: FC<Props> = memo(
         </div>
 
         {isLast && !!author && (
-          <Avatar name={author.name} photo={author.photo} size={35}/>
+          <Avatar name={author.name} photo={author.photo} size={40}/>
         )}
       </StyledChatItem>
     );
