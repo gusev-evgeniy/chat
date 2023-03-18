@@ -67,13 +67,14 @@ export default async (io: Server, socket: MySocket) => {
 
       const { id } = (await Message.create(newMessageInfo).save()) as Message;
 
+      //add transaction
       const newMessage = await Message.findOne({
         where: { id },
         relations: ['author', 'attachment'],
       });
 
       await updateRoomLastMessage(newMessage as Message, roomId);
-      io.to(roomId).emit(EVENTS.MESSAGE.NEW_MESSAGE_CREATED, newMessage);
+      io.to(roomId).emit(EVENTS.MESSAGE.CREATED, newMessage);
     } catch (error) {
       console.log('Create message error:', error);
     }
@@ -92,8 +93,8 @@ export default async (io: Server, socket: MySocket) => {
     callback();
     socket.broadcast.to(roomId).emit(EVENTS.MESSAGE.READED, { roomId });
   };
-
-  socket.on(EVENTS.MESSAGE.MESSAGE_CREATE, createMessage);
+ 
+  socket.on(EVENTS.MESSAGE.CREATE, createMessage);
   socket.on(EVENTS.MESSAGE.TYPING, getTyping);
   socket.on(EVENTS.MESSAGE.READ, readMessage);
 };

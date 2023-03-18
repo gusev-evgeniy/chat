@@ -60,7 +60,7 @@ export default async (io: Server, socket: MySocket) => {
       : '';
     const message = await createSystemMessage(text, id);
 
-    io.to(id).emit(EVENTS.MESSAGE.NEW_MESSAGE_CREATED, message);
+    io.to(id).emit(EVENTS.MESSAGE.CREATED, message);
     io.to(id).emit(EVENTS.ROOM.UPDATED, room.raw[0]);
   };
 
@@ -80,7 +80,7 @@ export default async (io: Server, socket: MySocket) => {
     );
     callback({ message: 'Success' });
 
-    io.to(roomId).emit(EVENTS.MESSAGE.NEW_MESSAGE_CREATED, message);
+    io.to(roomId).emit(EVENTS.MESSAGE.CREATED, message);
     io.to(roomId).emit(EVENTS.ROOM.UPDATED, { participants });
   };
 
