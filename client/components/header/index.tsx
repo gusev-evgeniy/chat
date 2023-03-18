@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import React, { FC, memo } from 'react';
 
-import { useCall } from 'providers/call/provider';
+import { useCall } from 'providers/callProvider';
 
 import { useAppSelector } from 'store/hooks';
 import { getHeaderInfo } from 'store/selectors';

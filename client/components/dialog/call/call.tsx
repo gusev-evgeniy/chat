@@ -1,7 +1,7 @@
 import React from 'react';
 import Image from 'next/image';
 
-import { useCall } from 'providers/call/provider';
+import { useCall } from 'providers/callProvider';
 
 import { useVideoCall } from './useVideoCall';
 import { Avatar } from 'components/avatar';

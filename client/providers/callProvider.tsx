@@ -15,8 +15,8 @@ import { useAppDispatch } from 'store/hooks';
 import { openDialog } from 'store/slices/dialog';
 import { EVENTS } from 'utils/constants';
 
-import { callReducer, initCallState } from './reducers';
-import { callActions as actions } from './actions';
+import { callReducer, initCallState } from '../store/call_store/reducers';
+import { callActions as actions } from '../store/call_store/actions';
 
 import { Message } from 'types/messages';
 import { UserBD } from 'types/user';

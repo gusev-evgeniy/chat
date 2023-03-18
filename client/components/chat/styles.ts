@@ -142,7 +142,7 @@ export const StyledChatItem = styled.div<{ my?: boolean; isLast?: boolean }>`
     padding: 5px 15px;
     border-radius: 20px;
     background-color: ${({ my }) =>
-      my ? `rgba(227,227,227,0.5)` : `rgba(79, 111, 165, 0.2)`};
+      my ? `rgba(242,239,227,0.8)` : COLORS.OPACITY_GRAY};
     align-items: flex-end;
     margin-left: ${({ isLast }) => (!isLast ? '44px' : '8px')};
     margin-right: ${({ isLast }) => (!isLast ? '44px' : '8px')};

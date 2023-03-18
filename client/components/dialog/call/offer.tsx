@@ -3,7 +3,7 @@ import Image from 'next/image';
 
 import { Avatar } from 'components/avatar';
 
-import { useCall } from 'providers/call/provider';
+import { useCall } from 'providers/callProvider';
 
 import call_end_icon from 'images/call_end.svg';
 import call_icon from 'images/call.svg';
