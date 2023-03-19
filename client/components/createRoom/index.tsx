@@ -6,11 +6,11 @@ import { useAppDispatch } from 'store/hooks';
 import { createRoomsDefault } from 'store/slices/createRoom';
 
 import { SideMenuIcon } from 'components/sideMenu/icon';
-import { GroupName } from './groupName';
-import { Search } from './search';
+import { GroupName } from '../dialog/createRoom/groupName';
+import { Search } from '../dialog/createRoom/search';
 
 import { WIDTH } from 'styles/variables';
-import { StyledCreateRoom } from './styles';
+import { StyledCreateRoom } from '../dialog/createRoom/styles';
 
 export const NewRoom: FC<{}> = () => {
   const dispatch = useAppDispatch();

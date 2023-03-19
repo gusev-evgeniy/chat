@@ -110,6 +110,11 @@ export const VidoeContainer = styled.div`
     opacity: 0.7;
    }
 
+
+   .fullscreen_button {
+    position: absolute;
+   }
+
 `
 
 export const CompanionVideo = styled.video`

@@ -3,10 +3,11 @@ import { useRef, useMemo, useEffect } from 'react';
 import { useCall } from 'providers/call/callProvider';
 
 export const useVideoCall = () => {
+  const { myStream, companionStream } = useCall();
+
   const myVideo = useRef<HTMLVideoElement>(null);
   const callerVideo = useRef<HTMLVideoElement>(null);
 
-  const { myStream, companionStream } = useCall();
   useEffect(() => {
     if (callerVideo.current) {
       callerVideo.current.srcObject = companionStream;
@@ -19,10 +20,35 @@ export const useVideoCall = () => {
     }
   }, [myVideo, myStream]);
 
+  const toggleFullScreen = () => {
+
+    if (callerVideo.current) {
+      callerVideo.current.requestFullscreen();
+    }
+
+    // const el = callerVideo.current;
+
+    // if (!el) {
+    //   return;
+    // }
+
+
+    // if (el.requestFullscreen) {
+    //   el.requestFullscreen();
+    // } else if (el.msRequestFullscreen) {
+    //   el.msRequestFullscreen();
+    // } else if (el.mozRequestFullScreen) {
+    //   el.mozRequestFullScreen();
+    // } else if (el.webkitRequestFullscreen) {
+    //   el.webkitRequestFullscreen();
+    // }
+  };
+
   return useMemo(
     () => ({
       myVideo,
       callerVideo,
+      toggleFullScreen
     }),
     [myVideo, callerVideo]
   );

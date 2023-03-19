@@ -29,18 +29,20 @@ export const UsersList: FC<Props> = ({ loaded, users, onCheck, checked }) => {
 
   return (
     <StyledUsers>
-      {users.map(user => {
-        const checkedUser = checked.some(({ id }) => id === user.id);
+      <div className='users_container'>
+        {users.map(user => {
+          const checkedUser = checked.some(({ id }) => id === user.id);
 
-        return (
-          <FindingUser
-            key={user.id}
-            {...user}
-            onCheck={onCheck}
-            checked={checkedUser}
-          />
-        );
-      })}
+          return (
+            <FindingUser
+              key={user.id}
+              {...user}
+              onCheck={onCheck}
+              checked={checkedUser}
+            />
+          );
+        })}
+      </div>
     </StyledUsers>
   );
 };

@@ -10,7 +10,7 @@ import { GetGroupChatInfo } from 'store/selectors';
 import { EVENTS } from 'utils/constants';
 
 import { AvatarInput } from 'components/avatar/input';
-import { StyledUsers } from 'components/createRoom/styles';
+import { StyledUsers } from 'components/dialog/createRoom/styles';
 import { TitleInput } from './titleInput';
 import { DialogWrapper } from '../wrapper';
 import { Participant } from './participant';

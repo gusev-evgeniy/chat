@@ -33,7 +33,8 @@ export const useRooms = (isCreatRoomOpen: boolean) => {
   };
 
   const onToggle = () => {
-    toggleNewRoom(!isCreatRoomOpen);
+    // toggleNewRoom(!isCreatRoomOpen);
+    dispatch(openDialog('CREATE_ROOM'));
   };
 
   return useMemo(() => ({

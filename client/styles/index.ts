@@ -69,7 +69,7 @@ export const StyledSearchUserItem = styled.div<{ check?: boolean }>`
   display: flex;
   justify-content: space-between;
   width: 100%;
-  padding: 18px;
+  padding: 15px;
   align-items: center;
   cursor: ${({ check }) => check && 'pointer'};
 

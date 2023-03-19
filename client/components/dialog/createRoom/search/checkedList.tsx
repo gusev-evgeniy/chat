@@ -3,6 +3,8 @@ import React, { FC } from 'react';
 import { UserBD } from 'types/user';
 
 import { StyledCheckedItem } from '../styles';
+import close from 'images/close.svg';
+import Image from 'next/image';
 
 type Props = {
   checked: UserBD[];
@@ -17,8 +19,10 @@ export const CheckedList: FC<Props> = ({ checked, onRemoveUser }) => {
           key={checkedUser.id}
           data-id={checkedUser.id}
           onClick={onRemoveUser}>
-          {checkedUser.name}
-          <span className='close'>&#10006;</span>
+          <span className='name'>{checkedUser.name}</span>
+
+
+          <Image width='20px' height='20px' src={close} alt='close' />
         </StyledCheckedItem>
       ))}
     </div>

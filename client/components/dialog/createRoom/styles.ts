@@ -76,40 +76,69 @@ export const StyledFindUserIntput = styled(StyledGroupNameIntput)`
   background-color: #f6f7f8;
 `;
 
-export const StyledSearchUserWrapper = styled(StyledWrapper)`
+export const StyledSearchUserWrapper = styled.div`
   width: 100%;
-  max-width: 700px;
-  margin: 0 auto;
-  background-color: #fff;
 
   form {
+    display: flex;
+    flex-direction: column;
     width: inherit;
+
+    .input_wrapper {
+      position: relative;
+
+      .count {
+        position: absolute;
+        right: 15px;
+        top: 50%;
+        transform: translateY(-50%);
+        font-size: 1rem;
+        color: #7c7c7c;
+        font-weight: 600;
+      }
+    }
+  }
+
+  .buttons {
+    width: inherit;
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 15px;
   }
 
   .checked_list {
-    margin: 20px 0;
-    min-height: 52px;
+    min-height: 40px;
     display: flex;
     width: inherit;
     overflow: hidden;
     flex-wrap: wrap;
     justify-content: center;
+    margin: -3px 0;
   }
 `;
 
 export const StyledUsers = styled(StyledWrapper)`
-  width: inherit;
-  max-height: 440px;
-  overflow: auto;
   width: 100%;
+  margin: 15px 0;
+  padding: 15px 0;
 
-  .user_wrapper:not(:first-child) {
+  .users_container {
+    width: inherit;
+    max-height: 400px;
+    overflow: auto;
+    border-bottom: 1px solid #e3e3e3;
     border-top: 1px solid #e3e3e3;
+
+    .user_wrapper {
+      &:not(:first-child) {
+        border-top: 1px solid #e3e3e3;
+      }
+    }
   }
 `;
 
 export const StyledCheckedItem = styled.div`
-  padding: 10px 20px;
+  padding: 10px 15px;
   border-radius: 100px;
   background-color: ${COLORS.GREY};
   align-items: center;
@@ -117,11 +146,10 @@ export const StyledCheckedItem = styled.div`
   cursor: pointer;
   font-size: 1.2rem;
   margin: 3px;
+  height: 40px;
 
-  .close {
-    margin-left: 7px;
-    font-size: 1rem;
-    font-weight: 100;
+  .name {
+    margin-right: 10px;
   }
 
   :hover {

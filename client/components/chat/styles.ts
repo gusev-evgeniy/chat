@@ -21,8 +21,7 @@ export const StyledChat = styled.div<{ empty?: boolean }>`
   .messages {
     height: inherit;
     width: inherit;
-    /* overflow-y: auto; */
-    padding: 10px;
+    padding: 20px;
     display: flex;
     flex-direction: column;
     justify-content: flex-end;

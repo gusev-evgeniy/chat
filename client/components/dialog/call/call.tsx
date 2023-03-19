@@ -7,6 +7,7 @@ import { useVideoCall } from './useVideoCall';
 import { Avatar } from 'components/avatar';
 
 import call_end_icon from 'images/call_end.svg';
+import fullscreen from 'images/fullscreen.svg';
 
 import {
   CallButton,
@@ -20,7 +21,7 @@ import {
 
 export const Call = () => {
   const { leaveCall, companion } = useCall();
-  const { callerVideo, myVideo } = useVideoCall();
+  const { callerVideo, myVideo, toggleFullScreen } = useVideoCall();
 
   if (!companion) {
     return null;
@@ -38,6 +39,9 @@ export const Call = () => {
           />
           <CompanionVideo playsInline ref={callerVideo} autoPlay />
           <MyVideo playsInline muted ref={myVideo} autoPlay />
+          {/* <div className='fullscreen_button' onClick={toggleFullScreen}>
+            <Image width='20px' height='20px' src={fullscreen} alt='stop' />
+          </div> */}
         </VidoeContainer>
 
         <CallButtons>
