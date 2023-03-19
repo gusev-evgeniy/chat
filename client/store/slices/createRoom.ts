@@ -47,14 +47,14 @@ export const createRoomSlice = createSlice({
     updateTitle: (state, action: PayloadAction<{ title: string }>) => {
       state.title = action.payload.title;
     },
-    createRoomsDefault: (state) => {
-      state = initialState;
-    },
     openCreateRoom: (state, action: PayloadAction<boolean>) => {
       state.open = action.payload;
     },
     changeAva: (state, action: PayloadAction<File | null>) => {
       state.ava = action.payload;
+    },
+    createRoomsDefault: () => {
+      return initialState;
     },
   },
 });

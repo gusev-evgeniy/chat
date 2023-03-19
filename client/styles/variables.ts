@@ -5,6 +5,7 @@ export const COLORS = {
   RED: '#D95956',
   DISABLED_GRAY: '#dad6ca',
   OPACITY_GRAY: 'rgba(227, 227, 227, 0.6)',
+  INPUT_BG: '#f6f7f8',
 };
 
 export const WIDTH = {

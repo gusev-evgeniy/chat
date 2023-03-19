@@ -46,13 +46,18 @@ export const getRoomsInfo = createSelector(
   selectMessages,
   selectMyData,
   selectCreatingRoomOpen,
-  ({ data: rooms, selected }, { typing }, myData, open) => {
+  ({ data, selected, filter }, { typing }, myData, open) => {
+    const rooms = filter
+      ? data.filter(({ title }) => title.toLowerCase().includes(filter))
+      : data;
+
     return {
       typing,
       rooms,
       me: myData,
       selected,
       isCreatRoomOpen: open,
+      filter,
     };
   }
 );
@@ -108,13 +113,13 @@ export const GetGroupChatInfo = createSelector(
       return null;
     }
 
-    const { participants, id, title, photo } = openRoom;
+    const { participants, id, title, image } = openRoom;
 
     return {
       participants,
       id,
       title,
-      photo,
+      photo: image,
       myId: myData?.id,
     };
   }
@@ -130,7 +135,7 @@ export const getSecetRoom = createSelector(
       loaded,
       checked,
       title,
-      isGroupChat
+      isGroupChat,
     };
   }
 );

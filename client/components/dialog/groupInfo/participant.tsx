@@ -28,7 +28,7 @@ export const Participant: FC<Props> = ({
         <Avatar size={45} photo={photo} name={name} online={online} />
         <p className='bold'>{name}</p>
       </div>
-ß
+
       {id === myId && (
         <StyledIconButton title='Leave Group' onClick={onLeave}>
           <Image

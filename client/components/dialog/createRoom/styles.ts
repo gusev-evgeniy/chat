@@ -17,7 +17,7 @@ export const StyledLabel = styled.label`
 `;
 
 export const StyledCreateRoom = styled.div`
-  background-color: #f6f7f8;
+  background-color: ${COLORS.INPUT_BG};;
   height: 100%;
   width: 70%;
   display: flex;
@@ -72,7 +72,7 @@ export const StyledGroupNameIntput = styled(StyledTextInput)`
 `;
 
 export const StyledFindUserIntput = styled(StyledGroupNameIntput)`
-  background-color: #f6f7f8;
+  background-color: ${COLORS.INPUT_BG};
 `;
 
 export const StyledSearchUserWrapper = styled.div`
@@ -119,7 +119,7 @@ export const StyledSearchUserWrapper = styled.div`
 export const StyledUsers = styled(StyledWrapper)`
   width: 100%;
   margin-bottom: 15px;
-  padding: 15px 0;
+  overflow: hidden;
 
   .users_container {
     width: inherit;

@@ -64,14 +64,10 @@ export const createRoom =
     } = getState();
     const users = checked.map(({ id, socketId }) => ({ id, socketId }));
 
-    socket.emit(
-      EVENTS.ROOM.CREATE,
-      { users, title, type },
-      (newRoom: Room) => {
-        dispatch(addRoom(newRoom));
-        dispatch(selectRoom(newRoom.id));
-      }
-    );
+    socket.emit(EVENTS.ROOM.CREATE, { users, title, type }, (newRoom: Room) => {
+      dispatch(addRoom(newRoom));
+      dispatch(selectRoom(newRoom.id));
+    });
   };
 
 export const openNewRoom =
@@ -105,16 +101,30 @@ export const createPrivateRoom =
         if (!id) {
           return;
         }
+        console.log('id', id);
+        console.log('data', data);
 
         dispatch(selectRoom(id));
-        createMessage(id, data);
+        dispatch(createMessage(id, data));
       }
     );
   };
 
-export const createMessage = (roomId: string, data: NewMessage) => {
-  socket.emit(EVENTS.MESSAGE.CREATE, { roomId, data });
-};
+export const createMessage =
+  (roomId: string, messageData: NewMessage) =>
+  (_: any, getState: () => RootState) => {
+    const {
+      // user: { data },
+
+      messages,
+    } = getState();
+
+    const { count } = messages.data[roomId];
+
+    const data = { ...messageData, serialNum: count + 1 };
+
+    socket.emit(EVENTS.MESSAGE.CREATE, { roomId, data });
+  };
 
 export const readMessage = (id: string) => async (dispatch: AppDispatch) => {
   socket.emit(EVENTS.MESSAGE.READ, { roomId: id }, () => {

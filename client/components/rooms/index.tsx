@@ -13,38 +13,22 @@ import logout_icon from 'images/logout.svg';
 
 import { StyledRooms } from './styles';
 import { Empty } from 'styles';
+import { RoomsList } from './roomsList';
 
 type Props = {
   isSideMenu?: boolean;
 };
 
 export const Rooms: FC<Props> = memo(({ isSideMenu = false }) => {
-  const { me, rooms, typing, selected, isCreatRoomOpen } =
-    useAppSelector(getRoomsInfo);
-  const { matches, onExit, onSelecteHandler, onToggle } =
-    useRooms(isCreatRoomOpen);
+  const { me, filter } = useAppSelector(getRoomsInfo);
+  const { onExit, onSelecteHandler } = useRooms();
 
   return (
     <StyledRooms fullWidth={isSideMenu}>
-      <RoomsHeader onToggle={onToggle} isCreatRoomOpen={isCreatRoomOpen} />
-
-      {!rooms.length && matches && (
-        <div className='rooms_wrapper'>
-          <Empty>Your rooms will be displayed here</Empty>
-        </div>
-      )}
+      <RoomsHeader value={filter} />
 
       <div className='rooms_wrapper'>
-        {rooms.map(room => (
-          <Room
-            key={room.id}
-            room={room}
-            myId={me?.id as string}
-            isSelected={selected === room.id}
-            onSelecteHandler={onSelecteHandler}
-            typing={typing[room.id]}
-          />
-        ))}
+        <RoomsList onSelecteHandler={onSelecteHandler} />
       </div>
 
       <div className='footer'>

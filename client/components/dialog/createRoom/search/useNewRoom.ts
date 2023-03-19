@@ -11,7 +11,7 @@ const MAX_LENGTH = 20;
 export const useNewRoom = () => {
   const { checked, users, loaded, type, title } = useAppSelector(selectCreatingRoom);
   const isGroupChat = type === 'group';
-
+    console.log('checked', checked)
   const dispatch = useAppDispatch();
 
   const onCheckHandler = (e: React.MouseEvent<HTMLDivElement>) => {

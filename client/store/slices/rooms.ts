@@ -3,11 +3,17 @@ import { HYDRATE } from 'next-redux-wrapper';
 
 import { Room, RoomsResponse } from 'types/room';
 import { Message } from 'types/messages';
+import { preparedRooms } from 'utils/room';
+import { store } from '..';
+
+export type Rooms = ReturnType<typeof preparedRooms>;
 
 const initialState = {
-  data: [] as Room[],
+  data: [] as Rooms,
   selected: null as string | null,
+  filter: '',
   count: 0,
+  findingMessages: [] as Rooms,
 };
 export type RoomsState = typeof initialState;
 
@@ -16,15 +22,22 @@ export const roomsSlice = createSlice({
   initialState,
   reducers: {
     setRoomsData: (state, action: PayloadAction<RoomsResponse>) => {
-      state.data = action.payload.rooms;
+      const myId = store.getState().user.data?.id as string;
+
+      // state.data = action.payload.rooms;
+      state.data = preparedRooms(action.payload.rooms, myId);
       state.count = action.payload.count;
     },
     selectRoom: (state, action: PayloadAction<RoomsState['selected']>) => {
       state.selected = action.payload;
     },
     addRoom: (state, action: PayloadAction<Room>) => {
+      const myId = store.getState().user.data?.id as string;
+
       if (!state.data.some(({ id }) => id === action.payload.id)) {
-        state.data.unshift(action.payload);
+        const room = preparedRooms([action.payload], myId)[0];
+
+        state.data.unshift(room);
         state.count = state.count + 1;
       }
     },
@@ -37,7 +50,7 @@ export const roomsSlice = createSlice({
         else acc.push(curr);
 
         return acc;
-      }, [] as Room[]);
+      }, [] as Rooms);
     },
     updateUserOnline: (
       state,
@@ -98,6 +111,9 @@ export const roomsSlice = createSlice({
       state.data = state.data.filter(({ id }) => id !== action.payload);
       state.selected = null;
     },
+    updateRoomsFilter(state, action: PayloadAction<string>) {
+      state.filter = action.payload.toLowerCase();
+    },
   },
   extraReducers: {
     [HYDRATE]: (state, action) => {
@@ -118,6 +134,7 @@ export const {
   setUnreadedCount,
   updateRoomDetails,
   deleteRoom,
+  updateRoomsFilter,
 } = roomsSlice.actions;
 
 export const roomsReducer = roomsSlice.reducer;

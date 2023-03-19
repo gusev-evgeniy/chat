@@ -10,7 +10,7 @@ import { useMediaQuery } from 'hooks/useMediaQuery';
 
 import { WIDTH } from 'styles/variables';
 
-export const useRooms = (isCreatRoomOpen: boolean) => {
+export const useRooms = () => {
   const dispatch = useAppDispatch();
 
   const matches = useMediaQuery(`(max-width: ${WIDTH.MEDIUM})`);
@@ -32,15 +32,9 @@ export const useRooms = (isCreatRoomOpen: boolean) => {
     dispatch(logout());
   };
 
-  const onToggle = () => {
-    // toggleNewRoom(!isCreatRoomOpen);
-    dispatch(openDialog('CREATE_ROOM'));
-  };
-
   return useMemo(() => ({
     matches,
     onSelecteHandler,
     onExit,
-    onToggle
   }), [matches])
 }

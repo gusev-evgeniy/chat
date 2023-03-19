@@ -44,6 +44,6 @@ export const createMessageOrPrivateRoom =
     }
 
     if (selected) {
-      createMessage(selected, data);
+      dispatch(createMessage(selected, data));
     }
   };

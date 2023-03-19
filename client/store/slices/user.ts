@@ -4,7 +4,7 @@ import { HYDRATE } from 'next-redux-wrapper';
 import { UserBD } from 'types/user';
 
 const initialState = {
-  data: null as UserBD | null,
+  data: {} as UserBD | null,
 };
 export type UserState = typeof initialState;
 

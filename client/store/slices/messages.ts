@@ -32,6 +32,7 @@ export const messagesSlice = createSlice({
       let room = state.data[roomId];
       if (room) {
         room.messages.push(action.payload);
+        room.count++;
       }
 
       // if (!room) {

@@ -38,7 +38,8 @@ export const StyledRooms = styled.div<{ fullWidth: boolean }>`
   }
 
   .rooms_wrapper {
-    height: calc(100% - 124px);
+    min-height: calc(100% - 124px);
+    max-height: calc(100% - 124px);
     overflow: auto;
     flex: 1;
   }
@@ -141,4 +142,5 @@ export const StyledSearchInput = styled(StyledTextInput)`
   padding: 6px 45px 6px 15px;
   text-overflow: ellipsis;
   font-size: 20px;
+  background-color: ${COLORS.INPUT_BG};;
 `;

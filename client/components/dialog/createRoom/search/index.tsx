@@ -30,11 +30,7 @@ export const Search: FC<Props> = ({ nextStep }) => {
       <StyledSearchUserWrapper>
         <Form />
 
-        {/* {checked.length > 0 && (
-          <CheckedList checked={checked} onRemoveUser={onRemoveUser} />
-        )} */}
-
-<CheckedList checked={checked} onRemoveUser={onRemoveUser} />
+        <CheckedList checked={checked} onRemoveUser={onRemoveUser} />
 
         <UsersList
           loaded={loaded}

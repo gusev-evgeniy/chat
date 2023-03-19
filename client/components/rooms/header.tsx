@@ -1,17 +1,28 @@
 import Image from 'next/image';
-import { FC } from 'react';
+import { FC, useEffect, useRef } from 'react';
 import { StyledSearchIcon, StyledSearchInput } from './styles';
 
 import search from 'images/search.svg';
 import add_chat from 'images/add_chat.svg';
-import add_chat_fill from 'images/add_chat_fill.svg';
+import { useAppDispatch } from 'store/hooks';
+import { openDialog } from 'store/slices/dialog';
+import { updateRoomsFilter } from 'store/slices/rooms';
 
 type Props = {
-  onToggle: () => void;
-  isCreatRoomOpen: boolean;
+  value: string;
 };
 
-export const RoomsHeader: FC<Props> = ({ isCreatRoomOpen, onToggle }) => {
+export const RoomsHeader: FC<Props> = ({ value }) => {
+  const dispatch = useAppDispatch();
+
+  const onKeyChange = ({ target }: React.ChangeEvent<HTMLInputElement>) => {
+    dispatch(updateRoomsFilter(target.value.trim()))
+  };
+
+  const onToggle = () => {
+    dispatch(openDialog('CREATE_ROOM'));
+  };
+
   return (
     <div className='header'>
       <form>
@@ -19,7 +30,8 @@ export const RoomsHeader: FC<Props> = ({ isCreatRoomOpen, onToggle }) => {
           type='text'
           className='search'
           placeholder='Search'
-          disabled
+          onChange={onKeyChange}
+          value={value}
         />
         <StyledSearchIcon>
           <Image width='30px' height='30px' src={search} alt='search' />
@@ -27,12 +39,7 @@ export const RoomsHeader: FC<Props> = ({ isCreatRoomOpen, onToggle }) => {
       </form>
 
       <div className='add_chat' onClick={onToggle}>
-        <Image
-          width='32px'
-          height='32px'
-          src={isCreatRoomOpen ? add_chat_fill : add_chat}
-          alt='add_dialog'
-        />
+        <Image width='32px' height='32px' src={add_chat} alt='add_dialog' />
       </div>
     </div>
   );
