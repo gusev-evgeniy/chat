@@ -2,12 +2,15 @@ import React, { useMemo } from 'react';
 
 import { createRoom, openNewRoom } from 'store/actions';
 import { useAppDispatch, useAppSelector } from 'store/hooks';
-import { getSecetRoom } from 'store/selectors';
-import { checkUser, openCreateRoom } from 'store/slices/createRoom';
+import { selectCreatingRoom } from 'store/selectors';
+import { checkUser, updateTitle } from 'store/slices/createRoom';
+import { openDialog } from 'store/slices/dialog';
+
+const MAX_LENGTH = 20;
 
 export const useNewRoom = () => {
-  const { checked, users, loaded, disabled, isGroupChat } =
-    useAppSelector(getSecetRoom);
+  const { checked, users, loaded, type, title } = useAppSelector(selectCreatingRoom);
+  const isGroupChat = type === 'group';
 
   const dispatch = useAppDispatch();
 
@@ -33,20 +36,32 @@ export const useNewRoom = () => {
     if (isGroupChat) dispatch(createRoom());
     else dispatch(openNewRoom());
 
-    dispatch(openCreateRoom(false));
+    dispatch(openDialog(null));
   };
+
+  const groupNameLength = title.length;
+
+  const onChangeName = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+
+    if (value.length < groupNameLength || groupNameLength < MAX_LENGTH) {
+      dispatch(updateTitle({ title: value }));
+    }
+  };
+
 
   return useMemo(
     () => ({
       checked,
       users,
       loaded,
-      disabled,
       isGroupChat,
       createRoomHandler,
       onRemoveUser,
       onCheckHandler,
+      onChangeName,
+      title
     }),
-    [checked, users, loaded, disabled, isGroupChat]
+    [checked, users, loaded, isGroupChat, title]
   );
 };

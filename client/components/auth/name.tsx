@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 
 import { AvatarInput } from 'components/avatar/input';
-import { usePreview } from './usePreview';
+import { useAvatartPreview } from 'hooks/useAvatartPreview';
 import { useAuthUserForm } from './useAuthUserForm';
 
 import {
@@ -18,7 +18,7 @@ export const Name: FC<Auth> = props => {
   const { data, changeData } = props
   const { name, photo } = data;
 
-  const { preview } = usePreview(photo);
+  const { preview } = useAvatartPreview(photo);
   const { onSelectFile, onSubmit, errorText } = useAuthUserForm(props);
 
   const onKeyChange = ({ target }: React.ChangeEvent<HTMLInputElement>) => {

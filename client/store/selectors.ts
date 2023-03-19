@@ -124,12 +124,10 @@ export const getSecetRoom = createSelector(
   selectCreatingRoom,
   ({ checked, title, type, users, loaded }) => {
     const isGroupChat = type === 'group';
-    const disabled = !checked.length || (isGroupChat && !title.trim());
 
     return {
       users,
       loaded,
-      disabled,
       checked,
       title,
       isGroupChat

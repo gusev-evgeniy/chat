@@ -7,5 +7,5 @@ export type Auth = {
 export type UserData = {
   password: string;
   name: string;
-  photo: File | undefined;
+  photo: File | null;
 };

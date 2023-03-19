@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-export const usePreview = (photo: File | undefined) => {
+export const useAvatartPreview = (photo: File | null) => {
   const [preview, setPreview] = useState<string | null>(null);
 
   useEffect(() => {

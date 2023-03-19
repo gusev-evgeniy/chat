@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FC } from 'react';
 
 import { StyledButton } from 'components/auth/styles';
 import { UsersList } from './usersList';
@@ -6,42 +6,60 @@ import { Form } from './form';
 import { CheckedList } from './checkedList';
 import { useNewRoom } from './useNewRoom';
 
-import { Empty } from 'styles';
 import { StyledSearchUserWrapper } from '../styles';
+import { DialogWrapper } from 'components/dialog/wrapper';
 
-export const Search = () => {
+type Props = {
+  nextStep: () => void;
+};
+
+export const Search: FC<Props> = ({ nextStep }) => {
   const {
     checked,
     createRoomHandler,
-    disabled,
     loaded,
     onCheckHandler,
     onRemoveUser,
     users,
   } = useNewRoom();
 
+  const isGroupChat = checked.length > 1;
+
   return (
-    <StyledSearchUserWrapper>
-      <Form />
+    <DialogWrapper>
+      <StyledSearchUserWrapper>
+        <Form />
 
-      <UsersList
-        loaded={loaded}
-        users={users.data}
-        onCheck={onCheckHandler}
-        checked={checked}
-      />
+        {/* {checked.length > 0 && (
+          <CheckedList checked={checked} onRemoveUser={onRemoveUser} />
+        )} */}
 
-      {checked.length > 0 &&  <CheckedList checked={checked} onRemoveUser={onRemoveUser} />}
+<CheckedList checked={checked} onRemoveUser={onRemoveUser} />
 
-      <div className='buttons'>
-        <StyledButton
-          width='160px'
-          height='48px'
-          disabled={disabled}
-          onClick={createRoomHandler}>
-          Create Room
-        </StyledButton>
-      </div>
-    </StyledSearchUserWrapper>
+        <UsersList
+          loaded={loaded}
+          users={users.data}
+          onCheck={onCheckHandler}
+          checked={checked}
+        />
+
+        <div className='buttons'>
+          <StyledButton
+            width='160px'
+            height='48px'
+            disabled={!checked.length}
+            onClick={isGroupChat ? nextStep : createRoomHandler}>
+            {isGroupChat ? (
+              <>
+                Next
+                <span className='arrow'>&rarr;</span>
+              </>
+            ) : (
+              <>Create Room</>
+            )}
+          </StyledButton>
+        </div>
+      </StyledSearchUserWrapper>
+    </DialogWrapper>
   );
 };

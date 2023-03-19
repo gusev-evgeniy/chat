@@ -9,9 +9,10 @@ import close from 'images/close.svg';
 
 type Props = {
   children: React.ReactElement;
+  width?: string;
 };
 
-export const DialogWrapper: FC<Props> = ({ children }) => {
+export const DialogWrapper: FC<Props> = ({ children, width }) => {
   const dispatch = useAppDispatch();
 
   const closeHandler = () => {
@@ -20,7 +21,10 @@ export const DialogWrapper: FC<Props> = ({ children }) => {
 
   return (
     <StyledVeil onClick={closeHandler} datatype='veil'>
-      <StyledContainer padding={'25px'} onClick={e => e.stopPropagation()}>
+      <StyledContainer
+        padding={'25px'}
+        width={width}
+        onClick={e => e.stopPropagation()}>
         <>
           <div className='header'>
             <CloseIconWrapper onClick={closeHandler}>

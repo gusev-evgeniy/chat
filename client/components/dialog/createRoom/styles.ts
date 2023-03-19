@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 import { StyledWrapper } from 'components/auth/styles';
 
-import { StyledTextInput } from 'styles';
+import { StyledForm, StyledTextInput } from 'styles';
 import { COLORS, WIDTH } from 'styles/variables';
 
 export const StyledLabel = styled.label`
@@ -57,7 +57,6 @@ export const StyledCreateRoom = styled.div`
     margin-top: 50px;
     width: inherit;
     display: flex;
-    justify-content: flex-end;
   }
 
   @media screen and (max-width: ${WIDTH.MEDIUM}) {
@@ -102,7 +101,7 @@ export const StyledSearchUserWrapper = styled.div`
   .buttons {
     width: inherit;
     display: flex;
-    justify-content: flex-end;
+    justify-content: center;
     margin-top: 15px;
   }
 
@@ -113,13 +112,13 @@ export const StyledSearchUserWrapper = styled.div`
     overflow: hidden;
     flex-wrap: wrap;
     justify-content: center;
-    margin: -3px 0;
+    margin: 12px 0;
   }
 `;
 
 export const StyledUsers = styled(StyledWrapper)`
   width: 100%;
-  margin: 15px 0;
+  margin-bottom: 15px;
   padding: 15px 0;
 
   .users_container {
@@ -154,5 +153,22 @@ export const StyledCheckedItem = styled.div`
 
   :hover {
     background-color: #e5e5e5;
+  }
+`;
+
+export const GroupChatForm = styled(StyledForm)`
+  .input_wrapper {
+    position: relative;
+    margin: 40px 0;
+
+    .count {
+      position: absolute;
+      right: 15px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 1rem;
+      color: #7c7c7c;
+      font-weight: 600;
+    }
   }
 `;

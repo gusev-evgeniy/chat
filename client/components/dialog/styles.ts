@@ -25,8 +25,7 @@ export const StyledVeil = styled.div`
 
 export const StyledContainer = styled(StyledWrapper)<{width?: string}>`
   position: relative;
-  width: ${({ width }) => width ? width : '60%'};
-  max-width: 600px;
+  width: ${({ width }) => width ? width : '780px'};
 
   .group_form {
     width: fit-content;

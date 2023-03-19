@@ -11,7 +11,7 @@ export const useAuth = () => {
   const [data, setData] = useState<UserData>({
     name: '',
     password: '',
-    photo: undefined,
+    photo: null,
   });
 
   const dispatch = useAppDispatch();
