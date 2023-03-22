@@ -2,9 +2,8 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { HYDRATE } from 'next-redux-wrapper';
 
 import { Room, RoomsResponse } from 'types/room';
-import { Message } from 'types/messages';
+import { Message, Typing } from 'types/messages';
 import { prepareRooms } from 'utils/room';
-import { store } from '..';
 
 export type Rooms = ReturnType<typeof prepareRooms>;
 
@@ -21,7 +20,10 @@ export const roomsSlice = createSlice({
   name: 'rooms',
   initialState,
   reducers: {
-    setRoomsData: (state, action: PayloadAction<{ data: RoomsResponse, myId: string }>) => {
+    setRoomsData: (
+      state,
+      action: PayloadAction<{ data: RoomsResponse; myId: string }>
+    ) => {
       const { data, myId } = action.payload;
 
       state.data = prepareRooms(data.rooms, myId);
@@ -30,7 +32,7 @@ export const roomsSlice = createSlice({
     selectRoom: (state, action: PayloadAction<RoomsState['selected']>) => {
       state.selected = action.payload;
     },
-    addRoom: (state, action: PayloadAction<{ data: Room,  myId: string  }>) => {
+    addRoom: (state, action: PayloadAction<{ data: Room; myId: string }>) => {
       const { data, myId } = action.payload;
 
       if (!state.data.some(({ id }) => id === data.id)) {
@@ -113,6 +115,31 @@ export const roomsSlice = createSlice({
     updateRoomsFilter(state, action: PayloadAction<string>) {
       state.filter = action.payload.toLowerCase();
     },
+    updateTyping(state, action: PayloadAction<Typing>) {
+      const { roomId, isTyping, user } = action.payload;
+
+      state.data = state.data.map(room => {
+        if (roomId !== room.id) {
+          return room;
+        }
+
+        let typing = room.typing;
+        const typingNow = room.typing.includes(user);
+
+        if (isTyping && !typingNow) {
+          typing = [...room.typing, user];
+        }
+
+        if (!isTyping && typingNow) {
+          typing = room.typing.filter((id) => id !== user);
+        }
+
+        return {
+          ...room,
+          typing
+        };
+      });
+    },
   },
   extraReducers: {
     [HYDRATE]: (state, action) => {
@@ -134,6 +161,7 @@ export const {
   updateRoomDetails,
   deleteRoom,
   updateRoomsFilter,
+  updateTyping
 } = roomsSlice.actions;
 
 export const roomsReducer = roomsSlice.reducer;

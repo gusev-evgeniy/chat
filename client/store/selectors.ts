@@ -6,6 +6,7 @@ import { createOnlineSubstring } from 'utils/room';
 
 import { RootState } from 'store';
 import { RoomMessages } from 'types/room';
+import { Rooms } from './slices/rooms';
 
 export const selectRooms = (state: RootState) => state.rooms;
 export const selectMessages = (state: RootState) => state.messages;
@@ -13,13 +14,11 @@ export const selectMyData = (state: RootState) => state.user.data;
 export const selectCreatingRoom = (state: RootState) => state.createRoom;
 export const selectSideMenu = (state: RootState) => state.sideMenu;
 export const selectDialogName = (state: RootState) => state.dialog.name;
-export const selectTyping = (state: RootState) => state.typing;
 
 export const getChatData = createSelector(
   selectRooms,
   selectMessages,
-  selectTyping,
-  ({ data: rooms, selected }, { data }, { typing }) => {
+  ({ data: rooms, selected }, { data }) => {
     const openRoom = rooms.find(({ id }) => id === selected);
     const {
       messages = [],
@@ -27,8 +26,7 @@ export const getChatData = createSelector(
       count,
     } = data[selected as string] || ({} as RoomMessages);
 
-    const typingInChat = selected ? typing[selected] : [];
-    const typingText = returnTypingText(typingInChat, openRoom?.type);
+    const typingText = returnTypingText(openRoom as Rooms[0]);
 
     return {
       typingText,
@@ -43,15 +41,13 @@ export const getChatData = createSelector(
 
 export const getRoomsInfo = createSelector(
   selectRooms,
-  selectTyping,
   selectMyData,
-  ({ data, selected, filter }, { typing }, myData) => {
+  ({ data, selected, filter }, myData) => {
     const rooms = filter
       ? data.filter(({ title }) => title.toLowerCase().includes(filter))
       : data;
 
     return {
-      typing,
       rooms,
       me: myData,
       selected,

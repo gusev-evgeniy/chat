@@ -4,14 +4,13 @@ import { socket } from 'api/socket';
 
 import { newMessageHandler, readedHandler } from 'store/actions';
 import { useAppDispatch } from 'store/hooks';
-import { updateRoomDetails, updateUserOnline } from 'store/slices/rooms';
+import { updateRoomDetails, updateTyping, updateUserOnline } from 'store/slices/rooms';
 
 import { EVENTS } from 'utils/constants';
 
 import { Message, Typing } from 'types/messages';
 import { Room } from 'types/room';
 import { addNewRoom } from 'store/actions/rooms';
-import { setTyping } from 'store/slices/typing';
 
 export const useSocketOn = () => {
   const dispatch = useAppDispatch();
@@ -20,7 +19,8 @@ export const useSocketOn = () => {
     if (!socket.connected) socket.connect();
 
     socket.on(EVENTS.MESSAGE.RESPONSE_TYPING, (obj: Typing) => {
-      dispatch(setTyping(obj));
+      // dispatch(setTyping(obj));
+      dispatch(updateTyping(obj))
     });
 
     socket.on(EVENTS.USER.ENTER, ({ userId }: { userId: string }) => {

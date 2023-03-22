@@ -1,8 +1,6 @@
 import React, { FC, memo } from 'react';
 import dayjs from 'dayjs';
 
-import { returnTypingText } from 'utils/message';
-
 import { Avatar } from 'components/avatar';
 
 import { StyledLastMessage, StyledRoom } from './styles';
@@ -13,14 +11,13 @@ type Props = {
   myId: string;
   isSelected: boolean;
   onSelecteHandler: (id: string) => void;
-  typing: string[] | undefined;
+  typingText: string;
 };
 
 export const Room: FC<Props> = memo(
-  ({ typing, myId, isSelected, onSelecteHandler, room }) => {
+  ({ typingText, myId, isSelected, onSelecteHandler, room }) => {
     const {
       id,
-      type,
       lastMessage,
       unreadedMessagesCount,
       image,
@@ -29,10 +26,7 @@ export const Room: FC<Props> = memo(
     } = room || {};
     const { createdAt, text, readed, authorId } = lastMessage || {};
 
-    
-
     const time = dayjs(createdAt).format('HH:mm');
-    const typingText = returnTypingText(typing, type);
 
     return (
       <StyledRoom selected={isSelected} onClick={() => onSelecteHandler(id)}>

@@ -20,6 +20,7 @@ export const prepareRooms = (rooms: Room[], myId: string) => {
         type,
         lastMessage,
         unreadedMessagesCount,
+        typing: [] as string[]
       }
 
       if (type === 'group') {

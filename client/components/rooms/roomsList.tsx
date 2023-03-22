@@ -5,11 +5,11 @@ import { getRoomsInfo } from 'store/selectors';
 import { Room } from './item';
 import { Empty } from 'styles';
 import { selectRoom } from 'store/slices/rooms';
+import { returnTypingText } from 'utils/message';
 
 export const RoomsList: FC<{}> = () => {
   const dispatch = useAppDispatch();
-  const { me, rooms, typing, selected, filter } = useAppSelector(getRoomsInfo);
-
+  const { me, rooms, selected, filter } = useAppSelector(getRoomsInfo);
 
   const onSelecteHandler = useCallback((id: string) => {
     dispatch(selectRoom(id));
@@ -23,6 +23,8 @@ export const RoomsList: FC<{}> = () => {
     return <Empty margin='96%'>Your rooms will be displayed here</Empty>;
   }
 
+  console.log('rooms', rooms)
+
   return (
     <>
       {rooms.map(room => (
@@ -32,7 +34,7 @@ export const RoomsList: FC<{}> = () => {
           myId={me?.id as string}
           isSelected={selected === room.id}
           onSelecteHandler={onSelecteHandler}
-          typing={typing[room.id]}
+          typingText={returnTypingText(room)}
         />
       ))}
     </>

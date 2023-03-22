@@ -1,12 +1,13 @@
 import { MessageAPI } from 'api/message';
 import dayjs from 'dayjs';
-import { RoomType } from 'types/room';
+import { Rooms } from 'store/slices/rooms';
 import { BASE_URL } from './constants';
 
 export const returnTypingText = (
-  typing: string[] | undefined,
-  type: RoomType = 'private'
+  openRoom: Rooms[0]
 ) => {
+  const { typing, type } = openRoom;
+
   if (!typing || !typing.length) return '';
   if (type === 'private') return '...types';
 
