@@ -4,7 +4,6 @@ import { EVENTS, NEW_ROOM } from 'utils/constants';
 
 import { addMessage, setAllReadedMessages } from 'store/slices/messages';
 import {
-  addRoom,
   selectRoom,
   setUnreadedCount,
   updateLastMessage,
@@ -14,6 +13,8 @@ import { AppDispatch, RootState } from 'store';
 
 import { Message, NewMessage } from 'types/messages';
 import { Room } from 'types/room';
+import { createRoomsDefault } from 'store/slices/createRoom';
+import { addNewRoom } from './rooms';
 
 export const newMessageHandler =
   (message: Message) =>
@@ -27,7 +28,6 @@ export const newMessageHandler =
       ...message,
       isMy: message.authorId === user.data?.id,
     };
-
     dispatch(addMessage(extendedMessage));
     dispatch(
       updateLastMessage({
@@ -65,8 +65,9 @@ export const createRoom =
     const users = checked.map(({ id, socketId }) => ({ id, socketId }));
 
     socket.emit(EVENTS.ROOM.CREATE, { users, title, type }, (newRoom: Room) => {
-      dispatch(addRoom(newRoom));
+      dispatch(addNewRoom(newRoom));
       dispatch(selectRoom(newRoom.id));
+      dispatch(createRoomsDefault());
     });
   };
 
@@ -76,7 +77,6 @@ export const openNewRoom =
       createRoom: { checked },
       rooms: { data },
     } = getState();
-    //     // const { data } = await instance.get(`/room/checkPrivate?user=${checked[0].id}`);
 
     const room = data.find(
       ({ type, participants }) =>
@@ -97,15 +97,11 @@ export const createPrivateRoom =
     socket.emit(
       EVENTS.ROOM.CREATE,
       { users: checked, type },
-      ({ id }: { id?: string; message?: string }) => {
-        if (!id) {
-          return;
-        }
-        console.log('id', id);
-        console.log('data', data);
-
-        dispatch(selectRoom(id));
-        dispatch(createMessage(id, data));
+      (room: any) => {
+        dispatch(createMessage(room.id, data));
+        dispatch(addNewRoom(room));
+        dispatch(selectRoom(room.id));
+        dispatch(createRoomsDefault());
       }
     );
   };
@@ -113,13 +109,9 @@ export const createPrivateRoom =
 export const createMessage =
   (roomId: string, messageData: NewMessage) =>
   (_: any, getState: () => RootState) => {
-    const {
-      // user: { data },
+    const { messages } = getState();
 
-      messages,
-    } = getState();
-
-    const { count } = messages.data[roomId];
+    const { count = 0 } = messages.data[roomId] || {};
 
     const data = { ...messageData, serialNum: count + 1 };
 

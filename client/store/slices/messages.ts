@@ -1,7 +1,8 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 import { Message, MessagesResponse, RoomsTyping, Typing } from 'types/messages';
-import { MessageData } from 'types/room';
+import { MessageData, RoomsResponse } from 'types/room';
+import { setRoomsData } from './rooms';
 
 const initialState = {
   data: {} as MessageData,
@@ -28,25 +29,11 @@ export const messagesSlice = createSlice({
     },
     addMessage: (state, action: PayloadAction<Message>) => {
       const roomId = action.payload.roomId;
-
       let room = state.data[roomId];
-      if (room) {
+      if (room?.loaded) {
         room.messages.push(action.payload);
         room.count++;
       }
-
-      // if (!room) {
-      //   state.data[roomId] = {
-      //     messages: [action.payload],
-      //     count: 1,
-      //     loaded: true,
-      //   };
-      // } else {
-      //   room.messages.push(action.payload);
-      //   // room.messages = [...room.messages, action.payload];
-      // }
-      // messages.push(action.payload);
-      // count++;
     },
 
     setTyping: (state, action: PayloadAction<Typing>) => {
@@ -79,6 +66,18 @@ export const messagesSlice = createSlice({
       }
     },
   },
+  // extraReducers: builder => {
+  //   builder.addCase(
+  //     setRoomsData,
+  //     (state, action: PayloadAction<{ data: RoomsResponse; myId: string }>) => {
+  //       state.data = action.payload.data.rooms.reduce((acc, { id }) => {
+  //         acc[id] = { messages: [], count: 0, loaded: false };
+
+  //         return acc;
+  //       }, {} as MessageData);
+  //     }
+  //   );
+  // },
 });
 
 export const { setMessagesData, addMessage, setTyping, setAllReadedMessages } =

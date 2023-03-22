@@ -3,7 +3,7 @@ import dayjs from 'dayjs';
 import { Room } from 'types/room';
 import { UserBD } from 'types/user';
 
-export const preparedRooms = (rooms: Room[], myId: string) => {
+export const prepareRooms = (rooms: Room[], myId: string) => {
   return rooms.map(
     ({
       type,
@@ -14,17 +14,21 @@ export const preparedRooms = (rooms: Room[], myId: string) => {
       lastMessage,
       unreadedMessagesCount,
     }) => {
+      const data = {
+        id,
+        participants,
+        type,
+        lastMessage,
+        unreadedMessagesCount,
+      }
+
       if (type === 'group') {
         return {
-          id,
+          ...data,
           image: roomImage,
           title: roomTitle as string,
           online: false,
-          lastMessage,
-          unreadedMessagesCount,
           participantId: '',
-          participants,
-          type
         };
       }
 
@@ -36,15 +40,11 @@ export const preparedRooms = (rooms: Room[], myId: string) => {
       } = participants.find(({ id }) => id !== myId) as UserBD;
 
       return {
-        id,
+        ...data,
         participantId,
         title: name,
         image: photo,
         online,
-        participants,
-        lastMessage,
-        unreadedMessagesCount,
-        type
       };
     }
   );

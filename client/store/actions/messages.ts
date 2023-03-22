@@ -12,16 +12,16 @@ export const getMessages =
     const {
       rooms: { selected },
     } = getState();
-    console.log('selected', selected)
-    if (!selected || selected === NEW_ROOM) {
+
+    if (!selected) {
       return;
     }
-
+    
     try {
       const { data } = await instance.get(
         `message/?roomId=${selected}&skip=${skip}`
       );
-      console.log('data', data)
+
       dispatch(setMessagesData({ ...data, roomId: selected }));
     } catch (error) {}
   };
@@ -38,7 +38,6 @@ export const createMessageOrPrivateRoom =
     } = getState();
 
     const isNewRoom = selected === NEW_ROOM;
-
     if (isNewRoom) {
       return dispatch(createPrivateRoom(data));
     }

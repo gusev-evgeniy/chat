@@ -3,10 +3,10 @@ import { HYDRATE } from 'next-redux-wrapper';
 
 import { Room, RoomsResponse } from 'types/room';
 import { Message } from 'types/messages';
-import { preparedRooms } from 'utils/room';
+import { prepareRooms } from 'utils/room';
 import { store } from '..';
 
-export type Rooms = ReturnType<typeof preparedRooms>;
+export type Rooms = ReturnType<typeof prepareRooms>;
 
 const initialState = {
   data: [] as Rooms,
@@ -21,21 +21,20 @@ export const roomsSlice = createSlice({
   name: 'rooms',
   initialState,
   reducers: {
-    setRoomsData: (state, action: PayloadAction<RoomsResponse>) => {
-      const myId = store.getState().user.data?.id as string;
+    setRoomsData: (state, action: PayloadAction<{ data: RoomsResponse, myId: string }>) => {
+      const { data, myId } = action.payload;
 
-      // state.data = action.payload.rooms;
-      state.data = preparedRooms(action.payload.rooms, myId);
-      state.count = action.payload.count;
+      state.data = prepareRooms(data.rooms, myId);
+      state.count = data.count;
     },
     selectRoom: (state, action: PayloadAction<RoomsState['selected']>) => {
       state.selected = action.payload;
     },
-    addRoom: (state, action: PayloadAction<Room>) => {
-      const myId = store.getState().user.data?.id as string;
+    addRoom: (state, action: PayloadAction<{ data: Room,  myId: string  }>) => {
+      const { data, myId } = action.payload;
 
-      if (!state.data.some(({ id }) => id === action.payload.id)) {
-        const room = preparedRooms([action.payload], myId)[0];
+      if (!state.data.some(({ id }) => id === data.id)) {
+        const room = prepareRooms([data], myId)[0];
 
         state.data.unshift(room);
         state.count = state.count + 1;

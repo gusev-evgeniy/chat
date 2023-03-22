@@ -1,34 +1,39 @@
 import Image from 'next/image';
 import React, { FC, memo } from 'react';
 
-import { useAppSelector } from 'store/hooks';
+import { useAppDispatch, useAppSelector } from 'store/hooks';
 import { getRoomsInfo } from 'store/selectors';
 
-import { Room } from './item';
 import { StyledAva } from 'components/avatar/styles';
 import { RoomsHeader } from './header';
-import { useRooms } from './useRooms';
 
 import logout_icon from 'images/logout.svg';
 
 import { StyledRooms } from './styles';
-import { Empty } from 'styles';
 import { RoomsList } from './roomsList';
+import { logout } from 'store/actions/user';
+import { socket } from 'api/socket';
 
 type Props = {
   isSideMenu?: boolean;
 };
 
 export const Rooms: FC<Props> = memo(({ isSideMenu = false }) => {
+  const dispatch = useAppDispatch();
+
   const { me, filter } = useAppSelector(getRoomsInfo);
-  const { onExit, onSelecteHandler } = useRooms();
+
+  const onExit = () => {
+    dispatch(logout());
+    socket.disconnect();
+  }
 
   return (
     <StyledRooms fullWidth={isSideMenu}>
       <RoomsHeader value={filter} />
 
       <div className='rooms_wrapper'>
-        <RoomsList onSelecteHandler={onSelecteHandler} />
+        <RoomsList />
       </div>
 
       <div className='footer'>

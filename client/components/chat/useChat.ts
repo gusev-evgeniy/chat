@@ -20,9 +20,8 @@ export const useChat = () => {
   const dispatch = useAppDispatch();
 
   useInsertionEffect(() => {
-    console.log('loaded', loaded)
     !loaded && dispatch(getMessages());
-  }, [loaded, dispatch]);
+  }, [loaded, dispatch, selected]);
 
   useEffect(() => {
     if (!selected || !loaded || !unreadedMessagesCount) {

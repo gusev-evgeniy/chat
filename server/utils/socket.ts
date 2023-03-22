@@ -3,6 +3,7 @@ import User from '../entities/user';
 
 export const addMyDataToSocket = async (socket: any) => {
   const token = socket.request.cookies?.chatToken;
+  console.log('____________________token', token)
   if (!token) {
     return;
   }

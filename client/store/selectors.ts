@@ -11,8 +11,6 @@ export const selectRooms = (state: RootState) => state.rooms;
 export const selectMessages = (state: RootState) => state.messages;
 export const selectMyData = (state: RootState) => state.user.data;
 export const selectCreatingRoom = (state: RootState) => state.createRoom;
-export const selectCreatingRoomOpen = (state: RootState) =>
-  state.createRoom.open;
 export const selectSideMenu = (state: RootState) => state.sideMenu;
 export const selectDialogName = (state: RootState) => state.dialog.name;
 
@@ -45,8 +43,7 @@ export const getRoomsInfo = createSelector(
   selectRooms,
   selectMessages,
   selectMyData,
-  selectCreatingRoomOpen,
-  ({ data, selected, filter }, { typing }, myData, open) => {
+  ({ data, selected, filter }, { typing }, myData) => {
     const rooms = filter
       ? data.filter(({ title }) => title.toLowerCase().includes(filter))
       : data;
@@ -56,7 +53,6 @@ export const getRoomsInfo = createSelector(
       rooms,
       me: myData,
       selected,
-      isCreatRoomOpen: open,
       filter,
     };
   }

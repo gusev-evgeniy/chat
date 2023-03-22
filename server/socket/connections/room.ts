@@ -6,6 +6,7 @@ import { addNewRoom } from '../../utils/room';
 import { EVENTS } from '../events';
 import { Callback, MySocket } from '../types';
 
+
 export default async (io: Server, socket: MySocket) => {
   const createRoom = async (obj: any, callback: Callback) => {
     const { users, title, type } = obj;
@@ -29,9 +30,9 @@ export default async (io: Server, socket: MySocket) => {
     socket.join(room.id);
 
     const participants = room.participants.map(({ user }) => user);
+    const usersSocketId = participants.map(({ socketId }) => socketId);
 
-    const usersSocketId = users.map(({ socketId }) => socketId);
-    callback({ ...room, participants });
+    callback({ ...room, participants, unreadedMessagesCount: 0 });
 
     socket.to(usersSocketId).emit(EVENTS.ROOM.CREATED, {
       ...room,

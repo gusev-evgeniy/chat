@@ -6,7 +6,7 @@ import RoomEntity from '../entities/room';
 import { getRoomsAndCount, isPrivateRoomExist } from '../utils/room';
 
 class Room {
-  async getMany(req: Request, res: Response) {
+  async getMany(_: Request, res: Response) {
     try {
       const roomsAndCount = await getRoomsAndCount(res.locals.user.id);
 

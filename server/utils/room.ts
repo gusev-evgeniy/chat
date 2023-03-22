@@ -78,15 +78,27 @@ export const getRoomsAndCount = async (id: string) => {
     )
     .addOrderBy('room.updatedAt', 'DESC')
     .getManyAndCount();
-
+      console.log('participants',participants)
   const rooms = participants.map(({ room }) => ({
     ...room,
-    participants: room.participants.map(({ user }) => {
-      return user;
-    }),
+    participants: room.participants.map(({ user }) => user),
   }));
 
   return { rooms, count };
+};
+
+export const getFilteredMessages = async (id: string, filter: string) => {
+  await Participant.createQueryBuilder('participant')
+    .where('participant.user = :id', { id })
+    .leftJoinAndSelect('participant.room', 'room')
+    .leftJoinAndSelect('participants.user', 'user')
+    .loadRelationCountAndMap(
+      'room.unreadedMessagesCount',
+      'room.messages',
+      'message'
+    )
+    .addOrderBy('room.updatedAt', 'DESC')
+    .getManyAndCount();
 };
 
 type RoomProps = {

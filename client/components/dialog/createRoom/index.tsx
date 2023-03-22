@@ -12,9 +12,9 @@ export const CreateRoom = () => {
   const nextStep = () => setStep(prev => ++prev);
 
   useEffect(() => {
-    return () => {
-      dispatch(createRoomsDefault());
-    };
+    // return () => {
+    //   dispatch(createRoomsDefault());
+    // };
   }, []);
 
   const pages = {

@@ -1,8 +1,7 @@
-import React, { FC, memo, useMemo } from 'react';
+import React, { FC, memo } from 'react';
 import dayjs from 'dayjs';
 
 import { returnTypingText } from 'utils/message';
-import { getRoomInfo } from 'utils/room';
 
 import { Avatar } from 'components/avatar';
 
@@ -29,6 +28,8 @@ export const Room: FC<Props> = memo(
       online,
     } = room || {};
     const { createdAt, text, readed, authorId } = lastMessage || {};
+
+    
 
     const time = dayjs(createdAt).format('HH:mm');
     const typingText = returnTypingText(typing, type);

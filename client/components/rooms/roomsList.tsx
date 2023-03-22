@@ -1,16 +1,19 @@
-import React, { FC } from 'react';
-import { useAppSelector } from 'store/hooks';
+import React, { FC, useCallback } from 'react';
+import { useAppDispatch, useAppSelector } from 'store/hooks';
 import { getRoomsInfo } from 'store/selectors';
 
 import { Room } from './item';
 import { Empty } from 'styles';
+import { selectRoom } from 'store/slices/rooms';
 
-type Props = {
-  onSelecteHandler: (id: string) => void;
-};
-
-export const RoomsList: FC<Props> = ({ onSelecteHandler }) => {
+export const RoomsList: FC<{}> = () => {
+  const dispatch = useAppDispatch();
   const { me, rooms, typing, selected, filter } = useAppSelector(getRoomsInfo);
+
+
+  const onSelecteHandler = useCallback((id: string) => {
+    dispatch(selectRoom(id));
+  }, []);
 
   if (!!filter && !rooms.length) {
     return <Empty margin='96%'>Rooms not found</Empty>;

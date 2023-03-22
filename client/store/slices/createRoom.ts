@@ -10,7 +10,6 @@ const initialState = {
   title: '',
   type: 'private',
   loaded: false,
-  open: false,
   ava: null as File | null
 };
 
@@ -47,9 +46,6 @@ export const createRoomSlice = createSlice({
     updateTitle: (state, action: PayloadAction<{ title: string }>) => {
       state.title = action.payload.title;
     },
-    openCreateRoom: (state, action: PayloadAction<boolean>) => {
-      state.open = action.payload;
-    },
     changeAva: (state, action: PayloadAction<File | null>) => {
       state.ava = action.payload;
     },
@@ -64,7 +60,6 @@ export const {
   checkUser,
   updateTitle,
   createRoomsDefault,
-  openCreateRoom,
   changeAva
 } = createRoomSlice.actions;
 

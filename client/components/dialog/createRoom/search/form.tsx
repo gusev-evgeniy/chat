@@ -20,6 +20,7 @@ export const Form: FC<{}> = memo(() => {
           placeholder='Type usernames'
           value={filter}
           onChange={onChangeFilter}
+          autoFocus
         />
         <StyledInputSearchButton>
           <Image width='30px' height='30px' src={search} alt='search' />

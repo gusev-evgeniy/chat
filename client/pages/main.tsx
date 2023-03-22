@@ -57,7 +57,7 @@ export const getServerSideProps = wrapper.getServerSideProps(
         store.dispatch(setUserData(data));
 
         const rooms = await axios.get('http://localhost:5050/room/');
-        store.dispatch(setRoomsData(rooms.data));
+        store.dispatch(setRoomsData({ data: rooms.data, myId: data.id }));
       } catch ({ response }: any) {
         if ((response as any)?.data.message === 'Unauthenticated') {
           return {

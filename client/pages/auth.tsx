@@ -32,10 +32,14 @@ export const getServerSideProps = wrapper.getServerSideProps(
   store =>
     async ({ req }) => {
       try {
-        console.log('eq.headers.cookie', req.headers.cookie)
-        axios.defaults.headers.get.Cookie = req.headers.cookie as string;
-        const { data } = await axios.get('http://localhost:5050/user/me');
+        if (!req.headers.cookie) {
+          return {
+            props: {},
+          };
+        }
 
+        axios.defaults.headers.get.Cookie = req.headers.cookie;
+        const { data } = await axios.get('http://localhost:5050/user/me');
         store.dispatch(setUserData(data));
         return {
           redirect: {
@@ -43,11 +47,11 @@ export const getServerSideProps = wrapper.getServerSideProps(
             permanent: false,
           },
         };
-      } catch (error) {}
-
-      return {
-        props: {},
-      };
+      } catch (error) {
+        return {
+          props: {},
+        };
+      }
     }
 );
 

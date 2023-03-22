@@ -6,6 +6,7 @@ import { useAppDispatch } from 'store/hooks';
 import { setUserData } from 'store/slices/user';
 
 import { UserData } from 'components/auth/types';
+import { socket } from 'api/socket';
 
 export const useAuth = () => {
   const [data, setData] = useState<UserData>({
@@ -28,7 +29,7 @@ export const useAuth = () => {
     );
 
     const res = await UserAPI.auth(formData);
-
+    // socket.connect();
     dispatch(setUserData(res.data));
   };
 
