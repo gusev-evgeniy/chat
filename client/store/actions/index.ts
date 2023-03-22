@@ -132,8 +132,12 @@ export const sendTyping =
       rooms: { selected },
     } = getState();
 
+    if (!selected || selected === 'NEW_ROOM' || !data) {
+      return;
+    }
+
     socket.emit(EVENTS.MESSAGE.TYPING, {
-      user: data?.name,
+      user: data.name,
       roomId: selected,
       isTyping,
     });

@@ -13,11 +13,13 @@ export const selectMyData = (state: RootState) => state.user.data;
 export const selectCreatingRoom = (state: RootState) => state.createRoom;
 export const selectSideMenu = (state: RootState) => state.sideMenu;
 export const selectDialogName = (state: RootState) => state.dialog.name;
+export const selectTyping = (state: RootState) => state.typing;
 
 export const getChatData = createSelector(
   selectRooms,
   selectMessages,
-  ({ data: rooms, selected }, { data, typing }) => {
+  selectTyping,
+  ({ data: rooms, selected }, { data }, { typing }) => {
     const openRoom = rooms.find(({ id }) => id === selected);
     const {
       messages = [],
@@ -41,7 +43,7 @@ export const getChatData = createSelector(
 
 export const getRoomsInfo = createSelector(
   selectRooms,
-  selectMessages,
+  selectTyping,
   selectMyData,
   ({ data, selected, filter }, { typing }, myData) => {
     const rooms = filter

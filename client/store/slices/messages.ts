@@ -6,7 +6,6 @@ import { setRoomsData } from './rooms';
 
 const initialState = {
   data: {} as MessageData,
-  typing: {} as RoomsTyping,
 };
 export type MessagesState = typeof initialState;
 
@@ -36,25 +35,6 @@ export const messagesSlice = createSlice({
       }
     },
 
-    setTyping: (state, action: PayloadAction<Typing>) => {
-      const { roomId, user, isTyping } = action.payload;
-      if (!user) {
-        return state;
-      }
-
-      const typingInRoom = state.typing[roomId];
-      if (!isTyping && typingInRoom) {
-        state.typing[roomId] = typingInRoom.filter(
-          typingUser => typingUser !== user
-        );
-      }
-
-      const wasTyping = typingInRoom?.includes(user);
-
-      if (!typingInRoom) state.typing[roomId] = [user];
-      else if (!wasTyping) state.typing[roomId].push(user);
-    },
-
     setAllReadedMessages: (state, action: PayloadAction<string>) => {
       const room = state.data[action.payload];
 
@@ -80,7 +60,7 @@ export const messagesSlice = createSlice({
   // },
 });
 
-export const { setMessagesData, addMessage, setTyping, setAllReadedMessages } =
+export const { setMessagesData, addMessage, setAllReadedMessages } =
   messagesSlice.actions;
 
 export const messagesReducer = messagesSlice.reducer;

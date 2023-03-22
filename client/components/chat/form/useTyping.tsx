@@ -1,13 +1,11 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import { sendTyping } from 'store/actions';
-import { useAppDispatch, useAppSelector } from 'store/hooks';
-import { selectRooms } from 'store/selectors';
+import { useAppDispatch } from 'store/hooks';
 
 export const useTyping = () => {
   const dispatch = useAppDispatch();
 
-  const { selected, data } = useAppSelector(selectRooms);
   const [typing, setTyping] = useState<boolean | null>(null);
   const typingTimeoutRef = useRef<NodeJS.Timeout | undefined>();
 
@@ -20,12 +18,6 @@ export const useTyping = () => {
   }, [typing, dispatch]);
 
   const onPress = () => {
-    // const isNewRoom = !data.some(({ id }) => id === selected);
-
-    if (selected === 'NEW_ROOM') {
-      return;
-    }
-
     setTyping(true);
     clearInterval(typingTimeoutRef.current);
 
