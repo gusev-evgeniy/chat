@@ -126,13 +126,12 @@ export const readMessage = (id: string) => async (dispatch: AppDispatch) => {
 };
 
 export const sendTyping =
-  (isTyping: boolean) => async (_: AppDispatch, getState: () => RootState) => {
+  (isTyping: boolean, selected: string | null) => async (_: AppDispatch, getState: () => RootState) => {
     const {
       user: { data },
-      rooms: { selected },
     } = getState();
 
-    if (!selected || selected === 'NEW_ROOM' || !data) {
+    if ( !selected || selected === 'NEW_ROOM' || !data) {
       return;
     }
 

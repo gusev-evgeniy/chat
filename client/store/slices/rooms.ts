@@ -140,6 +140,20 @@ export const roomsSlice = createSlice({
         };
       });
     },
+    clearTyping(state, action: PayloadAction<string>) {
+      state.data = state.data.map((room) => {
+        const typingNow = room.typing.includes(action.payload);
+        console.log('typingNow', typingNow)
+        if (!typingNow) {
+          return room;
+        }
+
+        return {
+          ...room,
+          typing: room.typing.filter((id) => id !== action.payload)
+        };
+      })
+    }
   },
   extraReducers: {
     [HYDRATE]: (state, action) => {
@@ -161,7 +175,8 @@ export const {
   updateRoomDetails,
   deleteRoom,
   updateRoomsFilter,
-  updateTyping
+  updateTyping,
+  clearTyping
 } = roomsSlice.actions;
 
 export const roomsReducer = roomsSlice.reducer;

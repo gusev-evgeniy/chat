@@ -4,13 +4,14 @@ import { socket } from 'api/socket';
 
 import { newMessageHandler, readedHandler } from 'store/actions';
 import { useAppDispatch } from 'store/hooks';
-import { updateRoomDetails, updateTyping, updateUserOnline } from 'store/slices/rooms';
+import { clearTyping, updateRoomDetails, updateTyping, updateUserOnline } from 'store/slices/rooms';
 
 import { EVENTS } from 'utils/constants';
 
 import { Message, Typing } from 'types/messages';
 import { Room } from 'types/room';
 import { addNewRoom } from 'store/actions/rooms';
+import { UserBD } from 'types/user';
 
 export const useSocketOn = () => {
   const dispatch = useAppDispatch();
@@ -19,7 +20,6 @@ export const useSocketOn = () => {
     if (!socket.connected) socket.connect();
 
     socket.on(EVENTS.MESSAGE.RESPONSE_TYPING, (obj: Typing) => {
-      // dispatch(setTyping(obj));
       dispatch(updateTyping(obj))
     });
 
@@ -29,8 +29,9 @@ export const useSocketOn = () => {
 
     socket.on(
       EVENTS.USER.LEAVE,
-      ({ userId, wasOnline }: { userId: string; wasOnline: string }) => {
-        dispatch(updateUserOnline({ userId, online: false, wasOnline }));
+      ({ user, wasOnline }: { user: UserBD; wasOnline: string }) => {
+        dispatch(updateUserOnline({ userId: user.id, online: false, wasOnline }));
+        dispatch(clearTyping(user.name))
       }
     );
 
