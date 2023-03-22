@@ -16,7 +16,6 @@ type Data = {
   message?: string;
   file?: File;
   media?: Buffer;
-  serialNum: number;
 };
 type File = {
   name: string;
@@ -35,7 +34,7 @@ const BASE_URL = 'http://localhost:5050';
 export default async (io: Server, socket: MySocket) => {
   const createMessage = async ({ roomId, data }: NewMessage) => {
     try {
-      const { message, file, media, serialNum } = data;
+      const { message, file, media } = data;
 
       if (!message && !file && !media) {
         return;
@@ -47,7 +46,6 @@ export default async (io: Server, socket: MySocket) => {
         text: message,
         roomId,
         authorId: socket.me?.id,
-        serialNum
       };
 
       if (media) {

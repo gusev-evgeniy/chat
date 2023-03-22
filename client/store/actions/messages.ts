@@ -2,8 +2,8 @@ import { AppDispatch, RootState } from 'store';
 import { instance } from 'api';
 import { NEW_ROOM } from 'utils/constants';
 import { setMessagesData } from 'store/slices/messages';
-import { prepareFile } from 'utils/message';
-import { createMessage, createPrivateRoom } from '.';
+import { createMessage, prepareFile } from 'utils/message';
+import { createPrivateRoom } from '.';
 import { NewMessage } from 'types/messages';
 
 export const getMessages =
@@ -43,6 +43,6 @@ export const createMessageOrPrivateRoom =
     }
 
     if (selected) {
-      dispatch(createMessage(selected, data));
+      createMessage(selected, data);
     }
   };

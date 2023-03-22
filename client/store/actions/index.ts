@@ -15,6 +15,7 @@ import { Message, NewMessage } from 'types/messages';
 import { Room } from 'types/room';
 import { createRoomsDefault } from 'store/slices/createRoom';
 import { addNewRoom } from './rooms';
+import { createMessage } from 'utils/message';
 
 export const newMessageHandler =
   (message: Message) =>
@@ -91,31 +92,22 @@ export const createPrivateRoom =
   (data: NewMessage) =>
   async (dispatch: AppDispatch, getState: () => RootState) => {
     const {
-      createRoom: { checked, type },
+      rooms: { newPrivateRoom }
     } = getState();
+
+    const { participants, type } = newPrivateRoom;
 
     socket.emit(
       EVENTS.ROOM.CREATE,
-      { users: checked, type },
+      { users: participants, type },
       (room: any) => {
-        dispatch(createMessage(room.id, data));
+        createMessage(room.id, data)
+        socket.emit(EVENTS.MESSAGE.CREATE, { roomId: room.id, data });
         dispatch(addNewRoom(room));
         dispatch(selectRoom(room.id));
         dispatch(createRoomsDefault());
       }
     );
-  };
-
-export const createMessage =
-  (roomId: string, messageData: NewMessage) =>
-  (_: any, getState: () => RootState) => {
-    const { messages } = getState();
-
-    const { count = 0 } = messages.data[roomId] || {};
-
-    const data = { ...messageData, serialNum: count + 1 };
-
-    socket.emit(EVENTS.MESSAGE.CREATE, { roomId, data });
   };
 
 export const readMessage = (id: string) => async (dispatch: AppDispatch) => {

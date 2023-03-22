@@ -32,6 +32,7 @@ export const prepareRooms = (rooms: Room[], myId: string) => {
           participantId: '',
         };
       }
+      console.log('participants', participants)
 
       const {
         id: participantId,

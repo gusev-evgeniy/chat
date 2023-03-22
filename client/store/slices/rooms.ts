@@ -1,18 +1,25 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { HYDRATE } from 'next-redux-wrapper';
 
-import { Room, RoomsResponse } from 'types/room';
+import { Room, RoomsResponse, RoomType } from 'types/room';
 import { Message, Typing } from 'types/messages';
 import { prepareRooms } from 'utils/room';
+import { UserBD } from 'types/user';
 
 export type Rooms = ReturnType<typeof prepareRooms>;
+
+type NewPrivateRoom = {
+  participants: UserBD[],
+  type: 'private',
+  title: undefined 
+}
 
 const initialState = {
   data: [] as Rooms,
   selected: null as string | null,
   filter: '',
   count: 0,
-  findingMessages: [] as Rooms,
+  newPrivateRoom: {} as NewPrivateRoom,
 };
 export type RoomsState = typeof initialState;
 
@@ -143,7 +150,6 @@ export const roomsSlice = createSlice({
     clearTyping(state, action: PayloadAction<string>) {
       state.data = state.data.map((room) => {
         const typingNow = room.typing.includes(action.payload);
-        console.log('typingNow', typingNow)
         if (!typingNow) {
           return room;
         }
@@ -153,6 +159,9 @@ export const roomsSlice = createSlice({
           typing: room.typing.filter((id) => id !== action.payload)
         };
       })
+    },
+    addPrivateRoom(state, action: PayloadAction<UserBD[]>) {
+      state.newPrivateRoom = { participants: action.payload, title: undefined, type: 'private' };
     }
   },
   extraReducers: {
@@ -176,7 +185,8 @@ export const {
   deleteRoom,
   updateRoomsFilter,
   updateTyping,
-  clearTyping
+  clearTyping,
+  addPrivateRoom
 } = roomsSlice.actions;
 
 export const roomsReducer = roomsSlice.reducer;

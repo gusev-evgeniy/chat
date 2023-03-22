@@ -5,6 +5,7 @@ import { useAppDispatch, useAppSelector } from 'store/hooks';
 import { selectCreatingRoom } from 'store/selectors';
 import { checkUser, updateTitle } from 'store/slices/createRoom';
 import { openDialog } from 'store/slices/dialog';
+import { addPrivateRoom } from 'store/slices/rooms';
 
 const MAX_LENGTH = 20;
 
@@ -33,8 +34,12 @@ export const useNewRoom = () => {
   };
 
   const createRoomHandler = async () => {
-    if (isGroupChat) dispatch(createRoom());
-    else dispatch(openNewRoom());
+    if (isGroupChat) {
+      dispatch(createRoom());
+    } else {
+      dispatch(addPrivateRoom(checked));
+      dispatch(openNewRoom());
+    }
 
     dispatch(openDialog(null));
   };

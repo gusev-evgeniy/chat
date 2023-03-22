@@ -31,7 +31,7 @@ export default async (io: Server, socket: MySocket) => {
 
     if (socket.me?.id) {
       socket.broadcast.emit(EVENTS.USER.LEAVE, {
-        userId: socket.me?.id,
+        user: socket.me,
         wasOnline,
       });
       await updateUser(socket.me?.id, {

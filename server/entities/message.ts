@@ -19,8 +19,8 @@ export default class Message extends Base {
   @Column({ nullable: true })
   media: string;
 
-  @Column({ nullable: false })
-  serialNum: number;
+  // @Column({ nullable: false, default: 0 })
+  // serialNum: number;
   
   @Column({ default: false })
   isSystem: boolean;

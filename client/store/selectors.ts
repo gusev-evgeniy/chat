@@ -26,7 +26,7 @@ export const getChatData = createSelector(
       count,
     } = data[selected as string] || ({} as RoomMessages);
 
-    const typingText = returnTypingText(openRoom as Rooms[0]);
+    const typingText = returnTypingText(openRoom);
 
     return {
       typingText,
@@ -59,12 +59,11 @@ export const getRoomsInfo = createSelector(
 export const getHeaderInfo = createSelector(
   selectRooms,
   selectMyData,
-  selectCreatingRoom,
-  ({ selected, data }, myData, { checked, type }) => {
+  ({ selected, data, newPrivateRoom }, myData ) => {
     const isNewRoom = selected === NEW_ROOM;
 
     const selectedRoom = isNewRoom
-      ? { type, participants: checked, title: undefined }
+      ? newPrivateRoom
       : data.find(({ id }) => id === selected)!;
 
     const {
