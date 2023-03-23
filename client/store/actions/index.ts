@@ -102,7 +102,6 @@ export const createPrivateRoom =
       { users: participants, type },
       (room: any) => {
         createMessage(room.id, data)
-        socket.emit(EVENTS.MESSAGE.CREATE, { roomId: room.id, data });
         dispatch(addNewRoom(room));
         dispatch(selectRoom(room.id));
         dispatch(createRoomsDefault());

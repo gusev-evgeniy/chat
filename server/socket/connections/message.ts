@@ -50,7 +50,7 @@ export default async (io: Server, socket: MySocket) => {
 
       if (media) {
         const filePath = '/static' + '/' + uuidv4();
-        const mediaSrc = path.join(process.cwd() + filePath)
+        const mediaSrc = path.join(process.cwd() + filePath);
         writeFileSync(mediaSrc, media);
         newMessageInfo.media = BASE_URL + filePath;
       }
@@ -68,12 +68,18 @@ export default async (io: Server, socket: MySocket) => {
       const { id } = (await Message.create(newMessageInfo).save()) as Message;
 
       //add transaction
-      const newMessage = await Message.findOne({
+      let newMessage = (await Message.findOne({
         where: { id },
         relations: ['author', 'attachment'],
-      });
+      })) as any;
 
-      await updateRoomLastMessage(newMessage as Message, roomId);
+      if (newMessage.attachment) {
+        newMessage.attachment.content = {
+          type: 'Buffer',
+          data: [...new Uint8Array(newMessage.attachment.content)],
+        };
+      }
+      await updateRoomLastMessage(newMessage, roomId);
       io.to(roomId).emit(EVENTS.MESSAGE.CREATED, newMessage);
     } catch (error) {
       console.log('Create message error:', error);
@@ -93,7 +99,7 @@ export default async (io: Server, socket: MySocket) => {
     callback();
     socket.broadcast.to(roomId).emit(EVENTS.MESSAGE.READED, { roomId });
   };
- 
+
   socket.on(EVENTS.MESSAGE.CREATE, createMessage);
   socket.on(EVENTS.MESSAGE.TYPING, getTyping);
   socket.on(EVENTS.MESSAGE.READ, readMessage);
