@@ -25,7 +25,7 @@ export const FindingUser: FC<Props> = memo(
           <Avatar size={45} photo={photo} name={name} online={online} />
           <p className='bold'>{name}</p>
         </div>
-        <MyCheckbox checked={checked} />
+        <MyCheckbox checked={checked}/>
       </StyledSearchUserItem>
     );
   }

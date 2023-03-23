@@ -8,14 +8,16 @@ type Props = {
 
 export const MyCheckbox: FC<Props> = memo(({ checked }) => {
 
-  const onCheckHandler = (e: React.MouseEvent<HTMLInputElement>) => {
-    e.stopPropagation();
-  };
-
   return (
-    <StyledCheckbox >
+    <StyledCheckbox>
       <label className='container'>
-        <input type='checkbox' id='user_checkbox' checked={checked} onClick={onCheckHandler} />
+        <input
+          type='checkbox'
+          id='user_checkbox'
+          checked={checked}
+          onClick={(e) => e.stopPropagation()}
+          onChange={() => {}} //remove error in console
+        />
         <span className='checkmark' />
       </label>
     </StyledCheckbox>
