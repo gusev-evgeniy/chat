@@ -30,24 +30,9 @@ class Message {
 
   async download(req: Request, res: Response) {
     try {
-
-      // const fileData = 'SGVsbG8sIFdvcmxkIQ=='
-      // const fileName = 'hello_world.txt'
-      // const fileType = 'text/plain'
-    
-      // var fileContents = Buffer.from(fileData, "base64");
-  
-      // var readStream = new stream.PassThrough();
-      // readStream.end(fileContents);
-    
-      // res.set('Content-disposition', 'attachment; filename=' + fileName);
-      // res.set('Content-Type', fileType);
-    
-      // readStream.pipe(res);
-
       const attach = await Attachment.findOneBy({ id: req.params.id });
       if (!attach) return;
-      console.log(`attach :>>`, attach);
+
       res.set({
           'Content-Disposition': `attachment; filename=${encodeURIComponent(attach.name)}`,
           'Content-Type': attach.type, 

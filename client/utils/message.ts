@@ -2,7 +2,7 @@ import { MessageAPI } from 'api/message';
 import { socket } from 'api/socket';
 import dayjs from 'dayjs';
 import { Rooms } from 'store/slices/rooms';
-import { NewMessage } from 'types/messages';
+import { Message, NewMessage } from 'types/messages';
 import { BASE_URL, EVENTS } from './constants';
 
 export const returnTypingText = (openRoom: Rooms[0] | undefined) => {
@@ -63,3 +63,21 @@ export const convertSecondsToMinutesAndSeconds = (totalSeconds: number) => {
 export const createMessage = (roomId: string, data: NewMessage) => {
   socket.emit(EVENTS.MESSAGE.CREATE, { roomId, data });
 };
+
+export const getLastMessageText = (message: Omit<Message, "author"> | null ) => {
+  if (!message) {
+    return '';
+  }
+
+  const { attachment, media, text } = message;
+
+  if (attachment) {
+    return attachment.name;
+  }
+
+  if (media) {
+    return 'Voice message'
+  }
+
+  return text;
+}

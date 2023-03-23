@@ -23,8 +23,6 @@ export const RoomsList: FC<{}> = () => {
     return <Empty margin='96%'>Your rooms will be displayed here</Empty>;
   }
 
-  console.log('rooms', rooms)
-
   return (
     <>
       {rooms.map(room => (

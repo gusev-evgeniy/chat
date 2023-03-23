@@ -66,6 +66,7 @@ export const getRoomsAndCount = async (id: string) => {
     .leftJoinAndSelect('participant.room', 'room')
     .leftJoinAndSelect('room.participants', 'participants')
     .leftJoinAndSelect('room.lastMessage', 'lastMessage')
+    .leftJoinAndSelect('lastMessage.attachment', 'attachment')
     .leftJoinAndSelect('participants.user', 'user')
     .loadRelationCountAndMap(
       'room.unreadedMessagesCount',

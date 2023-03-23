@@ -5,6 +5,7 @@ import { Avatar } from 'components/avatar';
 
 import { StyledLastMessage, StyledRoom } from './styles';
 import { Rooms } from 'store/slices/rooms';
+import { getLastMessageText } from 'utils/message';
 
 type Props = {
   room: Rooms[0];
@@ -24,9 +25,10 @@ export const Room: FC<Props> = memo(
       title,
       online,
     } = room || {};
-    const { createdAt, text, readed, authorId } = lastMessage || {};
+    const { createdAt, readed, authorId } = lastMessage || {};
 
     const time = dayjs(createdAt).format('HH:mm');
+    const lastMessageText = getLastMessageText(lastMessage)
 
     return (
       <StyledRoom selected={isSelected} onClick={() => onSelecteHandler(id)}>
@@ -46,7 +48,7 @@ export const Room: FC<Props> = memo(
               </StyledLastMessage>
             ) : (
               <StyledLastMessage unreaded={myId !== authorId && !readed}>
-                {text}
+                {lastMessageText}
               </StyledLastMessage>
             )}
             {!!unreadedMessagesCount && (
