@@ -7,7 +7,7 @@ import unreadedIcon from 'images/unreaded.svg';
 
 import { Message as MessageType } from 'types/messages';
 
-import { StyledChatItem, StyledSystemMessage } from '../styles';
+import { StyledChatItem, StyledSystemMessage, SystemMessageWrapper } from '../styles';
 import { Avatar } from 'components/avatar';
 import { Attachment } from './attachment';
 import { Audio } from './audioPlayer';
@@ -30,12 +30,19 @@ export const Message: FC<Props> = memo(
     isSystem,
     attachment,
     download,
-    media
+    media,
   }) => {
     const time = dayjs(createdAt).format('HH:mm');
 
     if (isSystem) {
-      return <StyledSystemMessage>{text}</StyledSystemMessage>;
+      return (
+        <SystemMessageWrapper>
+          {media && <Avatar name='' photo={media} size={70} />}
+          <StyledSystemMessage>
+            <span className='text'>{text}</span>
+          </StyledSystemMessage>
+        </SystemMessageWrapper>
+      );
     }
 
     return (
@@ -43,7 +50,7 @@ export const Message: FC<Props> = memo(
         <div className='item'>
           <div className='message'>{text}</div>
 
-          <Audio media={media} id={id}/>
+          <Audio media={media} id={id} />
           <Attachment attachment={attachment} download={download} />
           <span className='time'>{time}</span>
 
@@ -60,7 +67,7 @@ export const Message: FC<Props> = memo(
         </div>
 
         {isLast && !!author && (
-          <Avatar name={author.name} photo={author.photo} size={40}/>
+          <Avatar name={author.name} photo={author.photo} size={40} />
         )}
       </StyledChatItem>
     );

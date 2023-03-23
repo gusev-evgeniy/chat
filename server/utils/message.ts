@@ -1,12 +1,14 @@
 import Message from '../entities/message';
+import Room from '../entities/room';
 
-export const createSystemMessage = async (text: string, roomId: string) => {
+export const createSystemMessage = async (text: string, roomId: string, media?: string ) => {
   return await Message.create({
     text,
     room: { id: roomId },
     roomId,
     isSystem: true,
     readed: true,
+    media,
   }).save();
 };
 

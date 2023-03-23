@@ -1,5 +1,7 @@
-import multer from 'multer';
+import { Request } from 'express';
+import multer, { FileFilterCallback } from 'multer';
 import { v4 as uuidv4 } from 'uuid'
+import { Callback } from '../socket/types';
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -12,7 +14,7 @@ const storage = multer.diskStorage({
 });
 
 // определение фильтра
-const fileFilter = (req, { mimetype }, cb) => {
+const fileFilter = (_: Request, { mimetype }: Express.Multer.File, cb: FileFilterCallback) => {
   const validTypes = ['image/png', 'image/jpg', 'image/jpeg'];
   if (validTypes.includes(mimetype)) {
     cb(null, true);

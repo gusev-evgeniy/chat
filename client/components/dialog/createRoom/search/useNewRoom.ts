@@ -1,4 +1,5 @@
-import React, { useMemo } from 'react';
+import { useAvatartPreview } from 'hooks/useAvatartPreview';
+import React, { useMemo, useState } from 'react';
 
 import { createRoom, openNewRoom } from 'store/actions';
 import { useAppDispatch, useAppSelector } from 'store/hooks';
@@ -10,11 +11,15 @@ import { addPrivateRoom } from 'store/slices/rooms';
 const MAX_LENGTH = 20;
 
 export const useNewRoom = () => {
-  const { checked, users, loaded, type, title } = useAppSelector(selectCreatingRoom);
-  const isGroupChat = type === 'group';
-
   const dispatch = useAppDispatch();
 
+  const { checked, users, loaded, type, title } = useAppSelector(selectCreatingRoom);
+
+  const isGroupChat = type === 'group';
+
+  const [photo, setPhoto] = useState<File | null>(null);
+
+  const { preview } = useAvatartPreview(photo);
   const onCheckHandler = (e: React.MouseEvent<HTMLDivElement>) => {
     e.stopPropagation();
     const item = e.currentTarget.querySelector(
@@ -35,7 +40,7 @@ export const useNewRoom = () => {
 
   const createRoomHandler = async () => {
     if (isGroupChat) {
-      dispatch(createRoom());
+      dispatch(createRoom(photo));
     } else {
       dispatch(addPrivateRoom(checked));
       dispatch(openNewRoom());
@@ -54,7 +59,6 @@ export const useNewRoom = () => {
     }
   };
 
-
   return useMemo(
     () => ({
       checked,
@@ -65,8 +69,10 @@ export const useNewRoom = () => {
       onRemoveUser,
       onCheckHandler,
       onChangeName,
-      title
+      title,
+      setPhoto,
+      preview
     }),
-    [checked, users, loaded, isGroupChat, title]
+    [checked, users, loaded, isGroupChat, title, preview]
   );
 };

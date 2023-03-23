@@ -9,11 +9,13 @@ export const useGroupTitleForm = ({ title, update }: Props) => {
   const [newTitle, setNewTitle] = useState(title);
 
   const onUpdate = () => {
-    if (title === newTitle.trim()) {
-      return;
+    const trimValue = newTitle.trim();
+
+    if (title === trimValue || !trimValue) {
+      return setNewTitle(title);
     }
 
-    update({ title: newTitle.trim() });
+    update({ title: trimValue });
   };
 
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {

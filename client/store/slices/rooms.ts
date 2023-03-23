@@ -110,9 +110,14 @@ export const roomsSlice = createSlice({
         };
       });
     },
-    updateRoomDetails(state, action: PayloadAction<Partial<Room>>) {
-      state.data = state.data.map(room =>
-        room.id === action.payload.id ? { ...room, ...action.payload } : room
+    updateRoomDetails(state, action: PayloadAction<Omit<Room, 'lastMessage' | 'unreadedMessagesCount'>>) {
+      const { id, photo, title } = action.payload;
+      state.data = state.data.map(room => {
+        if (room.id === id) {
+          return { ...room, image: photo, title }
+        }
+        return room;
+      }
       );
     },
     deleteRoom(state, action: PayloadAction<string>) {

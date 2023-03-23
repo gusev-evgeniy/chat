@@ -59,13 +59,13 @@ export const readedHandler =
   };
 
 export const createRoom =
-  () => async (dispatch: AppDispatch, getState: () => RootState) => {
+  (photo?: File | null) => async (dispatch: AppDispatch, getState: () => RootState) => {
     const {
       createRoom: { checked, title, type },
     } = getState();
     const users = checked.map(({ id, socketId }) => ({ id, socketId }));
 
-    socket.emit(EVENTS.ROOM.CREATE, { users, title, type }, (newRoom: Room) => {
+    socket.emit(EVENTS.ROOM.CREATE, { users, title, type, photo }, (newRoom: Room) => {
       dispatch(addNewRoom(newRoom));
       dispatch(selectRoom(newRoom.id));
       dispatch(createRoomsDefault());

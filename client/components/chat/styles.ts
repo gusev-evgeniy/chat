@@ -274,6 +274,16 @@ export const StyledSubmitIcon = styled(StyledInputButton)`
   bottom: 11px;
 `;
 
+export const SystemMessageWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  .avatar {
+    margin-bottom: 5px;
+  }
+`;
+
 export const StyledSystemMessage = styled.div`
   font-weight: 600;
   padding: 8px 20px;

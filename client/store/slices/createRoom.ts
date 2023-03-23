@@ -10,7 +10,6 @@ const initialState = {
   title: '',
   type: 'private',
   loaded: false,
-  ava: null as File | null
 };
 
 export type CreateRoomState = typeof initialState;
@@ -46,9 +45,6 @@ export const createRoomSlice = createSlice({
     updateTitle: (state, action: PayloadAction<{ title: string }>) => {
       state.title = action.payload.title;
     },
-    changeAva: (state, action: PayloadAction<File | null>) => {
-      state.ava = action.payload;
-    },
     createRoomsDefault: () => {
       return initialState;
     },
@@ -60,7 +56,6 @@ export const {
   checkUser,
   updateTitle,
   createRoomsDefault,
-  changeAva
 } = createRoomSlice.actions;
 
 export const createRoomReducer = createRoomSlice.reducer;

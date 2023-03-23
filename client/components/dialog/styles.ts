@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 import { SyledDefaultIconButton } from 'styles';
-import { COLORS } from 'styles/variables';
+import { BOX_SHADOW, COLORS } from 'styles/variables';
 import { StyledWrapper } from 'components/auth/styles';
 import { StyledInputButton } from 'components/chat/styles';
 
@@ -23,9 +23,9 @@ export const StyledVeil = styled.div`
   }
 `;
 
-export const StyledContainer = styled(StyledWrapper)<{width?: string}>`
+export const StyledContainer = styled(StyledWrapper)<{ width?: string }>`
   position: relative;
-  width: ${({ width }) => width ? width : '780px'};
+  width: ${({ width }) => (width ? width : '780px')};
 
   .group_form {
     width: fit-content;
@@ -48,6 +48,11 @@ export const StyledContainer = styled(StyledWrapper)<{width?: string}>`
       border: none;
       outline: none;
       text-align: center;
+      border-bottom: 1px solid #e3e3e3;
+
+      &:hover {
+        box-shadow: 0 4px 10px -2px rgba(31, 29, 29, 0.05);
+      }
     }
   }
 `;
@@ -66,20 +71,23 @@ export const CloseIconWrapper = styled(StyledInputButton)`
 export const CallButtons = styled.div`
   display: flex;
   width: 100%;
-  margin: 30px 0 10px 0; 
+  margin: 30px 0 10px 0;
   justify-content: center;
   cursor: pointer;
-`
+`;
 
-export const CallButton = styled(SyledDefaultIconButton)<{acceptBtn?: boolean}>`
+export const CallButton = styled(SyledDefaultIconButton)<{
+  acceptBtn?: boolean;
+}>`
   padding: 10px;
-  background-color:${({ acceptBtn }) => acceptBtn ? COLORS.GREEN : COLORS.RED};
+  background-color: ${({ acceptBtn }) =>
+    acceptBtn ? COLORS.GREEN : COLORS.RED};
   margin: 0 10px;
 
   &:hover {
-    transform: scale(1.1)
+    transform: scale(1.1);
   }
-`
+`;
 
 export const CallUser = styled.div`
   text-align: center;
@@ -93,35 +101,33 @@ export const CallUser = styled.div`
 
   .name {
     margin-top: 10px;
-    font-size:  1.4rem;
+    font-size: 1.4rem;
   }
-`
+`;
 
 export const VidoeContainer = styled.div`
-   width: 100%;
-   position: relative;
+  width: 100%;
+  position: relative;
 
-   .avatar {
+  .avatar {
     z-index: 1;
     position: absolute;
     right: 10px;
     top: 10px;
     opacity: 0.7;
-   }
+  }
 
-
-   .fullscreen_button {
+  .fullscreen_button {
     position: absolute;
-   }
-
-`
+  }
+`;
 
 export const CompanionVideo = styled.video`
   width: 100%;
-`
+`;
 
 export const MyVideo = styled.video`
   position: absolute;
   width: 25%;
   left: 0;
-`
+`;

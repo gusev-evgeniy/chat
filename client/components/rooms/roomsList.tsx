@@ -6,6 +6,7 @@ import { Room } from './item';
 import { Empty } from 'styles';
 import { selectRoom } from 'store/slices/rooms';
 import { returnTypingText } from 'utils/message';
+import { StyledWarning } from './styles';
 
 export const RoomsList: FC<{}> = () => {
   const dispatch = useAppDispatch();
@@ -16,11 +17,7 @@ export const RoomsList: FC<{}> = () => {
   }, []);
 
   if (!!filter && !rooms.length) {
-    return <Empty margin='96%'>Rooms not found</Empty>;
-  }
-
-  if (!rooms.length) {
-    return <Empty margin='96%'>Your rooms will be displayed here</Empty>;
+    return <StyledWarning>Rooms not found</StyledWarning>;
   }
 
   return (

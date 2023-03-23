@@ -65,19 +65,13 @@ export const createMessage = (roomId: string, data: NewMessage) => {
 };
 
 export const getLastMessageText = (message: Omit<Message, "author"> | null ) => {
-  if (!message) {
-    return '';
-  }
+  if (!message) return '';
 
-  const { attachment, media, text } = message;
+  const { attachment, media, text, isSystem } = message;
 
-  if (attachment) {
-    return attachment.name;
-  }
-
-  if (media) {
-    return 'Voice message'
-  }
+  if (isSystem) return text;
+  if (attachment) return attachment.name;
+  if (media) return 'Voice message'
 
   return text;
 }

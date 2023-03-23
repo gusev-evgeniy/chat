@@ -7,8 +7,9 @@ type Props = {
   update: (data: { photo?: File; title?: string }) => void;
 };
 
-export const TitleInput: FC<Props> = (props) => {
-  const { newTitle, onKeyHandler, onLeaveHandler, onSubmit, setNewTitle } = useGroupTitleForm(props);
+export const TitleInput: FC<Props> = props => {
+  const { newTitle, onKeyHandler, onLeaveHandler, onSubmit, setNewTitle } =
+    useGroupTitleForm(props);
 
   return (
     <div className='group_title'>

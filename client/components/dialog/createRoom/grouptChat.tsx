@@ -1,25 +1,17 @@
+import React from 'react';
+
 import { StyledButton } from 'components/auth/styles';
 import { AvatarInput } from 'components/avatar/input';
 import { DialogWrapper } from 'components/dialog/wrapper';
-import { useAvatartPreview } from 'hooks/useAvatartPreview';
-import React from 'react';
-import { useAppDispatch, useAppSelector } from 'store/hooks';
-import { selectCreatingRoom } from 'store/selectors';
-import { changeAva } from 'store/slices/createRoom';
 import { useNewRoom } from './search/useNewRoom';
+
 import { GroupChatForm, StyledGroupNameIntput } from './styles';
 
 const VALID_TYPES = ['image/png', 'image/jpg', 'image/jpeg'];
 const MAX_LENGTH = 20;
 
 export const GrouptChat = () => {
-  const dispatch = useAppDispatch();
-
-  const { onChangeName, createRoomHandler } = useNewRoom();
-
-  const { title, ava } = useAppSelector(selectCreatingRoom);
-
-  const { preview } = useAvatartPreview(ava);
+  const { onChangeName, createRoomHandler, setPhoto, title, preview } = useNewRoom();
 
   const onSelectFile = ({ target }: React.ChangeEvent<HTMLInputElement>) => {
     if (!target.files || target.files.length === 0) {
@@ -27,11 +19,10 @@ export const GrouptChat = () => {
     }
 
     if (!VALID_TYPES.includes(target.files[0].type)) {
-      dispatch(changeAva(null));
-      return;
+      return setPhoto(null);
     }
 
-    dispatch(changeAva(target.files[0]));
+    setPhoto(target.files[0])
   };
 
   const groupNameLength = title.length;

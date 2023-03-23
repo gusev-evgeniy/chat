@@ -7,8 +7,8 @@ export const prepareImage = (req: Request) => {
   if (!req.file) {
     return;
   }
-  
-  const url = req.protocol + '://' + req.get('host');
+
+  const url = 'http://' + req.get('host');
   const filePath = req.file.path;
   const fileName = uuidv4() + '-' + req.file?.filename.replace('.png', '.jpeg');
 

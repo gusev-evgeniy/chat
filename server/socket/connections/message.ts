@@ -29,8 +29,6 @@ type NewMessage = {
   data: Data;
 };
 
-const BASE_URL = 'http://localhost:5050';
-
 export default async (io: Server, socket: MySocket) => {
   const createMessage = async ({ roomId, data }: NewMessage) => {
     try {
@@ -52,7 +50,7 @@ export default async (io: Server, socket: MySocket) => {
         const filePath = '/static' + '/' + uuidv4();
         const mediaSrc = path.join(process.cwd() + filePath);
         writeFileSync(mediaSrc, media);
-        newMessageInfo.media = BASE_URL + filePath;
+        newMessageInfo.media ='http://' + socket.handshake.headers.host + filePath;
       }
 
       //add transaction

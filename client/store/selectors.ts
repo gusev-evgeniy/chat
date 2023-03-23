@@ -6,7 +6,6 @@ import { createOnlineSubstring } from 'utils/room';
 
 import { RootState } from 'store';
 import { RoomMessages } from 'types/room';
-import { Rooms } from './slices/rooms';
 
 export const selectRooms = (state: RootState) => state.rooms;
 export const selectMessages = (state: RootState) => state.messages;

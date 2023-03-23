@@ -142,5 +142,17 @@ export const StyledSearchInput = styled(StyledTextInput)`
   padding: 6px 45px 6px 15px;
   text-overflow: ellipsis;
   font-size: 20px;
-  background-color: ${COLORS.INPUT_BG};;
+  background-color: ${COLORS.INPUT_BG}; ;
+`;
+
+export const StyledWarning = styled.div`
+  width: 100%;
+  padding: 5px;
+  display: flex;
+  text-align: center;
+  border-bottom: 1px solid #e3e3e3;
+  background-color: ${COLORS.INPUT_BG};
+  justify-content: center;
+  font-size: 1rem;
+  color: #7c7c7c;
 `;
