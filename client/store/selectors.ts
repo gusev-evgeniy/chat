@@ -8,16 +8,17 @@ import { RootState } from 'store';
 import { RoomMessages } from 'types/room';
 
 export const selectRooms = (state: RootState) => state.rooms;
-export const selectMessages = (state: RootState) => state.messages;
+export const selectMessages = (state: RootState) => state.messages.data;
 export const selectMyData = (state: RootState) => state.user.data;
 export const selectCreatingRoom = (state: RootState) => state.createRoom;
 export const selectSideMenu = (state: RootState) => state.sideMenu;
 export const selectDialogName = (state: RootState) => state.dialog.name;
+export const selectDraft = (state: RootState) => state.draft;
 
 export const getChatData = createSelector(
   selectRooms,
   selectMessages,
-  ({ data: rooms, selected }, { data }) => {
+  ({ data: rooms, selected }, data) => {
     const openRoom = rooms.find(({ id }) => id === selected);
     const {
       messages = [],
@@ -58,7 +59,7 @@ export const getRoomsInfo = createSelector(
 export const getHeaderInfo = createSelector(
   selectRooms,
   selectMyData,
-  ({ selected, data, newPrivateRoom }, myData ) => {
+  ({ selected, data, newPrivateRoom }, myData) => {
     const isNewRoom = selected === NEW_ROOM;
 
     const selectedRoom = isNewRoom
@@ -129,5 +130,14 @@ export const getSecetRoom = createSelector(
       title,
       isGroupChat,
     };
+  }
+);
+
+export const getDraft = createSelector(
+  selectDraft,
+  selectRooms,
+  ({ data }, { selected }) => {
+
+    return selected ? data[selected] : undefined;
   }
 );

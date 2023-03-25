@@ -1,4 +1,4 @@
-import { Search } from 'components/dialog/createRoom/search';
+import { Search } from 'components/dialogs/createRoom/search';
 import React, { useEffect, useState } from 'react';
 import { useAppDispatch } from 'store/hooks';
 import { createRoomsDefault } from 'store/slices/createRoom';

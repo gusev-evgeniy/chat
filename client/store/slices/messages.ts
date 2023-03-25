@@ -1,8 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-import { Message, MessagesResponse, RoomsTyping, Typing } from 'types/messages';
-import { MessageData, RoomsResponse } from 'types/room';
-import { setRoomsData } from './rooms';
+import { Message, MessagesResponse } from 'types/messages';
+import { MessageData } from 'types/room';
 
 const initialState = {
   data: {} as MessageData,
@@ -45,6 +44,7 @@ export const messagesSlice = createSlice({
         }));
       }
     },
+
   },
   // extraReducers: builder => {
   //   builder.addCase(
@@ -60,7 +60,10 @@ export const messagesSlice = createSlice({
   // },
 });
 
-export const { setMessagesData, addMessage, setAllReadedMessages } =
-  messagesSlice.actions;
+export const {
+  setMessagesData,
+  addMessage,
+  setAllReadedMessages,
+} = messagesSlice.actions;
 
 export const messagesReducer = messagesSlice.reducer;

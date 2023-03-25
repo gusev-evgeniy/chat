@@ -7,7 +7,7 @@ import { CheckedList } from './checkedList';
 import { useNewRoom } from './useNewRoom';
 
 import { StyledSearchUserWrapper } from '../styles';
-import { DialogWrapper } from 'components/dialog/wrapper';
+import { DialogWrapper } from 'components/dialogs/wrapper';
 
 type Props = {
   nextStep: () => void;

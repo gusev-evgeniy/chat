@@ -103,7 +103,7 @@ export const StyledDraggingWrapper = styled.div`
 `;
 
 export const StyledChatHeader = styled.div`
-  height: 65px;
+  height: 57px;
   border-bottom: 1px solid #e3e3e3;
   padding: 15px 25px;
   display: flex;
@@ -303,7 +303,7 @@ export const StyledSystemMessage = styled.div`
 `;
 
 export const StyledSubstring = styled.p`
-  font-size: 1rem;
+  font-size: 0.9rem;
   opacity: 0.5;
 `;
 
@@ -375,4 +375,10 @@ export const StyledBar = styled.div<{ curPercentage: number }>`
       left: ${({ curPercentage }) => `${curPercentage - 2}%`};
     }
   }
+`;
+
+export const EmojiWrapper = styled.div`
+  position: absolute;
+  right: 10px;
+  bottom: 69px;
 `;

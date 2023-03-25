@@ -1,6 +1,10 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-type DialogType = 'GROUP_INFO' | 'CALL' | 'CREATE_ROOM' | 'CALL_OFFER';
+type DialogType =
+  | 'GROUP_INFO'
+  | 'CALL'
+  | 'CREATE_ROOM'
+  | 'CALL_OFFER'
 
 const initialState = {
   name: null as DialogType | null,

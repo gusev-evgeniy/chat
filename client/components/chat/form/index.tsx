@@ -21,11 +21,21 @@ import {
 } from '../styles';
 import { useRecord } from './useRecord';
 import { RecordForm } from './recordForm';
+import { Emoji } from './emoji';
 
 export const Form: FC<{}> = memo(() => {
   const dispatch = useAppDispatch();
 
-  const { message, onChangeHandler, onSubmitMessage } = useMessageForm();
+  const {
+    message,
+    onChangeHandler,
+    onSubmitMessage,
+    isEmojiOpen,
+    rextareaRef,
+    toggleEmoji,
+    pickEmoji,
+    closeEmoji,
+  } = useMessageForm();
 
   const { isRecording, onRecord, stop, submit } = useRecord();
 
@@ -35,6 +45,7 @@ export const Form: FC<{}> = memo(() => {
       return;
     }
 
+    closeEmoji();
     dispatch(uploadFile(files[0]));
   };
 
@@ -48,38 +59,42 @@ export const Form: FC<{}> = memo(() => {
   const canSubmit = message.trim().length > 0;
 
   if (isRecording) {
-    return <RecordForm submit={submit} cancel={stop}/>;
+    return <RecordForm submit={submit} cancel={stop} />;
   }
 
   return (
-    <StyledMessageForm onSubmit={onSubmitMessage}>
-      <StyledTextareaAutosize
-        placeholder='Write a message...'
-        onKeyDown={handleKeyDown}
-        onChange={onChangeHandler}
-        value={message}
-      />
+    <>
+      {isEmojiOpen && <Emoji pickEmoji={pickEmoji} />}
 
-      <AttachIcon htmlFor='attach'>
-        <Image width='30px' height='30px' src={attach} alt='attach file' />
-        <input id='attach' type='file' onChange={onAttachFile} hidden />
-      </AttachIcon>
+      <StyledMessageForm onSubmit={onSubmitMessage}>
+        <StyledTextareaAutosize
+          placeholder='Write a message...'
+          onKeyDown={handleKeyDown}
+          onChange={onChangeHandler}
+          value={message}
+          ref={rextareaRef}
+        />
 
-      <SmileIcon htmlFor='smile'>
-        <Image width='30px' height='30px' src={smile} alt='smile' />
-        <input id='smile' type='file' onChange={onAttachFile} hidden />
-      </SmileIcon>
+        <AttachIcon htmlFor='attach' onClick={() => closeEmoji()}>
+          <Image width='30px' height='30px' src={attach} alt='attach file' />
+          <input id='attach' type='file' onChange={onAttachFile} hidden />
+        </AttachIcon>
 
-      {canSubmit ? (
-        <StyledSubmitIcon disabled={!canSubmit}>
-          <Image width='30px' height='30px' src={send} alt='send' />
-        </StyledSubmitIcon>
-      ) : (
-        <MicIcon onClick={onRecord}>
-          <Image width='30px' height='30px' src={mic} alt='mic' />
-        </MicIcon>
-      )}
-    </StyledMessageForm>
+        <SmileIcon htmlFor='smile' onClick={toggleEmoji}>
+          <Image width='30px' height='30px' src={smile} alt='smile' />
+        </SmileIcon>
+
+        {canSubmit ? (
+          <StyledSubmitIcon disabled={!canSubmit}>
+            <Image width='30px' height='30px' src={send} alt='send' />
+          </StyledSubmitIcon>
+        ) : (
+          <MicIcon onClick={onRecord}>
+            <Image width='30px' height='30px' src={mic} alt='mic' />
+          </MicIcon>
+        )}
+      </StyledMessageForm>
+    </>
   );
 });
 

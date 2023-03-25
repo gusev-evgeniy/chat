@@ -11,11 +11,12 @@ export const StyledRooms = styled.div<{ fullWidth: boolean }>`
   position: relative;
 
   .header {
-    padding: 10px 12px;
+    padding: 7px 12px;
     border-bottom: 1px solid #e3e3e3;
     display: flex;
     align-items: center;
     justify-content: space-between;
+    height: 58px;
 
     .add_chat {
       cursor: pointer;
@@ -39,8 +40,8 @@ export const StyledRooms = styled.div<{ fullWidth: boolean }>`
   }
 
   .rooms_wrapper {
-    min-height: calc(100% - 124px);
-    max-height: calc(100% - 124px);
+    min-height: calc(100% - 117px);
+    max-height: calc(100% - 117px);
     overflow: auto;
     flex: 1;
   }
@@ -77,7 +78,7 @@ export const StyledRooms = styled.div<{ fullWidth: boolean }>`
 export const StyledRoom = styled.div<{ selected: boolean }>`
   display: flex;
   align-items: center;
-  padding: 13px 15px;
+  padding: 10px 12px;
   cursor: pointer;
   background-color: ${({ selected }) => selected && COLORS.OPACITY_GRAY};
 

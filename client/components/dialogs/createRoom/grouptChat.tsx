@@ -2,7 +2,7 @@ import React from 'react';
 
 import { StyledButton } from 'components/auth/styles';
 import { AvatarInput } from 'components/avatar/input';
-import { DialogWrapper } from 'components/dialog/wrapper';
+import { DialogWrapper } from 'components/dialogs/wrapper';
 import { useNewRoom } from './search/useNewRoom';
 
 import { GroupChatForm, StyledGroupNameIntput } from './styles';

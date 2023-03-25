@@ -1,7 +1,10 @@
-import { useRef, useState } from 'react';
+import { useRef } from 'react';
+import { updateDraft } from 'store/actions/draft';
 
 import { createMessageOrPrivateRoom } from 'store/actions/messages';
-import { useAppDispatch } from 'store/hooks';
+import { useAppDispatch, useAppSelector } from 'store/hooks';
+import { getDraft } from 'store/selectors';
+import { useEmoji } from './useEmoji';
 
 import { useTyping } from './useTyping';
 
@@ -9,14 +12,15 @@ export const useMessageForm = () => {
   const dispatch = useAppDispatch();
 
   const { clearTyping, onPress } = useTyping();
-
-  const [message, setMessage] = useState('');
+  const emoji = useEmoji();
+  
+  const message = useAppSelector(getDraft) || '';
 
   const typingTimeoutRef = useRef<NodeJS.Timeout | undefined>();
 
   const onChangeHandler = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     onPress();
-    setMessage(e.target.value);
+    dispatch(updateDraft(e.target.value));
   };
 
   const scrollToNewMessage = () => {
@@ -31,14 +35,15 @@ export const useMessageForm = () => {
     const data = { message: message.trim() };
 
     dispatch(createMessageOrPrivateRoom(data));
-
-    setMessage('');
+    emoji.closeEmoji();
+    dispatch(updateDraft(''));
     clearInterval(typingTimeoutRef.current);
     clearTyping();
     scrollToNewMessage();
   };
 
   return {
+    ...emoji,
     onSubmitMessage,
     onChangeHandler,
     message,

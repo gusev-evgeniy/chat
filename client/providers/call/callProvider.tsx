@@ -2,7 +2,6 @@ import {
   createContext,
   FC,
   useContext,
-  useMemo,
   useEffect,
   useReducer,
 } from 'react';
@@ -139,18 +138,15 @@ export const CallProvider: FC<{ children: React.ReactElement }> = ({
     callUser(roomId as string);
   };
 
-  const value = useMemo(
-    () => ({
-      myStream,
-      leaveCall,
-      answerCall,
-      setCallData,
-      companion,
-      companionStream,
-      isGetCall,
-    }),
-    [myStream, companionStream, companion, isGetCall]
-  );
+  const value = {
+    myStream,
+    leaveCall,
+    answerCall,
+    setCallData,
+    companion,
+    companionStream,
+    isGetCall,
+  };
 
   return <CallContext.Provider value={value}>{children}</CallContext.Provider>;
 };

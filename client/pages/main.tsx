@@ -13,7 +13,7 @@ import { useMediaQuery } from 'hooks/useMediaQuery';
 
 import { Rooms } from 'components/rooms';
 import { ChatWrapper } from 'components/chat/chatWrapper';
-import { Dialog } from 'components/dialog';
+import { Dialog } from 'components/dialogs';
 import { SideMenu } from 'components/sideMenu';
 
 import { WIDTH } from 'styles/variables';
