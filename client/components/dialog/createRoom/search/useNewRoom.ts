@@ -3,10 +3,11 @@ import React, { useMemo, useState } from 'react';
 
 import { createRoom, openNewRoom } from 'store/actions';
 import { useAppDispatch, useAppSelector } from 'store/hooks';
-import { selectCreatingRoom } from 'store/selectors';
+import { selectCreatingRoom, selectSideMenu } from 'store/selectors';
 import { checkUser, updateTitle } from 'store/slices/createRoom';
 import { openDialog } from 'store/slices/dialog';
 import { addPrivateRoom } from 'store/slices/rooms';
+import { openSideMenu } from 'store/slices/sideMenu';
 
 const MAX_LENGTH = 20;
 
@@ -14,12 +15,14 @@ export const useNewRoom = () => {
   const dispatch = useAppDispatch();
 
   const { checked, users, loaded, type, title } = useAppSelector(selectCreatingRoom);
+  const { isOpen: isSideMenuOpen } = useAppSelector(selectSideMenu);
 
   const isGroupChat = type === 'group';
 
   const [photo, setPhoto] = useState<File | null>(null);
 
   const { preview } = useAvatartPreview(photo);
+
   const onCheckHandler = (e: React.MouseEvent<HTMLDivElement>) => {
     e.stopPropagation();
     const item = e.currentTarget.querySelector(
@@ -44,6 +47,10 @@ export const useNewRoom = () => {
     } else {
       dispatch(addPrivateRoom(checked));
       dispatch(openNewRoom());
+    }
+
+    if (isSideMenuOpen) {
+      dispatch(openSideMenu());
     }
 
     dispatch(openDialog(null));

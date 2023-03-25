@@ -16,6 +16,7 @@ export const StyledWrapper = styled.div<{ padding?: string }>`
   align-items: center;
   flex-direction: column;
   padding: ${({ padding }) => padding && `${padding}`};
+  position: relative;
 
   h3 {
     margin-bottom: 35px;
@@ -51,7 +52,7 @@ export const StyledWrapper = styled.div<{ padding?: string }>`
     font-size: 26px;
     border: 1px solid #e3e3e3;
     border-radius: 20px;
-    margin-bottom: 32px;
+    margin: 32px 0;
 
     :focus {
       outline: 1px solid #dad6ca;
@@ -134,4 +135,18 @@ export const AlertMessage = styled.p`
   transition: all 0.2s ease-in-out;
   margin-top: 30px;
   font-size: 1.4rem;
+`;
+
+export const LoginWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  width: 350px;
+  position: relative;
+`;
+
+export const BackButon = styled.div`
+  position: absolute;
+  top: 15px;
+  left: 15px;
 `;

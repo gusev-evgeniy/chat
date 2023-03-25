@@ -20,27 +20,30 @@ import { WIDTH } from 'styles/variables';
 export const Header: FC<{}> = memo(() => {
   const matches = useMediaQuery(`(max-width: ${WIDTH.MEDIUM})`);
   const { setCallData } = useCall();
-  const { title, type, isNewRoom, privateUser, selected } = useAppSelector(getHeaderInfo);
+  const { title, type, isNewRoom, privateUser, selected } =
+    useAppSelector(getHeaderInfo);
 
   const onCallHandler = () => {
-    if (privateUser) setCallData(privateUser, selected)
+    if (privateUser) setCallData(privateUser, selected);
   };
 
   return (
     <StyledChatHeader>
       {matches && <SideMenuIcon />}
 
-      <div>
-        <p className='title'>{title}</p>
-        <UserInfo />
-      </div>
+      <div className='header_wrapper'>
+        <div>
+          <p className='title'>{title}</p>
+          <UserInfo />
+        </div>
 
-      <div className='icons'>
-        {!isNewRoom && type === 'private' && (
-          <StyledIconButton onClick={onCallHandler}>
-            <Image width='30px' height='30px' src={call_icon} alt='call' />
-          </StyledIconButton>
-        )}
+        <div className='icons'>
+          {!isNewRoom && type === 'private' && (
+            <StyledIconButton onClick={onCallHandler}>
+              <Image width='30px' height='30px' src={call_icon} alt='call' />
+            </StyledIconButton>
+          )}
+        </div>
       </div>
     </StyledChatHeader>
   );

@@ -40,7 +40,7 @@ export const LoginForm: FC<Props> = ({
           onChange={changeData}
         />
 
-        <StyledButton width='160px' height='48px' disabled={disabled}>
+        <StyledButton width='160px' height='43px' disabled={disabled}>
           Next
           <span className='arrow'>&rarr;</span>
         </StyledButton>

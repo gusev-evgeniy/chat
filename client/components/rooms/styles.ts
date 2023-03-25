@@ -7,6 +7,7 @@ export const StyledRooms = styled.div<{ fullWidth: boolean }>`
   height: 100vh;
   width: ${({ fullWidth }) => (fullWidth ? '100%' : '30%')};
   border-right: ${({ fullWidth }) => !fullWidth && '1px solid #e3e3e3'};
+  min-width: 300px;
   position: relative;
 
   .header {
@@ -60,7 +61,7 @@ export const StyledRooms = styled.div<{ fullWidth: boolean }>`
 
       p {
         font-weight: 700;
-        font-size: 1.2rem;
+        font-size: 1.1rem;
         margin-left: 15px;
       }
     }

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { createContext, FC, useContext, useState } from 'react';
 
 import { UserAPI } from 'api/user';
 
@@ -7,7 +7,15 @@ import { setUserData } from 'store/slices/user';
 
 import { UserData } from 'components/auth/types';
 
-export const useAuth = () => {
+type AuthContextType = {};
+
+export const AuthContext = createContext({} as AuthContextType);
+
+export const AuthProvider: FC<{ children: React.ReactElement }> = ({
+  children,
+}) => {
+  const dispatch = useAppDispatch();
+
   const [num, setNum] = useState(1);
   const [data, setData] = useState<UserData>({
     name: '',
@@ -15,13 +23,11 @@ export const useAuth = () => {
     photo: null,
   });
 
-  const dispatch = useAppDispatch();
-
   const changeData = (changed: Partial<UserData>) => {
     setData(prev => ({ ...prev, ...changed }));
   };
 
-  const submitHandler = async () => {
+  const onSubmit = async () => {
     const formData = new FormData();
 
     Object.entries(data).forEach(
@@ -36,11 +42,15 @@ export const useAuth = () => {
     setNum(prev => prev + num);
   };
 
-  return {
+  const value = {
     data,
-    submitHandler,
+    onSubmit,
     changeData,
     changePage,
     num,
   };
+
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };
+
+export const useAuth = () => useContext(AuthContext);

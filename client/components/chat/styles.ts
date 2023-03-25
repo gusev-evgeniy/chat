@@ -107,21 +107,29 @@ export const StyledChatHeader = styled.div`
   border-bottom: 1px solid #e3e3e3;
   padding: 15px 25px;
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-start;
   width: 100%;
   align-items: center;
   background-color: #fff;
 
-  .title {
-    font-size: 1.5rem;
-    font-weight: 700;
+  .header_wrapper {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    align-items: center;
+
+    .title {
+      font-size: 1.4rem;
+      font-weight: 700;
+    }
+  
+    .online {
+      color: ${COLORS.BLUE};
+      font-weight: 600;
+      font-size: 0.9rem;
+    }
   }
 
-  .online {
-    color: ${COLORS.BLUE};
-    font-weight: 600;
-    font-size: 1rem;
-  }
 `;
 
 export const StyledChatItem = styled.div<{ my?: boolean; isLast?: boolean }>`
@@ -291,7 +299,7 @@ export const StyledSystemMessage = styled.div`
   background-color: ${COLORS.GREY};
   max-width: 80%;
   margin: 0 auto 15px auto;
-  font-size: 1.2rem;
+  font-size: 1.1rem;
 `;
 
 export const StyledSubstring = styled.p`

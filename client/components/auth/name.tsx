@@ -6,16 +6,20 @@ import { useAuthUserForm } from './useAuthUserForm';
 
 import {
   AlertMessage,
+  BackButon,
   StyledAdvises,
   StyledButton,
   StyledWrapper,
 } from './styles';
 import { StyledForm } from 'styles';
 
-import { Auth } from './types';
+import arrow_back from 'images/arrow_back.svg';
 
-export const Name: FC<Auth> = props => {
-  const { data, changeData } = props
+import { AuthName } from './types';
+import Image from 'next/image';
+
+export const Name: FC<AuthName> = props => {
+  const { data, changeData, changePage } = props;
   const { name, photo } = data;
 
   const { preview } = useAvatartPreview(photo);
@@ -32,6 +36,10 @@ export const Name: FC<Auth> = props => {
         <span>and upload your photo</span>
       </StyledAdvises>
       <StyledWrapper padding={'5vh'}>
+        <BackButon onClick={() => changePage(-1)}>
+          <Image width='30px' height='30px' src={arrow_back} alt='back' />
+        </BackButon>
+
         <StyledForm onSubmit={onSubmit}>
           <div className='user_data'>
             <AvatarInput
@@ -48,7 +56,8 @@ export const Name: FC<Auth> = props => {
             onChange={onKeyChange}
             autoFocus
           />
-          <StyledButton width='160px' height='48px' disabled={!name.length}>
+
+          <StyledButton width='160px' height='43px' disabled={!name.length}>
             Next
             <span className='arrow'>&rarr;</span>
           </StyledButton>

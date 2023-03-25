@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 
 import { Form } from './form';
-import { Header } from '../header';
+import { Header } from './header';
 import { useChat } from './useChat';
 import { Messages } from './messages';
 import { DraggingArea } from './dragArea';

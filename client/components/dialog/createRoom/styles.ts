@@ -66,8 +66,8 @@ export const StyledCreateRoom = styled.div`
 
 export const StyledGroupNameIntput = styled(StyledTextInput)`
   width: 100%;
-  padding: 10px 60px 10px 15px;
-  font-size: 1.5rem;
+  padding: 7px 60px 7px 15px;
+  font-size: 1.3rem;
   text-overflow: ellipsis;
 `;
 
@@ -123,7 +123,7 @@ export const StyledUsers = styled(StyledWrapper)`
 
   .users_container {
     width: inherit;
-    max-height: 400px;
+    max-height: 360px;
     overflow: auto;
     border-bottom: 1px solid #e3e3e3;
     border-top: 1px solid #e3e3e3;
@@ -143,13 +143,14 @@ export const StyledCheckedItem = styled.div`
   align-items: center;
   display: flex;
   cursor: pointer;
-  font-size: 1.2rem;
+  font-size: 0.9rem;
   margin: 3px;
-  height: 40px;
+  height: 30px;
+  text-align: center;
 
-  .name {
+  /* .name {
     margin-right: 10px;
-  }
+  } */
 
   :hover {
     background-color: #e5e5e5;

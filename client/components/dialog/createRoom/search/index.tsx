@@ -42,7 +42,7 @@ export const Search: FC<Props> = ({ nextStep }) => {
         <div className='buttons'>
           <StyledButton
             width='160px'
-            height='48px'
+            height='43px'
             disabled={!checked.length}
             onClick={isGroupChat ? nextStep : createRoomHandler}>
             {isGroupChat ? (

@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router';
 import React from 'react';
 
-import { AlertMessage, StyledAdvises } from 'components/auth/styles';
+import { AlertMessage, LoginWrapper, StyledAdvises } from 'components/auth/styles';
 import { LoginForm } from 'components/login/form';
 
 import { useAuthGuard } from 'hooks/useAuthGuard';
@@ -17,7 +17,7 @@ const Login = () => {
   return (
     <main className='center'>
       {' '}
-      <div>
+      <LoginWrapper>
         <StyledAdvises>
           <p className='bold'>Please enter user name and password</p>
           <p>
@@ -36,7 +36,7 @@ const Login = () => {
         />
 
         {!!errorText && <AlertMessage>{errorText}</AlertMessage>}
-      </div>
+      </LoginWrapper>
     </main>
   );
 };

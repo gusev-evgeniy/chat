@@ -6,10 +6,10 @@ export const COLORS = {
   DISABLED_GRAY: '#dad6ca',
   OPACITY_GRAY: 'rgba(227, 227, 227, 0.6)',
   INPUT_BG: '#f6f7f8',
-};
+} as const;
 
 export const WIDTH = {
   MEDIUM: '768px',
-};
+} as const;
 
-export const BOX_SHADOW = `0 0 10px 0px rgba(31, 29, 29, 0.05)`;
+export const BOX_SHADOW = `0 0 10px 0px rgba(31, 29, 29, 0.05)` as const;

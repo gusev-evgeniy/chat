@@ -23,7 +23,7 @@ export const StyledSideMenuIcon = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-right: 10px;
+  margin-right: 25px;
   border-radius: 100%;
   cursor: pointer;
 

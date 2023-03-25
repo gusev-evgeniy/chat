@@ -54,7 +54,7 @@ export const GrouptChat = () => {
           <div className='buttons'>
             <StyledButton
               width='160px'
-              height='48px'
+              height='43px'
               disabled={groupNameLength === 0}
               onClick={createRoomHandler}>
               Create Room

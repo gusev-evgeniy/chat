@@ -39,11 +39,11 @@ export const StyledContainer = styled(StyledWrapper)<{ width?: string }>`
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 1.5rem;
+    font-size: 1.4rem;
     font-weight: 600;
 
     input {
-      font-size: 1.5rem;
+      font-size: 1.4rem;
       font-weight: 600;
       border: none;
       outline: none;

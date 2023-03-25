@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react';
 import { UserAPI } from 'api/user';
-import { Auth } from './types';
+import { AuthName } from './types';
 
 const VALID_TYPES = ['image/png', 'image/jpg', 'image/jpeg'];
 const TEXT_ERROR = `
@@ -8,14 +8,14 @@ Invalid file type.
 Please select .jpg, .jpeg or .png file. 
 `;
 
-export const useAuthUserForm = ({ nextPage, changeData, data }: Auth) => {
+export const useAuthUserForm = ({ changePage, changeData, data }: AuthName) => {
   const [errorText, setErrorText] = useState('');
 
   const onSelectFile = ({ target }: React.ChangeEvent<HTMLInputElement>) => {
     if (!target.files || target.files.length === 0) {
       return;
     }
-    
+
     if (!VALID_TYPES.includes(target.files[0].type)) {
       setErrorText(TEXT_ERROR);
       changeData({ photo: undefined });
@@ -30,7 +30,7 @@ export const useAuthUserForm = ({ nextPage, changeData, data }: Auth) => {
     e.preventDefault();
     try {
       await UserAPI.checkName(data.name);
-      nextPage();
+      changePage(1);
     } catch (error: any) {
       setErrorText(error.response.data?.message as string);
     }

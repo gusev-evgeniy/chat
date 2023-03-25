@@ -35,7 +35,7 @@ export const StyledTextInput = styled.input`
 export const Empty = styled.div<{ margin?: string }>`
   margin: ${({ margin }) => (margin ? `${margin} auto` : `50% auto`)};
   transform: ${({ margin }) => !margin && `translateY(-50%)`};
-  font-size: 1.2rem;
+  font-size: 1.1rem;
   color: #7c7c7c;
   text-align: center;
   /* height: 100vh;
@@ -69,7 +69,7 @@ export const StyledSearchUserItem = styled.div<{ check?: boolean }>`
   display: flex;
   justify-content: space-between;
   width: 100%;
-  padding: 15px;
+  padding: 10px;
   align-items: center;
   cursor: ${({ check }) => check && 'pointer'};
 
@@ -80,6 +80,7 @@ export const StyledSearchUserItem = styled.div<{ check?: boolean }>`
     p {
       margin-left: 15px;
       font-size: 1.3rem;
+      font-weight: 600;
     }
   }
 `;

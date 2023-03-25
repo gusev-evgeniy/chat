@@ -1,7 +1,14 @@
-export type Auth = {
-  nextPage: () => void;
+type Auth = {
   data: UserData;
   changeData: (data: Partial<UserData>) => void;
+};
+
+export type AuthName = Auth & {
+  changePage: (num: 1 | -1) => void;
+};
+
+export type AuthPassword = Auth & {
+  submitHandler: () => void;
 };
 
 export type UserData = {

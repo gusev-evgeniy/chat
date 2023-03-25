@@ -1,8 +1,8 @@
 import Message from '../entities/message';
-import Room from '../entities/room';
+import { updateRoomLastMessage } from './room';
 
 export const createSystemMessage = async (text: string, roomId: string, media?: string ) => {
-  return await Message.create({
+  const message = await Message.create({
     text,
     room: { id: roomId },
     roomId,
@@ -10,6 +10,9 @@ export const createSystemMessage = async (text: string, roomId: string, media?: 
     readed: true,
     media,
   }).save();
+
+  await updateRoomLastMessage(message, roomId);
+  return message;
 };
 
 export const readMessagesQuary = async (author: string, roomId: string) => {

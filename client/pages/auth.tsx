@@ -1,5 +1,4 @@
 import axios from 'axios';
-import { useState } from 'react';
 
 import { wrapper } from 'store';
 import { setUserData } from 'store/slices/user';
@@ -13,16 +12,18 @@ import { Welcome } from 'components/auth/welcome';
 
 const Auth = () => {
   useAuthGuard();
-  const { changeData, data, onSubmit } = useAuth();
-
-  const [num, setNum] = useState(1);
-
-  const nextPage = () => setNum(prev => ++prev);
+  const { changeData, data, submitHandler, changePage, num } = useAuth();
 
   const pages = {
-    1: <Welcome nextPage={nextPage} />,
-    2: <Name nextPage={nextPage} data={data} changeData={changeData} />,
-    3: <Password nextPage={onSubmit} data={data} changeData={changeData} />,
+    1: <Welcome changePage={changePage} />,
+    2: <Name changePage={changePage} data={data} changeData={changeData} />,
+    3: (
+      <Password
+        submitHandler={submitHandler}
+        data={data}
+        changeData={changeData}
+      />
+    ),
   };
 
   return <main className='center'>{pages[num as keyof typeof pages]}</main>;

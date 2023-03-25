@@ -22,7 +22,7 @@ export const CheckedList: FC<Props> = ({ checked, onRemoveUser }) => {
           <span className='name'>{checkedUser.name}</span>
 
 
-          <Image width='20px' height='20px' src={close} alt='close' />
+          {/* <Image width='20px' height='20px' src={close} alt='close' /> */}
         </StyledCheckedItem>
       ))}
     </div>

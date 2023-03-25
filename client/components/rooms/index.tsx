@@ -33,7 +33,7 @@ export const Rooms: FC<Props> = memo(({ isSideMenu = false }) => {
       <RoomsHeader value={filter} />
 
       <div className='rooms_wrapper'>
-        <RoomsList />
+        <RoomsList isSideMenu={isSideMenu}/>
       </div>
 
       <div className='footer'>

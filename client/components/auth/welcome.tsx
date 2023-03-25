@@ -4,10 +4,10 @@ import { FC } from 'react';
 import { StyledButton, StyledWrapper } from './styles';
 
 type Props = {
-  nextPage: () => void;
+  changePage: (num: 1 | -1 ) => void;
 };
 
-export const Welcome: FC<Props> = ({ nextPage }) => {
+export const Welcome: FC<Props> = ({ changePage }) => {
   const router = useRouter();
 
   return (
@@ -19,7 +19,7 @@ export const Welcome: FC<Props> = ({ nextPage }) => {
         make sure nothing breaks{' '}
       </div>
       <div>
-        <StyledButton width='230px' height='48px' onClick={nextPage}>
+        <StyledButton width='230px' height='43px' onClick={() => changePage(1)}>
           Create user
         </StyledButton>
         <p className='sign_in' onClick={() => router.push('/login')}>
