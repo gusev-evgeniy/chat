@@ -2,7 +2,7 @@ import { socket } from 'api/socket';
 
 import { EVENTS, NEW_ROOM } from 'utils/constants';
 
-import { addMessage, setAllReadedMessages } from 'store/slices/messages';
+import { addNewMessage, setAllReadedMessages } from 'store/slices/room';
 import {
   selectRoom,
   setUnreadedCount,
@@ -29,7 +29,7 @@ export const newMessageHandler =
       ...message,
       isMy: message.authorId === user.data?.id,
     };
-    dispatch(addMessage(extendedMessage));
+    dispatch(addNewMessage(extendedMessage));
     dispatch(
       updateLastMessage({
         ...extendedMessage,

@@ -1,5 +1,4 @@
 import { Entity, Column, BeforeInsert, JoinColumn, OneToMany, CreateDateColumn } from 'typeorm';
-import { Exclude } from 'class-transformer';
 import bcrypt from 'bcrypt';
 
 import Base from '.';
@@ -12,8 +11,7 @@ export default class User extends Base {
   @Column({ unique: true })
   name: string;
 
-  @Exclude()
-  @Column()
+  @Column({select: false})
   password: string;
 
   @Column({ nullable: true })
@@ -50,4 +48,5 @@ export default class User extends Base {
   async hashPassword() {
     this.password = await bcrypt.hash(this.password, 6);
   }
+
 }

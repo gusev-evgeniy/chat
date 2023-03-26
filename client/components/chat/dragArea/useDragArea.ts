@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react';
-import { uploadFile } from 'store/actions/messages';
+import { uploadFile } from 'store/actions/room';
 import { useAppDispatch } from 'store/hooks';
 
 export const useDragArea = () => {

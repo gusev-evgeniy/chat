@@ -8,7 +8,7 @@ import { RootState } from 'store';
 import { RoomMessages } from 'types/room';
 
 export const selectRooms = (state: RootState) => state.rooms;
-export const selectMessages = (state: RootState) => state.messages.data;
+export const selectRoomData = (state: RootState) => state.room.data;
 export const selectMyData = (state: RootState) => state.user.data;
 export const selectCreatingRoom = (state: RootState) => state.createRoom;
 export const selectSideMenu = (state: RootState) => state.sideMenu;
@@ -18,7 +18,7 @@ export const selectError = (state: RootState) => state.errorReducer.errorMessage
 
 export const getChatData = createSelector(
   selectRooms,
-  selectMessages,
+  selectRoomData,
   ({ data: rooms, selected }, data) => {
     const openRoom = rooms.find(({ id }) => id === selected);
     const {
@@ -60,7 +60,8 @@ export const getRoomsInfo = createSelector(
 export const getHeaderInfo = createSelector(
   selectRooms,
   selectMyData,
-  ({ selected, data, newPrivateRoom }, myData) => {
+  selectRoomData,
+  ({ selected, data, newPrivateRoom }, myData, roomData) => {
     const isNewRoom = selected === NEW_ROOM;
 
     const selectedRoom = isNewRoom
@@ -68,10 +69,11 @@ export const getHeaderInfo = createSelector(
       : data.find(({ id }) => id === selected)!;
 
     const {
-      participants,
       type: selectedRoomType,
       title: selectedRoomTitle,
     } = selectedRoom;
+
+    const participants = roomData[selected as string]?.participants || [];
 
     const privateUser =
       selectedRoomType === 'private'
@@ -100,14 +102,17 @@ export const getHeaderInfo = createSelector(
 export const GetGroupChatInfo = createSelector(
   selectRooms,
   selectMyData,
-  ({ data, selected }, myData) => {
+  selectRoomData,
+  ({ data, selected }, myData, roomData) => {
     const openRoom = data.find(({ id }) => id === selected);
 
-    if (!openRoom) {
+    if (!openRoom || !selected) {
       return null;
     }
 
-    const { participants, id, title, image } = openRoom;
+    const { id, title, image } = openRoom;
+
+    const participants = roomData[selected].participants
 
     return {
       participants,

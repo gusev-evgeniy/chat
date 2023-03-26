@@ -1,15 +1,15 @@
 import { AppDispatch, RootState } from 'store';
-import { instance } from 'api';
 import { NEW_ROOM } from 'utils/constants';
-import { setMessagesData } from 'store/slices/messages';
+import { addOffsetMessages, setRoomData } from 'store/slices/room';
 import { createMessage, prepareFile, validateFile } from 'utils/message';
 import { createPrivateRoom } from '.';
 import { NewMessage } from 'types/messages';
 import { setError } from 'store/slices/error';
+import { MessageAPI } from 'api/message';
+import { RoomAPI } from 'api/room';
 
-export const getMessages =
-  (skip = 0) =>
-  async (dispatch: AppDispatch, getState: () => RootState) => {
+export const getRoomData =
+  () => async (dispatch: AppDispatch, getState: () => RootState) => {
     const {
       rooms: { selected },
     } = getState();
@@ -17,21 +17,38 @@ export const getMessages =
     if (!selected) {
       return;
     }
-    
-    try {
-      const { data } = await instance.get(
-        `message/?roomId=${selected}&skip=${skip}`
-      );
 
-      dispatch(setMessagesData({ ...data, roomId: selected }));
-    } catch (error) {}
+    try {
+      const { data } = await MessageAPI.get(selected);
+      const { data: participants } = await RoomAPI.getOne(selected);
+      dispatch(setRoomData({ ...data, roomId: selected, participants }));
+    } catch (error: any) {
+      dispatch(setError(error));
+    }
+  };
+
+export const getMessages =
+  (skip: number) => async (dispatch: AppDispatch, getState: () => RootState) => {
+    const {
+      rooms: { selected },
+    } = getState();
+
+    if (!selected) {
+      return;
+    }
+
+    try {
+      const { data } = await MessageAPI.get(selected, skip);
+      dispatch(addOffsetMessages({ ...data, roomId: selected }));
+    } catch (error: any) {
+      dispatch(setError(error));
+    }
   };
 
 export const uploadFile = (fileForUpload: File) => (dispatch: AppDispatch) => {
-
   const isValid = validateFile(fileForUpload);
   if (!isValid) {
-    return dispatch(setError('Maximum file size 10Mb'))
+    return dispatch(setError('Maximum file size 10Mb'));
   }
 
   const file = prepareFile(fileForUpload);

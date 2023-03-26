@@ -3,10 +3,10 @@ import { Message } from './messages';
 
 export type RoomType = 'private' | 'group';
 
-export type Room = {
+export type Room<T = UserBD> = {
   createdAt: string;
   id: string;
-  participants: UserBD[];
+  participants: T[];
   title:  string;
   type: RoomType;
   updatedAt: string;
@@ -31,8 +31,9 @@ export type RoomMessages = {
   messages: Message[];
   count: number;
   loaded: boolean;
+  participants: UserBD[];
 };
 
-export type MessageData = {
+export type RoomData = {
   [key: string]: RoomMessages;
 }

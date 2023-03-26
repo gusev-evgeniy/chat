@@ -2,7 +2,7 @@ import Image from 'next/image';
 import React, { FC, memo } from 'react';
 
 import { useAppDispatch } from 'store/hooks';
-import { uploadFile } from 'store/actions/messages';
+import { uploadFile } from 'store/actions/room';
 
 import { useMessageForm } from './useMessageForm';
 

@@ -29,6 +29,7 @@ const createRoutes = (app: express.Express) => {
   app.get('/user/me', Auth, User.me);
 
   app.get('/room', Auth, Room.getMany);
+  app.get('/room/:id', Auth, Room.getRoomParticipants);
   app.post('/room/update', Auth, Upload.single('photo'), Room.update);
   app.get('/room/checkPrivate', Auth, Room.checkPrivate);
 

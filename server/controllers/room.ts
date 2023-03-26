@@ -12,13 +12,30 @@ class Room {
 
       return res.json(roomsAndCount);
     } catch (error) {
-      console.log('error', error);
+      console.log('Get rooms error', error);
+    }
+  }
+
+  async getRoomParticipants(req: Request, res: Response) {
+    try {
+      const room = await RoomEntity.findOne({
+        where: { id: req.query.id as string },
+        relations: ['participants', 'participants.user'],
+      });
+
+      const participants = room?.participants.map(({ user }) => user);
+      return res.json(participants);
+    } catch (error) {
+      console.log('Get participants error', error);
     }
   }
 
   async checkPrivate(req: Request, res: Response) {
     try {
-      const room = await isPrivateRoomExist(req.query.user as string, res.locals.user.id);
+      const room = await isPrivateRoomExist(
+        req.query.user as string,
+        res.locals.user.id
+      );
       return res.json(room);
     } catch (error) {
       console.log('error', error);
@@ -35,7 +52,11 @@ class Room {
       if (title) roomInfo.title = title;
       if (photoUrl) roomInfo.photo = photoUrl;
 
-      const room = await RoomEntity.createQueryBuilder().update(roomInfo).where('id = :id', { id }).returning('*').execute();
+      const room = await RoomEntity.createQueryBuilder()
+        .update(roomInfo)
+        .where('id = :id', { id })
+        .returning('*')
+        .execute();
 
       return res.json({ room: room.raw[0] });
     } catch (error) {

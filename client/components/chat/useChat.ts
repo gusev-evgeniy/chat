@@ -4,7 +4,7 @@ import { useDebouncedCallback } from 'use-debounce';
 import { useAppDispatch, useAppSelector } from 'store/hooks';
 import { getChatData } from 'store/selectors';
 import { readMessage } from 'store/actions';
-import { getMessages } from 'store/actions/messages';
+import { getMessages, getRoomData } from 'store/actions/room';
 
 const SCROLLED_PRECENT = 70;
 
@@ -20,7 +20,9 @@ export const useChat = () => {
   const dispatch = useAppDispatch();
 
   useInsertionEffect(() => {
-    !loaded && dispatch(getMessages());
+    if (!loaded) {
+      dispatch(getRoomData());
+    }
   }, [loaded, dispatch, selected]);
 
   useEffect(() => {

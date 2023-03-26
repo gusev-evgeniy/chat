@@ -1,6 +1,6 @@
 import { useCall } from 'providers/call/callProvider';
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { createMessageOrPrivateRoom } from 'store/actions/messages';
+import { createMessageOrPrivateRoom } from 'store/actions/room';
 import { useAppDispatch } from 'store/hooks';
 
 export const useRecord = () => {

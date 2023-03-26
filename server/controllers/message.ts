@@ -5,7 +5,7 @@ import MessageEntity from '../entities/message';
 class Message {
   async getMany(req: Request, res: Response) {
     try {
-      const { roomId, skip = 0, take = 50 } = req.query;
+      const { roomId, skip = 0, take = 200 } = req.query;
 
       const [messages, count] = await MessageEntity.findAndCount({
         where: {

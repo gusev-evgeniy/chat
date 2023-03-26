@@ -3,6 +3,7 @@ import bcrypt from 'bcrypt';
 import cookie from 'cookie';
 
 import UserEntity from '../entities/user';
+
 import { createTokenAndAddCookie } from '../utils/auth';
 import { getOtherUsersByNameAndCount } from '../utils/user';
 import { prepareImage } from '../utils/prepareImage';
@@ -111,6 +112,7 @@ class User {
 
     return res.json({ message: 'Success' });
   }
+
 }
 
 export default new User();

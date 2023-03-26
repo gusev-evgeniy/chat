@@ -1,7 +1,7 @@
 import { useRef } from 'react';
 import { updateDraft } from 'store/actions/draft';
 
-import { createMessageOrPrivateRoom } from 'store/actions/messages';
+import { createMessageOrPrivateRoom } from 'store/actions/room';
 import { useAppDispatch, useAppSelector } from 'store/hooks';
 import { getDraft } from 'store/selectors';
 import { useEmoji } from './useEmoji';

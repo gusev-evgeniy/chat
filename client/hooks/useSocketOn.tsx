@@ -30,7 +30,6 @@ export const useSocketOn = () => {
     socket.on(
       EVENTS.USER.LEAVE,
       ({ user, wasOnline }: { user: UserBD; wasOnline: string }) => {
-        console.log('EVENTS.USER.LEAVE user', user)
         dispatch(updateUserOnline({ userId: user.id, online: false, wasOnline }));
         dispatch(clearTyping(user.name))
       }

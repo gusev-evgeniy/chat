@@ -3,25 +3,27 @@ import { createWrapper } from 'next-redux-wrapper';
 
 import { userReducer } from './slices/user';
 import { roomsReducer } from './slices/rooms';
-import { messagesReducer } from './slices/messages';
+import { roomReducer } from './slices/room';
 import { createRoomReducer } from './slices/createRoom';
 import { dialogReducer } from './slices/dialog';
 import { sideMenuReducer } from './slices/sideMenu';
 import { draftReducer } from './slices/draft';
 import { errorReducer, setError } from './slices/error';
 import { instance } from 'api/index';
+import { usersReducer } from './slices/users';
 
 export function makeStore() {
   return configureStore({
     reducer: {
       user: userReducer,
       rooms: roomsReducer,
-      messages: messagesReducer,
+      room: roomReducer,
       createRoom: createRoomReducer,
       dialog: dialogReducer,
       sideMenu: sideMenuReducer,
       draft: draftReducer,
       errorReducer: errorReducer,
+      users: usersReducer
     },
     middleware: getDefaultMiddleware => getDefaultMiddleware(),
   });

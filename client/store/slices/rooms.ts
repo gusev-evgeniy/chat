@@ -1,7 +1,7 @@
-import { createSlice, current, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { HYDRATE } from 'next-redux-wrapper';
 
-import { Room, RoomsResponse, RoomType } from 'types/room';
+import { Room, RoomsResponse } from 'types/room';
 import { Message, Typing } from 'types/messages';
 import { prepareRooms } from 'utils/room';
 import { UserBD } from 'types/user';
@@ -70,10 +70,7 @@ export const roomsSlice = createSlice({
     ) => {
       const { userId, online, wasOnline } = action.payload;
       state.data = state.data.map(room => {
-
-        const haveUser = room.participants.some(({ id }) => id === userId);
-
-        if (haveUser) {
+        if (room.participantId === userId) {
           return { ...room, online };
         }
 
