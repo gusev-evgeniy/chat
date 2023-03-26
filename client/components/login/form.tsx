@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 
-import { StyledButton, StyledWrapper } from 'components/auth/styles';
+import { AuthInput, StyledButton, StyledWrapper } from 'components/auth/styles';
 
 import { StyledForm } from 'styles';
 
@@ -22,22 +22,21 @@ export const LoginForm: FC<Props> = ({
   return (
     <StyledWrapper padding={'5vh'}>
       <StyledForm onSubmit={onSubmitHandler}>
-        <input
+        <AuthInput
           type='text'
-          className='text-input'
           placeholder='Name'
           value={name}
           data-type='name'
           onChange={changeData}
           autoFocus
         />
-        <input
+        <AuthInput
           type='password'
-          className='text-input'
           placeholder='Password'
           value={password}
           data-type='password'
           onChange={changeData}
+          margin='32px 0'
         />
 
         <StyledButton width='160px' height='43px' disabled={disabled}>

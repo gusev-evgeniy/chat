@@ -27,6 +27,7 @@ const start = async () => {
     const http = createServer(app);
     const io = new Server(http, {
       cors: { origin: 'http://localhost:3000', credentials: true },
+      maxHttpBufferSize: 1e7 // 100 MB
     });
 
     const onConnection = (socket: Socket) => {

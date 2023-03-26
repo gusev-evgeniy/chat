@@ -44,21 +44,6 @@ export const StyledWrapper = styled.div<{ padding?: string }>`
     padding-bottom: 30px;
   }
 
-  & .text-input {
-    width: 290px;
-    padding: 10px;
-    text-align: center;
-    font-weight: 400;
-    font-size: 26px;
-    border: 1px solid #e3e3e3;
-    border-radius: 20px;
-    margin: 32px 0;
-
-    :focus {
-      outline: 1px solid #dad6ca;
-    }
-  }
-
   & .user_data {
     margin-bottom: 30px;
     align-items: center;
@@ -77,6 +62,21 @@ export const StyledWrapper = styled.div<{ padding?: string }>`
     font-size: 14px;
     line-height: 19px;
     color: #817f7a;
+  }
+`;
+
+export const AuthInput = styled.input<{ margin?: string }>`
+  width: 290px;
+  padding: 10px;
+  text-align: center;
+  font-weight: 400;
+  font-size: 26px;
+  border: 1px solid #e3e3e3;
+  border-radius: 20px;
+  margin: ${({ margin }) => margin ? margin : null} ;
+
+  :focus {
+    outline: 1px solid #dad6ca;
   }
 `;
 

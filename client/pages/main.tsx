@@ -18,6 +18,7 @@ import { SideMenu } from 'components/sideMenu';
 
 import { WIDTH } from 'styles/variables';
 import { MainWrapper } from 'styles';
+import { Error } from 'components/error';
 
 const Main = () => {
   useAuthGuard(false);
@@ -28,9 +29,9 @@ const Main = () => {
   return (
     <CallProvider>
       <MainWrapper>
+        <Error />
         <Dialog />
-        <SideMenu />
-        {matches && <Rooms />}
+        {matches ? <Rooms /> : <SideMenu />}
         <ChatWrapper matches={matches} />
       </MainWrapper>
     </CallProvider>

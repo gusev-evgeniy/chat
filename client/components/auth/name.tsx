@@ -6,6 +6,7 @@ import { useAuthUserForm } from './useAuthUserForm';
 
 import {
   AlertMessage,
+  AuthInput,
   BackButon,
   StyledAdvises,
   StyledButton,
@@ -49,12 +50,12 @@ export const Name: FC<AuthName> = props => {
               size={100}
             />
           </div>
-          <input
+          <AuthInput
             type='text'
-            className='text-input'
             placeholder='Your name'
             onChange={onKeyChange}
             autoFocus
+            margin='0 0 32px 0'
           />
 
           <StyledButton width='160px' height='43px' disabled={!name.length}>

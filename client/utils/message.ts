@@ -75,3 +75,7 @@ export const getLastMessageText = (message: Omit<Message, "author"> | null ) => 
 
   return text;
 }
+
+export const validateFile = (file: File) => {
+  return file.size <= 1e7;
+}

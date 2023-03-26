@@ -35,7 +35,7 @@ export const DraggingArea: FC<Props> = ({
           onDragStart={dragStartHandler}
           onDragLeave={dragLeaveHandler}>
           <div className='drag-label'>
-            Для загрузки файла перетащите его в эту область
+            To upload a file, drag it to this area
           </div>
         </div>
       </form>

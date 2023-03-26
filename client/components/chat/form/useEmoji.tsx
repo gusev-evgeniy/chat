@@ -13,15 +13,15 @@ export const useEmoji = () => {
 
   const rextareaRef = useRef<HTMLTextAreaElement>(null);
 
-  useEffect(() => {
-    const testOnBlur = () => console.log('dfdfd');
+  // useEffect(() => {
+  //   const testOnBlur = () => console.log('dfdfd');
 
-    rextareaRef.current?.addEventListener('blur', testOnBlur);
+  //   rextareaRef.current?.addEventListener('blur', testOnBlur);
 
-    return () => {
-      rextareaRef.current?.removeEventListener('blur', testOnBlur);
-    };
-  }, []);
+  //   return () => {
+  //     rextareaRef.current?.removeEventListener('blur', testOnBlur);
+  //   };
+  // }, []);
 
   useEffect(() => {
     if (cursorPosition && rextareaRef.current) {

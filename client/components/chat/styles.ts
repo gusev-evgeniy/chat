@@ -208,7 +208,7 @@ export const StyledAttachment = styled.div`
 `;
 
 export const StyledMessageFooter = styled.div`
-  font-size: 20px;
+  font-size: 1.2rem;
   font-weight: 500;
   color: #1c1c1c;
   width: 100%;
@@ -246,7 +246,7 @@ export const StyledMessageForm = styled.form`
 
 export const StyledTextareaAutosize = styled(TextareaAutosize)`
   resize: none;
-  font-size: 20px;
+  font-size: 1.2rem;
   font-weight: 500;
   color: #1c1c1c;
   width: 100%;

@@ -7,7 +7,7 @@ export type AuthName = Auth & {
   changePage: (num: 1 | -1) => void;
 };
 
-export type AuthPassword = Auth & {
+export type AuthPassword = AuthName & {
   submitHandler: () => void;
 };
 

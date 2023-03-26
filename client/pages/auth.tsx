@@ -22,6 +22,7 @@ const Auth = () => {
         submitHandler={submitHandler}
         data={data}
         changeData={changeData}
+        changePage={changePage}
       />
     ),
   };

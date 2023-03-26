@@ -2,9 +2,10 @@ import { AppDispatch, RootState } from 'store';
 import { instance } from 'api';
 import { NEW_ROOM } from 'utils/constants';
 import { setMessagesData } from 'store/slices/messages';
-import { createMessage, prepareFile } from 'utils/message';
+import { createMessage, prepareFile, validateFile } from 'utils/message';
 import { createPrivateRoom } from '.';
 import { NewMessage } from 'types/messages';
+import { setError } from 'store/slices/error';
 
 export const getMessages =
   (skip = 0) =>
@@ -27,6 +28,12 @@ export const getMessages =
   };
 
 export const uploadFile = (fileForUpload: File) => (dispatch: AppDispatch) => {
+
+  const isValid = validateFile(fileForUpload);
+  if (!isValid) {
+    return dispatch(setError('Maximum file size 10Mb'))
+  }
+
   const file = prepareFile(fileForUpload);
   dispatch(createMessageOrPrivateRoom({ file }));
 };

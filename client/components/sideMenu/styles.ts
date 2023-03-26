@@ -15,6 +15,7 @@ export const StyledSideMenu = styled(StyledWrapper)`
   overflow: hidden;
   border-top-left-radius: 0;
   border-bottom-left-radius: 0;
+  width: 320px;
 `;
 
 export const StyledSideMenuIcon = styled.div`

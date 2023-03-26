@@ -7,12 +7,13 @@ export const StyledRooms = styled.div<{ fullWidth: boolean }>`
   height: 100vh;
   width: ${({ fullWidth }) => (fullWidth ? '100%' : '30%')};
   border-right: ${({ fullWidth }) => !fullWidth && '1px solid #e3e3e3'};
-  min-width: 300px;
+  min-width: 250px;
   position: relative;
+  background-color: rgba(245, 245, 245, 0.5);
 
   .header {
     padding: 7px 12px;
-    border-bottom: 1px solid #e3e3e3;
+    /* border-bottom: 1px solid #e3e3e3; */
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -55,6 +56,7 @@ export const StyledRooms = styled.div<{ fullWidth: boolean }>`
     justify-content: space-between;
     height: 57px;
     border-top: 1px solid #e3e3e3;
+    background-color: #fff;
 
     .user_info {
       display: flex;
@@ -133,6 +135,7 @@ export const StyledLastMessage = styled.p<{ unreaded: boolean }>`
   text-overflow: ellipsis;
   color: ${({ unreaded }) => unreaded && COLORS.BLUE};
   font-weight: ${({ unreaded }) => unreaded && 600};
+  opacity: 0.7;
 `;
 
 export const StyledSearchIcon = styled(StyledInputIcon)`
@@ -141,10 +144,10 @@ export const StyledSearchIcon = styled(StyledInputIcon)`
 
 export const StyledSearchInput = styled(StyledTextInput)`
   width: 100%;
-  padding: 6px 45px 6px 15px;
+  padding: 4px 45px 4px 15px;
   text-overflow: ellipsis;
-  font-size: 20px;
-  background-color: ${COLORS.INPUT_BG}; ;
+  font-size: 1.2rem;
+  background-color: ${COLORS.WHITE}; ;
 `;
 
 export const StyledWarning = styled.div`
@@ -153,7 +156,8 @@ export const StyledWarning = styled.div`
   display: flex;
   text-align: center;
   border-bottom: 1px solid #e3e3e3;
-  background-color: ${COLORS.INPUT_BG};
+  border-top: 1px solid #e3e3e3;
+  background-color: rgba(227,227,227,0.6);
   justify-content: center;
   font-size: 1rem;
   color: #7c7c7c;

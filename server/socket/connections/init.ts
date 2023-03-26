@@ -1,6 +1,7 @@
 import { Server, Socket } from 'socket.io';
+
 import User from '../../entities/user';
-import { getUserRooms } from '../../utils/room';
+import { getOnlineParticipantsSocketId, getUserRooms } from '../../utils/room';
 import { addMyDataToSocket } from '../../utils/socket';
 import { updateUser } from '../../utils/user';
 import { EVENTS } from '../events';
@@ -9,12 +10,20 @@ interface MySocket extends Socket {
   me?: User;
 }
 
+let timer: NodeJS.Timeout, prevUser: User | undefined;
+
 export default async (io: Server, socket: MySocket) => {
   await addMyDataToSocket(socket);
 
   if (socket.me) {
+    if (prevUser?.id === socket.me.id) {
+      console.log('timer', timer)
+      clearInterval(timer);
+    }
+
     await updateUser(socket.me.id, { online: true, socketId: socket.id });
 
+    console.log('socket.me.id', socket.me.id);
     const userRooms = await getUserRooms(socket.me.id);
     if (!userRooms) return;
 
@@ -27,19 +36,27 @@ export default async (io: Server, socket: MySocket) => {
   }
 
   const disconnect = async () => {
-    const wasOnline = new Date();
+    console.log('disconnect');
+    prevUser = socket.me;
+    timer = setTimeout(async () => {
+      const wasOnline = new Date();
+      console.log('socket.me disconnect', socket.me);
+      if (socket.me?.id) {
+        await updateUser(socket.me?.id, {
+          online: false,
+          wasOnline,
+          //@ts-ignore
+          socketId: null,
+        });
 
-    if (socket.me?.id) {
-      socket.broadcast.emit(EVENTS.USER.LEAVE, {
-        user: socket.me,
-        wasOnline,
-      });
-      await updateUser(socket.me?.id, {
-        online: false,
-        wasOnline,
-        socketId: undefined,
-      });
-    }
+        const participantsSocketIds = await getOnlineParticipantsSocketId(socket.me?.id);
+
+        io.to(participantsSocketIds).emit(EVENTS.USER.LEAVE, {
+          user: socket.me,
+          wasOnline,
+        });
+      }
+    }, 60000);
   };
 
   socket.on('disconnect', disconnect);

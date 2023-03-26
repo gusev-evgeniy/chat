@@ -36,4 +36,10 @@ export type Events = typeof EVENTS;
 
 export const NEW_ROOM = 'NEW_ROOM';
 
-export const BASE_URL = `http://localhost:5050/`
+export const BASE_URL = `http://localhost:5050/`;
+
+export const VALID_IMG_TYPES = ['image/png', 'image/jpg', 'image/jpeg'];
+export const IMG_TYPES_TEXT_ERROR = `
+Invalid file type.
+Please select .jpg, .jpeg or .png file. 
+`;

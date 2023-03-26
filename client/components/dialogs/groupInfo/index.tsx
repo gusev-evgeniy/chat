@@ -7,15 +7,14 @@ import { openDialog } from 'store/slices/dialog';
 import { useAppDispatch, useAppSelector } from 'store/hooks';
 import { GetGroupChatInfo } from 'store/selectors';
 
-import { EVENTS } from 'utils/constants';
+import { EVENTS, IMG_TYPES_TEXT_ERROR, VALID_IMG_TYPES } from 'utils/constants';
 
 import { AvatarInput } from 'components/avatar/input';
 import { StyledUsers } from 'components/dialogs/createRoom/styles';
 import { TitleInput } from './titleInput';
 import { DialogWrapper } from '../wrapper';
 import { Participant } from './participant';
-
-const VALID_TYPES = ['image/png', 'image/jpg', 'image/jpeg'];
+import { setError } from 'store/slices/error';
 
 export const GroupInfo = () => {
   const dispatch = useAppDispatch();
@@ -32,9 +31,9 @@ export const GroupInfo = () => {
     if (
       !target.files ||
       target.files.length === 0 ||
-      !VALID_TYPES.includes(target.files[0].type)
+      !VALID_IMG_TYPES.includes(target.files[0].type)
     ) {
-      return;
+      return dispatch(setError(IMG_TYPES_TEXT_ERROR));
     }
 
     updateGroup({ photo: target.files[0] });

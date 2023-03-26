@@ -5,11 +5,6 @@ import User from '../entities/user';
 import { createSystemMessage } from './message';
 
 export const isPrivateRoomExist = async (userId: string, myId: string) => {
-  console.log(
-    'userId_________________________________________________________',
-    userId
-  );
-
   try {
     // const room = await Room.createQueryBuilder('room')
     //   .leftJoinAndSelect('room.participants', 'participants')
@@ -79,27 +74,23 @@ export const getRoomsAndCount = async (id: string) => {
     )
     .addOrderBy('room.updatedAt', 'DESC')
     .getManyAndCount();
-      console.log('participants',participants)
   const rooms = participants.map(({ room }) => ({
     ...room,
     participants: room.participants.map(({ user }) => user),
   }));
 
-  return { rooms, count };
-};
 
-export const getFilteredMessages = async (id: string, filter: string) => {
-  await Participant.createQueryBuilder('participant')
-    .where('participant.user = :id', { id })
-    .leftJoinAndSelect('participant.room', 'room')
-    .leftJoinAndSelect('participants.user', 'user')
-    .loadRelationCountAndMap(
-      'room.unreadedMessagesCount',
-      'room.messages',
-      'message'
-    )
-    .addOrderBy('room.updatedAt', 'DESC')
-    .getManyAndCount();
+  // const rooms = participants.map(({ room }) => ({
+  //   ...room,
+  //   participants: room.participants.map(({ user }) => {
+  //     const { id, photo, online, name } = user;
+
+  //     return { id, photo, online, name };
+  //   }),
+  // }));
+
+
+  return { rooms, count };
 };
 
 type RoomProps = {
@@ -129,3 +120,45 @@ export const addNewRoom = async ({ data, authorName, users }: RoomProps) => {
     console.log('Add new room error:', error);
   }
 };
+
+export const getOnlineParticipantsSocketId = async (id: string) => {
+  const participant = await Participant.createQueryBuilder('participant')
+    .where('participant.user = :id', { id })
+    .leftJoinAndSelect('participant.room', 'room')
+    .leftJoinAndSelect('room.participants', 'participants')
+    .leftJoinAndSelect('participants.user', 'user')
+    .getMany();
+
+  console.log('participant', participant);
+
+  const test = participant.reduce((acc, { room }) => {
+    // const users = room.participants.user
+
+    acc.push(...room.participants);
+    return acc;
+  }, [] as Participant[]);
+
+  const socketIds = test.reduce((acc, { user }) => {
+    if (user.online && user.id !== id && !acc.includes(user.socketId)) {
+      acc.push(user.socketId);
+    }
+
+    return acc;
+  }, [] as string[]);
+
+  return socketIds;
+};
+
+// export const getFilteredMessages = async (id: string, filter: string) => {
+//   await Participant.createQueryBuilder('participant')
+//     .where('participant.user = :id', { id })
+//     .leftJoinAndSelect('participant.room', 'room')
+//     .leftJoinAndSelect('participants.user', 'user')
+//     .loadRelationCountAndMap(
+//       'room.unreadedMessagesCount',
+//       'room.messages',
+//       'message'
+//     )
+//     .addOrderBy('room.updatedAt', 'DESC')
+//     .getManyAndCount();
+// };

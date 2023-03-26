@@ -1,9 +1,10 @@
 import { FC, useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
+import { PortalTypes } from 'types';
 
 type Props = {
   children: React.ReactElement;
-  type: 'dialog' | 'side_menu'
+  type: PortalTypes
 };
 
 const Portal: FC<Props> = ({ children, type }) => {

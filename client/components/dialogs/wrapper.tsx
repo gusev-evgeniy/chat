@@ -28,7 +28,7 @@ export const DialogWrapper: FC<Props> = ({ children, width }) => {
         <>
           <div className='header'>
             <CloseIconWrapper onClick={closeHandler}>
-              <Image width='30px' height='30px' src={close} alt='add_photo' />
+              <Image width='30px' height='30px' src={close} alt='close' />
             </CloseIconWrapper>
           </div>
           {children}

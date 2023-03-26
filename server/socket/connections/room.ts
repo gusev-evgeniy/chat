@@ -18,7 +18,6 @@ type UpdateRoom = {
 export default async (io: Server, socket: MySocket) => {
   const createRoom = async (obj: any, callback: Callback) => {
     const { users, title, type, photo } = obj;
-    console.log('_________________photo', photo)
     const roomData: Partial<Room> = {
       author: socket.me,
       type,

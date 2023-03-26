@@ -1,6 +1,7 @@
 import Image from 'next/image';
 import React, { FC } from 'react';
 import {
+  AuthInput,
   BackButon,
   StyledAdvises,
   StyledButton,
@@ -16,6 +17,7 @@ export const Password: FC<AuthPassword> = ({
   submitHandler,
   changeData,
   data,
+  changePage
 }) => {
   const onKeyChange = ({ target }: React.ChangeEvent<HTMLInputElement>) => {
     changeData({ password: target.value.trim() });
@@ -28,16 +30,16 @@ export const Password: FC<AuthPassword> = ({
         <span>Length must be between {MIN_LENGTH} and 255 characters</span>
       </StyledAdvises>
       <StyledWrapper padding={'5vh'}>
-        <BackButon>
+        <BackButon onClick={() => changePage(-1)}>
           <Image width='30px' height='30px' src={arrow_back} alt='back' />
         </BackButon>
 
-        <input
+        <AuthInput
           type='password'
-          className='text-input'
           placeholder='Password'
           onChange={onKeyChange}
           autoFocus
+          margin='32px 0'
         />
 
         <StyledButton

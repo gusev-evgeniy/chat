@@ -14,6 +14,7 @@ export const selectCreatingRoom = (state: RootState) => state.createRoom;
 export const selectSideMenu = (state: RootState) => state.sideMenu;
 export const selectDialogName = (state: RootState) => state.dialog.name;
 export const selectDraft = (state: RootState) => state.draft;
+export const selectError = (state: RootState) => state.errorReducer.errorMessage;
 
 export const getChatData = createSelector(
   selectRooms,
@@ -46,7 +47,7 @@ export const getRoomsInfo = createSelector(
     const rooms = filter
       ? data.filter(({ title }) => title.toLowerCase().includes(filter))
       : data;
-
+    console.log('rooms', rooms)
     return {
       rooms,
       me: myData,
@@ -137,7 +138,6 @@ export const getDraft = createSelector(
   selectDraft,
   selectRooms,
   ({ data }, { selected }) => {
-
     return selected ? data[selected] : undefined;
   }
 );

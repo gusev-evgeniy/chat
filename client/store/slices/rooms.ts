@@ -1,4 +1,4 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice, current, PayloadAction } from '@reduxjs/toolkit';
 import { HYDRATE } from 'next-redux-wrapper';
 
 import { Room, RoomsResponse, RoomType } from 'types/room';
@@ -9,10 +9,10 @@ import { UserBD } from 'types/user';
 export type Rooms = ReturnType<typeof prepareRooms>;
 
 type NewPrivateRoom = {
-  participants: UserBD[],
-  type: 'private',
-  title: undefined 
-}
+  participants: UserBD[];
+  type: 'private';
+  title: undefined;
+};
 
 const initialState = {
   data: [] as Rooms,
@@ -69,22 +69,15 @@ export const roomsSlice = createSlice({
       }>
     ) => {
       const { userId, online, wasOnline } = action.payload;
-
       state.data = state.data.map(room => {
-        const participants = room.participants.map(user =>
-          user.id === userId
-            ? {
-                ...user,
-                online,
-                wasOnline: wasOnline ? wasOnline : user.wasOnline,
-              }
-            : user
-        );
 
-        return {
-          ...room,
-          participants,
-        };
+        const haveUser = room.participants.some(({ id }) => id === userId);
+
+        if (haveUser) {
+          return { ...room, online };
+        }
+
+        return room;
       });
     },
     setUnreadedCount(
@@ -110,15 +103,17 @@ export const roomsSlice = createSlice({
         };
       });
     },
-    updateRoomDetails(state, action: PayloadAction<Omit<Room, 'lastMessage' | 'unreadedMessagesCount'>>) {
+    updateRoomDetails(
+      state,
+      action: PayloadAction<Omit<Room, 'lastMessage' | 'unreadedMessagesCount'>>
+    ) {
       const { id, photo, title } = action.payload;
       state.data = state.data.map(room => {
         if (room.id === id) {
-          return { ...room, image: photo, title }
+          return { ...room, image: photo, title };
         }
         return room;
-      }
-      );
+      });
     },
     deleteRoom(state, action: PayloadAction<string>) {
       state.data = state.data.filter(({ id }) => id !== action.payload);
@@ -143,17 +138,17 @@ export const roomsSlice = createSlice({
         }
 
         if (!isTyping && typingNow) {
-          typing = room.typing.filter((id) => id !== user);
+          typing = room.typing.filter(id => id !== user);
         }
 
         return {
           ...room,
-          typing
+          typing,
         };
       });
     },
     clearTyping(state, action: PayloadAction<string>) {
-      state.data = state.data.map((room) => {
+      state.data = state.data.map(room => {
         const typingNow = room.typing.includes(action.payload);
         if (!typingNow) {
           return room;
@@ -161,13 +156,17 @@ export const roomsSlice = createSlice({
 
         return {
           ...room,
-          typing: room.typing.filter((id) => id !== action.payload)
+          typing: room.typing.filter(id => id !== action.payload),
         };
-      })
+      });
     },
     addPrivateRoom(state, action: PayloadAction<UserBD[]>) {
-      state.newPrivateRoom = { participants: action.payload, title: undefined, type: 'private' };
-    }
+      state.newPrivateRoom = {
+        participants: action.payload,
+        title: undefined,
+        type: 'private',
+      };
+    },
   },
   extraReducers: {
     [HYDRATE]: (state, action) => {
@@ -191,7 +190,7 @@ export const {
   updateRoomsFilter,
   updateTyping,
   clearTyping,
-  addPrivateRoom
+  addPrivateRoom,
 } = roomsSlice.actions;
 
 export const roomsReducer = roomsSlice.reducer;

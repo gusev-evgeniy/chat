@@ -6,11 +6,15 @@ import { DialogWrapper } from 'components/dialogs/wrapper';
 import { useNewRoom } from './search/useNewRoom';
 
 import { GroupChatForm, StyledGroupNameIntput } from './styles';
+import { IMG_TYPES_TEXT_ERROR, VALID_IMG_TYPES } from 'utils/constants';
+import { useAppDispatch } from 'store/hooks';
+import { setError } from 'store/slices/error';
 
-const VALID_TYPES = ['image/png', 'image/jpg', 'image/jpeg'];
 const MAX_LENGTH = 20;
 
 export const GrouptChat = () => {
+  const dispatch = useAppDispatch();
+  
   const { onChangeName, createRoomHandler, setPhoto, title, preview } = useNewRoom();
 
   const onSelectFile = ({ target }: React.ChangeEvent<HTMLInputElement>) => {
@@ -18,7 +22,8 @@ export const GrouptChat = () => {
       return;
     }
 
-    if (!VALID_TYPES.includes(target.files[0].type)) {
+    if (!VALID_IMG_TYPES.includes(target.files[0].type)) {
+      dispatch(setError(IMG_TYPES_TEXT_ERROR));
       return setPhoto(null);
     }
 
