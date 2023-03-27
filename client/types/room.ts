@@ -31,7 +31,6 @@ export type RoomMessages = {
   messages: Message[];
   count: number;
   loaded: boolean;
-  participants: UserBD[];
 };
 
 export type RoomData = {

@@ -78,6 +78,7 @@ class User {
     try {
       const user = await UserEntity.findOne({
         where: { name: name as string },
+        select: ['password', 'id', 'name', 'online', 'photo', 'socketId', 'wasOnline']
       });
 
       if (!user) return res.status(401).json({ message: 'Wrong password or name' });

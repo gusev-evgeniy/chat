@@ -15,6 +15,8 @@ export const UserInfo: FC<{}> = ({}) => {
     dispatch(openDialog('GROUP_INFO'));
   };
 
+  console.log('online', online)
+
   if (online) {
     return <p className='online'>online</p>;
   }

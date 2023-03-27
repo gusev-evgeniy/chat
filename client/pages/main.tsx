@@ -19,6 +19,8 @@ import { SideMenu } from 'components/sideMenu';
 import { WIDTH } from 'styles/variables';
 import { MainWrapper } from 'styles';
 import { Error } from 'components/error';
+import { UserAPI } from 'api/user';
+import { RoomAPI } from 'api/room';
 
 const Main = () => {
   useAuthGuard(false);
@@ -54,10 +56,10 @@ export const getServerSideProps = wrapper.getServerSideProps(
         }
 
         axios.defaults.headers.get.Cookie = cookie as string;
-        const { data } = await axios.get('http://localhost:5050/user/me');
+        const { data } = await UserAPI.me();
         store.dispatch(setUserData(data));
 
-        const rooms = await axios.get('http://localhost:5050/room/');
+        const rooms = await RoomAPI.get();
         store.dispatch(setRoomsData({ data: rooms.data, myId: data.id }));
       } catch ({ response }: any) {
         if ((response as any)?.data.message === 'Unauthenticated') {

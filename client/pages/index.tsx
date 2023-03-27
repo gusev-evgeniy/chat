@@ -1,3 +1,4 @@
+import { UserAPI } from 'api/user';
 import axios from 'axios';
 
 import { wrapper } from 'store';
@@ -18,7 +19,7 @@ const Home = () => {
 export const getServerSideProps = wrapper.getServerSideProps(store => async ({ req }) => {
   try {
     axios.defaults.headers.get.Cookie = req.headers.cookie as string;
-    const { data } = await axios.get('http://localhost:5050/user/me');
+    const { data } = await UserAPI.me();
     store.dispatch(setUserData(data));
     return {
       redirect: {

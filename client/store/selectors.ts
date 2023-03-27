@@ -60,8 +60,7 @@ export const getRoomsInfo = createSelector(
 export const getHeaderInfo = createSelector(
   selectRooms,
   selectMyData,
-  selectRoomData,
-  ({ selected, data, newPrivateRoom }, myData, roomData) => {
+  ({ selected, data, newPrivateRoom }, myData) => {
     const isNewRoom = selected === NEW_ROOM;
 
     const selectedRoom = isNewRoom
@@ -71,18 +70,15 @@ export const getHeaderInfo = createSelector(
     const {
       type: selectedRoomType,
       title: selectedRoomTitle,
+      participants
     } = selectedRoom;
-
-    const participants = roomData[selected as string]?.participants || [];
 
     const privateUser =
       selectedRoomType === 'private'
         ? participants.find(participant => participant.id !== myData?.id)
         : undefined;
-
-    const online = privateUser?.online;
+    const online = selectedRoom?.online;
     const substring = createOnlineSubstring(privateUser, participants);
-
     const title = privateUser?.name || selectedRoomTitle;
 
     return {
@@ -102,17 +98,14 @@ export const getHeaderInfo = createSelector(
 export const GetGroupChatInfo = createSelector(
   selectRooms,
   selectMyData,
-  selectRoomData,
-  ({ data, selected }, myData, roomData) => {
+  ({ data, selected }, myData) => {
     const openRoom = data.find(({ id }) => id === selected);
 
     if (!openRoom || !selected) {
       return null;
     }
 
-    const { id, title, image } = openRoom;
-
-    const participants = roomData[selected].participants
+    const { id, title, image, participants } = openRoom;
 
     return {
       participants,

@@ -19,7 +19,6 @@ export type RoomResponse = {
   count: number;
   messages: Message[];
   roomId: string;
-  participants: UserBD[];
 };
 
 export type Typing = {

@@ -24,6 +24,7 @@ export const useSocketOn = () => {
     });
 
     socket.on(EVENTS.USER.ENTER, ({ userId }: { userId: string }) => {
+      console.log('EVENTS.USER.ENTER', userId)
       dispatch(updateUserOnline({ userId, online: true }));
     });
 

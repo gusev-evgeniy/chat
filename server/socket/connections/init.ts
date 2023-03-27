@@ -17,17 +17,16 @@ export default async (io: Server, socket: MySocket) => {
 
   if (socket.me) {
     if (prevUser?.id === socket.me.id) {
-      console.log('timer', timer)
       clearInterval(timer);
     }
 
     await updateUser(socket.me.id, { online: true, socketId: socket.id });
 
-    console.log('socket.me.id', socket.me.id);
     const userRooms = await getUserRooms(socket.me.id);
     if (!userRooms) return;
 
     const [rooms, participantsSocketIds] = userRooms;
+    console.log('participantsSocketIds', participantsSocketIds)
     socket.join(rooms);
 
     io.to(participantsSocketIds).emit(EVENTS.USER.ENTER, {
@@ -40,7 +39,7 @@ export default async (io: Server, socket: MySocket) => {
     prevUser = socket.me;
     timer = setTimeout(async () => {
       const wasOnline = new Date();
-      console.log('socket.me disconnect', socket.me);
+      console.log('socket.me disconnect', socket.me?.id);
       if (socket.me?.id) {
         await updateUser(socket.me?.id, {
           online: false,
@@ -56,7 +55,7 @@ export default async (io: Server, socket: MySocket) => {
           wasOnline,
         });
       }
-    }, 60000);
+    }, 30000);
   };
 
   socket.on('disconnect', disconnect);

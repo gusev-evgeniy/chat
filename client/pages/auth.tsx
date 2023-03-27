@@ -9,6 +9,7 @@ import { useAuthGuard } from 'hooks/useAuthGuard';
 import { Name } from 'components/auth/name';
 import { Password } from 'components/auth/password';
 import { Welcome } from 'components/auth/welcome';
+import { UserAPI } from 'api/user';
 
 const Auth = () => {
   useAuthGuard();
@@ -41,7 +42,7 @@ export const getServerSideProps = wrapper.getServerSideProps(
         }
 
         axios.defaults.headers.get.Cookie = req.headers.cookie;
-        const { data } = await axios.get('http://localhost:5050/user/me');
+        const { data } = await UserAPI.me();
         store.dispatch(setUserData(data));
         return {
           redirect: {

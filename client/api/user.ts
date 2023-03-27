@@ -19,6 +19,6 @@ export const UserAPI = {
     return await instance.post<{ message: string }>('/user/check_name', { name });
   },
   async me() {
-
+    return await instance.get<UserBD>('http://localhost:5050/user/me');
   }
 };
