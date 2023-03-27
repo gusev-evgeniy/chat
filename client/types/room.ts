@@ -13,6 +13,7 @@ export type Room<T = UserBD> = {
   lastMessage: Omit<Message, 'author'> | null;
   unreadedMessagesCount: number;
   photo: null | string;
+  background: string;
 };
 
 export type RoomsResponse = {

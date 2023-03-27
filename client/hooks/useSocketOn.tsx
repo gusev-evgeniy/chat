@@ -54,7 +54,6 @@ export const useSocketOn = () => {
     });
 
     return () => {
-      console.log('9999999')
       socket.disconnect();
       socket.removeAllListeners();
     };

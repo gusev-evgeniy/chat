@@ -10,7 +10,6 @@ import { sideMenuReducer } from './slices/sideMenu';
 import { draftReducer } from './slices/draft';
 import { errorReducer, setError } from './slices/error';
 import { instance } from 'api/index';
-import { usersReducer } from './slices/users';
 
 export function makeStore() {
   return configureStore({
@@ -23,7 +22,6 @@ export function makeStore() {
       sideMenu: sideMenuReducer,
       draft: draftReducer,
       errorReducer: errorReducer,
-      users: usersReducer
     },
     middleware: getDefaultMiddleware => getDefaultMiddleware(),
   });

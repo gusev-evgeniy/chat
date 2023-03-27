@@ -15,7 +15,7 @@ type Props = {
 
 export const Rooms: FC<Props> = memo(({ isSideMenu = false }) => {
   const { me, filter } = useAppSelector(getRoomsInfo);
-
+  console.log('me', me)
   return (
     <StyledRooms fullWidth={isSideMenu}>
       <RoomsHeader value={filter} />

@@ -14,8 +14,15 @@ const MAX_LENGTH = 20;
 
 export const GrouptChat = () => {
   const dispatch = useAppDispatch();
-  
-  const { onChangeName, createRoomHandler, setPhoto, title, preview } = useNewRoom();
+
+  const {
+    onChangeName,
+    createRoomHandler,
+    setPhoto,
+    title,
+    preview,
+    background,
+  } = useNewRoom();
 
   const onSelectFile = ({ target }: React.ChangeEvent<HTMLInputElement>) => {
     if (!target.files || target.files.length === 0) {
@@ -27,7 +34,7 @@ export const GrouptChat = () => {
       return setPhoto(null);
     }
 
-    setPhoto(target.files[0])
+    setPhoto(target.files[0]);
   };
 
   const groupNameLength = title.length;
@@ -41,6 +48,7 @@ export const GrouptChat = () => {
             onChange={onSelectFile}
             photo={preview}
             size={100}
+            gradient={background}
           />
 
           <div className='input_wrapper'>

@@ -23,6 +23,9 @@ export default class User extends Base {
   @Column({ nullable: true })
   socketId: string;
 
+  @Column()
+  background: string;
+
   @Column({ type: "timestamptz", default: () => "CURRENT_TIMESTAMP" })
   wasOnline: Date;
 

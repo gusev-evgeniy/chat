@@ -7,4 +7,5 @@ export type UserBD = {
   online: boolean;
   wasOnline: string;
   socketId: string;
+  background: string;
 };

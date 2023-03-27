@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { UserBD } from 'types/user';
+import { generateGradient } from 'utils/index';
 
 const initialState = {
   users: {
@@ -10,6 +11,7 @@ const initialState = {
   title: '',
   type: 'private',
   loaded: false,
+  background: generateGradient(),
 };
 
 export type CreateRoomState = typeof initialState;

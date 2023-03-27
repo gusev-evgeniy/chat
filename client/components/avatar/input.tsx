@@ -9,11 +9,12 @@ type Props = {
   name: string;
   size: number;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  gradient: string;
 };
 
-export const AvatarInput: FC<Props> = memo(({ photo, name, onChange, size }) => {
+export const AvatarInput: FC<Props> = memo(({ photo, name, onChange, size, gradient }) => {
   return (
-    <StyledChangeAva title='Add photo' backgroundImage={photo} size={size}>
+    <StyledChangeAva title='Add photo' backgroundImage={photo} size={size} gradient={gradient} >
       <label className='upload' htmlFor='inputTag'>
         <Image width='30px' height='30px' src={add_photo} alt='add_photo' />
         <input id='inputTag' type='file' onChange={onChange} hidden />

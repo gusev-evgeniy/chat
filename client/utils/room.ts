@@ -13,6 +13,7 @@ export const prepareRooms = (rooms: Room[], myId: string) => {
       photo: roomImage,
       lastMessage,
       unreadedMessagesCount,
+      background: roomBackground
     }) => {
       const data = {
         id,
@@ -20,7 +21,7 @@ export const prepareRooms = (rooms: Room[], myId: string) => {
         type,
         lastMessage,
         unreadedMessagesCount,
-        typing: [] as string[]
+        typing: [] as string[],
       }
 
       if (type === 'group') {
@@ -30,6 +31,7 @@ export const prepareRooms = (rooms: Room[], myId: string) => {
           title: roomTitle as string,
           online: false,
           participantId: '',
+          background: roomBackground
         };
       }
 
@@ -37,8 +39,9 @@ export const prepareRooms = (rooms: Room[], myId: string) => {
         id: participantId,
         name,
         photo,
-        online
-      } = participants.find(({ id }) => id !== myId) as UserBD;
+        online,
+        background
+      } = participants.find(({ id }) => id !== myId)!;
 
       return {
         ...data,
@@ -46,6 +49,7 @@ export const prepareRooms = (rooms: Room[], myId: string) => {
         title: name,
         image: photo,
         online,
+        background
       };
     }
   );

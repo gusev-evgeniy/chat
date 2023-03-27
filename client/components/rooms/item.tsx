@@ -24,6 +24,7 @@ export const Room: FC<Props> = memo(
       image,
       title,
       online,
+      background
     } = room || {};
     const { createdAt, readed, authorId } = lastMessage || {};
 
@@ -32,7 +33,7 @@ export const Room: FC<Props> = memo(
 
     return (
       <StyledRoom selected={isSelected} onClick={() => onSelecteHandler(id)}>
-        <Avatar name={title} photo={image} size={50} online={online} />
+        <Avatar name={title} photo={image} size={50} online={online} gradient={background} />
         <div className='data'>
           <div className='info'>
             <p className='name bold'>{title}</p>
