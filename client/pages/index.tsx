@@ -1,3 +1,4 @@
+import { UserAPI } from 'api/user';
 import axios from 'axios';
 
 import { wrapper } from 'store';

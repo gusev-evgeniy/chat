@@ -67,7 +67,7 @@ export const Message: FC<Props> = memo(
         </div>
 
         {isLast && !!author && (
-          <Avatar name={author.name} photo={author.photo} size={40} />
+          <Avatar name={author.name} photo={author.photo} size={40} gradient={author.background}/>
         )}
       </StyledChatItem>
     );

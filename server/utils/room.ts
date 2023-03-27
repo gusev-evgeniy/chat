@@ -129,8 +129,6 @@ export const getOnlineParticipantsSocketId = async (id: string) => {
     .leftJoinAndSelect('participants.user', 'user')
     .getMany();
 
-  console.log('participant', participant);
-
   const test = participant.reduce((acc, { room }) => {
     // const users = room.participants.user
 

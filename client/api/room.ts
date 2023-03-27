@@ -1,7 +1,8 @@
 import { instance } from "api";
+import { RoomsResponse } from "types/room";
 
 export const RoomAPI = {
-  async getOne(id: string) {
-    return await instance.get(`/room/${id}`);
+  async get() {
+    return await instance.get<RoomsResponse>(`http://localhost:5050/room/'`);
   },
 }

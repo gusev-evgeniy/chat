@@ -6,7 +6,6 @@ import { createPrivateRoom } from '.';
 import { NewMessage } from 'types/messages';
 import { setError } from 'store/slices/error';
 import { MessageAPI } from 'api/message';
-import { RoomAPI } from 'api/room';
 
 export const getRoomData =
   () => async (dispatch: AppDispatch, getState: () => RootState) => {
@@ -20,8 +19,7 @@ export const getRoomData =
 
     try {
       const { data } = await MessageAPI.get(selected);
-      const { data: participants } = await RoomAPI.getOne(selected);
-      dispatch(setRoomData({ ...data, roomId: selected, participants }));
+      dispatch(setRoomData({ ...data, roomId: selected }));
     } catch (error: any) {
       dispatch(setError(error));
     }

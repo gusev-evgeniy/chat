@@ -10,9 +10,9 @@ import { UserBD } from 'types/user';
 
 import logout_icon from 'images/logout.svg';
 
-export const Footer: FC<UserBD> = ({ name, photo }) => {
+export const Footer: FC<UserBD> = ({ name, photo, background }) => {
   const dispatch = useAppDispatch();
-
+  console.log('background', background)
   const onExit = () => {
     dispatch(logout());
     // socket.disconnect();
@@ -21,7 +21,7 @@ export const Footer: FC<UserBD> = ({ name, photo }) => {
   return (
     <div className='footer'>
       <div className='user_info'>
-      <Avatar name={name} photo={photo} size={40} />
+      <Avatar name={name} photo={photo} size={40} gradient={background} />
         <p>{name}</p>
       </div>
       <div className='image_wrapper' title='Exit' onClick={onExit}>

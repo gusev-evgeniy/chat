@@ -6,6 +6,7 @@ import { useAppDispatch } from 'store/hooks';
 import { setUserData } from 'store/slices/user';
 
 import { UserData } from 'components/auth/types';
+import { generateGradient } from 'utils/index';
 
 export const useAuth = () => {
   const [num, setNum] = useState(1);
@@ -13,6 +14,7 @@ export const useAuth = () => {
     name: '',
     password: '',
     photo: null,
+    background: generateGradient()
   });
 
   const dispatch = useAppDispatch();

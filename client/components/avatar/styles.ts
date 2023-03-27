@@ -1,17 +1,18 @@
 import styled from 'styled-components';
 
-import { BOX_SHADOW, COLORS } from 'styles/variables';
+import { COLORS } from 'styles/variables';
 
 export const AvaWrapper = styled.div<{ size: number }>`
   position: relative;
+  background-color: rgba(238,238,238,0.5);
+  
 `;
 
-export const StyledAva = styled.div<{ backgroundImage?: string | null; size: number }>`
+export const StyledAva = styled.div<{ backgroundImage?: string | null; size: number, gradient: string }>`
   width: ${({ size }) => `${size}px`};
   min-width: ${({ size }) => `${size}px`};
   height: ${({ size }) => `${size}px`};
   min-height: ${({ size }) => `${size}px`};
-  background-color: #e0e0e0;
   border-radius: 100%;
   display: flex;
   align-items: center;
@@ -21,10 +22,13 @@ export const StyledAva = styled.div<{ backgroundImage?: string | null; size: num
   color: #494949;
   position: relative;
   overflow: hidden;
-  background-image: ${({ backgroundImage }) => `url(${backgroundImage})` || ''};
+  background-image: ${({ backgroundImage, gradient }) => backgroundImage ?  `url(${backgroundImage})` : gradient};
   background-size: cover;
   position: relative;
-  box-shadow: ${BOX_SHADOW};
+  border:  1px solid #e3e3e3;
+  /* background: ${({ gradient }) => gradient}; */
+  color: white;
+  text-shadow: 0 0 1px black;
 
   .upload {
     position: absolute;

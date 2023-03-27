@@ -25,7 +25,7 @@ export const GroupInfo = () => {
     return null;
   }
 
-  const { participants, photo, title, id, myId } = roomInfo;
+  const { participants, image, title, id, myId, background } = roomInfo;
 
   const onSelectFile = ({ target }: React.ChangeEvent<HTMLInputElement>) => {
     if (
@@ -57,8 +57,9 @@ export const GroupInfo = () => {
           <AvatarInput
             name={title as string}
             size={120}
-            photo={photo}
+            photo={image}
             onChange={onSelectFile}
+            gradient={background}
           />
           <TitleInput title={title as string} update={updateGroup} />
         </div>

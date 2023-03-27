@@ -21,7 +21,7 @@ import Image from 'next/image';
 
 export const Name: FC<AuthName> = props => {
   const { data, changeData, changePage } = props;
-  const { name, photo } = data;
+  const { name, photo, background } = data;
 
   const { preview } = useAvatartPreview(photo);
   const { onSelectFile, onSubmit, errorText } = useAuthUserForm(props);
@@ -48,6 +48,7 @@ export const Name: FC<AuthName> = props => {
               onChange={onSelectFile}
               photo={preview}
               size={100}
+              gradient={background}
             />
           </div>
           <AuthInput

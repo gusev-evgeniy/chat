@@ -19,6 +19,8 @@ import { SideMenu } from 'components/sideMenu';
 import { WIDTH } from 'styles/variables';
 import { MainWrapper } from 'styles';
 import { Error } from 'components/error';
+import { UserAPI } from 'api/user';
+import { RoomAPI } from 'api/room';
 
 const Main = () => {
   useAuthGuard(false);

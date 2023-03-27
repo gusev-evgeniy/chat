@@ -1,5 +1,5 @@
 import { useAvatartPreview } from 'hooks/useAvatartPreview';
-import React, { useMemo, useState } from 'react';
+import React, { useState } from 'react';
 
 import { createRoom, openNewRoom } from 'store/actions';
 import { useAppDispatch, useAppSelector } from 'store/hooks';
@@ -14,7 +14,8 @@ const MAX_LENGTH = 20;
 export const useNewRoom = () => {
   const dispatch = useAppDispatch();
 
-  const { checked, users, loaded, type, title } = useAppSelector(selectCreatingRoom);
+  const { checked, users, loaded, type, title, background } =
+    useAppSelector(selectCreatingRoom);
   const { isOpen: isSideMenuOpen } = useAppSelector(selectSideMenu);
 
   const isGroupChat = type === 'group';
@@ -66,20 +67,18 @@ export const useNewRoom = () => {
     }
   };
 
-  return useMemo(
-    () => ({
-      checked,
-      users,
-      loaded,
-      isGroupChat,
-      createRoomHandler,
-      onRemoveUser,
-      onCheckHandler,
-      onChangeName,
-      title,
-      setPhoto,
-      preview
-    }),
-    [checked, users, loaded, isGroupChat, title, preview]
-  );
+  return {
+    checked,
+    users,
+    loaded,
+    isGroupChat,
+    createRoomHandler,
+    onRemoveUser,
+    onCheckHandler,
+    onChangeName,
+    title,
+    setPhoto,
+    preview,
+    background,
+  };
 };

@@ -13,13 +13,12 @@ export const roomSlice = createSlice({
   initialState,
   reducers: {
     setRoomData: (state, action: PayloadAction<RoomResponse>) => {
-      const { count, messages: fetchedMessages, roomId, participants } = action.payload;
+      const { count, messages: fetchedMessages, roomId } = action.payload;
       let room = state.data[roomId];
       if (!room) {
         state.data[roomId] = {
           messages: fetchedMessages,
           count,
-          participants,
           loaded: true,
         };
       } else {

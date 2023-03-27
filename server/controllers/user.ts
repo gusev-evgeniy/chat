@@ -10,7 +10,7 @@ import { prepareImage } from '../utils/prepareImage';
 class User {
   async create(req: Request, res: Response) {
     try {
-      const { password, name } = req.body || {};
+      const { password, name, background } = req.body || {};
 
       if (!password || !name) {
         return res
@@ -21,6 +21,7 @@ class User {
       const userInfo: Partial<UserEntity> = {
         name,
         password,
+        background
       };
 
       const photoUrl = prepareImage(req);
@@ -78,6 +79,7 @@ class User {
     try {
       const user = await UserEntity.findOne({
         where: { name: name as string },
+        select: ['password', 'id', 'name', 'online', 'photo', 'socketId', 'wasOnline']
       });
 
       if (!user) return res.status(401).json({ message: 'Wrong password or name' });

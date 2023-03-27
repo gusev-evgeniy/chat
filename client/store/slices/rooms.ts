@@ -70,11 +70,21 @@ export const roomsSlice = createSlice({
     ) => {
       const { userId, online, wasOnline } = action.payload;
       state.data = state.data.map(room => {
+        const participants = room.participants.map(user =>
+          user.id === userId
+            ? {
+                ...user,
+                online,
+                wasOnline: wasOnline ? wasOnline : user.wasOnline,
+              }
+            : user
+        );
+
         if (room.participantId === userId) {
-          return { ...room, online };
+          return { ...room, online, participants };
         }
 
-        return room;
+        return {...room, participants};
       });
     },
     setUnreadedCount(

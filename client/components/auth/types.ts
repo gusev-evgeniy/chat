@@ -15,4 +15,5 @@ export type UserData = {
   password: string;
   name: string;
   photo: File | null;
+  background: string;
 };
