@@ -35,16 +35,20 @@ export const RoomsList: FC<Props> = ({ isSideMenu }) => {
 
   return (
     <>
-      {rooms.map(room => (
-        <Room
-          key={room.id}
-          room={room}
-          myId={me?.id as string}
-          isSelected={selected === room.id}
-          onSelecteHandler={onSelecteHandler}
-          typingText={returnTypingText(room)}
-        />
-      ))}
+      {rooms.map(room => {
+        const {participants, ...rest} = room;
+
+        return (
+          <Room
+            key={room.id}
+            {...rest}
+            myId={me?.id as string}
+            isSelected={selected === room.id}
+            onSelecteHandler={onSelecteHandler}
+            typingText={returnTypingText(room)}
+          />
+        );
+      })}
     </>
   );
 };

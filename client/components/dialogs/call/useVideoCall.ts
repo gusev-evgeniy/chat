@@ -1,4 +1,4 @@
-import { useRef, useMemo, useEffect } from 'react';
+import { useRef, useEffect } from 'react';
 
 import { useCall } from 'providers/call/callProvider';
 
@@ -20,36 +20,42 @@ export const useVideoCall = () => {
     }
   }, [myVideo, myStream]);
 
-  const toggleFullScreen = () => {
-
-    if (callerVideo.current) {
-      callerVideo.current.requestFullscreen();
+  useEffect(() => {
+    const button = document.getElementById('fullscreen_button');
+    if (!button) {
+      return;
     }
 
-    // const el = callerVideo.current;
+    const openFullscreen = () => {
+      const elem = callerVideo.current as any;
+      if (!elem) {
+        return;
+      }
 
-    // if (!el) {
-    //   return;
-    // }
+      /* Function to open fullscreen mode */
+      if (elem.requestFullscreen) {
+        elem.requestFullscreen();
+      } else if (elem.mozRequestFullScreen) {
+        /* Firefox */
+        elem.mozRequestFullScreen();
+      } else if (elem.webkitRequestFullscreen) {
+        /* Chrome, Safari & Opera */
+        elem.webkitRequestFullscreen();
+      } else if (elem.msRequestFullscreen) {
+        /* IE/Edge */
+        elem.msRequestFullscreen();
+      }
+    };
 
+    button.addEventListener('click', openFullscreen);
 
-    // if (el.requestFullscreen) {
-    //   el.requestFullscreen();
-    // } else if (el.msRequestFullscreen) {
-    //   el.msRequestFullscreen();
-    // } else if (el.mozRequestFullScreen) {
-    //   el.mozRequestFullScreen();
-    // } else if (el.webkitRequestFullscreen) {
-    //   el.webkitRequestFullscreen();
-    // }
+    return () => {
+      button.addEventListener('click', openFullscreen);
+    };
+  }, []);
+
+  return {
+    myVideo,
+    callerVideo,
   };
-
-  return useMemo(
-    () => ({
-      myVideo,
-      callerVideo,
-      toggleFullScreen
-    }),
-    [myVideo, callerVideo]
-  );
 };

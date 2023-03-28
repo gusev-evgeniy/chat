@@ -5,12 +5,15 @@ import { getHeaderInfo } from 'store/selectors';
 import { openDialog } from 'store/slices/dialog';
 
 import { StyledGroupSubstring, StyledSubstring } from 'components/chat/styles';
+import moment from 'moment';
+import { getGroupSubstring } from 'utils/room';
+import { PrivateSubstring } from './privateSubstring';
 
 export const UserInfo: FC<{}> = ({}) => {
   const dispatch = useAppDispatch();
 
-  const { online, substring, type } = useAppSelector(getHeaderInfo) || {};
-  console.log('online', online)
+  const { online, type, participants, privateUser } = useAppSelector(getHeaderInfo) || {};
+
   const openDialogHandler = () => {
     dispatch(openDialog('GROUP_INFO'));
   };
@@ -20,13 +23,13 @@ export const UserInfo: FC<{}> = ({}) => {
   }
 
   if (type === 'private') {
-    return <StyledSubstring>{substring}</StyledSubstring>;
+    return <PrivateSubstring time={privateUser?.wasOnline}/>
   }
 
   return (
     <>
       <StyledGroupSubstring onClick={openDialogHandler}>
-        {substring}
+        {getGroupSubstring(participants)}
       </StyledGroupSubstring>
     </>
   );

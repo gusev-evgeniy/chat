@@ -47,6 +47,7 @@ export const callReducer = (
     }
 
     case 'DEFAUL': {
+      state.myStream?.getTracks().forEach(t => t.stop());
       return initCallState;
     }
 

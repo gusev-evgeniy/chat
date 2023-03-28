@@ -70,8 +70,6 @@ export const CallProvider: FC<{ children: React.ReactElement }> = ({
   useEffect(() => {
     socket.on(EVENTS.CALL.ENDED, (message: Message) => {
       dispatch(newMessageHandler(message));
-      myStream?.getTracks().forEach(t => t.stop());
-
       dispatch(openDialog(null));
       callDispatch(actions.callEnded());
     });

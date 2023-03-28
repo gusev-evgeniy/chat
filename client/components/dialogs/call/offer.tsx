@@ -6,7 +6,7 @@ import { Avatar } from 'components/avatar';
 import { useCall } from 'providers/call/callProvider';
 
 import call_end_icon from 'images/call_end.svg';
-import call_icon from 'images/call.svg';
+import call_icon from 'images/call_fill.svg';
 
 import {
   CallButton,
@@ -22,7 +22,7 @@ export const CallOffer = () => {
     return null;
   }
 
-  const { name, photo } = companion;
+  const { name, photo, background } = companion;
   const headerText = isGetCall ? `Call from:` : 'Call to:';
 
   return (
@@ -30,7 +30,7 @@ export const CallOffer = () => {
       <StyledContainer padding={'25px'} width='150px'>
         <CallUser>
           <p className='header'>{headerText}</p>
-          <Avatar name={name} size={100} photo={photo} online={false} />
+          <Avatar name={name} size={100} photo={photo} online={false} gradient={background}/>
           <p className='name'>{name}</p>
         </CallUser>
 

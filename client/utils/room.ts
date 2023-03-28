@@ -1,4 +1,5 @@
 import dayjs from 'dayjs';
+import moment from 'moment';
 
 import { Room } from 'types/room';
 import { UserBD } from 'types/user';
@@ -15,7 +16,7 @@ export const prepareRooms = (rooms: Room[], myId: string) => {
       photo: roomImage,
       lastMessage,
       unreadedMessagesCount,
-      background: roomBackground
+      background: roomBackground,
     }) => {
       const data = {
         id,
@@ -24,7 +25,7 @@ export const prepareRooms = (rooms: Room[], myId: string) => {
         lastMessage,
         unreadedMessagesCount,
         typing: [] as string[],
-      }
+      };
 
       if (type === 'group') {
         return {
@@ -33,7 +34,7 @@ export const prepareRooms = (rooms: Room[], myId: string) => {
           title: roomTitle as string,
           online: false,
           participantId: '',
-          background: roomBackground
+          background: roomBackground,
         };
       }
 
@@ -42,7 +43,7 @@ export const prepareRooms = (rooms: Room[], myId: string) => {
         name,
         photo,
         online,
-        background
+        background,
       } = participants.find(({ id }) => id !== myId)!;
 
       return {
@@ -51,19 +52,16 @@ export const prepareRooms = (rooms: Room[], myId: string) => {
         title: name,
         image: photo,
         online,
-        background
+        background,
       };
     }
   );
 };
 
-export const createOnlineSubstring = (
-  privateUser: UserBD | undefined,
+export const getGroupSubstring = (
   participants: UserBD[]
 ) => {
-  return privateUser
-    ? dayjs(privateUser.wasOnline).format('YYYY-MM-DD')
-    : `${participants.length} участников, ${
-        participants.filter(({ online }) => online).length
-      } в сети`;
+  return `${participants.length} members, ${
+    participants.filter(({ online }) => online).length
+  } online`;
 };

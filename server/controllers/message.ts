@@ -19,8 +19,6 @@ class Message {
         take: take as number,
       });
 
-      console.log('__________________________-res.locals.user.id', res.locals.user)
-
       const extendedMessages = messages
         .map(message =>
           message.authorId === res.locals.user.id

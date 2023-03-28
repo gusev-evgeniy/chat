@@ -17,7 +17,9 @@ export const useSocketOn = () => {
   const dispatch = useAppDispatch();
   
   useEffect(() => {
-    if (!socket.connected) socket.connect();
+    if (!socket.connected) {
+      socket.connect();
+    }
 
     socket.on(EVENTS.MESSAGE.RESPONSE_TYPING, (obj: Typing) => {
       dispatch(updateTyping(obj))

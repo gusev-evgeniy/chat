@@ -2,7 +2,7 @@ import { createSelector } from '@reduxjs/toolkit';
 
 import { NEW_ROOM } from 'utils/constants';
 import { returnTypingText } from 'utils/message';
-import { createOnlineSubstring } from 'utils/room';
+import { getGroupSubstring } from 'utils/room';
 
 import { RootState } from 'store';
 import { Rooms } from './slices/rooms';
@@ -22,7 +22,11 @@ export const getChatData = createSelector(
   selectMessages,
   ({ selected, data }, room) => {
     const openRoom = data.find(({ id }) => id === selected);
-    const { messages = [], loaded, count } = room[selected as string] || {};
+    const {
+      messages = [],
+      loaded,
+      count,
+    } = room[selected as string] || ({} as Rooms[0]);
 
     const typingText = returnTypingText(openRoom);
 
@@ -63,33 +67,30 @@ export const getHeaderInfo = createSelector(
     const selectedRoom = isNewRoom
       ? newPrivateRoom
       : rooms.find(({ id }) => id === selected)!;
-    console.log('selectedRoom', selectedRoom)
     const {
       type: selectedRoomType,
       title: selectedRoomTitle,
       participants,
     } = selectedRoom;
 
-    // const { participants } = rooms.find(({ id }) => id === selected)!;
-
     const privateUser =
       selectedRoomType === 'private'
         ? participants.find(participant => participant.id !== myData?.id)
         : undefined;
+
     const online = privateUser?.online;
-    const substring = createOnlineSubstring(privateUser, participants);
     const title = privateUser?.name || selectedRoomTitle;
 
     return {
       isNewRoom,
       online,
-      substring,
       title,
       type: selectedRoomType,
       myId: myData?.id,
       userId: privateUser && privateUser.id,
       selected,
       privateUser,
+      participants,
     };
   }
 );

@@ -21,11 +21,18 @@ export const Participant: FC<Props> = ({
   photo,
   onLeave,
   myId,
+  background,
 }) => {
   return (
     <StyledSearchUserItem className='user_wrapper' key={id}>
       <div className='data_wrapper'>
-        <Avatar size={45} photo={photo} name={name} online={online} />
+        <Avatar
+          size={45}
+          photo={photo}
+          name={name}
+          online={online}
+          gradient={background}
+        />
         <p className='bold'>{name}</p>
       </div>
 

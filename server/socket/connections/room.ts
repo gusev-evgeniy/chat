@@ -17,11 +17,13 @@ type UpdateRoom = {
 
 export default async (io: Server, socket: MySocket) => {
   const createRoom = async (obj: any, callback: Callback) => {
-    const { users, title, type, photo } = obj;
+    const { users, title, type, photo, background } = obj;
     const roomData: Partial<Room> = {
       author: socket.me,
       type,
     };
+
+    if (background) roomData.background = background;
 
     if (photo) {
       const filePath = '/static' + '/' + uuidv4();

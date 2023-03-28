@@ -108,6 +108,7 @@ export const CallUser = styled.div`
 export const VidoeContainer = styled.div`
   width: 100%;
   position: relative;
+  display: flex;
 
   .avatar {
     z-index: 1;
@@ -117,8 +118,33 @@ export const VidoeContainer = styled.div`
     opacity: 0.7;
   }
 
-  .fullscreen_button {
+  
+  .veil {
+    width: 100%;
+    height: 40px;
     position: absolute;
+    bottom: 0px;
+    opacity: 0;
+    background: linear-gradient(0deg, rgba(0,0,0, 0.2), transparent);
+    transition: 0.5s;
+
+    .fullscreen_button {
+      position: absolute;
+      display: none;
+      right: 10px;
+      bottom: 5px;
+    }
+  }
+
+  &:hover {
+    .veil {
+      opacity: 1;
+    }
+
+    .fullscreen_button {
+      display: block;
+      cursor: pointer;
+    }
   }
 `;
 

@@ -61,11 +61,11 @@ export const readedHandler =
 export const createRoom =
   (photo?: File | null) => async (dispatch: AppDispatch, getState: () => RootState) => {
     const {
-      createRoom: { checked, title, type },
+      createRoom: { checked, title, type, background },
     } = getState();
     const users = checked.map(({ id, socketId }) => ({ id, socketId }));
 
-    socket.emit(EVENTS.ROOM.CREATE, { users, title, type, photo }, (newRoom: Room) => {
+    socket.emit(EVENTS.ROOM.CREATE, { users, title, type, photo, background }, (newRoom: Room) => {
       dispatch(addNewRoom(newRoom));
       dispatch(selectRoom(newRoom.id));
       dispatch(createRoomsDefault());

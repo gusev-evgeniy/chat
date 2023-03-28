@@ -26,7 +26,6 @@ export default async (io: Server, socket: MySocket) => {
     if (!userRooms) return;
 
     const [rooms, participantsSocketIds] = userRooms;
-    console.log('participantsSocketIds', participantsSocketIds)
     socket.join(rooms);
 
     io.to(participantsSocketIds).emit(EVENTS.USER.ENTER, {
@@ -39,7 +38,7 @@ export default async (io: Server, socket: MySocket) => {
     prevUser = socket.me;
     timer = setTimeout(async () => {
       const wasOnline = new Date();
-      console.log('socket.me disconnect', socket.me?.id);
+      
       if (socket.me?.id) {
         await updateUser(socket.me?.id, {
           online: false,
@@ -55,7 +54,7 @@ export default async (io: Server, socket: MySocket) => {
           wasOnline,
         });
       }
-    }, 30000);
+    }, 10000);
   };
 
   socket.on('disconnect', disconnect);

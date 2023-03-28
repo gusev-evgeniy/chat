@@ -21,27 +21,32 @@ import {
 
 export const Call = () => {
   const { leaveCall, companion } = useCall();
-  const { callerVideo, myVideo, toggleFullScreen } = useVideoCall();
+  const { callerVideo, myVideo } = useVideoCall();
 
   if (!companion) {
     return null;
   }
+
+  const { background, name, photo } = companion;
 
   return (
     <StyledVeil>
       <StyledContainer padding={'25px'}>
         <VidoeContainer>
           <Avatar
-            name={companion.name}
+            name={name}
             size={50}
-            photo={companion.photo}
+            photo={photo}
             online={false}
+            gradient={background}
           />
           <CompanionVideo playsInline ref={callerVideo} autoPlay />
           <MyVideo playsInline muted ref={myVideo} autoPlay />
-          {/* <div className='fullscreen_button' onClick={toggleFullScreen}>
-            <Image width='20px' height='20px' src={fullscreen} alt='stop' />
-          </div> */}
+          <div className='veil'>
+            <div id='fullscreen_button' className='fullscreen_button'>
+              <Image width='30px' height='30px' src={fullscreen} alt='stop' />
+            </div>
+          </div>
         </VidoeContainer>
 
         <CallButtons>

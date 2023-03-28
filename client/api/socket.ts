@@ -3,4 +3,5 @@ import { BASE_URL } from 'utils/constants';
 
 export const socket = io(BASE_URL, {
   withCredentials: true,
+  autoConnect: false
 });
