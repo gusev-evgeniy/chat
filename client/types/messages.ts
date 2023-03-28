@@ -15,7 +15,7 @@ export type Message = {
   media: string | null;
 };
 
-export type RoomResponse = {
+export type MessagesResponse = {
   count: number;
   messages: Message[];
   roomId: string;

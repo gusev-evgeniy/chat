@@ -19,7 +19,7 @@ export const draftSlice = createSlice({
   name: 'draft',
   initialState,
   reducers: {
-    changeDraft: (state, action: PayloadAction<Action>) => {
+    changeDraft(state, action: PayloadAction<Action>) {
       const { key, text } = action.payload;
       state.data[key] = text;
     },

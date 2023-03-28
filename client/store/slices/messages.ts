@@ -1,38 +1,41 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-import { Message, RoomResponse } from 'types/messages';
-import { RoomData } from 'types/room';
+import { Message, MessagesResponse } from 'types/messages';
+import { MessagesData } from 'types/room';
 
 const initialState = {
-  data: {} as RoomData,
+  data: {} as MessagesData,
 };
-export type RoomState = typeof initialState;
+export type MessagesState = typeof initialState;
 
-export const roomSlice = createSlice({
-  name: 'room',
+export const messagesSlice = createSlice({
+  name: 'messages',
   initialState,
   reducers: {
-    setRoomData: (state, action: PayloadAction<RoomResponse>) => {
-      const { count, messages: fetchedMessages, roomId } = action.payload;
+    setMessagesData(state, action: PayloadAction<MessagesResponse>) {
+      const { count, messages, roomId } = action.payload;
       let room = state.data[roomId];
       if (!room) {
         state.data[roomId] = {
-          messages: fetchedMessages,
+          messages,
           count,
           loaded: true,
         };
       } else {
-        room.messages = [...fetchedMessages, ...room.messages];
+        room.messages = [...messages, ...room.messages];
       }
     },
 
-    addOffsetMessages: (state, action: PayloadAction<Pick<RoomResponse, 'messages' | 'roomId'>>) => {
+    addOffsetMessages(
+      state,
+      action: PayloadAction<Pick<MessagesResponse, 'messages' | 'roomId'>>
+    ) {
       const { messages, roomId } = action.payload;
       let room = state.data[roomId];
       room.messages = [...messages, ...room.messages];
     },
 
-    addNewMessage: (state, action: PayloadAction<Message>) => {
+    addNewMessage(state, action: PayloadAction<Message>) {
       const roomId = action.payload.roomId;
       let room = state.data[roomId];
       if (room?.loaded) {
@@ -41,7 +44,7 @@ export const roomSlice = createSlice({
       }
     },
 
-    setAllReadedMessages: (state, action: PayloadAction<string>) => {
+    setAllReadedMessages(state, action: PayloadAction<string>) {
       const room = state.data[action.payload];
 
       if (room) {
@@ -52,14 +55,18 @@ export const roomSlice = createSlice({
       }
     },
 
+    defaultMessages() {
+      return initialState;
+    },
   },
 });
 
 export const {
-  setRoomData,
+  setMessagesData,
   addNewMessage,
   setAllReadedMessages,
-  addOffsetMessages
-} = roomSlice.actions;
+  addOffsetMessages,
+  defaultMessages,
+} = messagesSlice.actions;
 
-export const roomReducer = roomSlice.reducer;
+export const messagesReducer = messagesSlice.reducer;

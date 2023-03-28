@@ -7,6 +7,8 @@ import {
   StyledButton,
   StyledWrapper,
 } from './styles';
+import { StyledForm } from 'styles';
+
 import { AuthPassword } from './types';
 
 import arrow_back from 'images/arrow_back.svg';
@@ -17,10 +19,15 @@ export const Password: FC<AuthPassword> = ({
   submitHandler,
   changeData,
   data,
-  changePage
+  changePage,
 }) => {
   const onKeyChange = ({ target }: React.ChangeEvent<HTMLInputElement>) => {
     changeData({ password: target.value.trim() });
+  };
+
+  const onSubmitHandler = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    submitHandler();
   };
 
   return (
@@ -34,22 +41,23 @@ export const Password: FC<AuthPassword> = ({
           <Image width='30px' height='30px' src={arrow_back} alt='back' />
         </BackButon>
 
-        <AuthInput
-          type='password'
-          placeholder='Password'
-          onChange={onKeyChange}
-          autoFocus
-          margin='32px 0'
-        />
+        <StyledForm onSubmit={onSubmitHandler}>
+          <AuthInput
+            type='password'
+            placeholder='Password'
+            onChange={onKeyChange}
+            autoFocus
+            margin='32px 0'
+          />
 
-        <StyledButton
-          width='160px'
-          height='43px'
-          onClick={submitHandler}
-          disabled={data.password.length < MIN_LENGTH}>
-          Submit
-          <span className='arrow'>&rarr;</span>
-        </StyledButton>
+          <StyledButton
+            width='160px'
+            height='43px'
+            disabled={data.password.length < MIN_LENGTH}>
+            Submit
+            <span className='arrow'>&rarr;</span>
+          </StyledButton>
+        </StyledForm>
       </StyledWrapper>
     </>
   );

@@ -3,7 +3,7 @@ import User from '../entities/user';
 export const getOtherUsersByNameAndCount = async (name: string, me: string) => {
   try {
     const [users, count] = await User.createQueryBuilder('user')
-      .where('user.name like :name', { name: `%${name}%` })
+      .where('user.name like :name', { name: `%${name.toLowerCase()}%` })
       .andWhere('user.id != :id', { id: me })
       .take(50)
       .getManyAndCount();

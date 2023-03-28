@@ -174,7 +174,11 @@ export const roomsSlice = createSlice({
         type: 'private',
       };
     },
+    defaultRooms() {
+      return initialState;
+    },
   },
+
   extraReducers: {
     [HYDRATE]: (state, action) => {
       return {
@@ -198,6 +202,7 @@ export const {
   updateTyping,
   clearTyping,
   addPrivateRoom,
+  defaultRooms
 } = roomsSlice.actions;
 
 export const roomsReducer = roomsSlice.reducer;

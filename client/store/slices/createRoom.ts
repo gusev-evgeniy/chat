@@ -20,19 +20,16 @@ export const createRoomSlice = createSlice({
   name: 'createRoom',
   initialState,
   reducers: {
-    findUsers: (
+    findUsers(
       state,
       action: PayloadAction<{ users: UserBD[]; count: number }>
-    ) => {
+    ) {
       const { users, count } = action.payload;
 
       state.users = { data: users, count };
       state.loaded = true;
     },
-    checkUser: (
-      state,
-      action: PayloadAction<{ checked: boolean; id: string }>
-    ) => {
+    checkUser(state, action: PayloadAction<{ checked: boolean; id: string }>) {
       const { checked, id } = action.payload;
 
       if (checked) {
@@ -44,20 +41,16 @@ export const createRoomSlice = createSlice({
 
       state.type = state.checked.length > 1 ? 'group' : 'private';
     },
-    updateTitle: (state, action: PayloadAction<{ title: string }>) => {
+    updateTitle(state, action: PayloadAction<{ title: string }>) {
       state.title = action.payload.title;
     },
-    createRoomsDefault: () => {
+    createRoomsDefault() {
       return initialState;
     },
   },
 });
 
-export const {
-  findUsers,
-  checkUser,
-  updateTitle,
-  createRoomsDefault,
-} = createRoomSlice.actions;
+export const { findUsers, checkUser, updateTitle, createRoomsDefault } =
+  createRoomSlice.actions;
 
 export const createRoomReducer = createRoomSlice.reducer;

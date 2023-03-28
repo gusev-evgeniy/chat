@@ -3,7 +3,7 @@ import { createWrapper } from 'next-redux-wrapper';
 
 import { userReducer } from './slices/user';
 import { roomsReducer } from './slices/rooms';
-import { roomReducer } from './slices/room';
+import { messagesReducer } from './slices/messages';
 import { createRoomReducer } from './slices/createRoom';
 import { dialogReducer } from './slices/dialog';
 import { sideMenuReducer } from './slices/sideMenu';
@@ -16,7 +16,7 @@ export function makeStore() {
     reducer: {
       user: userReducer,
       rooms: roomsReducer,
-      room: roomReducer,
+      messages: messagesReducer,
       createRoom: createRoomReducer,
       dialog: dialogReducer,
       sideMenu: sideMenuReducer,

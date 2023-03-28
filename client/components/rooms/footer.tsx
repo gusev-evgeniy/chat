@@ -12,7 +12,7 @@ import logout_icon from 'images/logout.svg';
 
 export const Footer: FC<UserBD> = ({ name, photo, background }) => {
   const dispatch = useAppDispatch();
-  console.log('background', background)
+
   const onExit = () => {
     dispatch(logout());
     // socket.disconnect();

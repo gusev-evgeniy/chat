@@ -1,6 +1,6 @@
 import { AppDispatch, RootState } from 'store';
 import { NEW_ROOM } from 'utils/constants';
-import { addOffsetMessages, setRoomData } from 'store/slices/room';
+import { addOffsetMessages, setMessagesData } from 'store/slices/messages';
 import { createMessage, prepareFile, validateFile } from 'utils/message';
 import { createPrivateRoom } from '.';
 import { NewMessage } from 'types/messages';
@@ -13,25 +13,26 @@ export const getRoomData =
       rooms: { selected },
     } = getState();
 
-    if (!selected) {
+    if (!selected || selected === NEW_ROOM) {
       return;
     }
 
     try {
       const { data } = await MessageAPI.get(selected);
-      dispatch(setRoomData({ ...data, roomId: selected }));
+      dispatch(setMessagesData({ ...data, roomId: selected }));
     } catch (error: any) {
       dispatch(setError(error));
     }
   };
 
 export const getMessages =
-  (skip: number) => async (dispatch: AppDispatch, getState: () => RootState) => {
+  (skip: number) =>
+  async (dispatch: AppDispatch, getState: () => RootState) => {
     const {
       rooms: { selected },
     } = getState();
 
-    if (!selected) {
+    if (!selected || selected === NEW_ROOM) {
       return;
     }
 
@@ -46,7 +47,7 @@ export const getMessages =
 export const uploadFile = (fileForUpload: File) => (dispatch: AppDispatch) => {
   const isValid = validateFile(fileForUpload);
   if (!isValid) {
-    return dispatch(setError('Maximum file size 10Mb'));
+    return dispatch(setError('Maximum file size 1Mb'));
   }
 
   const file = prepareFile(fileForUpload);

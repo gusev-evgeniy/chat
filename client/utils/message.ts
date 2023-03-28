@@ -13,9 +13,9 @@ export const returnTypingText = (openRoom: Rooms[0] | undefined) => {
   const { typing, type } = openRoom;
 
   if (!typing || !typing.length) return '';
-  if (type === 'private') return '...types';
+  if (type === 'private') return '...typing';
 
-  return `...${typing.join(',')} печатают`;
+  return `...${typing.join(',')} typing`;
 };
 
 export const prepareFile = (content: File) => {
@@ -77,5 +77,5 @@ export const getLastMessageText = (message: Omit<Message, "author"> | null ) => 
 }
 
 export const validateFile = (file: File) => {
-  return file.size <= 1e7;
+  return file.size <= 1e6;
 }

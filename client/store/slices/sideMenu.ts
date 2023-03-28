@@ -9,7 +9,7 @@ export const sideMenuSlice = createSlice({
   name: 'sideMenu',
   initialState,
   reducers: {
-    openSideMenu: state => {
+    openSideMenu(state) {
       state.isOpen = !state.isOpen;
     },
   },

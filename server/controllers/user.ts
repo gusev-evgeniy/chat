@@ -21,17 +21,18 @@ class User {
       const userInfo: Partial<UserEntity> = {
         name,
         password,
-        background
+        background,
       };
 
       const photoUrl = prepareImage(req);
       if (photoUrl) userInfo.photo = photoUrl;
 
-      const user = UserEntity.create(userInfo) as UserEntity;
-      await user.save();
+      const user = (await UserEntity.create(userInfo).save()) as UserEntity;
 
       createTokenAndAddCookie(res, user);
+
       const { password: userPassword, ...rest } = user;
+
       res.json(rest);
     } catch (error: any) {
       console.log('error', error);
@@ -46,7 +47,7 @@ class User {
   async checkName(req: Request, res: Response) {
     try {
       const user = await UserEntity.find({
-        where: { name: req.body.name },
+        where: { name: req.body.name.toLowerCase() },
       });
 
       if (user.length) {
@@ -78,12 +79,21 @@ class User {
     const { name, password } = req.body;
     try {
       const user = await UserEntity.findOne({
-        where: { name: name as string },
-        select: ['password', 'id', 'name', 'online', 'photo', 'socketId', 'wasOnline']
+        where: { name: name.toLowerCase() as string },
+        select: [
+          'password',
+          'id',
+          'name',
+          'online',
+          'photo',
+          'socketId',
+          'wasOnline',
+        ],
       });
 
-      if (!user) return res.status(401).json({ message: 'Wrong password or name' });
-      
+      if (!user)
+        return res.status(401).json({ message: 'Wrong password or name' });
+
       const isCorrectPassword = bcrypt.compareSync(
         password as string,
         user.password
@@ -114,7 +124,6 @@ class User {
 
     return res.json({ message: 'Success' });
   }
-
 }
 
 export default new User();

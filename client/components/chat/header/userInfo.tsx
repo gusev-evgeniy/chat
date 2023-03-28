@@ -10,12 +10,10 @@ export const UserInfo: FC<{}> = ({}) => {
   const dispatch = useAppDispatch();
 
   const { online, substring, type } = useAppSelector(getHeaderInfo) || {};
-
+  console.log('online', online)
   const openDialogHandler = () => {
     dispatch(openDialog('GROUP_INFO'));
   };
-
-  console.log('online', online)
 
   if (online) {
     return <p className='online'>online</p>;

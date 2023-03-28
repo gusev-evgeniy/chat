@@ -56,10 +56,10 @@ export const getServerSideProps = wrapper.getServerSideProps(
         }
 
         axios.defaults.headers.get.Cookie = cookie as string;
-        const { data } = await UserAPI.me();
+        const { data } = await axios.get('http://localhost:5050/user/me');
         store.dispatch(setUserData(data));
 
-        const rooms = await RoomAPI.get();
+        const rooms = await axios.get('http://localhost:5050/room/');
         store.dispatch(setRoomsData({ data: rooms.data, myId: data.id }));
       } catch ({ response }: any) {
         if ((response as any)?.data.message === 'Unauthenticated') {

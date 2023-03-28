@@ -33,11 +33,11 @@ export default async (io: Server, socket: MySocket) => {
   const createMessage = async ({ roomId, data }: NewMessage) => {
     try {
       const { message, file, media } = data;
-
+      console.log('message, file, media', message, file, media)
       if (!message && !file && !media) {
         return;
       }
-
+      console.log('socket.me', socket.me)
       const newMessageInfo: Partial<Message> = {
         author: socket.me,
         room: { id: roomId } as Room,

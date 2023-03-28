@@ -13,11 +13,12 @@ export const StyledRooms = styled.div<{ fullWidth: boolean }>`
 
   .header {
     padding: 7px 12px;
-    /* border-bottom: 1px solid #e3e3e3; */
+    border-bottom: 1px solid #e3e3e3;
     display: flex;
     align-items: center;
     justify-content: space-between;
     height: 58px;
+    background-color: #fff;
 
     .add_chat {
       cursor: pointer;

@@ -12,15 +12,15 @@ export const userSlice = createSlice({
   name: 'user',
   initialState,
   reducers: {
-    setUserData: (state, action: PayloadAction<UserBD>) => {
+    setUserData(state, action: PayloadAction<UserBD>) {
       state.data = action.payload;
     },
-    defaultUser: state => {
+    defaultUser(state) {
       state.data = null;
     },
   },
   extraReducers: {
-    [HYDRATE]: (state, action) => {
+    [HYDRATE](state, action) {
       return {
         ...state,
         ...action.payload.user,

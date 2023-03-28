@@ -42,7 +42,7 @@ export const getServerSideProps = wrapper.getServerSideProps(
         }
 
         axios.defaults.headers.get.Cookie = req.headers.cookie;
-        const { data } = await UserAPI.me();
+        const { data } = await axios.get('http://localhost:5050/user/me');
         store.dispatch(setUserData(data));
         return {
           redirect: {

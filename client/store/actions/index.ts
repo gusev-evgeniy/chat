@@ -2,7 +2,7 @@ import { socket } from 'api/socket';
 
 import { EVENTS, NEW_ROOM } from 'utils/constants';
 
-import { addNewMessage, setAllReadedMessages } from 'store/slices/room';
+import { addNewMessage, setAllReadedMessages } from 'store/slices/messages';
 import {
   selectRoom,
   setUnreadedCount,

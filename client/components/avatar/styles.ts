@@ -4,7 +4,6 @@ import { COLORS } from 'styles/variables';
 
 export const AvaWrapper = styled.div<{ size: number }>`
   position: relative;
-  background-color: rgba(238,238,238,0.5);
   
 `;
 
@@ -19,14 +18,12 @@ export const StyledAva = styled.div<{ backgroundImage?: string | null; size: num
   justify-content: center;
   font-weight: 700;
   font-size: ${({ size }) => `${Math.floor(size / 40)}rem`};
-  color: #494949;
   position: relative;
   overflow: hidden;
   background-image: ${({ backgroundImage, gradient }) => backgroundImage ?  `url(${backgroundImage})` : gradient};
   background-size: cover;
   position: relative;
   border:  1px solid #e3e3e3;
-  /* background: ${({ gradient }) => gradient}; */
   color: white;
   text-shadow: 0 0 1px black;
 

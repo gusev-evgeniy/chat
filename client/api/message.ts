@@ -1,9 +1,9 @@
 import { instance } from 'api';
-import { RoomResponse } from 'types/messages';
+import { MessagesResponse } from 'types/messages';
 
 export const MessageAPI = {
   async get(roomId: string, skip = 0) {
-    return await instance.get<Omit<RoomResponse, 'roomId' | 'participants'>>(
+    return await instance.get<Omit<MessagesResponse, 'roomId' | 'participants'>>(
       `message/?roomId=${roomId}&skip=${skip}`
     );
   },

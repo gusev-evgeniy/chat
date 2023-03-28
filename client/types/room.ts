@@ -34,6 +34,6 @@ export type RoomMessages = {
   loaded: boolean;
 };
 
-export type RoomData = {
+export type MessagesData = {
   [key: string]: RoomMessages;
 }

@@ -1,4 +1,11 @@
-import { Entity, Column, BeforeInsert, JoinColumn, OneToMany, CreateDateColumn } from 'typeorm';
+import {
+  Entity,
+  Column,
+  BeforeInsert,
+  JoinColumn,
+  OneToMany,
+  CreateDateColumn,
+} from 'typeorm';
 import bcrypt from 'bcrypt';
 
 import Base from '.';
@@ -11,13 +18,13 @@ export default class User extends Base {
   @Column({ unique: true })
   name: string;
 
-  @Column({select: false})
+  @Column({ select: false })
   password: string;
 
   @Column({ nullable: true })
   photo: string;
 
-  @Column({ default: false })
+  @Column({ default: true })
   online: boolean;
 
   @Column({ nullable: true })
@@ -26,24 +33,24 @@ export default class User extends Base {
   @Column()
   background: string;
 
-  @Column({ type: "timestamptz", default: () => "CURRENT_TIMESTAMP" })
+  @Column({ type: 'timestamptz', default: () => 'CURRENT_TIMESTAMP' })
   wasOnline: Date;
 
   @JoinColumn()
   @OneToMany(() => Message, message => message.author, {
-    cascade: true
+    cascade: true,
   })
   messages: Message[];
 
   @JoinColumn()
-  @OneToMany(() => Room, room => room.author, { 
-    cascade: true
+  @OneToMany(() => Room, room => room.author, {
+    cascade: true,
   })
   rooms: Room[];
 
   @JoinColumn()
-  @OneToMany(() => Participant, participant => participant.user, { 
-    cascade: true
+  @OneToMany(() => Participant, participant => participant.user, {
+    cascade: true,
   })
   chat: Participant[];
 
@@ -51,5 +58,4 @@ export default class User extends Base {
   async hashPassword() {
     this.password = await bcrypt.hash(this.password, 6);
   }
-
 }

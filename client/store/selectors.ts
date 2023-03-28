@@ -5,10 +5,10 @@ import { returnTypingText } from 'utils/message';
 import { createOnlineSubstring } from 'utils/room';
 
 import { RootState } from 'store';
-import { RoomMessages } from 'types/room';
+import { Rooms } from './slices/rooms';
 
 export const selectRooms = (state: RootState) => state.rooms;
-export const selectRoomData = (state: RootState) => state.room.data;
+export const selectMessages = (state: RootState) => state.messages.data;
 export const selectMyData = (state: RootState) => state.user.data;
 export const selectCreatingRoom = (state: RootState) => state.createRoom;
 export const selectSideMenu = (state: RootState) => state.sideMenu;
@@ -19,14 +19,10 @@ export const selectError = (state: RootState) =>
 
 export const getChatData = createSelector(
   selectRooms,
-  selectRoomData,
+  selectMessages,
   ({ selected, data }, room) => {
     const openRoom = data.find(({ id }) => id === selected);
-    const {
-      messages = [],
-      loaded,
-      count,
-    } = room[selected as string] || ({} as RoomMessages);
+    const { messages = [], loaded, count } = room[selected as string] || {};
 
     const typingText = returnTypingText(openRoom);
 
@@ -48,7 +44,7 @@ export const getRoomsInfo = createSelector(
     const rooms = filter
       ? data.filter(({ title }) => title.toLowerCase().includes(filter))
       : data;
-    console.log('myData', myData)
+
     return {
       rooms,
       me: myData,
@@ -61,35 +57,26 @@ export const getRoomsInfo = createSelector(
 export const getHeaderInfo = createSelector(
   selectRooms,
   selectMyData,
-<<<<<<< HEAD
-  ({ selected, data, newPrivateRoom }, myData) => {
-=======
   ({ selected, newPrivateRoom, data: rooms }, myData) => {
->>>>>>> users_in_room
     const isNewRoom = selected === NEW_ROOM;
 
     const selectedRoom = isNewRoom
       ? newPrivateRoom
       : rooms.find(({ id }) => id === selected)!;
-
-<<<<<<< HEAD
+    console.log('selectedRoom', selectedRoom)
     const {
       type: selectedRoomType,
       title: selectedRoomTitle,
-      participants
+      participants,
     } = selectedRoom;
-
-=======
-    const { type: selectedRoomType, title: selectedRoomTitle, participants } = selectedRoom;
 
     // const { participants } = rooms.find(({ id }) => id === selected)!;
 
->>>>>>> users_in_room
     const privateUser =
       selectedRoomType === 'private'
         ? participants.find(participant => participant.id !== myData?.id)
         : undefined;
-    const online = selectedRoom?.online;
+    const online = privateUser?.online;
     const substring = createOnlineSubstring(privateUser, participants);
     const title = privateUser?.name || selectedRoomTitle;
 
@@ -110,22 +97,14 @@ export const getHeaderInfo = createSelector(
 export const GetGroupChatInfo = createSelector(
   selectRooms,
   selectMyData,
-<<<<<<< HEAD
-  ({ data, selected }, myData) => {
-=======
   ({ selected, data }, myData) => {
->>>>>>> users_in_room
     const openRoom = data.find(({ id }) => id === selected);
 
     if (!openRoom || !selected) {
       return null;
     }
 
-<<<<<<< HEAD
-    const { id, title, image, participants } = openRoom;
-=======
     const { id, title, participants, image, background } = openRoom;
->>>>>>> users_in_room
 
     return {
       participants,
@@ -133,7 +112,7 @@ export const GetGroupChatInfo = createSelector(
       title,
       image,
       myId: myData?.id,
-      background
+      background,
     };
   }
 );
