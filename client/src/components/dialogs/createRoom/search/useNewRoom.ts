@@ -1,5 +1,5 @@
 import { useAvatartPreview } from 'hooks/useAvatartPreview';
-import React, { useState } from 'react';
+import { ChangeEvent, MouseEvent, useState } from 'react';
 
 import { createRoom, openNewRoom } from 'store/actions';
 import { useAppDispatch, useAppSelector } from 'store/hooks';
@@ -24,7 +24,7 @@ export const useNewRoom = () => {
 
   const { preview } = useAvatartPreview(photo);
 
-  const onCheckHandler = (e: React.MouseEvent<HTMLDivElement>) => {
+  const onCheckHandler = (e: MouseEvent) => {
     e.stopPropagation();
     const item = e.currentTarget.querySelector(
       '#user_checkbox'
@@ -36,7 +36,7 @@ export const useNewRoom = () => {
 
   const onRemoveUser = ({
     currentTarget,
-  }: React.MouseEvent<HTMLDivElement>) => {
+  }: MouseEvent) => {
     const id = currentTarget.getAttribute('data-id');
 
     if (id) dispatch(checkUser({ checked: false, id }));
@@ -59,7 +59,7 @@ export const useNewRoom = () => {
 
   const groupNameLength = title.length;
 
-  const onChangeName = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const onChangeName = (e: ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
 
     if (value.length < groupNameLength || groupNameLength < MAX_LENGTH) {

@@ -1,4 +1,4 @@
-import React, { FC, memo } from 'react';
+import React, { FC, memo, MouseEventHandler } from 'react';
 
 import { Avatar } from 'components/avatar';
 import { MyCheckbox } from 'components/checkbox';
@@ -8,7 +8,7 @@ import { UserBD } from 'types/user';
 import { StyledSearchUserItem } from 'styles';
 
 type Props = UserBD & {
-  onCheck: (e: React.MouseEvent<HTMLDivElement>) => void;
+  onCheck: MouseEventHandler;
   checked: boolean;
 };
 

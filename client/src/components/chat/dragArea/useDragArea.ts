@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { DragEvent, useState } from 'react';
 import { uploadFile } from 'store/actions/room';
 import { useAppDispatch } from 'store/hooks';
 
@@ -11,30 +11,27 @@ export const useDragArea = () => {
     setDrag(true);
   };
 
-  const dragStartHandler = (e: React.DragEvent<HTMLDivElement>) => {
+  const dragStartHandler = (e: DragEvent) => {
     e.preventDefault();
   };
 
-  const dragLeaveHandler = (e: React.DragEvent<HTMLDivElement>) => {
+  const dragLeaveHandler = (e: DragEvent) => {
     e.preventDefault();
     setDrag(false);
   };
 
-  const dropHandler = (e: React.DragEvent<HTMLDivElement>) => {
+  const dropHandler = (e: DragEvent) => {
     e.preventDefault();
     const file = e.dataTransfer.files[0];
     dispatch(uploadFile(file));
     setDrag(false);
   };
 
-  return useMemo(
-    () => ({
-      dropHandler,
-      dragLeaveHandler,
-      dragStartHandler,
-      onDragOverHandler,
-      drag,
-    }),
-    [drag]
-  );
+  return {
+    dropHandler,
+    dragLeaveHandler,
+    dragStartHandler,
+    onDragOverHandler,
+    drag,
+  };
 };

@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import { FC } from 'react';
+import { ChangeEvent, FC } from 'react';
 import { StyledSearchIcon, StyledSearchInput } from './styles';
 
 import search from 'images/search.svg';
@@ -15,7 +15,7 @@ type Props = {
 export const RoomsHeader: FC<Props> = ({ value }) => {
   const dispatch = useAppDispatch();
 
-  const onKeyChange = ({ target }: React.ChangeEvent<HTMLInputElement>) => {
+  const onKeyChange = ({ target }: ChangeEvent<HTMLInputElement>) => {
     dispatch(updateRoomsFilter(target.value.trim()))
   };
 

@@ -1,5 +1,5 @@
 import dayjs from 'dayjs';
-import React, { FC, Fragment, useCallback } from 'react';
+import React, { FC, Fragment, MouseEvent, useCallback } from 'react';
 
 import { Message } from './message';
 
@@ -13,7 +13,7 @@ export const Messages: FC<{}> = () => {
   const { messages, typingText } = useAppSelector(getChatData);
 
   const downloadHandler = useCallback(
-    ({ currentTarget }: React.MouseEvent<HTMLDivElement>) => {
+    ({ currentTarget }: MouseEvent) => {
       const id = currentTarget.getAttribute('data-id');
 
       if (id) download(id);

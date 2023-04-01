@@ -60,6 +60,7 @@ export const Room: FC<Props> = memo(
                 {lastMessageText}
               </StyledLastMessage>
             )}
+            
             {!!unreadedMessagesCount && (
               <p className='count'>{unreadedMessagesCount}</p>
             )}

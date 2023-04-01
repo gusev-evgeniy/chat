@@ -13,8 +13,7 @@ import { convertSecondsToMinutesAndSeconds as convert } from 'utils/message';
 type Props = Pick<Message, 'media'> & { id: string };
 
 export const Audio: FC<Props> = ({ media, id }) => {
-  const { curTime, playing, setClickedTime, audioRef, start, stop, rewind } =
-    useAudioPlayer();
+  const { curTime, playing, audioRef, start, stop, rewind } = useAudioPlayer();
 
   if (!media) {
     return null;

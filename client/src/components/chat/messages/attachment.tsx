@@ -1,4 +1,4 @@
-import React, { FC, memo } from 'react';
+import React, { FC, memo, MouseEventHandler } from 'react';
 import { Message } from 'types/messages';
 import Image from 'next/image';
 
@@ -6,7 +6,7 @@ import fileIcon from 'images/file.svg';
 import { MessageIcon, StyledAttachment } from '../styles';
 
 type Props = {
-  download: (e: React.MouseEvent<HTMLDivElement>) => void;
+  download: MouseEventHandler;
   attachment: Message['attachment'];
 };
 

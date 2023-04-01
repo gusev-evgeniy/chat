@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FC, memo } from 'react';
 import Image from 'next/image';
 
 import { useAppDispatch } from 'store/hooks';
@@ -8,7 +8,11 @@ import menu from 'images/menu.svg';
 
 import { StyledAbsoluteSideMenuIcon, StyledSideMenuIcon } from './styles';
 
-export const SideMenuIcon = ({ absolute = false }) => {
+type Props = {
+  absolute?: boolean;
+}
+
+export const SideMenuIcon: FC<Props> = memo(({ absolute = false }) => {
   const dispatch = useAppDispatch();
 
   const openSideMenuHandler = () => {
@@ -28,4 +32,6 @@ export const SideMenuIcon = ({ absolute = false }) => {
       <Image width='30px' height='30px' src={menu} alt='menu' />
     </StyledSideMenuIcon>
   );
-};
+});
+
+SideMenuIcon.displayName = 'SideMenuIcon';

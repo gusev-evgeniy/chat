@@ -11,7 +11,7 @@ export type Message = {
   isMy?: boolean;
   authorId?: string;
   isSystem: boolean;
-  attachment: MessageAttachment;
+  attachment: MessageAttachment | null;
   media: string | null;
 };
 

@@ -15,7 +15,7 @@ export const returnTypingText = (openRoom: Rooms[0] | undefined) => {
   if (!typing || !typing.length) return '';
   if (type === 'private') return '...typing';
 
-  return `...${typing.join(',')} typing`;
+  return `...${typing.join(', ')} typing`;
 };
 
 export const prepareFile = (content: File) => {

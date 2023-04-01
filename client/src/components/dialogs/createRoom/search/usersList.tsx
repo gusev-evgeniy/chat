@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, MouseEventHandler } from 'react';
 
 import { CreateRoomState } from 'store/slices/createRoom';
 
@@ -10,7 +10,7 @@ import { StyledUsers } from '../styles';
 type Props = {
   loaded: CreateRoomState['loaded'];
   users: CreateRoomState['users']['data'];
-  onCheck: (e: React.MouseEvent<HTMLDivElement>) => void;
+  onCheck: MouseEventHandler;
   checked: CreateRoomState['checked'];
 };
 

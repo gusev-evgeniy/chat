@@ -1,14 +1,12 @@
-import React, { FC } from 'react';
+import React, { FC, MouseEventHandler } from 'react';
 
 import { UserBD } from 'types/user';
 
 import { StyledCheckedItem } from '../styles';
-import close from 'images/close.svg';
-import Image from 'next/image';
 
 type Props = {
   checked: UserBD[];
-  onRemoveUser: (e: React.MouseEvent<HTMLDivElement>) => void;
+  onRemoveUser: MouseEventHandler;
 };
 
 export const CheckedList: FC<Props> = ({ checked, onRemoveUser }) => {
@@ -20,7 +18,6 @@ export const CheckedList: FC<Props> = ({ checked, onRemoveUser }) => {
           data-id={checkedUser.id}
           onClick={onRemoveUser}>
           <span className='name'>{checkedUser.name}</span>
-
 
           {/* <Image width='20px' height='20px' src={close} alt='close' /> */}
         </StyledCheckedItem>

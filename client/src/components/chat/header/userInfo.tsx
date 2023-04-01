@@ -4,8 +4,7 @@ import { useAppDispatch, useAppSelector } from 'store/hooks';
 import { getHeaderInfo } from 'store/selectors';
 import { openDialog } from 'store/slices/dialog';
 
-import { StyledGroupSubstring, StyledSubstring } from 'components/chat/styles';
-import moment from 'moment';
+import { StyledGroupSubstring } from 'components/chat/styles';
 import { getGroupSubstring } from 'utils/room';
 import { PrivateSubstring } from './privateSubstring';
 

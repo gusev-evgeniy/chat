@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { ChangeEventHandler, FC, FormEventHandler } from 'react';
 
 import { AuthInput, StyledButton, StyledWrapper } from 'components/auth/styles';
 
@@ -7,8 +7,8 @@ import { StyledForm } from 'styles';
 type Props = {
   password: string;
   name: string;
-  onSubmitHandler: (e: React.FormEvent<HTMLFormElement>) => void;
-  changeData: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onSubmitHandler: FormEventHandler;
+  changeData: ChangeEventHandler;
 };
 
 export const LoginForm: FC<Props> = ({

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { FormEvent, KeyboardEvent, useState } from 'react';
 
 type Props = {
   title: string;
@@ -18,7 +18,7 @@ export const useGroupTitleForm = ({ title, update }: Props) => {
     update({ title: trimValue });
   };
 
-  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const onSubmit = (e: FormEvent) => {
     e.preventDefault();
     onUpdate();
   };
@@ -27,7 +27,7 @@ export const useGroupTitleForm = ({ title, update }: Props) => {
     onUpdate();
   };
 
-  const onKeyHandler = ({ key }: React.KeyboardEvent<HTMLInputElement>) => {
+  const onKeyHandler = ({ key }: KeyboardEvent) => {
     if (key === 'Escape') {
       setNewTitle(title);
     }

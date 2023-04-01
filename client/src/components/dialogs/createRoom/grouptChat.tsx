@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ChangeEvent } from 'react';
 
 import { StyledButton } from 'components/auth/styles';
 import { AvatarInput } from 'components/avatar/input';
@@ -24,7 +24,7 @@ export const GrouptChat = () => {
     background,
   } = useNewRoom();
 
-  const onSelectFile = ({ target }: React.ChangeEvent<HTMLInputElement>) => {
+  const onSelectFile = ({ target }: ChangeEvent<HTMLInputElement>) => {
     if (!target.files || target.files.length === 0) {
       return;
     }

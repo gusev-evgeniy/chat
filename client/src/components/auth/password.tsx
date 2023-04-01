@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import React, { FC } from 'react';
+import React, { ChangeEvent, FC, FormEvent } from 'react';
 import {
   AuthInput,
   BackButon,
@@ -21,11 +21,11 @@ export const Password: FC<AuthPassword> = ({
   data,
   changePage,
 }) => {
-  const onKeyChange = ({ target }: React.ChangeEvent<HTMLInputElement>) => {
+  const onKeyChange = ({ target }: ChangeEvent<HTMLInputElement>) => {
     changeData({ password: target.value.trim() });
   };
 
-  const onSubmitHandler = (e: React.FormEvent<HTMLFormElement>) => {
+  const onSubmitHandler = (e: FormEvent) => {
     e.preventDefault();
     submitHandler();
   };

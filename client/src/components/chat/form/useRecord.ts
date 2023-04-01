@@ -1,5 +1,5 @@
 import { useCall } from 'providers/call/callProvider';
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { createMessageOrPrivateRoom } from 'store/actions/room';
 import { useAppDispatch } from 'store/hooks';
 
@@ -66,13 +66,10 @@ export const useRecord = () => {
     }
   };
 
-  return useMemo(
-    () => ({
-      stop,
-      onRecord,
-      submit,
-      isRecording,
-    }),
-    [isRecording]
-  );
+  return {
+    stop,
+    onRecord,
+    submit,
+    isRecording,
+  }
 };

@@ -1,11 +1,11 @@
-import React, { FC, useEffect } from 'react';
+import React, { DragEventHandler, FC, useEffect } from 'react';
 
 import { StyledDraggingWrapper } from '../styles';
 
 type Props = {
-  dropHandler: (e: React.DragEvent<HTMLDivElement>) => void;
-  dragStartHandler: (e: React.DragEvent<HTMLDivElement>) => void;
-  dragLeaveHandler: (e: React.DragEvent<HTMLDivElement>) => void;
+  dropHandler: DragEventHandler;
+  dragStartHandler: DragEventHandler;
+  dragLeaveHandler: DragEventHandler;
 };
 
 export const DraggingArea: FC<Props> = ({

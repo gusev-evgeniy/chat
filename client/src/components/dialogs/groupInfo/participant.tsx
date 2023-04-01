@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, MouseEventHandler } from 'react';
 import Image from 'next/image';
 
 import { Avatar } from 'components/avatar';
@@ -10,7 +10,7 @@ import { StyledIconButton } from 'styles';
 import { UserBD } from 'types/user';
 
 type Props = UserBD & {
-  onLeave: () => void;
+  onLeave: MouseEventHandler;
   myId: string | undefined;
 };
 

@@ -17,6 +17,7 @@ export const Avatar: FC<Props> = memo(
         <StyledAva backgroundImage={photo} size={size} gradient={gradient}>
           <span>{!photo && name.substring(0, 2).toUpperCase()}</span>
         </StyledAva>
+        
         {online && <Online />}
       </AvaWrapper>
     );

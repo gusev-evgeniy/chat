@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import React, { FC, memo } from 'react';
+import React, { ChangeEvent, FC, KeyboardEvent, memo } from 'react';
 
 import { useAppDispatch } from 'store/hooks';
 import { uploadFile } from 'store/actions/room';
@@ -39,7 +39,7 @@ export const Form: FC<{}> = memo(() => {
 
   const { isRecording, onRecord, stop, submit } = useRecord();
 
-  const onAttachFile = ({ target }: React.ChangeEvent<HTMLInputElement>) => {
+  const onAttachFile = ({ target }: ChangeEvent<HTMLInputElement>) => {
     const files = target.files;
     if (!files || files.length === 0) {
       return;
@@ -49,7 +49,7 @@ export const Form: FC<{}> = memo(() => {
     dispatch(uploadFile(files[0]));
   };
 
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+  const handleKeyDown = (e: KeyboardEvent) => {
     if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault();
       onSubmitMessage();

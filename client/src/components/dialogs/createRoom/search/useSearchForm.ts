@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { ChangeEvent, FormEvent, useState } from 'react';
 
 import { instance } from 'api';
 
@@ -10,7 +10,7 @@ export const useSearchForm = () => {
 
   const dispatch = useAppDispatch();
 
-  const onFindUsersHandler = async (e: React.FormEvent<HTMLFormElement>) => {
+  const onFindUsersHandler = async (e: FormEvent) => {
     e.preventDefault();
     if (!filter) {
       return;
@@ -22,16 +22,13 @@ export const useSearchForm = () => {
     } catch (error) {}
   };
 
-  const onChangeFilter = ({ target }: React.ChangeEvent<HTMLInputElement>) => {
+  const onChangeFilter = ({ target }: ChangeEvent<HTMLInputElement>) => {
     setFilter(target.value);
   };
 
-  return useMemo(
-    () => ({
-      onFindUsersHandler,
-      onChangeFilter,
-      filter,
-    }),
-    [filter]
-  );
+  return {
+    onFindUsersHandler,
+    onChangeFilter,
+    filter,
+  };
 };

@@ -1,10 +1,5 @@
-import dayjs from 'dayjs';
-import moment from 'moment';
-
 import { Room } from 'types/room';
 import { UserBD } from 'types/user';
-
-// dayjs.extend(relativeTime)
 
 export const prepareRooms = (rooms: Room[], myId: string) => {
   return rooms.map(

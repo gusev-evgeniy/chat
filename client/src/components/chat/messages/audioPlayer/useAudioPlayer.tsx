@@ -74,7 +74,6 @@ export const useAudioPlayer = () => {
   return {
     curTime: Math.trunc(curTime),
     playing,
-    setClickedTime,
     audioRef,
     start,
     stop,

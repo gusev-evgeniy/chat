@@ -26,7 +26,7 @@
     "incremental": true,
     "allowSyntheticDefaultImports": true,
     "checkJs": false,
-    "baseUrl": "src/",
+    "baseUrl": "./src",
     "paths": {
       "api/*": ["api/*"],
       "components/*": ["components/*"],
@@ -44,7 +44,7 @@
   "include": [
     "**/*.ts",
     "**/*.tsx"
-  ],
+, "tsconfig.jest.json"  ],
   "exclude": [
     "node_modules"
   ],

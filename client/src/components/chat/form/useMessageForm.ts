@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { FormEvent, KeyboardEvent, useRef } from 'react';
 import { updateDraft } from 'store/actions/draft';
 
 import { createMessageOrPrivateRoom } from 'store/actions/room';
@@ -18,7 +18,7 @@ export const useMessageForm = () => {
 
   const typingTimeoutRef = useRef<NodeJS.Timeout | undefined>();
 
-  const onChangeHandler = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+  const onChangeHandler = (e: KeyboardEvent<HTMLTextAreaElement>) => {
     onPress();
     dispatch(updateDraft(e.target.value));
   };
@@ -29,7 +29,7 @@ export const useMessageForm = () => {
     if (container) container.scrollIntoView({ behavior: 'smooth' });
   };
 
-  const onSubmitMessage = (e?: React.FormEvent<HTMLFormElement>) => {
+  const onSubmitMessage = (e?: FormEvent) => {
     e?.preventDefault();
 
     const data = { message: message.trim() };

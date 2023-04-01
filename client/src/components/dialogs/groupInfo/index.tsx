@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ChangeEvent } from 'react';
 
 import { socket } from 'api/socket';
 
@@ -27,7 +27,7 @@ export const GroupInfo = () => {
 
   const { participants, image, title, id, myId, background } = roomInfo;
 
-  const onSelectFile = ({ target }: React.ChangeEvent<HTMLInputElement>) => {
+  const onSelectFile = ({ target }: ChangeEvent<HTMLInputElement>) => {
     if (
       !target.files ||
       target.files.length === 0 ||

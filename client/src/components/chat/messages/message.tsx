@@ -37,7 +37,7 @@ export const Message: FC<Props> = memo(
     if (isSystem) {
       return (
         <SystemMessageWrapper>
-          {media && <Avatar name='' photo={media} size={70} />}
+          {media && <Avatar name='' photo={media} size={70} gradient=''/>}
           <StyledSystemMessage>
             <span className='text'>{text}</span>
           </StyledSystemMessage>
