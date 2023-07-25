@@ -6,7 +6,7 @@ import search from 'images/search.svg';
 import add_chat from 'images/add_chat.svg';
 import { useAppDispatch } from 'store/hooks';
 import { openDialog } from 'store/slices/dialog';
-import { updateRoomsFilter } from 'store/slices/rooms';
+import { updateSearchValue } from 'store/slices/search';
 
 type Props = {
   value: string;
@@ -16,7 +16,7 @@ export const RoomsHeader: FC<Props> = ({ value }) => {
   const dispatch = useAppDispatch();
 
   const onKeyChange = ({ target }: ChangeEvent<HTMLInputElement>) => {
-    dispatch(updateRoomsFilter(target.value.trim()))
+    dispatch(updateSearchValue(target.value.trim()))
   };
 
   const onToggle = () => {

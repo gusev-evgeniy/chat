@@ -1,13 +1,10 @@
-import { DataSource, DatabaseType } from 'typeorm';
+import { DataSource } from 'typeorm';
 
 import User from './entities/user';
 import Room from './entities/room';
 import Message from './entities/message';
 import Participant from './entities/participants';
 import Attachment from './entities/attachment';
-
-type KeysOfUnion<T> = T extends T ? keyof T : never;
-type AvailableKeys = KeysOfUnion<DatabaseType>;
 
 const myDataSource = new DataSource({
   type: (process.env.DB_TYPE as 'postgres') || 'postgres',

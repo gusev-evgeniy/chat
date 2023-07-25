@@ -30,7 +30,7 @@
     "simple-peer": "^9.11.1",
     "socket.io-client": "^4.5.1",
     "styled-components": "^5.3.5",
-    "use-debounce": "^8.0.4",
+    "use-debounce": "^9.0.3",
     "uuid": "^8.3.2"
   },
   "devDependencies": {

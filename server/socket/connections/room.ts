@@ -5,7 +5,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 import Participant from '../../entities/participants';
 import Room from '../../entities/room';
-import { createSystemMessage } from '../../utils/message';
+import { createSystemMessage, findRoomAndCreateSystemMessage } from '../../utils/message';
 import { addNewRoom } from '../../utils/room';
 import { EVENTS } from '../events';
 import { Callback, MySocket } from '../types';
@@ -82,7 +82,7 @@ export default async (io: Server, socket: MySocket) => {
     const text = title
       ? `User ${socket.me.name} changed chat name to "${title}"`
       : `User ${socket.me.name} changed chat photo`;
-    const message = await createSystemMessage(text, id, roomInfo.photo);
+    const message = await findRoomAndCreateSystemMessage(text, id, roomInfo.photo);
 
     io.to(id).emit(EVENTS.MESSAGE.CREATED, message);
     io.to(id).emit(EVENTS.ROOM.UPDATED, room.raw[0]);
@@ -98,7 +98,7 @@ export default async (io: Server, socket: MySocket) => {
     });
     socket.leave(roomId);
 
-    const message = await createSystemMessage(
+    const message = await findRoomAndCreateSystemMessage(
       `User ${socket.me.name} left the chat`,
       roomId
     );

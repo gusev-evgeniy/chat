@@ -11,6 +11,7 @@ import { StyledChat } from './styles';
 
 export const ChatWrapper: FC<{ matches: boolean }> = ({ matches }) => {
   const { selected } = useAppSelector(selectRooms);
+  
 
   if (!selected) {
     return (

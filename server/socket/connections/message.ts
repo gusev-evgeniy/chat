@@ -37,9 +37,14 @@ export default async (io: Server, socket: MySocket) => {
         return;
       }
 
+      const room = await Room.findOneBy({ id: roomId });
+      if (!room) {
+        return;
+      }
+
       const newMessageInfo: Partial<Message> = {
         author: socket.me,
-        room: { id: roomId } as Room,
+        room,
         text: message,
         roomId,
         authorId: socket.me?.id,
@@ -49,7 +54,8 @@ export default async (io: Server, socket: MySocket) => {
         const filePath = '/static' + '/' + uuidv4();
         const mediaSrc = path.join(process.cwd() + filePath);
         writeFileSync(mediaSrc, media);
-        newMessageInfo.media ='http://' + socket.handshake.headers.host + filePath;
+        newMessageInfo.media =
+          'http://' + socket.handshake.headers.host + filePath;
       }
 
       //add transaction
@@ -76,7 +82,7 @@ export default async (io: Server, socket: MySocket) => {
           data: [...new Uint8Array(newMessage.attachment.content)],
         };
       }
-      await updateRoomLastMessage(newMessage, roomId);
+      await updateRoomLastMessage(newMessage, room);
       io.to(roomId).emit(EVENTS.MESSAGE.CREATED, newMessage);
     } catch (error) {
       console.log('Create message error:', error);

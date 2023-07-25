@@ -1,4 +1,4 @@
-import React, { FC, memo } from 'react';
+import React, { FC, memo, MouseEventHandler } from 'react';
 import dayjs from 'dayjs';
 import Image from 'next/image';
 
@@ -15,7 +15,7 @@ import { Audio } from './audioPlayer';
 type Props = MessageType & {
   isMy?: boolean;
   isLast: boolean;
-  download: (e: React.MouseEvent<HTMLDivElement>) => void;
+  download: MouseEventHandler;
 };
 
 export const Message: FC<Props> = memo(

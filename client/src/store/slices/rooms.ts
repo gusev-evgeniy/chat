@@ -17,7 +17,6 @@ type NewPrivateRoom = {
 const initialState = {
   data: [] as Rooms,
   selected: null as string | null,
-  filter: '',
   count: 0,
   newPrivateRoom: {} as NewPrivateRoom,
 };
@@ -126,9 +125,6 @@ export const roomsSlice = createSlice({
       state.data = state.data.filter(({ id }) => id !== action.payload);
       state.selected = null;
     },
-    updateRoomsFilter(state, action: PayloadAction<string>) {
-      state.filter = action.payload.toLowerCase();
-    },
     updateTyping(state, action: PayloadAction<Typing>) {
       const { roomId, isTyping, user } = action.payload;
 
@@ -198,7 +194,6 @@ export const {
   setUnreadedCount,
   updateRoomDetails,
   deleteRoom,
-  updateRoomsFilter,
   updateTyping,
   clearTyping,
   addPrivateRoom,

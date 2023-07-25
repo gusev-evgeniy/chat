@@ -13,9 +13,11 @@ export default class Room extends Base {
   @Column({ nullable: true })
   photo: string;
 
-
   @Column({ nullable: true })
   background: string;
+
+  @Column({ default: 0 })
+  messagesCount: number;
 
   @Column({ default: 'private', enum: ['private', 'group'] })
   type: string;

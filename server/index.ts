@@ -26,7 +26,7 @@ const start = async () => {
     const app = express();
     const http = createServer(app);
     const io = new Server(http, {
-      cors: { origin: 'http://localhost:3000', credentials: true },
+      cors: { origin: 'http://localhost:3001', credentials: true },
       maxHttpBufferSize: 1e6
     });
 

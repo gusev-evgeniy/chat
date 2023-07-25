@@ -1,5 +1,13 @@
-import { Entity, Column, ManyToOne, JoinColumn, OneToOne } from 'typeorm';
-
+import {
+  Entity,
+  Column,
+  ManyToOne,
+  JoinColumn,
+  OneToOne,
+  BeforeInsert,
+  AfterInsert,
+} from 'typeorm';
+import { v4 as uuidv4 } from 'uuid'
 import Base from '.';
 import Attachment from './attachment';
 import Room from './room';
@@ -19,9 +27,9 @@ export default class Message extends Base {
   @Column({ nullable: true })
   media: string;
 
-  // @Column({ nullable: false, default: 0 })
-  // serialNum: number;
-  
+  @Column({ nullable: false, default: 0 })
+  serialNum: number;
+
   @Column({ default: false })
   isSystem: boolean;
 
@@ -39,4 +47,21 @@ export default class Message extends Base {
 
   @Column({ nullable: false })
   roomId: string;
+
+  // @AfterInsert() 
+  // async updateLastMessage() {
+  //   const room = this.room;
+
+    
+  //   room['messagesCount'] = this.serialNum;
+  //   // room['lastMessage'] = this;
+  //   await room.save()
+  // }
+
+  @BeforeInsert()
+  async updateMessagesCount() {
+    console.log('BeforeInsert', this.room)
+      const messagesCount = this.room.messagesCount + 1;
+      this.serialNum = messagesCount;
+  }
 }

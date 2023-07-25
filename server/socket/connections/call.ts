@@ -1,6 +1,6 @@
 import { Server } from 'socket.io';
 import User from '../../entities/user';
-import { createSystemMessage } from '../../utils/message';
+import { findRoomAndCreateSystemMessage } from '../../utils/message';
 import { EVENTS } from '../events';
 import { MySocket } from '../types';
 
@@ -29,7 +29,7 @@ export default async (io: Server, socket: MySocket) => {
 
   const endCall = async (roomId: string) => {
     const text = `User ${socket.me.name} end call`;
-    const message = await createSystemMessage(text, roomId);
+    const message = await findRoomAndCreateSystemMessage(text, roomId);
 
     io.to(roomId).emit(EVENTS.CALL.ENDED, message);
   };

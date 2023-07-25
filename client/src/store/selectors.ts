@@ -2,7 +2,6 @@ import { createSelector } from '@reduxjs/toolkit';
 
 import { NEW_ROOM } from 'utils/constants';
 import { returnTypingText } from 'utils/message';
-import { getGroupSubstring } from 'utils/room';
 
 import { RootState } from 'store';
 import { Rooms } from './slices/rooms';
@@ -16,6 +15,7 @@ export const selectDialogName = (state: RootState) => state.dialog.name;
 export const selectDraft = (state: RootState) => state.draft;
 export const selectError = (state: RootState) =>
   state.errorReducer.errorMessage;
+export const selectSearch = (state: RootState) => state.search;
 
 export const getChatData = createSelector(
   selectRooms,
@@ -23,9 +23,9 @@ export const getChatData = createSelector(
   ({ selected, data }, room) => {
     const openRoom = data.find(({ id }) => id === selected);
     const {
-      messages = [],
       loaded,
       count,
+      messages = [],
     } = room[selected as string] || ({} as Rooms[0]);
 
     const typingText = returnTypingText(openRoom);
@@ -44,16 +44,17 @@ export const getChatData = createSelector(
 export const getRoomsInfo = createSelector(
   selectRooms,
   selectMyData,
-  ({ selected, filter, data }, myData) => {
-    const rooms = filter
-      ? data.filter(({ title }) => title.toLowerCase().includes(filter))
+  selectSearch,
+  ({ selected, data }, myData, { value: search }) => {
+    const rooms = search
+      ? data.filter(({ title }) => title.toLowerCase().includes(search))
       : data;
 
     return {
       rooms,
       me: myData,
       selected,
-      filter,
+      search,
     };
   }
 );
@@ -62,7 +63,7 @@ export const getHeaderInfo = createSelector(
   selectRooms,
   selectMyData,
   ({ selected, newPrivateRoom, data: rooms }, myData) => {
-    const isNewRoom = selected === NEW_ROOM;
+    const isNewRoom: boolean = selected === NEW_ROOM;
 
     const selectedRoom = isNewRoom
       ? newPrivateRoom

@@ -20,14 +20,14 @@ export const isPrivateRoomExist = async (userId: string, myId: string) => {
 };
 
 export const updateRoomLastMessage = async (
-  lastMessage: Message,
-  roomId: string
+  newMessage: Message,
+  room: Room
 ) => {
   try {
-    await Room.createQueryBuilder('room')
-      .update({ lastMessage })
-      .where({ id: roomId })
-      .execute();
+
+    room['lastMessage'] = newMessage;
+    room['messagesCount'] = newMessage.serialNum;
+    await room.save();
   } catch (error) {}
 };
 
@@ -109,7 +109,7 @@ export const addNewRoom = async ({ data, authorName, users }: RoomProps) => {
     }
 
     if (data.type === 'group') {
-      await createSystemMessage(`User ${authorName} created the chat`, room.id);
+      await createSystemMessage(`User ${authorName} created the chat`, room);
     }
 
     return (await Room.findOne({
