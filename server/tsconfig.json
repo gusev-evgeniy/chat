@@ -1,20 +1,21 @@
 {
    "compilerOptions": {
-      "lib": [
-         "es5",
-         "es6",
-      ],
-      "target": "es6",
-      "module": "commonjs",
-      "moduleResolution": "node",
-      "outDir": "./build",
-      "emitDecoratorMetadata": true,
-      "esModuleInterop": true,
-      "experimentalDecorators": true,
-      "sourceMap": true,
-      "allowJs": false,
-      "skipLibCheck": true,
-      "strict": true,
-      "strictPropertyInitialization": false
-   }
-}
+     "target": "es6",
+     "module": "commonjs",
+     "moduleResolution": "node",
+     "sourceMap": true,
+     "esModuleInterop": true,
+     "allowJs": false,
+     "noImplicitAny": true,
+     "strict": true,
+     "noUnusedLocals": true,
+     "noUnusedParameters": true,
+     "skipLibCheck": true,
+     "resolveJsonModule": true,
+     "forceConsistentCasingInFileNames": true,
+     "outDir": "build"
+   },
+   "lib": ["es2015"],
+   "include": ["**/*.ts"],
+   "exclude": ["node_modules", "build"]
+ }
