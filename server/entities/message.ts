@@ -4,10 +4,8 @@ import {
   ManyToOne,
   JoinColumn,
   OneToOne,
-  BeforeInsert,
-  AfterInsert,
+  BeforeInsert
 } from 'typeorm';
-import { v4 as uuidv4 } from 'uuid'
 import Base from '.';
 import Attachment from './attachment';
 import Room from './room';

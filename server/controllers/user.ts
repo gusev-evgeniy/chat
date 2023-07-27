@@ -112,7 +112,7 @@ class User {
     }
   }
 
-  async logout(req: Request, res: Response) {
+  async logout(_: Request, res: Response) {
     res.set(
       'Set-Cookie',
       cookie.serialize('chatToken', '', {

@@ -1,13 +1,11 @@
 import { Request } from 'express';
 import multer, { FileFilterCallback } from 'multer';
-import { v4 as uuidv4 } from 'uuid'
-import { Callback } from '../socket/types';
 
 const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
+  destination: (_, __, cb) => {
     cb(null, './static/');
   },
-  filename: (req, file, cb) => {
+  filename: (_, file, cb) => {
     const fileName = file.originalname.toLowerCase().split(' ').join('-');
     cb(null, fileName);
   },

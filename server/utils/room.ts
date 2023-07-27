@@ -4,7 +4,7 @@ import Room from '../entities/room';
 import User from '../entities/user';
 import { createSystemMessage } from './message';
 
-export const isPrivateRoomExist = async (userId: string, myId: string) => {
+export const isPrivateRoomExist = async (_: string, __: string) => {
   try {
     // const room = await Room.createQueryBuilder('room')
     //   .leftJoinAndSelect('room.participants', 'participants')

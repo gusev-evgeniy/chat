@@ -1,7 +1,6 @@
-import { Entity, ManyToOne, OneToOne, JoinColumn } from 'typeorm';
+import { Entity, ManyToOne, JoinColumn } from 'typeorm';
 import Base from '.';
 
-import Message from './message';
 import Room from './room';
 import User from './user';
 

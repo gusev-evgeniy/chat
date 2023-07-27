@@ -5,7 +5,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 import Participant from '../../entities/participants';
 import Room from '../../entities/room';
-import { createSystemMessage, findRoomAndCreateSystemMessage } from '../../utils/message';
+import { findRoomAndCreateSystemMessage } from '../../utils/message';
 import { addNewRoom } from '../../utils/room';
 import { EVENTS } from '../events';
 import { Callback, MySocket } from '../types';
