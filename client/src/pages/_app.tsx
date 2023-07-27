@@ -4,7 +4,7 @@ import Head from 'next/head';
 import { ReactElement, ReactNode } from 'react';
 
 import '../globals.scss';
-import { wrapper } from 'store';
+import { wrapper } from '@/store';
 
 type NextPageWithLayout = NextPage & {
   getLayout?: (page: ReactElement) => ReactNode

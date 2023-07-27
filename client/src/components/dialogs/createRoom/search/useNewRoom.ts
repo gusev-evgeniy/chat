@@ -1,13 +1,13 @@
-import { useAvatartPreview } from 'hooks/useAvatartPreview';
+import { useAvatartPreview } from '@/hooks/useAvatartPreview';
 import { ChangeEvent, MouseEvent, useState } from 'react';
 
-import { createRoom, openNewRoom } from 'store/actions';
-import { useAppDispatch, useAppSelector } from 'store/hooks';
-import { selectCreatingRoom, selectSideMenu } from 'store/selectors';
-import { checkUser, updateTitle } from 'store/slices/createRoom';
-import { openDialog } from 'store/slices/dialog';
-import { addPrivateRoom } from 'store/slices/rooms';
-import { openSideMenu } from 'store/slices/sideMenu';
+import { createRoom, openNewRoom } from '@/store/actions';
+import { useAppDispatch, useAppSelector } from '@/store/hooks';
+import { selectCreatingRoom, selectSideMenu } from '@/store/selectors';
+import { checkUser, updateTitle } from '@/store/slices/createRoom';
+import { openDialog } from '@/store/slices/dialog';
+import { addPrivateRoom } from '@/store/slices/rooms';
+import { openSideMenu } from '@/store/slices/sideMenu';
 
 const MAX_LENGTH = 20;
 

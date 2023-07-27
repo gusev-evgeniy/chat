@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { Message } from 'types/messages';
-import { Room } from 'types/room';
+import { Message } from '@/types/messages';
+import { Room } from '@/types/room';
 
 const initialState = {
   room: null as Room | null,

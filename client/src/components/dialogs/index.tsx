@@ -1,15 +1,15 @@
 import React, { memo, useMemo } from 'react';
 
-import Portal from 'components/portal';
+import Portal from '@/components/portal';
 
-import { useAppSelector } from 'store/hooks';
+import { useAppSelector } from '@/store/hooks';
 
 import { GroupInfo } from './groupInfo';
 import { CreateRoom } from './createRoom';
 
 import { Call } from './call/call';
 import { CallOffer } from './call/offer';
-import { selectDialogName } from 'store/selectors';
+import { selectDialogName } from '@/store/selectors';
 
 export const Dialog = memo(() => {
   const name = useAppSelector(selectDialogName);

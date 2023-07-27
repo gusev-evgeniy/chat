@@ -1,7 +1,7 @@
 import { FC, useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
 
-import { PortalTypes } from 'types';
+import { PortalTypes } from '@/types';
 
 type Props = {
   children: React.ReactElement;

@@ -7,7 +7,7 @@ import {
   StyledButton,
   StyledWrapper,
 } from './styles';
-import { StyledForm } from 'styles';
+import { StyledForm } from '@/styles';
 
 import { AuthPassword } from './types';
 

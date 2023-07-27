@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { UserBD } from 'types/user';
-import { generateGradient } from 'utils/index';
+import { UserBD } from '@/types/user';
+import { generateGradient } from '@/utils/index';
 
 const initialState = {
   users: {

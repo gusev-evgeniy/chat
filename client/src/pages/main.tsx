@@ -1,26 +1,24 @@
 import React from 'react';
 import axios from 'axios';
 
-import { setUserData } from 'store/slices/user';
-import { setRoomsData } from 'store/slices/rooms';
-import { wrapper } from 'store';
+import { setUserData } from '@/store/slices/user';
+import { setRoomsData } from '@/store/slices/rooms';
+import { wrapper } from '@/store';
 
-import { CallProvider } from 'providers/call/callProvider';
+import { CallProvider } from '@/providers/call/callProvider';
 
-import { useAuthGuard } from 'hooks/useAuthGuard';
-import { useSocketOn } from 'hooks/useSocketOn';
-import { useMediaQuery } from 'hooks/useMediaQuery';
+import { useAuthGuard } from '@/hooks/useAuthGuard';
+import { useSocketOn } from '@/hooks/useSocketOn';
+import { useMediaQuery } from '@/hooks/useMediaQuery';
 
-import { Rooms } from 'components/rooms';
-import { ChatWrapper } from 'components/chat/chatWrapper';
-import { Dialog } from 'components/dialogs';
-import { SideMenu } from 'components/sideMenu';
+import { Rooms } from '@/components/rooms';
+import { ChatWrapper } from '@/components/chat/chatWrapper';
+import { Dialog } from '@/components/dialogs';
+import { SideMenu } from '@/components/sideMenu';
 
-import { WIDTH } from 'styles/variables';
-import { MainWrapper } from 'styles';
-import { Error } from 'components/error';
-import { UserAPI } from 'api/user';
-import { RoomAPI } from 'api/room';
+import { WIDTH } from '@/styles/variables';
+import { MainWrapper } from '@/styles';
+import { Error } from '@/components/error';
 
 const Main = () => {
   useAuthGuard(false);

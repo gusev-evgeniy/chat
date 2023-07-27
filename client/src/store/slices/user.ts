@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { HYDRATE } from 'next-redux-wrapper';
 
-import { UserBD } from 'types/user';
+import { UserBD } from '@/types/user';
 
 const initialState = {
   data: null as UserBD | null,

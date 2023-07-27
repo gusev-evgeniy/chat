@@ -1,4 +1,4 @@
-import { changeDraft } from 'store/slices/draft';
+import { changeDraft } from '@/store/slices/draft';
 import { AppDispatch, RootState } from '..';
 
 export const updateDraft =

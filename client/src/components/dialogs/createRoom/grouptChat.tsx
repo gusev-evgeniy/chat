@@ -1,14 +1,14 @@
 import React, { ChangeEvent } from 'react';
 
-import { StyledButton } from 'components/auth/styles';
-import { AvatarInput } from 'components/avatar/input';
-import { DialogWrapper } from 'components/dialogs/wrapper';
+import { StyledButton } from '@/components/auth/styles';
+import { AvatarInput } from '@/components/avatar/input';
+import { DialogWrapper } from '@/components/dialogs/wrapper';
 import { useNewRoom } from './search/useNewRoom';
 
 import { GroupChatForm, StyledGroupNameIntput } from './styles';
-import { IMG_TYPES_TEXT_ERROR, VALID_IMG_TYPES } from 'utils/constants';
-import { useAppDispatch } from 'store/hooks';
-import { setError } from 'store/slices/error';
+import { IMG_TYPES_TEXT_ERROR, VALID_IMG_TYPES } from '@/utils/constants';
+import { useAppDispatch } from '@/store/hooks';
+import { setError } from '@/store/slices/error';
 
 const MAX_LENGTH = 20;
 

@@ -1,17 +1,17 @@
 import { useEffect } from 'react';
 
-import { socket } from 'api/socket';
+import { socket } from '@/api/socket';
 
-import { newMessageHandler, readedHandler } from 'store/actions';
-import { useAppDispatch } from 'store/hooks';
-import { clearTyping, updateRoomDetails, updateTyping, updateUserOnline } from 'store/slices/rooms';
+import { newMessageHandler, readedHandler } from '@/store/actions';
+import { useAppDispatch } from '@/store/hooks';
+import { clearTyping, updateRoomDetails, updateTyping, updateUserOnline } from '@/store/slices/rooms';
 
-import { EVENTS } from 'utils/constants';
+import { EVENTS } from '@/utils/constants';
 
-import { Message, Typing } from 'types/messages';
-import { Room } from 'types/room';
-import { addNewRoom } from 'store/actions/rooms';
-import { UserBD } from 'types/user';
+import { Message, Typing } from '@/types/messages';
+import { Room } from '@/types/room';
+import { addNewRoom } from '@/store/actions/rooms';
+import { UserBD } from '@/types/user';
 
 export const useSocketOn = () => {
   const dispatch = useAppDispatch();

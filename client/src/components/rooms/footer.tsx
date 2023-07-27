@@ -1,12 +1,12 @@
 import Image from 'next/image';
 import React, { FC } from 'react';
 
-import { useAppDispatch } from 'store/hooks';
-import { logout } from 'store/actions/user';
+import { useAppDispatch } from '@/store/hooks';
+import { logout } from '@/store/actions/user';
 
-import { Avatar } from 'components/avatar';
+import { Avatar } from '@/components/avatar';
 
-import { UserBD } from 'types/user';
+import { UserBD } from '@/types/user';
 
 import logout_icon from 'images/logout.svg';
 

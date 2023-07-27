@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
-import { updateDraft } from 'store/actions/draft';
-import { useAppDispatch, useAppSelector } from 'store/hooks';
-import { getDraft } from 'store/selectors';
+import { updateDraft } from '@/store/actions/draft';
+import { useAppDispatch, useAppSelector } from '@/store/hooks';
+import { getDraft } from '@/store/selectors';
 
 export const useEmoji = () => {
   const dispatch = useAppDispatch();

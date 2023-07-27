@@ -1,8 +1,8 @@
 import React, { FC } from 'react';
 import Image from 'next/image';
 
-import { useAppDispatch } from 'store/hooks';
-import { openDialog } from 'store/slices/dialog';
+import { useAppDispatch } from '@/store/hooks';
+import { openDialog } from '@/store/slices/dialog';
 import { CloseIconWrapper, StyledContainer, StyledVeil } from './styles';
 
 import close from 'images/close.svg';

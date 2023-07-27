@@ -1,6 +1,6 @@
 import { useRef, useEffect } from 'react';
 
-import { useCall } from 'providers/call/callProvider';
+import { useCall } from '@/providers/call/callProvider';
 
 export const useVideoCall = () => {
   const { myStream, companionStream } = useCall();

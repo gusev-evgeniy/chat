@@ -1,9 +1,9 @@
 import styled from 'styled-components';
 
-import { SyledDefaultIconButton } from 'styles';
-import { COLORS } from 'styles/variables';
-import { StyledWrapper } from 'components/auth/styles';
-import { StyledInputButton } from 'components/chat/styles';
+import { SyledDefaultIconButton } from '@/styles';
+import { COLORS } from '@/styles/variables';
+import { StyledWrapper } from '@/components/auth/styles';
+import { StyledInputButton } from '@/components/chat/styles';
 
 export const StyledVeil = styled.div<{ transparance?: boolean }>`
   position: absolute;

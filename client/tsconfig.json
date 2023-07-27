@@ -26,19 +26,11 @@
     "incremental": true,
     "allowSyntheticDefaultImports": true,
     "checkJs": false,
-    "baseUrl": "./src",
+    "baseUrl": ".",
     "paths": {
-      "api/*": ["api/*"],
-      "components/*": ["components/*"],
-      "hooks/*": ["hooks/*"],
-      "images/*": ["images/*"],
-      "layout/*": ["layout/*"],
-      "pages/*": ["pages/*"],
-      "providers/*": ["providers/*"],
-      "store/*": ["store/*"],
-      "styles/*": ["styles/*"],
-      "types/*": ["types/*"],
-      "utils/*": ["utils/*"],
+      "@/*": [
+        "./src/*"
+      ]
     }
   },
   "include": [

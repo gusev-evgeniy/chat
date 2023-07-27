@@ -1,13 +1,13 @@
 import React, { FC, MouseEventHandler } from 'react';
 import Image from 'next/image';
 
-import { Avatar } from 'components/avatar';
+import { Avatar } from '@/components/avatar';
 
 import logout_icon from 'images/logout.svg';
 
-import { StyledSearchUserItem } from 'styles';
-import { StyledIconButton } from 'styles';
-import { UserBD } from 'types/user';
+import { StyledSearchUserItem } from '@/styles';
+import { StyledIconButton } from '@/styles';
+import { UserBD } from '@/types/user';
 
 type Props = UserBD & {
   onLeave: MouseEventHandler;

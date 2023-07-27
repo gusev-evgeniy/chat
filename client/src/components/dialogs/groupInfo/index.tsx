@@ -1,20 +1,20 @@
 import React, { ChangeEvent } from 'react';
 
-import { socket } from 'api/socket';
+import { socket } from '@/api/socket';
 
-import { deleteRoom } from 'store/slices/rooms';
-import { openDialog } from 'store/slices/dialog';
-import { useAppDispatch, useAppSelector } from 'store/hooks';
-import { GetGroupChatInfo } from 'store/selectors';
+import { deleteRoom } from '@/store/slices/rooms';
+import { openDialog } from '@/store/slices/dialog';
+import { useAppDispatch, useAppSelector } from '@/store/hooks';
+import { GetGroupChatInfo } from '@/store/selectors';
 
-import { EVENTS, IMG_TYPES_TEXT_ERROR, VALID_IMG_TYPES } from 'utils/constants';
+import { EVENTS, IMG_TYPES_TEXT_ERROR, VALID_IMG_TYPES } from '@/utils/constants';
 
-import { AvatarInput } from 'components/avatar/input';
-import { StyledUsers } from 'components/dialogs/createRoom/styles';
+import { AvatarInput } from '@/components/avatar/input';
+import { StyledUsers } from '@/components/dialogs/createRoom/styles';
 import { TitleInput } from './titleInput';
 import { DialogWrapper } from '../wrapper';
 import { Participant } from './participant';
-import { setError } from 'store/slices/error';
+import { setError } from '@/store/slices/error';
 
 export const GroupInfo = () => {
   const dispatch = useAppDispatch();

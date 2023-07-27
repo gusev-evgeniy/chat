@@ -1,5 +1,5 @@
 import { instance } from '.';
-import { UserBD } from 'types/user';
+import { UserBD } from '@/types/user';
 
 type LoginData = {
   name: string;

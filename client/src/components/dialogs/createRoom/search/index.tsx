@@ -1,13 +1,13 @@
 import React, { FC } from 'react';
 
-import { StyledButton } from 'components/auth/styles';
+import { StyledButton } from '@/components/auth/styles';
 import { UsersList } from './usersList';
 import { Form } from './form';
 import { CheckedList } from './checkedList';
 import { useNewRoom } from './useNewRoom';
 
 import { StyledSearchUserWrapper } from '../styles';
-import { DialogWrapper } from 'components/dialogs/wrapper';
+import { DialogWrapper } from '@/components/dialogs/wrapper';
 
 type Props = {
   nextStep: () => void;

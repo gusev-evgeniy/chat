@@ -1,6 +1,6 @@
 import { DragEvent, useState } from 'react';
-import { uploadFile } from 'store/actions/room';
-import { useAppDispatch } from 'store/hooks';
+import { uploadFile } from '@/store/actions/room';
+import { useAppDispatch } from '@/store/hooks';
 
 export const useDragArea = () => {
   const [drag, setDrag] = useState(false);

@@ -1,7 +1,7 @@
 import { ChangeEvent, FormEvent, useState } from 'react';
-import { UserAPI } from 'api/user';
+import { UserAPI } from '@/api/user';
 import { AuthName } from './types';
-import { IMG_TYPES_TEXT_ERROR, VALID_IMG_TYPES } from 'utils/constants';
+import { IMG_TYPES_TEXT_ERROR, VALID_IMG_TYPES } from '@/utils/constants';
 
 export const useAuthUserForm = ({ changePage, changeData, data }: AuthName) => {
   const [errorText, setErrorText] = useState('');

@@ -1,11 +1,11 @@
 import { createContext, FC, useContext, useState } from 'react';
 
-import { UserAPI } from 'api/user';
+import { UserAPI } from '@/api/user';
 
-import { useAppDispatch } from 'store/hooks';
-import { setUserData } from 'store/slices/user';
+import { useAppDispatch } from '@/store/hooks';
+import { setUserData } from '@/store/slices/user';
 
-import { UserData } from 'components/auth/types';
+import { UserData } from '@/components/auth/types';
 
 type AuthContextType = {};
 
@@ -21,6 +21,7 @@ export const AuthProvider: FC<{ children: React.ReactElement }> = ({
     name: '',
     password: '',
     photo: null,
+    background: ''
   });
 
   const changeData = (changed: Partial<UserData>) => {

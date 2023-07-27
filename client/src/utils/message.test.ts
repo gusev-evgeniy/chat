@@ -1,10 +1,10 @@
-import { Rooms } from 'store/slices/rooms';
+import { Rooms } from '@/store/slices/rooms';
 import {
   convertSecondsToMinutesAndSeconds,
   getLastMessageText,
   returnTypingText,
 } from './message';
-import { Message, MessageAttachment } from 'types/messages';
+import { Message, MessageAttachment } from '@/types/messages';
 
 type TestMessage = Omit<Message, 'author'>;
 

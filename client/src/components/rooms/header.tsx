@@ -4,9 +4,9 @@ import { StyledSearchIcon, StyledSearchInput } from './styles';
 
 import search from 'images/search.svg';
 import add_chat from 'images/add_chat.svg';
-import { useAppDispatch } from 'store/hooks';
-import { openDialog } from 'store/slices/dialog';
-import { updateSearchValue } from 'store/slices/search';
+import { useAppDispatch } from '@/store/hooks';
+import { openDialog } from '@/store/slices/dialog';
+import { updateSearchValue } from '@/store/slices/search';
 
 type Props = {
   value: string;

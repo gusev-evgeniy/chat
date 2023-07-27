@@ -3,11 +3,11 @@ import React, { FC, Fragment, MouseEvent, useCallback } from 'react';
 
 import { Message } from './message';
 
-import { Empty } from 'styles';
+import { Empty } from '@/styles';
 
-import { download, getDay } from 'utils/message';
-import { useAppSelector } from 'store/hooks';
-import { getChatData } from 'store/selectors';
+import { download, getDay } from '@/utils/message';
+import { useAppSelector } from '@/store/hooks';
+import { getChatData } from '@/store/selectors';
 
 export const Messages: FC<{}> = () => {
   const { messages, typingText } = useAppSelector(getChatData);

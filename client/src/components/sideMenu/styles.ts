@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { COLORS } from 'styles/variables';
+import { COLORS } from '@/styles/variables';
 import { StyledWrapper } from '../auth/styles';
 
 export const StyledSideMenuWrapper = styled.div`

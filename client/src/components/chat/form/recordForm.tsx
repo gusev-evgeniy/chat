@@ -1,13 +1,13 @@
 import Image from 'next/image';
 import React, { FC, useEffect } from 'react';
-import { convertSecondsToMinutesAndSeconds as convert } from 'utils/message';
+import { convertSecondsToMinutesAndSeconds as convert } from '@/utils/message';
 
-import { useStopWatch } from 'hooks/useStopWatch';
+import { useStopWatch } from '@/hooks/useStopWatch';
 
 import send from 'images/send.svg';
 import close from 'images/close.svg';
 
-import { PulsarDot } from 'styles/pulsar';
+import { PulsarDot } from '@/styles/pulsar';
 import {
   MicIcon,
   StopRecordIcon,

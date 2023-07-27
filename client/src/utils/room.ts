@@ -1,5 +1,5 @@
-import { Room } from 'types/room';
-import { UserBD } from 'types/user';
+import { Room } from '@/types/room';
+import { UserBD } from '@/types/user';
 
 export const prepareRooms = (rooms: Room[], myId: string) => {
   return rooms.map(

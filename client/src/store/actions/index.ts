@@ -1,21 +1,21 @@
-import { socket } from 'api/socket';
+import { socket } from '@/api/socket';
 
-import { EVENTS, NEW_ROOM } from 'utils/constants';
+import { EVENTS, NEW_ROOM } from '@/utils/constants';
 
-import { addNewMessage, setAllReadedMessages } from 'store/slices/messages';
+import { addNewMessage, setAllReadedMessages } from '@/store/slices/messages';
 import {
   selectRoom,
   setUnreadedCount,
   updateLastMessage,
-} from 'store/slices/rooms';
+} from '@/store/slices/rooms';
 
-import { AppDispatch, RootState } from 'store';
+import { AppDispatch, RootState } from '@/store';
 
-import { Message, NewMessage } from 'types/messages';
-import { Room } from 'types/room';
-import { createRoomsDefault } from 'store/slices/createRoom';
+import { Message, NewMessage } from '@/types/messages';
+import { Room } from '@/types/room';
+import { createRoomsDefault } from '@/store/slices/createRoom';
 import { addNewRoom } from './rooms';
-import { createMessage } from 'utils/message';
+import { createMessage } from '@/utils/message';
 
 export const newMessageHandler =
   (message: Message) =>

@@ -1,11 +1,11 @@
-import { AppDispatch, RootState } from 'store';
-import { NEW_ROOM } from 'utils/constants';
-import { addOffsetMessages, setMessagesData } from 'store/slices/messages';
-import { createMessage, prepareFile, validateFile } from 'utils/message';
+import { AppDispatch, RootState } from '@/store';
+import { NEW_ROOM } from '@/utils/constants';
+import { addOffsetMessages, setMessagesData } from '@/store/slices/messages';
+import { createMessage, prepareFile, validateFile } from '@/utils/message';
 import { createPrivateRoom } from '.';
-import { NewMessage } from 'types/messages';
-import { setError } from 'store/slices/error';
-import { MessageAPI } from 'api/message';
+import { NewMessage } from '@/types/messages';
+import { setError } from '@/store/slices/error';
+import { MessageAPI } from '@/api/message';
 
 export const getRoomData =
   () => async (dispatch: AppDispatch, getState: () => RootState) => {

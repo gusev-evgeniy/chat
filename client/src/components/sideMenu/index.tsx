@@ -1,13 +1,13 @@
 import React, { FC, memo } from 'react';
 
-import { useAppDispatch, useAppSelector } from 'store/hooks';
-import { openSideMenu } from 'store/slices/sideMenu';
+import { useAppDispatch, useAppSelector } from '@/store/hooks';
+import { openSideMenu } from '@/store/slices/sideMenu';
 
-import Portal from 'components/portal';
-import { Rooms } from 'components/rooms';
+import Portal from '@/components/portal';
+import { Rooms } from '@/components/rooms';
 
 import { StyledSideMenuWrapper, StyledSideMenu } from './styles';
-import { selectSideMenu } from 'store/selectors';
+import { selectSideMenu } from '@/store/selectors';
 
 export const SideMenu: FC<{}> = memo(() => {
   const { isOpen } = useAppSelector(selectSideMenu);

@@ -1,7 +1,7 @@
 import React, { ChangeEvent, FC } from 'react';
 
-import { AvatarInput } from 'components/avatar/input';
-import { useAvatartPreview } from 'hooks/useAvatartPreview';
+import { AvatarInput } from '@/components/avatar/input';
+import { useAvatartPreview } from '@/hooks/useAvatartPreview';
 import { useAuthUserForm } from './useAuthUserForm';
 
 import {
@@ -12,7 +12,7 @@ import {
   StyledButton,
   StyledWrapper,
 } from './styles';
-import { StyledForm } from 'styles';
+import { StyledForm } from '@/styles';
 
 import arrow_back from 'images/arrow_back.svg';
 

@@ -1,11 +1,11 @@
 import React, { FC, memo, MouseEventHandler } from 'react';
 
-import { Avatar } from 'components/avatar';
-import { MyCheckbox } from 'components/checkbox';
+import { Avatar } from '@/components/avatar';
+import { MyCheckbox } from '@/components/checkbox';
 
-import { UserBD } from 'types/user';
+import { UserBD } from '@/types/user';
 
-import { StyledSearchUserItem } from 'styles';
+import { StyledSearchUserItem } from '@/styles';
 
 type Props = UserBD & {
   onCheck: MouseEventHandler;

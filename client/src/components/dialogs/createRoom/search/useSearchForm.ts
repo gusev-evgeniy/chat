@@ -1,9 +1,9 @@
 import { ChangeEvent, FormEvent, useState } from 'react';
 
-import { instance } from 'api';
+import { instance } from '@/api';
 
-import { useAppDispatch } from 'store/hooks';
-import { findUsers } from 'store/slices/createRoom';
+import { useAppDispatch } from '@/store/hooks';
+import { findUsers } from '@/store/slices/createRoom';
 
 export const useSearchForm = () => {
   const [filter, setFilter] = useState('');

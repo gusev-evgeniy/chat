@@ -1,5 +1,5 @@
-import { instance } from 'api';
-import { MessagesResponse } from 'types/messages';
+import { instance } from '@/api';
+import { MessagesResponse } from '@/types/messages';
 
 export const MessageAPI = {
   async get(roomId: string, skip = 0) {

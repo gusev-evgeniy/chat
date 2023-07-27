@@ -1,10 +1,10 @@
 import { useEffect, useInsertionEffect, useMemo } from 'react';
 import { useDebouncedCallback } from 'use-debounce';
 
-import { useAppDispatch, useAppSelector } from 'store/hooks';
-import { getChatData } from 'store/selectors';
-import { readMessage } from 'store/actions';
-import { getMessages, getRoomData } from 'store/actions/room';
+import { useAppDispatch, useAppSelector } from '@/store/hooks';
+import { getChatData } from '@/store/selectors';
+import { readMessage } from '@/store/actions';
+import { getMessages, getRoomData } from '@/store/actions/room';
 
 const SCROLLED_PRECENT = 70;
 

@@ -1,8 +1,8 @@
-import { MessageAPI } from 'api/message';
-import { socket } from 'api/socket';
+import { MessageAPI } from '@/api/message';
+import { socket } from '@/api/socket';
 import dayjs from 'dayjs';
-import { Rooms } from 'store/slices/rooms';
-import { Message, NewMessage } from 'types/messages';
+import { Rooms } from '@/store/slices/rooms';
+import { Message, NewMessage } from '@/types/messages';
 import { BASE_URL, EVENTS } from './constants';
 
 export const returnTypingText = (openRoom: Rooms[0] | undefined) => {

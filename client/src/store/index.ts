@@ -9,7 +9,7 @@ import { dialogReducer } from './slices/dialog';
 import { sideMenuReducer } from './slices/sideMenu';
 import { draftReducer } from './slices/draft';
 import { errorReducer, setError } from './slices/error';
-import { instance } from 'api/index';
+import { instance } from '@/api/index';
 import { searchReducer } from './slices/search';
 
 export function makeStore() {

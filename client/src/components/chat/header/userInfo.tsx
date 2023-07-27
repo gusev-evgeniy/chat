@@ -1,11 +1,11 @@
 import React, { FC } from 'react';
 
-import { useAppDispatch, useAppSelector } from 'store/hooks';
-import { getHeaderInfo } from 'store/selectors';
-import { openDialog } from 'store/slices/dialog';
+import { useAppDispatch, useAppSelector } from '@/store/hooks';
+import { getHeaderInfo } from '@/store/selectors';
+import { openDialog } from '@/store/slices/dialog';
 
-import { StyledGroupSubstring } from 'components/chat/styles';
-import { getGroupSubstring } from 'utils/room';
+import { StyledGroupSubstring } from '@/components/chat/styles';
+import { getGroupSubstring } from '@/utils/room';
 import { PrivateSubstring } from './privateSubstring';
 
 export const UserInfo: FC<{}> = ({}) => {

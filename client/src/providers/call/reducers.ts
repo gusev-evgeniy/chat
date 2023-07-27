@@ -1,6 +1,6 @@
 import Peer from 'simple-peer';
-import { InferActionsTypes } from 'types/actions';
-import { UserBD } from 'types/user';
+import { InferActionsTypes } from '@/types/actions';
+import { UserBD } from '@/types/user';
 import { callActions } from './actions';
 
 export const initCallState = {

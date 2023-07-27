@@ -1,9 +1,9 @@
 import { createSelector } from '@reduxjs/toolkit';
 
-import { NEW_ROOM } from 'utils/constants';
-import { returnTypingText } from 'utils/message';
+import { NEW_ROOM } from '@/utils/constants';
+import { returnTypingText } from '@/utils/message';
 
-import { RootState } from 'store';
+import { RootState } from '@/store';
 import { Rooms } from './slices/rooms';
 
 export const selectRooms = (state: RootState) => state.rooms;

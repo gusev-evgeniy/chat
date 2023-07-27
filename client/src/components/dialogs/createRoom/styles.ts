@@ -1,9 +1,9 @@
 import styled from 'styled-components';
 
-import { StyledWrapper } from 'components/auth/styles';
+import { StyledWrapper } from '@/components/auth/styles';
 
-import { StyledForm, StyledTextInput } from 'styles';
-import { COLORS, WIDTH } from 'styles/variables';
+import { StyledForm, StyledTextInput } from '@/styles';
+import { COLORS, WIDTH } from '@/styles/variables';
 
 export const StyledLabel = styled.label`
   font-size: 0.9rem;

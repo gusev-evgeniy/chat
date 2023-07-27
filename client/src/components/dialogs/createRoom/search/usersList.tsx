@@ -1,10 +1,10 @@
 import React, { FC, MouseEventHandler } from 'react';
 
-import { CreateRoomState } from 'store/slices/createRoom';
+import { CreateRoomState } from '@/store/slices/createRoom';
 
 import { FindingUser } from './item';
 
-import { Empty } from 'styles';
+import { Empty } from '@/styles';
 import { StyledUsers } from '../styles';
 
 type Props = {

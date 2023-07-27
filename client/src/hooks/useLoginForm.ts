@@ -1,8 +1,8 @@
 import { useMemo, useState } from 'react';
 
-import { UserAPI } from 'api/user';
-import { useAppDispatch } from 'store/hooks';
-import { setUserData } from 'store/slices/user';
+import { UserAPI } from '@/api/user';
+import { useAppDispatch } from '@/store/hooks';
+import { setUserData } from '@/store/slices/user';
 
 const DEFAULT_DATA = {
   errorText: '',

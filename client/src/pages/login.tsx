@@ -1,11 +1,11 @@
 import { useRouter } from 'next/router';
 import React from 'react';
 
-import { AlertMessage, LoginWrapper, StyledAdvises } from 'components/auth/styles';
-import { LoginForm } from 'components/login/form';
+import { AlertMessage, LoginWrapper, StyledAdvises } from '@/components/auth/styles';
+import { LoginForm } from '@/components/login/form';
 
-import { useAuthGuard } from 'hooks/useAuthGuard';
-import { useLoginForm } from 'hooks/useLoginForm';
+import { useAuthGuard } from '@/hooks/useAuthGuard';
+import { useLoginForm } from '@/hooks/useLoginForm';
 
 const Login = () => {
   useAuthGuard();

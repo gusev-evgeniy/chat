@@ -1,8 +1,8 @@
 import React, { FC, memo } from 'react';
 import Image from 'next/image';
 
-import { useAppDispatch } from 'store/hooks';
-import { openSideMenu } from 'store/slices/sideMenu';
+import { useAppDispatch } from '@/store/hooks';
+import { openSideMenu } from '@/store/slices/sideMenu';
 
 import menu from 'images/menu.svg';
 

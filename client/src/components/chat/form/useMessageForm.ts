@@ -1,9 +1,9 @@
 import { FormEvent, KeyboardEvent, useRef } from 'react';
-import { updateDraft } from 'store/actions/draft';
+import { updateDraft } from '@/store/actions/draft';
 
-import { createMessageOrPrivateRoom } from 'store/actions/room';
-import { useAppDispatch, useAppSelector } from 'store/hooks';
-import { getDraft } from 'store/selectors';
+import { createMessageOrPrivateRoom } from '@/store/actions/room';
+import { useAppDispatch, useAppSelector } from '@/store/hooks';
+import { getDraft } from '@/store/selectors';
 import { useEmoji } from './useEmoji';
 
 import { useTyping } from './useTyping';

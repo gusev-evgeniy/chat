@@ -1,8 +1,8 @@
 import React, { FC, memo, useEffect } from 'react';
 import { useDebouncedCallback } from 'use-debounce';
 
-import { useAppSelector } from 'store/hooks';
-import { getRoomsInfo } from 'store/selectors';
+import { useAppSelector } from '@/store/hooks';
+import { getRoomsInfo } from '@/store/selectors';
 
 import { RoomsHeader } from './header';
 

@@ -1,12 +1,12 @@
 import React, { FC } from 'react';
 import { Chat } from '.';
 
-import { useAppSelector } from 'store/hooks';
-import { selectRooms } from 'store/selectors';
+import { useAppSelector } from '@/store/hooks';
+import { selectRooms } from '@/store/selectors';
 
-import { SideMenuIcon } from 'components/sideMenu/icon';
+import { SideMenuIcon } from '@/components/sideMenu/icon';
 
-import { Empty } from 'styles';
+import { Empty } from '@/styles';
 import { StyledChat } from './styles';
 
 export const ChatWrapper: FC<{ matches: boolean }> = ({ matches }) => {

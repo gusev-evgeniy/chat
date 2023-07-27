@@ -1,15 +1,14 @@
 import axios from 'axios';
 
-import { wrapper } from 'store';
-import { setUserData } from 'store/slices/user';
+import { wrapper } from '@/store';
+import { setUserData } from '@/store/slices/user';
 
-import { useAuth } from 'hooks/useAuth';
-import { useAuthGuard } from 'hooks/useAuthGuard';
+import { useAuth } from '@/hooks/useAuth';
+import { useAuthGuard } from '@/hooks/useAuthGuard';
 
-import { Name } from 'components/auth/name';
-import { Password } from 'components/auth/password';
-import { Welcome } from 'components/auth/welcome';
-import { UserAPI } from 'api/user';
+import { Name } from '@/components/auth/name';
+import { Password } from '@/components/auth/password';
+import { Welcome } from '@/components/auth/welcome';
 
 const Auth = () => {
   useAuthGuard();

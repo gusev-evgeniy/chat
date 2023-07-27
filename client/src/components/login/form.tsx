@@ -1,8 +1,8 @@
 import React, { ChangeEventHandler, FC, FormEventHandler } from 'react';
 
-import { AuthInput, StyledButton, StyledWrapper } from 'components/auth/styles';
+import { AuthInput, StyledButton, StyledWrapper } from '@/components/auth/styles';
 
-import { StyledForm } from 'styles';
+import { StyledForm } from '@/styles';
 
 type Props = {
   password: string;

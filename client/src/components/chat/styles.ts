@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import TextareaAutosize from 'react-textarea-autosize';
 
-import { BOX_SHADOW, COLORS, WIDTH } from 'styles/variables';
+import { BOX_SHADOW, COLORS, WIDTH } from '@/styles/variables';
 
 export const StyledChat = styled.div<{ empty?: boolean }>`
   height: ${({ empty }) => (empty ? 'null' : '100%')};

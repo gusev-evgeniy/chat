@@ -1,9 +1,9 @@
 import React from 'react';
 import Image from 'next/image';
 
-import { Avatar } from 'components/avatar';
+import { Avatar } from '@/components/avatar';
 
-import { useCall } from 'providers/call/callProvider';
+import { useCall } from '@/providers/call/callProvider';
 
 import call_end_icon from 'images/call_end.svg';
 import call_icon from 'images/call_fill.svg';

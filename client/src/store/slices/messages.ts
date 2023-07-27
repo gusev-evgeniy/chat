@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-import { Message, MessagesResponse } from 'types/messages';
-import { MessagesData } from 'types/room';
+import { Message, MessagesResponse } from '@/types/messages';
+import { MessagesData } from '@/types/room';
 
 const initialState = {
   data: {} as MessagesData,

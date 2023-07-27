@@ -1,4 +1,4 @@
-import { useCall } from 'providers/call/callProvider';
+import { useCall } from '@/providers/call/callProvider';
 import { useState, useEffect, useRef } from 'react';
 
 export const useAudioPlayer = () => {

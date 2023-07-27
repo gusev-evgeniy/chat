@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-import { COLORS } from 'styles/variables';
+import { COLORS } from '@/styles/variables';
 
 export const AvaWrapper = styled.div<{ size: number }>`
   position: relative;

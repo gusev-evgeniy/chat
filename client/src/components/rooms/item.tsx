@@ -1,11 +1,11 @@
 import React, { FC, memo } from 'react';
 import dayjs from 'dayjs';
 
-import { Avatar } from 'components/avatar';
+import { Avatar } from '@/components/avatar';
 
 import { StyledLastMessage, StyledRoom } from './styles';
-import { Rooms } from 'store/slices/rooms';
-import { getLastMessageText } from 'utils/message';
+import { Rooms } from '@/store/slices/rooms';
+import { getLastMessageText } from '@/utils/message';
 
 type Props = Omit<Rooms[0], 'participants'> & {
   myId: string;

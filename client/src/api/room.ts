@@ -1,5 +1,5 @@
-import { instance } from "api";
-import { RoomsResponse } from "types/room";
+import { instance } from '@/api';
+import { RoomsResponse } from '@/types/room';
 
 export const RoomAPI = {
   async get() {

@@ -1,10 +1,10 @@
 import React from 'react';
 import Image from 'next/image';
 
-import { useCall } from 'providers/call/callProvider';
+import { useCall } from '@/providers/call/callProvider';
 
 import { useVideoCall } from './useVideoCall';
-import { Avatar } from 'components/avatar';
+import { Avatar } from '@/components/avatar';
 
 import call_end_icon from 'images/call_end.svg';
 import fullscreen from 'images/fullscreen.svg';

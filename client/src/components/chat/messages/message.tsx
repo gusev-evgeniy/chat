@@ -5,10 +5,10 @@ import Image from 'next/image';
 import readedIcon from 'images/readed.svg';
 import unreadedIcon from 'images/unreaded.svg';
 
-import { Message as MessageType } from 'types/messages';
+import { Message as MessageType } from '@/types/messages';
 
 import { StyledChatItem, StyledSystemMessage, SystemMessageWrapper } from '../styles';
-import { Avatar } from 'components/avatar';
+import { Avatar } from '@/components/avatar';
 import { Attachment } from './attachment';
 import { Audio } from './audioPlayer';
 

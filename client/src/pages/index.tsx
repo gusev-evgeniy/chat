@@ -1,8 +1,7 @@
-import { UserAPI } from 'api/user';
 import axios from 'axios';
 
-import { wrapper } from 'store';
-import { setUserData } from 'store/slices/user';
+import { wrapper } from '@/store';
+import { setUserData } from '@/store/slices/user';
 
 import Auth from './auth';
 import Main from './main';

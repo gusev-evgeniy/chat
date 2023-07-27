@@ -1,14 +1,14 @@
-import { MessageIcon, StyledAttachment } from 'components/chat/styles';
+import { MessageIcon, StyledAttachment } from '@/components/chat/styles';
 import Image from 'next/image';
 import React, { FC } from 'react';
 
-import { Message } from 'types/messages';
+import { Message } from '@/types/messages';
 import { Bar } from './bar';
 import { useAudioPlayer } from './useAudioPlayer';
 
 import playIcon from 'images/play.svg';
 import stopIcon from 'images/stop.svg';
-import { convertSecondsToMinutesAndSeconds as convert } from 'utils/message';
+import { convertSecondsToMinutesAndSeconds as convert } from '@/utils/message';
 
 type Props = Pick<Message, 'media'> & { id: string };
 

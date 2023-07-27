@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-import { StyledWrapper } from 'components/auth/styles';
+import { StyledWrapper } from '@/components/auth/styles';
 
 import { COLORS } from './variables';
 

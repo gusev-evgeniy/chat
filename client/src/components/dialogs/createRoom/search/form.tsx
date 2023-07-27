@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import React, { FC, memo } from 'react';
 
-import { StyledInputSearchButton } from 'components/chat/styles';
+import { StyledInputSearchButton } from '@/components/chat/styles';
 import { useSearchForm } from './useSearchForm';
 
 import search from 'images/search.svg';

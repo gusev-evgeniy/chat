@@ -1,8 +1,8 @@
 import Image from 'next/image';
 import React, { ChangeEvent, FC, KeyboardEvent, memo } from 'react';
 
-import { useAppDispatch } from 'store/hooks';
-import { uploadFile } from 'store/actions/room';
+import { useAppDispatch } from '@/store/hooks';
+import { uploadFile } from '@/store/actions/room';
 
 import { useMessageForm } from './useMessageForm';
 

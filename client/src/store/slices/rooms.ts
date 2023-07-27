@@ -1,10 +1,10 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { HYDRATE } from 'next-redux-wrapper';
 
-import { Room, RoomsResponse } from 'types/room';
-import { Message, Typing } from 'types/messages';
-import { prepareRooms } from 'utils/room';
-import { UserBD } from 'types/user';
+import { Room, RoomsResponse } from '@/types/room';
+import { Message, Typing } from '@/types/messages';
+import { prepareRooms } from '@/utils/room';
+import { UserBD } from '@/types/user';
 
 export type Rooms = ReturnType<typeof prepareRooms>;
 

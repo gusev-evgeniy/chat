@@ -1,6 +1,6 @@
 import React, { FC, MouseEventHandler } from 'react';
 
-import { UserBD } from 'types/user';
+import { UserBD } from '@/types/user';
 
 import { StyledCheckedItem } from '../styles';
 

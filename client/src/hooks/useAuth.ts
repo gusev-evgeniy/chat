@@ -1,12 +1,12 @@
 import { useState } from 'react';
 
-import { UserAPI } from 'api/user';
+import { UserAPI } from '@/api/user';
 
-import { useAppDispatch } from 'store/hooks';
-import { setUserData } from 'store/slices/user';
+import { useAppDispatch } from '@/store/hooks';
+import { setUserData } from '@/store/slices/user';
 
-import { UserData } from 'components/auth/types';
-import { generateGradient } from 'utils/index';
+import { UserData } from '@/components/auth/types';
+import { generateGradient } from '@/utils/index';
 
 export const useAuth = () => {
   const [num, setNum] = useState(1);

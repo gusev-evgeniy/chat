@@ -1,13 +1,13 @@
 import React, { FC, useCallback } from 'react';
-import { useAppDispatch, useAppSelector } from 'store/hooks';
-import { getRoomsInfo } from 'store/selectors';
+import { useAppDispatch, useAppSelector } from '@/store/hooks';
+import { getRoomsInfo } from '@/store/selectors';
 
 import { Room } from './item';
-import { selectRoom } from 'store/slices/rooms';
-import { returnTypingText } from 'utils/message';
+import { selectRoom } from '@/store/slices/rooms';
+import { returnTypingText } from '@/utils/message';
 import { StyledWarning } from './styles';
-import { openSideMenu } from 'store/slices/sideMenu';
-import { Empty } from 'styles/index';
+import { openSideMenu } from '@/store/slices/sideMenu';
+import { Empty } from '@/styles/index';
 
 type Props = {
   isSideMenu: boolean;
@@ -15,7 +15,7 @@ type Props = {
 
 export const RoomsList: FC<Props> = ({ isSideMenu }) => {
   const dispatch = useAppDispatch();
-  const { me, rooms, selected, filter } = useAppSelector(getRoomsInfo);
+  const { me, rooms, selected, search } = useAppSelector(getRoomsInfo);
 
   const onSelecteHandler = useCallback((id: string) => {
     dispatch(selectRoom(id));
@@ -25,7 +25,7 @@ export const RoomsList: FC<Props> = ({ isSideMenu }) => {
     }
   }, []);
 
-  if (!!filter && !rooms.length) {
+  if (!!search && !rooms.length) {
     return <StyledWarning>Rooms not found</StyledWarning>;
   }
 

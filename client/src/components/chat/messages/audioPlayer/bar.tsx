@@ -1,4 +1,4 @@
-import { StyledBar } from 'components/chat/styles';
+import { StyledBar } from '@/components/chat/styles';
 import React, { FC } from 'react';
 
 type Props = {

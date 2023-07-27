@@ -1,8 +1,8 @@
 import { useEffect, useRef, useState } from 'react';
 
-import { sendTyping } from 'store/actions';
-import { useAppDispatch, useAppSelector } from 'store/hooks';
-import { selectRooms } from 'store/selectors';
+import { sendTyping } from '@/store/actions';
+import { useAppDispatch, useAppSelector } from '@/store/hooks';
+import { selectRooms } from '@/store/selectors';
 
 export const useTyping = () => {
   const dispatch = useAppDispatch();

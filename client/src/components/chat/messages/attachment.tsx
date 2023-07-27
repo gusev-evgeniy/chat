@@ -1,5 +1,5 @@
 import React, { FC, memo, MouseEventHandler } from 'react';
-import { Message } from 'types/messages';
+import { Message } from '@/types/messages';
 import Image from 'next/image';
 
 import fileIcon from 'images/file.svg';

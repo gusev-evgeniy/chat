@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-import { BOX_SHADOW, COLORS } from 'styles/variables';
+import { BOX_SHADOW, COLORS } from '@/styles/variables';
 
 export const baseRadius = `20px`;
 export const sign_in_padding = `18px`;
