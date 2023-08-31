@@ -14,7 +14,7 @@ import {
 } from './styles';
 import { StyledForm } from '@/styles';
 
-import arrow_back from 'images/arrow_back.svg';
+import arrow_back from '@/images/arrow_back.svg';
 
 import { AuthName } from './types';
 import Image from 'next/image';

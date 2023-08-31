@@ -1,6 +1,10 @@
+import { v4 as uuidv4 } from 'uuid';
+import path from 'path';
+
 import Message from '../entities/message';
 import Room from '../entities/room';
 import { updateRoomLastMessage } from './room';
+import { writeFileSync } from 'fs';
 
 export const createSystemMessage = async (
   text: string,
@@ -40,3 +44,12 @@ export const readMessagesQuary = async (author: string, roomId: string) => {
     .update({ readed: true })
     .execute();
 };
+
+export const uploadMedia = (media: Buffer, host = '') => {
+  const filePath = '/static' + '/' + uuidv4();
+  const mediaSrc = path.join(process.cwd() + filePath);
+  writeFileSync(mediaSrc, media);
+  
+
+  return 'http://' + host + filePath;
+}

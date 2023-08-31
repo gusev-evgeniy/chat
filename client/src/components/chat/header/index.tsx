@@ -12,7 +12,7 @@ import { StyledChatHeader } from '@/components/chat/styles';
 import { SideMenuIcon } from '@/components/sideMenu/icon';
 import { UserInfo } from './userInfo';
 
-import call_icon from 'images/call.svg';
+import call_icon from '@/images/call.svg';
 
 import { StyledIconButton } from '@/styles';
 import { WIDTH } from '@/styles/variables';

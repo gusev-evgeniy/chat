@@ -8,7 +8,7 @@ import { Avatar } from '@/components/avatar';
 
 import { UserBD } from '@/types/user';
 
-import logout_icon from 'images/logout.svg';
+import logout_icon from '@/images/logout.svg';
 
 export const Footer: FC<UserBD> = ({ name, photo, background }) => {
   const dispatch = useAppDispatch();

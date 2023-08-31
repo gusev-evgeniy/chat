@@ -1,42 +1,25 @@
-import { writeFileSync } from 'fs';
-import path from 'path';
 import { Server } from 'socket.io';
-import { v4 as uuidv4 } from 'uuid';
 
 import Participant from '../../entities/participants';
 import Room from '../../entities/room';
-import { findRoomAndCreateSystemMessage } from '../../utils/message';
-import { addNewRoom } from '../../utils/room';
+import { findRoomAndCreateSystemMessage, uploadMedia } from '../../utils/message';
+import { addNewRoom, prepareDataForNewRoom } from '../../utils/room';
 import { EVENTS } from '../events';
-import { Callback, MySocket } from '../types';
+import { Callback, MySocket, RoomData } from '../types';
+
 type UpdateRoom = {
   title: string;
   id: string;
-  photo: any
-}
+  photo: any;
+};
 
 export default async (io: Server, socket: MySocket) => {
-  const createRoom = async (obj: any, callback: Callback) => {
-    const { users, title, type, photo, background } = obj;
-    const roomData: Partial<Room> = {
-      author: socket.me,
-      type,
-    };
-
-    if (background) roomData.background = background;
-
-    if (photo) {
-      const filePath = '/static' + '/' + uuidv4();
-      const mediaSrc = path.join(process.cwd() + filePath);
-      writeFileSync(mediaSrc, photo);
-      roomData.photo ='http://' + socket.handshake.headers.host + filePath;
-    }
-
-    if (title) roomData.title = title;
+  const createRoom = async (data: RoomData, callback: Callback) => {
+    const roomData = prepareDataForNewRoom(data, socket);
     const room = await addNewRoom({
       data: roomData,
       authorName: socket.me.name,
-      users,
+      users: data.users,
     });
 
     if (!room) {
@@ -65,13 +48,7 @@ export default async (io: Server, socket: MySocket) => {
     const roomInfo: Partial<Room> = {};
 
     if (title) roomInfo.title = title;
-
-    if (photo) {
-      const filePath = '/static' + '/' + uuidv4();
-      const mediaSrc = path.join(process.cwd() + filePath);
-      writeFileSync(mediaSrc, photo);
-      roomInfo.photo ='http://' + socket.handshake.headers.host + filePath;
-    }
+    if (photo) roomInfo.photo = uploadMedia(photo, socket.handshake.headers.host);
 
     const room = await Room.createQueryBuilder()
       .update(roomInfo)
@@ -88,20 +65,14 @@ export default async (io: Server, socket: MySocket) => {
     io.to(id).emit(EVENTS.ROOM.UPDATED, room.raw[0]);
   };
 
-  const leaveRoom = async (
-    { roomId }: { roomId: string },
-    callback: Callback
-  ) => {
+  const leaveRoom = async ({ roomId }: { roomId: string }, callback: Callback) => {
     const participants = await Participant.delete({
       room: { id: roomId },
       user: { id: socket.me?.id },
     });
     socket.leave(roomId);
 
-    const message = await findRoomAndCreateSystemMessage(
-      `User ${socket.me.name} left the chat`,
-      roomId
-    );
+    const message = await findRoomAndCreateSystemMessage(`User ${socket.me.name} left the chat`, roomId);
     callback({ message: 'Success' });
 
     io.to(roomId).emit(EVENTS.MESSAGE.CREATED, message);

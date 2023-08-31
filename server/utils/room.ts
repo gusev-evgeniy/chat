@@ -1,8 +1,8 @@
 import Message from '../entities/message';
 import Participant from '../entities/participants';
 import Room from '../entities/room';
-import User from '../entities/user';
-import { createSystemMessage } from './message';
+import { MySocket, RoomData, RoomUserProps } from '../socket/types';
+import { createSystemMessage, uploadMedia } from './message';
 
 export const isPrivateRoomExist = async (_: string, __: string) => {
   try {
@@ -19,12 +19,8 @@ export const isPrivateRoomExist = async (_: string, __: string) => {
   }
 };
 
-export const updateRoomLastMessage = async (
-  newMessage: Message,
-  room: Room
-) => {
+export const updateRoomLastMessage = async (newMessage: Message, room: Room) => {
   try {
-
     room['lastMessage'] = newMessage;
     room['messagesCount'] = newMessage.serialNum;
     await room.save();
@@ -54,23 +50,15 @@ export const getUserRooms = async (id: string) => {
 };
 
 export const getRoomsAndCount = async (id: string) => {
-  const [participants, count] = await Participant.createQueryBuilder(
-    'participant'
-  )
+  const [participants, count] = await Participant.createQueryBuilder('participant')
     .where('participant.user = :id', { id })
     .leftJoinAndSelect('participant.room', 'room')
     .leftJoinAndSelect('room.participants', 'participants')
     .leftJoinAndSelect('room.lastMessage', 'lastMessage')
     .leftJoinAndSelect('lastMessage.attachment', 'attachment')
     .leftJoinAndSelect('participants.user', 'user')
-    .loadRelationCountAndMap(
-      'room.unreadedMessagesCount',
-      'room.messages',
-      'message',
-      qb =>
-        qb
-          .where('message.readed IS FALSE')
-          .andWhere('message."authorId" != :author', { author: id })
+    .loadRelationCountAndMap('room.unreadedMessagesCount', 'room.messages', 'message', qb =>
+      qb.where('message.readed IS FALSE').andWhere('message."authorId" != :author', { author: id })
     )
     .addOrderBy('room.updatedAt', 'DESC')
     .getManyAndCount();
@@ -78,7 +66,6 @@ export const getRoomsAndCount = async (id: string) => {
     ...room,
     participants: room.participants.map(({ user }) => user),
   }));
-
 
   // const rooms = participants.map(({ room }) => ({
   //   ...room,
@@ -89,13 +76,12 @@ export const getRoomsAndCount = async (id: string) => {
   //   }),
   // }));
 
-
   return { rooms, count };
 };
 
 type RoomProps = {
   data: Partial<Room>;
-  users: { id: User; socketId: string }[];
+  users: RoomUserProps[];
   authorName: string;
 };
 
@@ -112,10 +98,12 @@ export const addNewRoom = async ({ data, authorName, users }: RoomProps) => {
       await createSystemMessage(`User ${authorName} created the chat`, room);
     }
 
-    return (await Room.findOne({
+    const newRoom = await Room.findOne({
       where: { id: room.id },
       relations: ['participants', 'participants.user', 'messages'],
-    })) as Room;
+    });
+
+    return newRoom;
   } catch (error) {
     console.log('Add new room error:', error);
   }
@@ -131,8 +119,8 @@ export const getOnlineParticipantsSocketId = async (id: string) => {
 
   const test = participant.reduce((acc, { room }) => {
     // const users = room.participants.user
+    acc = [...acc, ...room.participants];
 
-    acc.push(...room.participants);
     return acc;
   }, [] as Participant[]);
 
@@ -160,3 +148,16 @@ export const getOnlineParticipantsSocketId = async (id: string) => {
 //     .addOrderBy('room.updatedAt', 'DESC')
 //     .getManyAndCount();
 // };
+
+export const prepareDataForNewRoom = ({ title, type, photo, background }: RoomData, socket: MySocket) => {
+  const roomData: Partial<Room> = {
+    author: socket.me,
+    type,
+  };
+
+  if (background) roomData.background = background;
+  if (photo) roomData.photo = uploadMedia(photo, socket.handshake.headers.host);
+  if (title) roomData.title = title;
+
+  return roomData;
+};

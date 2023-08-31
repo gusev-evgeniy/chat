@@ -6,8 +6,8 @@ import { Message } from '@/types/messages';
 import { Bar } from './bar';
 import { useAudioPlayer } from './useAudioPlayer';
 
-import playIcon from 'images/play.svg';
-import stopIcon from 'images/stop.svg';
+import playIcon from '@/images/play.svg';
+import stopIcon from '@/images/stop.svg';
 import { convertSecondsToMinutesAndSeconds as convert } from '@/utils/message';
 
 type Props = Pick<Message, 'media'> & { id: string };

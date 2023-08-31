@@ -4,8 +4,8 @@ import { convertSecondsToMinutesAndSeconds as convert } from '@/utils/message';
 
 import { useStopWatch } from '@/hooks/useStopWatch';
 
-import send from 'images/send.svg';
-import close from 'images/close.svg';
+import send from '@/images/send.svg';
+import close from '@/images/close.svg';
 
 import { PulsarDot } from '@/styles/pulsar';
 import {

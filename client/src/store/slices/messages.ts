@@ -26,10 +26,7 @@ export const messagesSlice = createSlice({
       }
     },
 
-    addOffsetMessages(
-      state,
-      action: PayloadAction<Pick<MessagesResponse, 'messages' | 'roomId'>>
-    ) {
+    addOffsetMessages(state, action: PayloadAction<Pick<MessagesResponse, 'messages' | 'roomId'>>) {
       const { messages, roomId } = action.payload;
       let room = state.data[roomId];
       room.messages = [...messages, ...room.messages];
@@ -38,6 +35,7 @@ export const messagesSlice = createSlice({
     addNewMessage(state, action: PayloadAction<Message>) {
       const roomId = action.payload.roomId;
       let room = state.data[roomId];
+
       if (room?.loaded) {
         room.messages.push(action.payload);
         room.count++;
@@ -61,12 +59,7 @@ export const messagesSlice = createSlice({
   },
 });
 
-export const {
-  setMessagesData,
-  addNewMessage,
-  setAllReadedMessages,
-  addOffsetMessages,
-  defaultMessages,
-} = messagesSlice.actions;
+export const { setMessagesData, addNewMessage, setAllReadedMessages, addOffsetMessages, defaultMessages } =
+  messagesSlice.actions;
 
 export const messagesReducer = messagesSlice.reducer;

@@ -1,7 +1,7 @@
 import React from 'react';
 import Image from 'next/image';
 
-import arrow_back from 'images/arrow_back.svg';
+import arrow_back from '@/images/arrow_back.svg';
 
 import { BackButon } from './styles';
 

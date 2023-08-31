@@ -1,10 +1,4 @@
-import {
-  createContext,
-  FC,
-  useContext,
-  useEffect,
-  useReducer,
-} from 'react';
+import { createContext, FC, useContext, useEffect, useReducer } from 'react';
 import Peer from 'simple-peer';
 
 import { socket } from '@/api/socket';
@@ -37,19 +31,10 @@ type GetCall = {
 
 export const CallContext = createContext({} as CallContextType);
 
-export const CallProvider: FC<{ children: React.ReactElement }> = ({
-  children,
-}) => {
+export const CallProvider: FC<{ children: React.ReactElement }> = ({ children }) => {
   const dispatch = useAppDispatch();
   const [state, callDispatch] = useReducer(callReducer, initCallState);
-  const {
-    companion,
-    companionSignal,
-    companionStream,
-    isGetCall,
-    myStream,
-    roomId,
-  } = state;
+  const { companion, companionSignal, companionStream, isGetCall, myStream, roomId } = state;
 
   const setStream = async () => {
     const stream = await navigator.mediaDevices.getUserMedia({
@@ -73,6 +58,10 @@ export const CallProvider: FC<{ children: React.ReactElement }> = ({
       dispatch(openDialog(null));
       callDispatch(actions.callEnded());
     });
+
+    return () => {
+      socket.off(EVENTS.CALL.ENDED);
+    };
   }, [myStream, dispatch]);
 
   useEffect(() => {

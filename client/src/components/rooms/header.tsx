@@ -2,8 +2,8 @@ import Image from 'next/image';
 import { ChangeEvent, FC } from 'react';
 import { StyledSearchIcon, StyledSearchInput } from './styles';
 
-import search from 'images/search.svg';
-import add_chat from 'images/add_chat.svg';
+import search from '@/images/search.svg';
+import add_chat from '@/images/add_chat.svg';
 import { useAppDispatch } from '@/store/hooks';
 import { openDialog } from '@/store/slices/dialog';
 import { updateSearchValue } from '@/store/slices/search';

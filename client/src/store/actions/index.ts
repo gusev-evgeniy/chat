@@ -3,11 +3,7 @@ import { socket } from '@/api/socket';
 import { EVENTS, NEW_ROOM } from '@/utils/constants';
 
 import { addNewMessage, setAllReadedMessages } from '@/store/slices/messages';
-import {
-  selectRoom,
-  setUnreadedCount,
-  updateLastMessage,
-} from '@/store/slices/rooms';
+import { selectRoom, setUnreadedCount, updateLastMessage } from '@/store/slices/rooms';
 
 import { AppDispatch, RootState } from '@/store';
 
@@ -18,8 +14,7 @@ import { addNewRoom } from './rooms';
 import { createMessage } from '@/utils/message';
 
 export const newMessageHandler =
-  (message: Message) =>
-  async (dispatch: AppDispatch, getState: () => RootState) => {
+  (message: Message) => async (dispatch: AppDispatch, getState: () => RootState) => {
     const {
       rooms: { selected, data },
       user,
@@ -29,6 +24,7 @@ export const newMessageHandler =
       ...message,
       isMy: message.authorId === user.data?.id,
     };
+
     dispatch(addNewMessage(extendedMessage));
     dispatch(
       updateLastMessage({
@@ -38,25 +34,22 @@ export const newMessageHandler =
     );
 
     if (!extendedMessage.isMy) {
-      const { unreadedMessagesCount } =
-        data.find(({ id }) => id === extendedMessage.roomId) || {};
+      const { unreadedMessagesCount } = data.find(({ id }) => id === extendedMessage.roomId) || {};
       const count = unreadedMessagesCount ? unreadedMessagesCount + 1 : 1;
 
       dispatch(setUnreadedCount({ roomId: extendedMessage.roomId, count }));
     }
   };
 
-export const readedHandler =
-  (roomId: string) =>
-  async (dispatch: AppDispatch, getState: () => RootState) => {
-    const {
-      rooms: { selected },
-    } = getState();
+export const readedHandler = (roomId: string) => async (dispatch: AppDispatch, getState: () => RootState) => {
+  const {
+    rooms: { selected },
+  } = getState();
 
-    if (selected === roomId) {
-      dispatch(setAllReadedMessages(roomId));
-    }
-  };
+  if (selected === roomId) {
+    dispatch(setAllReadedMessages(roomId));
+  }
+};
 
 export const createRoom =
   (photo?: File | null) => async (dispatch: AppDispatch, getState: () => RootState) => {
@@ -72,41 +65,33 @@ export const createRoom =
     });
   };
 
-export const openNewRoom =
-  () => async (dispatch: AppDispatch, getState: () => RootState) => {
-    const {
-      createRoom: { checked },
-      rooms: { data },
-    } = getState();
+export const openNewRoom = () => async (dispatch: AppDispatch, getState: () => RootState) => {
+  const {
+    createRoom: { checked },
+    rooms: { data },
+  } = getState();
 
-    const room = data.find(
-      ({ type, participants }) =>
-        type === 'private' &&
-        participants.some(({ id }) => id === checked[0].id)
-    );
+  const room = data.find(
+    ({ type, participants }) => type === 'private' && participants.some(({ id }) => id === checked[0].id)
+  );
 
-    dispatch(selectRoom(room ? room.id : NEW_ROOM));
-  };
+  dispatch(selectRoom(room ? room.id : NEW_ROOM));
+};
 
 export const createPrivateRoom =
-  (data: NewMessage) =>
-  async (dispatch: AppDispatch, getState: () => RootState) => {
+  (data: NewMessage) => async (dispatch: AppDispatch, getState: () => RootState) => {
     const {
-      rooms: { newPrivateRoom }
+      rooms: { newPrivateRoom },
     } = getState();
 
     const { participants, type } = newPrivateRoom;
 
-    socket.emit(
-      EVENTS.ROOM.CREATE,
-      { users: participants, type },
-      (room: any) => {
-        createMessage(room.id, data)
-        dispatch(addNewRoom(room));
-        dispatch(selectRoom(room.id));
-        dispatch(createRoomsDefault());
-      }
-    );
+    socket.emit(EVENTS.ROOM.CREATE, { users: participants, type }, (room: any) => {
+      createMessage(room.id, data);
+      dispatch(addNewRoom(room));
+      dispatch(selectRoom(room.id));
+      dispatch(createRoomsDefault());
+    });
   };
 
 export const readMessage = (id: string) => async (dispatch: AppDispatch) => {
@@ -122,7 +107,7 @@ export const sendTyping =
       user: { data },
     } = getState();
 
-    if ( !selected || selected === 'NEW_ROOM' || !data) {
+    if (!selected || selected === 'NEW_ROOM' || !data) {
       return;
     }
 

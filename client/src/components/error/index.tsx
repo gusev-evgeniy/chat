@@ -6,7 +6,7 @@ import { closeError } from '@/store/slices/error';
 import { selectError } from '@/store/selectors';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
 
-import close_icon from 'images/close_bold_white.svg';
+import close_icon from '@/images/close_bold_white.svg';
 
 import { StyledErrorWrapper } from './styles';
 

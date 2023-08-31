@@ -3,7 +3,7 @@ import Image from 'next/image';
 
 import { Avatar } from '@/components/avatar';
 
-import logout_icon from 'images/logout.svg';
+import logout_icon from '@/images/logout.svg';
 
 import { StyledSearchUserItem } from '@/styles';
 import { StyledIconButton } from '@/styles';

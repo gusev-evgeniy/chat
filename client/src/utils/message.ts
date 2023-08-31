@@ -46,8 +46,7 @@ export const download = async (id: string) => {
   return ((iframe as HTMLImageElement).src = address);
 };
 
-export const getDay = (createdAt: string) =>
-  dayjs(createdAt).format('YYYY-MM-DD');
+export const getDay = (createdAt: string) => dayjs(createdAt).format('YYYY-MM-DD');
 
 export const convertSecondsToMinutesAndSeconds = (totalSeconds: number) => {
   const minutes = Math.floor(totalSeconds / 60);
@@ -64,18 +63,30 @@ export const createMessage = (roomId: string, data: NewMessage) => {
   socket.emit(EVENTS.MESSAGE.CREATE, { roomId, data });
 };
 
-export const getLastMessageText = (message: Omit<Message, "author"> | null ) => {
+export const getLastMessageText = (message: Omit<Message, 'author'> | null) => {
   if (!message) return '';
 
   const { attachment, media, text, isSystem } = message;
 
   if (isSystem) return text;
   if (attachment) return attachment.name;
-  if (media) return 'Voice message'
+  if (media) return 'Voice message';
 
   return text;
-}
+};
 
 export const validateFile = (file: File) => {
   return file.size <= 1e6;
-}
+};
+
+export const formatBytes = (bytes: number, decimals = 2) => {
+  if (!+bytes) return '0 Bytes';
+
+  const k = 1024;
+  const dm = decimals < 0 ? 0 : decimals;
+  const sizes = ['Bytes', 'KB', 'MB'];
+
+  const i = Math.floor(Math.log(bytes) / Math.log(k));
+
+  return `${parseFloat((bytes / Math.pow(k, i)).toFixed(dm))} ${sizes[i]}`;
+};

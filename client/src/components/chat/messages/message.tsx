@@ -2,8 +2,8 @@ import React, { FC, memo, MouseEventHandler } from 'react';
 import dayjs from 'dayjs';
 import Image from 'next/image';
 
-import readedIcon from 'images/readed.svg';
-import unreadedIcon from 'images/unreaded.svg';
+import readedIcon from '@/images/readed.svg';
+import unreadedIcon from '@/images/unreaded.svg';
 
 import { Message as MessageType } from '@/types/messages';
 

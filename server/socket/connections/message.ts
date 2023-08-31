@@ -1,15 +1,12 @@
 import { Server } from 'socket.io';
-import { writeFileSync } from 'fs';
 
 import Message from '../../entities/message';
 import { EVENTS } from '../events';
 import { GetTypingProps, MySocket } from '../types';
 import { updateRoomLastMessage } from '../../utils/room';
-import { readMessagesQuary } from '../../utils/message';
+import { readMessagesQuary, uploadMedia } from '../../utils/message';
 import Room from '../../entities/room';
 import Attachment from '../../entities/attachment';
-import { v4 as uuidv4 } from 'uuid';
-import path from 'path';
 
 type Callback = (...arg: any) => void;
 type Data = {
@@ -38,6 +35,7 @@ export default async (io: Server, socket: MySocket) => {
       }
 
       const room = await Room.findOneBy({ id: roomId });
+
       if (!room) {
         return;
       }
@@ -51,11 +49,7 @@ export default async (io: Server, socket: MySocket) => {
       };
 
       if (media) {
-        const filePath = '/static' + '/' + uuidv4();
-        const mediaSrc = path.join(process.cwd() + filePath);
-        writeFileSync(mediaSrc, media);
-        newMessageInfo.media =
-          'http://' + socket.handshake.headers.host + filePath;
+        newMessageInfo.media = uploadMedia(media, socket.handshake.headers.host);
       }
 
       //add transaction
@@ -71,13 +65,16 @@ export default async (io: Server, socket: MySocket) => {
       const { id } = (await Message.create(newMessageInfo).save()) as Message;
 
       //add transaction
-      let newMessage = (await Message.findOne({
+      let newMessage = await Message.findOne({
         where: { id },
         relations: ['author', 'attachment'],
-      })) as any;
+      });
+
+      if (!newMessage) return;
 
       if (newMessage.attachment) {
         newMessage.attachment.content = {
+          //@ts-ignore
           type: 'Buffer',
           data: [...new Uint8Array(newMessage.attachment.content)],
         };
@@ -93,10 +90,7 @@ export default async (io: Server, socket: MySocket) => {
     socket.broadcast.to(obj.roomId).emit(EVENTS.MESSAGE.RESPONSE_TYPING, obj);
   };
 
-  const readMessage = async (
-    { roomId }: { roomId: string },
-    callback: Callback
-  ) => {
+  const readMessage = async ({ roomId }: { roomId: string }, callback: Callback) => {
     await readMessagesQuary(socket.me?.id, roomId);
 
     callback();

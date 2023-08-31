@@ -11,7 +11,7 @@ import { StyledForm } from '@/styles';
 
 import { AuthPassword } from './types';
 
-import arrow_back from 'images/arrow_back.svg';
+import arrow_back from '@/images/arrow_back.svg';
 
 const MIN_LENGTH = 6;
 

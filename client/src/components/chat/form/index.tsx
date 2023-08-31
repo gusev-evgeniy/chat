@@ -6,10 +6,10 @@ import { uploadFile } from '@/store/actions/room';
 
 import { useMessageForm } from './useMessageForm';
 
-import attach from 'images/attach.svg';
-import smile from 'images/smile.svg';
-import mic from 'images/mic.svg';
-import send from 'images/send.svg';
+import attach from '@/images/attach.svg';
+import smile from '@/images/smile.svg';
+import mic from '@/images/mic.svg';
+import send from '@/images/send.svg';
 
 import {
   AttachIcon,

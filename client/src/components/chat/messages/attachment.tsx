@@ -2,8 +2,9 @@ import React, { FC, memo, MouseEventHandler } from 'react';
 import { Message } from '@/types/messages';
 import Image from 'next/image';
 
-import fileIcon from 'images/file.svg';
+import fileIcon from '@/images/file.svg';
 import { MessageIcon, StyledAttachment } from '../styles';
+import { formatBytes } from '@/utils/message';
 
 type Props = {
   download: MouseEventHandler;
@@ -24,7 +25,7 @@ export const Attachment: FC<Props> = memo(({ attachment, download }) => {
       </MessageIcon>
       <div className='file_info'>
         <div className='name'>{name}</div>
-        <div className='size'>{size}</div>
+        <div className='size'>{formatBytes(size)}</div>
       </div>
     </StyledAttachment>
   );

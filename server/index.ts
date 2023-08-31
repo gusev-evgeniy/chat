@@ -12,6 +12,12 @@ import registerChatHandlers from './socket';
 import cookieParser from 'cookie-parser';
 import { MySocket } from './socket/types';
 
+
+/* TODO
+  транзакции
+  логирование 
+*/
+
 const PORT = process.env.PORT || 5050;
 
 const start = async () => {
@@ -26,7 +32,7 @@ const start = async () => {
     const app = express();
     const http = createServer(app);
     const io = new Server(http, {
-      cors: { origin: 'http://localhost:3001', credentials: true },
+      cors: { origin: 'http://localhost:3000', credentials: true },
       maxHttpBufferSize: 1e6
     });
 

@@ -5,7 +5,7 @@ import { useAppDispatch } from '@/store/hooks';
 import { openDialog } from '@/store/slices/dialog';
 import { CloseIconWrapper, StyledContainer, StyledVeil } from './styles';
 
-import close from 'images/close.svg';
+import close from '@/images/close.svg';
 
 type Props = {
   children: React.ReactElement;

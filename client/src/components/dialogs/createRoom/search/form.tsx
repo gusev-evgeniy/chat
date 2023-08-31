@@ -4,7 +4,7 @@ import React, { FC, memo } from 'react';
 import { StyledInputSearchButton } from '@/components/chat/styles';
 import { useSearchForm } from './useSearchForm';
 
-import search from 'images/search.svg';
+import search from '@/images/search.svg';
 import { StyledFindUserIntput, StyledLabel } from '../styles';
 
 export const Form: FC<{}> = memo(() => {
